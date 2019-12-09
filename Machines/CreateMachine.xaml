@@ -14,7 +14,7 @@
   <this:CreateMachine.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
   </this:CreateMachine.in_OpenedWorkbook>
-  <sap:VirtualizedContainerService.HintSize>784,1181.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>784,1175.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -52,9 +52,9 @@
       <AssemblyReference>WindowsBase</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type, name and description.&#xA;Keys of successfully created machines are added to the file with the list of machines (Config\Machines.xlsx).&#xA;&#xA;Required permissions:&#xA;- Machines: Create, Edit" DisplayName="Create Machine" sap:VirtualizedContainerService.HintSize="764,1121.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type, name and description.&#xA;Keys of successfully created machines are added to the file with the list of machines (Config\Machines.xlsx).&#xA;&#xA;Required permissions:&#xA;- Machines: Create, Edit" DisplayName="Create Machine" sap:VirtualizedContainerService.HintSize="764,1115.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="RequestBody" />
+      <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:Int32" Name="Status" />
       <Variable x:TypeArguments="x:String" Name="Response" />
       <Variable x:TypeArguments="njl:JObject" Name="ResponseObject" />
@@ -65,16 +65,37 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign RequestBody (Create Machine)" sap:VirtualizedContainerService.HintSize="722,62" sap2010:WorkflowViewState.IdRef="Assign_6">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[RequestBody]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[Newtonsoft.Json.JsonConvert.SerializeObject(New Dictionary(Of String, String) From {{"Name", in_MachineName}, {"Type", in_MachineType}, {"Description", in_MachineDescription}}, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <ui:OrchestratorHttpRequest FolderPath="{x:Null}" ResponseHeaders="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Orchestrator HTTP Request (Create Machine)" sap:VirtualizedContainerService.HintSize="722,22" sap2010:WorkflowViewState.IdRef="OrchestratorHttpRequest_6" JSONPayload="[RequestBody]" Method="POST" RelativeEndpoint="/odata/Machines" Result="[Response]" StatusCode="[Status]" />
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="722,62.6666666666667" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[Response]" />
+    <ui:MultipleAssign DisplayName="Multiple Assign (Body Fields)" sap:VirtualizedContainerService.HintSize="722,158.666666666667" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <ui:MultipleAssign.AssignOperations>
+        <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[RequestBody("Name")]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[in_MachineName]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[RequestBody("Type")]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[in_MachineType]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+            <ui:AssignOperation.To>
+              <OutArgument x:TypeArguments="x:String">[RequestBody("Description")]</OutArgument>
+            </ui:AssignOperation.To>
+            <ui:AssignOperation.Value>
+              <InArgument x:TypeArguments="x:String">[in_MachineDescription]</InArgument>
+            </ui:AssignOperation.Value>
+          </ui:AssignOperation>
+        </scg1:List>
+      </ui:MultipleAssign.AssignOperations>
+    </ui:MultipleAssign>
+    <ui:OrchestratorHttpRequest FolderPath="{x:Null}" ResponseHeaders="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Orchestrator HTTP Request (Create Machine)" sap:VirtualizedContainerService.HintSize="722,22" sap2010:WorkflowViewState.IdRef="OrchestratorHttpRequest_6" JSONPayload="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" Method="POST" RelativeEndpoint="/odata/Machines" Result="[Response]" StatusCode="[Status]" />
     <If Condition="[Status = 201]" DisplayName="If Creation Request Was Successful" sap:VirtualizedContainerService.HintSize="722,543.333333333333" sap2010:WorkflowViewState.IdRef="If_6">
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
