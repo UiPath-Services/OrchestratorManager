@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="220,184.666666666667" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="558.666666666667,1030" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
+    <scg:List x:TypeArguments="x:String" Capacity="23">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -22,10 +22,12 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
-    </sco:Collection>
+      <x:String>System.Security</x:String>
+      <x:String>System.Net</x:String>
+    </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -41,13 +43,77 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
-    </sco:Collection>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Orchestrator Manager" sap:VirtualizedContainerService.HintSize="200,84.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Orchestrator Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,970" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="Entity" />
+      <Variable x:TypeArguments="x:String" Name="Operation" />
+      <Variable x:TypeArguments="ss:SecureString" Name="Password" />
+      <Variable x:TypeArguments="x:String" Name="Username" />
+      <Variable x:TypeArguments="x:String" Name="TenantName" />
+      <Variable x:TypeArguments="x:String" Name="Token" />
+      <Variable x:TypeArguments="x:String" Name="OrchestratorURL" />
+      <Variable x:TypeArguments="x:String" Name="FolderId" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <ui:InputDialog DisplayName="Input Dialog (Entity)" sap:VirtualizedContainerService.HintSize="496.666666666667,92" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="Choose entity to operate." Options="[{&quot;Machines&quot;, &quot;Assets&quot;}]" Title="Entitiy">
+      <ui:InputDialog.Result>
+        <OutArgument x:TypeArguments="x:String">[Entity]</OutArgument>
+      </ui:InputDialog.Result>
+    </ui:InputDialog>
+    <ui:InputDialog DisplayName="Input  (Operation)" sap:VirtualizedContainerService.HintSize="496.666666666667,92" sap2010:WorkflowViewState.IdRef="InputDialog_2" IsPassword="False" Label="Choose operation to perform." Options="[{&quot;Create&quot;, &quot;Edit&quot;, &quot;Delete&quot;, &quot;Get&quot;}]" Title="Operation">
+      <ui:InputDialog.Result>
+        <OutArgument x:TypeArguments="x:String">[Operation]</OutArgument>
+      </ui:InputDialog.Result>
+    </ui:InputDialog>
+    <ui:GetRobotCredential TimeoutMS="{x:Null}" AssetName="OrchestratorCredential" DisplayName="Get Credential" sap:VirtualizedContainerService.HintSize="496.666666666667,22" sap2010:WorkflowViewState.IdRef="GetRobotCredential_1" Password="[Password]" Username="[Username]" />
+    <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="MyTenant" DisplayName="Get Asset (Tenant Name)" sap:VirtualizedContainerService.HintSize="496.666666666667,22" sap2010:WorkflowViewState.IdRef="GetRobotAsset_2">
+      <ui:GetRobotAsset.Value>
+        <OutArgument x:TypeArguments="x:String">[TenantName]</OutArgument>
+      </ui:GetRobotAsset.Value>
+    </ui:GetRobotAsset>
+    <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="OrchestratorURL" DisplayName="Get Asset (Orchestrator URL)" sap:VirtualizedContainerService.HintSize="496.666666666667,22" sap2010:WorkflowViewState.IdRef="GetRobotAsset_1">
+      <ui:GetRobotAsset.Value>
+        <OutArgument x:TypeArguments="x:String">[OrchestratorURL]</OutArgument>
+      </ui:GetRobotAsset.Value>
+    </ui:GetRobotAsset>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authentication workflow" sap:VirtualizedContainerService.HintSize="496.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\Authentication.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Username">[Username]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[TenantName]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Password">[new System.Net.NetworkCredential(string.Empty, Password).Password]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Token">[Token]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[OrchestratorURL]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Entity)" Expression="[Entity.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,301.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+      <Switch.Default>
+        <ui:LogMessage DisplayName="Log Message (Unsupported Entity)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[&quot;Unsupported entity specified.&quot;]" />
+      </Switch.Default>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="machines" DisplayName="Invoke MachineManager workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Machines\MachineManager.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_MachineOperation">[Operation]</InArgument>
+          <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">0</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_MachineConfigFilepath">Config\Machines.xlsx</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Token">[Token]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[OrchestratorURL]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="assets" DisplayName="Invoke AssetManager workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Assets\AssetManager.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">0</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_AssetConfigFilepath">Config\Assets.xlsx</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_AssetOperation">[Operation]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[OrchestratorURL]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Token">[Token]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+    </Switch>
   </Sequence>
 </Activity>

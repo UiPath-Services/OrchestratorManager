@@ -9,6 +9,8 @@
     <x:Property Name="in_AssetConfigSheetName" Type="InArgument(x:String)" />
     <x:Property Name="in_AssetValue" Type="InArgument(x:String)" />
     <x:Property Name="in_FolderId" Type="InArgument(x:String)" />
+    <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="in_Token" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateAsset.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -16,7 +18,7 @@
   <this:CreateAsset.in_AssetIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateAsset.in_AssetIndex>
-  <sap:VirtualizedContainerService.HintSize>784,1592</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>784,1086</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -57,13 +59,12 @@
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create asset with specified name, type, description and value.&#xA;Ids of successfully created assets are added to the assets configuration file (Config\Assets.xlsx).&#xA;&#xA;Required permissions:&#xA;- Asset: Create" DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="764,1532" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create asset with specified name, type, description and value.&#xA;Ids of successfully created assets are added to the assets configuration file (Config\Assets.xlsx).&#xA;&#xA;Required permissions:&#xA;- Asset: Create" DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="764,1026" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
-      <Variable x:TypeArguments="x:Int32" Name="Status" />
-      <Variable x:TypeArguments="x:String" Name="Response" />
-      <Variable x:TypeArguments="njl:JObject" Name="ResponseObject" />
-      <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestHeader" />
+      <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+      <Variable x:TypeArguments="x:String" Name="Result" />
+      <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
@@ -71,115 +72,132 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:MultipleAssign DisplayName="Multiple Assign (Common Body Fields)" sap:VirtualizedContainerService.HintSize="722,189.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-      <ui:MultipleAssign.AssignOperations>
-        <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[RequestBody("Name")]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[in_AssetName]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[RequestBody("ValueScope")]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">Global</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[RequestBody("ValueType")]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[in_AssetType]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-          <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-            <ui:AssignOperation.To>
-              <OutArgument x:TypeArguments="x:String">[RequestBody("Description")]</OutArgument>
-            </ui:AssignOperation.To>
-            <ui:AssignOperation.Value>
-              <InArgument x:TypeArguments="x:String">[in_AssetDescription]</InArgument>
-            </ui:AssignOperation.Value>
-          </ui:AssignOperation>
-        </scg1:List>
-      </ui:MultipleAssign.AssignOperations>
-    </ui:MultipleAssign>
-    <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="722,244" sap2010:WorkflowViewState.IdRef="Switch`1_2">
-      <Switch.Default>
-        <ui:LogMessage DisplayName="Log Message (Not Supported Asset Type)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[&quot;The specified asset type is not supported.&quot;]" />
-      </Switch.Default>
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="722,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_17">
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg1:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign x:Key="text" DisplayName="Assign RequestBody(&quot;StringValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_7">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[RequestBody("StringValue")]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <Assign x:Key="bool" DisplayName="Assign RequestBody(&quot;BoolValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_8">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[RequestBody("BoolValue")]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <Assign x:Key="integer" DisplayName="Assign RequestBody(&quot;IntValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_9">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[RequestBody("IntValue")]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <Sequence x:Key="credential" sap2010:Annotation.AnnotationText="Split specified value into username and password.&#xA;It is assumed that username and password are separated by a blank space, so passwords with spaces are not supported." DisplayName="Credential" sap:VirtualizedContainerService.HintSize="304,198" sap2010:WorkflowViewState.IdRef="Sequence_16">
+      <ui:MultipleAssign DisplayName="Multiple Assign (Common Body Fields)" sap:VirtualizedContainerService.HintSize="496.666666666667,189.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+        <ui:MultipleAssign.AssignOperations>
+          <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="x:String">[RequestBody("Name")]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="x:String">[in_AssetName]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="x:String">[RequestBody("ValueScope")]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="x:String">Global</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="x:String">[RequestBody("ValueType")]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="x:String">[in_AssetType]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+            <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
+              <ui:AssignOperation.To>
+                <OutArgument x:TypeArguments="x:String">[RequestBody("Description")]</OutArgument>
+              </ui:AssignOperation.To>
+              <ui:AssignOperation.Value>
+                <InArgument x:TypeArguments="x:String">[in_AssetDescription]</InArgument>
+              </ui:AssignOperation.Value>
+            </ui:AssignOperation>
+          </scg1:List>
+        </ui:MultipleAssign.AssignOperations>
+      </ui:MultipleAssign>
+      <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,244" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+        <Switch.Default>
+          <ui:LogMessage DisplayName="Log Message (Not Supported Asset Type)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[&quot;The specified asset type is not supported.&quot;]" />
+        </Switch.Default>
         <sap:WorkflowViewStateService.ViewState>
           <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg1:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <Assign DisplayName="Assign RequestBody(&quot;CredentialUsername&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+        <Assign x:Key="text" DisplayName="Assign RequestBody(&quot;StringValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_7">
           <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[RequestBody("CredentialUsername")]</OutArgument>
+            <OutArgument x:TypeArguments="x:String">[RequestBody("StringValue")]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_AssetValue.Split()(0)]</InArgument>
+            <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign DisplayName="Assign RequestBody(&quot;CredentialPassword&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+        <Assign x:Key="bool" DisplayName="Assign RequestBody(&quot;BoolValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_8">
           <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[RequestBody("CredentialPassword")]</OutArgument>
+            <OutArgument x:TypeArguments="x:String">[RequestBody("BoolValue")]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_AssetValue.Split()(1)]</InArgument>
+            <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
           </Assign.Value>
         </Assign>
-      </Sequence>
-    </Switch>
-    <Assign DisplayName="Assign RequestHeader(&quot;X-UIPATH-OrganizationUnitId&quot;)" sap:VirtualizedContainerService.HintSize="722,62" sap2010:WorkflowViewState.IdRef="Assign_12">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[RequestHeader("X-UIPATH-OrganizationUnitId")]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_FolderId]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <ui:OrchestratorHttpRequest FolderPath="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Orchestrator HTTP Request (Create Asset)" sap:VirtualizedContainerService.HintSize="722,22" sap2010:WorkflowViewState.IdRef="OrchestratorHttpRequest_6" JSONPayload="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" Method="POST" RelativeEndpoint="/odata/Assets" ResponseHeaders="[RequestHeader]" Result="[Response]" StatusCode="[Status]" />
-    <If Condition="[Status = 201]" DisplayName="If Creation Request Was Successful" sap:VirtualizedContainerService.HintSize="722,543.333333333333" sap2010:WorkflowViewState.IdRef="If_6">
+        <Assign x:Key="integer" DisplayName="Assign RequestBody(&quot;IntValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[RequestBody("IntValue")]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_AssetValue]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Sequence x:Key="credential" sap2010:Annotation.AnnotationText="Split specified value into username and password.&#xA;It is assumed that username and password are separated by a blank space, so passwords with spaces are not supported." DisplayName="Credential" sap:VirtualizedContainerService.HintSize="304,198" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg1:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="Assign RequestBody(&quot;CredentialUsername&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[RequestBody("CredentialUsername")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_AssetValue.Split()(0)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign DisplayName="Assign RequestBody(&quot;CredentialPassword&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[RequestBody("CredentialPassword")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_AssetValue.Split()(1)]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </Switch>
+    </Sequence>
+    <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Asset)" EndPoint="[in_OrchestratorURL + &quot;/odata/Assets&quot;]" sap:VirtualizedContainerService.HintSize="722,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+      <ui:HttpClient.Attachments>
+        <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Attachments>
+      <ui:HttpClient.Cookies>
+        <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Cookies>
+      <ui:HttpClient.Headers>
+        <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_FolderId]</InArgument>
+      </ui:HttpClient.Headers>
+      <ui:HttpClient.Parameters>
+        <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Parameters>
+      <ui:HttpClient.UrlSegments>
+        <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.UrlSegments>
+    </ui:HttpClient>
+    <If Condition="[StatusCode = 201]" DisplayName="If Creation Request Was Successful" sap:VirtualizedContainerService.HintSize="722,543.333333333333" sap2010:WorkflowViewState.IdRef="If_6">
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -194,21 +212,21 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg1:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Asset Response)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResponseObject]" JsonString="[Response]" />
+          <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Asset Response)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
           <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
             <ui:ExcelApplicationScope.Body>
               <ActivityAction x:TypeArguments="ui:WorkbookApplication">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                 </ActivityAction.Argument>
-                <ui:ExcelWriteCell Cell="[&quot;F&quot;+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Asset Id)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_AssetConfigSheetName]" Text="[ResponseObject(&quot;Id&quot;).ToString]" />
+                <ui:ExcelWriteCell Cell="[&quot;F&quot;+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Asset Id)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_AssetConfigSheetName]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
               </ActivityAction>
             </ui:ExcelApplicationScope.Body>
           </ui:ExcelApplicationScope>
         </Sequence>
       </If.Then>
       <If.Else>
-        <ui:LogMessage DisplayName="Log Message (Create Asset Failure)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to create asset: Type: {0} / Name: {1}. Server details: Status: {2} / Response: {3}&quot;, in_AssetType, in_AssetName, Status, Response)]">
+        <ui:LogMessage DisplayName="Log Message (Create Asset Failure)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to create asset: Type: {0} / Name: {1}. Server details: Status: {2} / Response: {3}&quot;, in_AssetType, in_AssetName, StatusCode, Result)]">
           <sap:WorkflowViewStateService.ViewState>
             <scg1:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>

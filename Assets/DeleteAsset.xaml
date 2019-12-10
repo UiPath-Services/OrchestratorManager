@@ -3,8 +3,10 @@
     <x:Property Name="in_AssetId" Type="InArgument(x:String)" />
     <x:Property Name="in_FolderId" Type="InArgument(x:String)" />
     <x:Property Name="in_RequestsInterval" Type="InArgument(x:Double)" />
+    <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="in_Token" Type="InArgument(x:String)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>546,767.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>546,665.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -39,11 +41,10 @@
       <AssemblyReference>WindowsBase</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Delete an asset with the given Id.&#xA;&#xA;Required permissions:&#xA;- Asset: Delete" DisplayName="Delete Asset" sap:VirtualizedContainerService.HintSize="526,707.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete an asset with the given Id.&#xA;&#xA;Required permissions:&#xA;- Asset: Delete" DisplayName="Delete Asset" sap:VirtualizedContainerService.HintSize="526,605.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:Int32" Name="Status" />
-      <Variable x:TypeArguments="x:String" Name="Response" />
-      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestHeader" />
+      <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+      <Variable x:TypeArguments="x:String" Name="Result" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -51,16 +52,25 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign RequestHeader(&quot;X-UIPATH-OrganizationUnitId&quot;)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_1">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[RequestHeader("X-UIPATH-OrganizationUnitId")]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_FolderId]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <ui:OrchestratorHttpRequest FolderPath="{x:Null}" JSONPayload="{x:Null}" ResponseHeaders="{x:Null}" TimeoutMS="{x:Null}" DisplayName="Orchestrator HTTP Request (Delete Asset)" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="OrchestratorHttpRequest_6" Method="DELETE" RelativeEndpoint="[String.Format(&quot;/odata/Assets({0})&quot;, in_AssetId)]" Result="[Response]" StatusCode="[Status]" />
-    <If Condition="[Status &lt;&gt; 204]" DisplayName="If Deletion Request Failed" sap:VirtualizedContainerService.HintSize="484,248.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+    <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Asset)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Assets({0})&quot;, in_AssetId)]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+      <ui:HttpClient.Attachments>
+        <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Attachments>
+      <ui:HttpClient.Cookies>
+        <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Cookies>
+      <ui:HttpClient.Headers>
+        <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_FolderId]</InArgument>
+      </ui:HttpClient.Headers>
+      <ui:HttpClient.Parameters>
+        <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.Parameters>
+      <ui:HttpClient.UrlSegments>
+        <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+      </ui:HttpClient.UrlSegments>
+    </ui:HttpClient>
+    <If Condition="[StatusCode &lt;&gt; 204]" DisplayName="If Deletion Request Failed" sap:VirtualizedContainerService.HintSize="484,248.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -68,7 +78,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:LogMessage DisplayName="Log Message (Delete Asset Failure)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to delete asset. Server details: Status: {0} / Response: {1}&quot;, Status, Response)]">
+        <ui:LogMessage DisplayName="Log Message (Delete Asset Failure)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to delete asset. Server details: Status: {0} / Response: {1}&quot;, StatusCode, Result)]">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>

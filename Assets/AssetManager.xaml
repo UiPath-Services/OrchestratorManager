@@ -1,17 +1,18 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="AssetManager" this:AssetManager.in_RequestsInterval="0" this:AssetManager.in_AssetConfigFilepath="Config\Assets.xlsx" this:AssetManager.in_AssetOperation="Edit" this:AssetManager.in_FolderId="5458" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="AssetManager" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_RequestsInterval" Type="InArgument(x:Double)" />
     <x:Property Name="in_AssetConfigFilepath" Type="InArgument(x:String)" />
     <x:Property Name="in_AssetOperation" Type="InArgument(x:String)" />
-    <x:Property Name="in_FolderId" Type="InArgument(x:String)" />
+    <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="in_Token" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>578,980.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>558.666666666667,885.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
+    <scg:List x:TypeArguments="x:String" Capacity="23">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -35,10 +36,10 @@
       <x:String>System.Windows.Markup</x:String>
       <x:String>UiPath.Excel</x:String>
       <x:String>System.Xml.Serialization</x:String>
-    </sco:Collection>
+    </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -58,20 +59,20 @@
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
-    </sco:Collection>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Assets." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="558,920.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Assets." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,785.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="516,800" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,664.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (No Operation Specified)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[&quot;Asset operation not specified.&quot;]" />
       </Switch.Default>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="476,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="476,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
@@ -122,6 +123,8 @@
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetConfigSheetName">Create</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(3).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[AssetDetails(4).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
@@ -134,7 +137,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="476,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="476,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
         </Sequence.Variables>
@@ -173,9 +176,11 @@
               </ActivityAction.Argument>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteAsset workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Assets\DeleteAsset.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(1).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[in_FolderId]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(2).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[AssetDetails(1).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">0</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
@@ -188,9 +193,10 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="get" DisplayName="Get" sap:VirtualizedContainerService.HintSize="476,304" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence x:Key="get" DisplayName="Get" sap:VirtualizedContainerService.HintSize="376,403.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
         <Sequence.Variables>
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
+          <Variable x:TypeArguments="x:String" Name="FolderId" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -198,6 +204,11 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:InputDialog Options="{x:Null}" DisplayName="Input Dialog (Folder Id)" sap:VirtualizedContainerService.HintSize="334,92" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="Please inform the folder id." Title="Folder Id">
+          <ui:InputDialog.Result>
+            <OutArgument x:TypeArguments="x:String">[FolderId]</OutArgument>
+          </ui:InputDialog.Result>
+        </ui:InputDialog>
         <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" ReadOnly="True" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_AssetConfigFilepath]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -216,8 +227,10 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssets workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Assets\GetAssets.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[in_FolderId]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[FolderId]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_AssetListSheetName">Get</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </Sequence>
@@ -270,6 +283,8 @@
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(3).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_FolderId">[AssetDetails(4).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(5).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
