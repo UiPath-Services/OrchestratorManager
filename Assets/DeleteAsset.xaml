@@ -5,8 +5,11 @@
     <x:Property Name="in_RequestsInterval" Type="InArgument(x:Double)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
+    <x:Property Name="in_OpenWorkbook" Type="InArgument(ui:WorkbookApplication)" />
+    <x:Property Name="in_AssetIndex" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_AssetDeleteSheetName" Type="InArgument(x:String)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>546,665.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>580,790.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -24,6 +27,7 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>System.Collections.Generic</x:String>
       <x:String>System.IO</x:String>
+      <x:String>UiPath.Excel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -39,9 +43,11 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Delete an asset with the given Id.&#xA;&#xA;Required permissions:&#xA;- Asset: Delete" DisplayName="Delete Asset" sap:VirtualizedContainerService.HintSize="526,605.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete an asset with the given Id.&#xA;&#xA;Required permissions:&#xA;- Asset: Delete" DisplayName="Delete Asset" sap:VirtualizedContainerService.HintSize="560,730.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -52,7 +58,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Asset)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Assets({0})&quot;, in_AssetId)]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+    <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Asset)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Assets({0})&quot;, in_AssetId)]" sap:VirtualizedContainerService.HintSize="518,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
       <ui:HttpClient.Attachments>
         <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
       </ui:HttpClient.Attachments>
@@ -70,25 +76,61 @@
         <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
       </ui:HttpClient.UrlSegments>
     </ui:HttpClient>
-    <If Condition="[StatusCode &lt;&gt; 204]" DisplayName="If Deletion Request Failed" sap:VirtualizedContainerService.HintSize="484,248.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <ui:LogMessage DisplayName="Log Message (Delete Asset Failure)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to delete asset. Server details: Status: {0} / Response: {1}&quot;, StatusCode, Result)]">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:LogMessage>
-      </If.Then>
-    </If>
-    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Delete Asset)" Duration="[TimeSpan.FromMilliseconds(in_RequestsInterval)]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_1">
+    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenWorkbook]" sap:VirtualizedContainerService.HintSize="518,374" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+      <ui:ExcelApplicationScope.Body>
+        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+          </ActivityAction.Argument>
+          <If Condition="[StatusCode = 204]" DisplayName="If Request Was Successful" sap:VirtualizedContainerService.HintSize="484,265.333333333333" sap2010:WorkflowViewState.IdRef="If_6">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If.Then>
+              <ui:ExcelWriteCell Cell="[&quot;D&quot;+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Result - Success)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_AssetDeleteSheetName]" Text="Success">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:ExcelWriteCell>
+            </If.Then>
+            <If.Else>
+              <Sequence sap2010:Annotation.AnnotationText="Log error and write failed result." DisplayName="Delete Asset Failure" sap:VirtualizedContainerService.HintSize="200,114.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:LogMessage DisplayName="Log Message (Delete Asset Failure)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to delete asset. Server details: Status: {0} / Response: {1}&quot;, StatusCode, Result)]">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:LogMessage>
+                <ui:ExcelWriteCell Cell="[&quot;D&quot;+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Result - Failure)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_AssetDeleteSheetName]" Text="Failure">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:ExcelWriteCell>
+              </Sequence>
+            </If.Else>
+          </If>
+        </ActivityAction>
+      </ui:ExcelApplicationScope.Body>
+    </ui:ExcelApplicationScope>
+    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Delete Asset)" Duration="[TimeSpan.FromMilliseconds(in_RequestsInterval)]" sap:VirtualizedContainerService.HintSize="518,84" sap2010:WorkflowViewState.IdRef="Delay_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
