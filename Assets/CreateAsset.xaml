@@ -7,10 +7,10 @@
     <x:Property Name="in_AssetDescription" Type="InArgument(x:String)" />
     <x:Property Name="in_AssetIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_AssetValue" Type="InArgument(x:String)" />
-    <x:Property Name="in_FolderId" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_AssetCreateSheetName" Type="InArgument(x:String)" />
+    <x:Property Name="in_FolderInfo" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateAsset.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -18,11 +18,11 @@
   <this:CreateAsset.in_AssetIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateAsset.in_AssetIndex>
-  <sap:VirtualizedContainerService.HintSize>580,956.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>580,916.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
-    <scg1:List x:TypeArguments="x:String" Capacity="26">
+    <scg1:List x:TypeArguments="x:String" Capacity="30">
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System</x:String>
@@ -38,10 +38,12 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>System.IO</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Linq.Expressions</x:String>
     </scg1:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="24">
+    <scg1:List x:TypeArguments="AssemblyReference" Capacity="15">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -64,6 +66,7 @@
       <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
       <Variable x:TypeArguments="x:String" Name="Result" />
+      <Variable x:TypeArguments="x:Double" Name="FolderId" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg1:Dictionary x:TypeArguments="x:String, x:Object">
@@ -72,13 +75,60 @@
       </scg1:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="518,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_17">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="scg1:Dictionary(x:String, x:Double)" Name="FolderNamesIds" />
+      </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg1:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:MultipleAssign DisplayName="Multiple Assign (Common Body Fields)" sap:VirtualizedContainerService.HintSize="496.666666666667,189.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
+      <If sap2010:Annotation.AnnotationText="Retrieve Id based on Name if necessary.&#xD;&#xA;Limitation: Folders whose names are composed only of digits are not supported." Condition="[Not String.IsNullOrWhiteSpace(in_FolderInfo) AndAlso in_FolderInfo.All(Function(c) Char.IsDigit(c))]" DisplayName="If Folder Id Was Specified" sap:VirtualizedContainerService.HintSize="508,268.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg1:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Assign DisplayName="Assign FolderId" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_13">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Double">[FolderId]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Double">[Convert.ToDouble(in_FolderInfo)]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Then>
+        <If.Else>
+          <Sequence DisplayName="Retrieve Folder Id Based on Name" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg1:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFolders workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\GetFolders.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                <OutArgument x:TypeArguments="scg1:Dictionary(x:String, x:Double)" x:Key="out_FoldersNamesIds">[FolderNamesIds]</OutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <Assign DisplayName="Assign FolderId (Retrieved Id From Name)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_12">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Double">[FolderId]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Double">[FolderNamesIds(in_FolderInfo)]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </Sequence>
+        </If.Else>
+      </If>
+      <ui:MultipleAssign DisplayName="Multiple Assign (Common Body Fields)" sap:VirtualizedContainerService.HintSize="508,189.333333333333" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
         <ui:MultipleAssign.AssignOperations>
           <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
             <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
@@ -116,7 +166,7 @@
           </scg1:List>
         </ui:MultipleAssign.AssignOperations>
       </ui:MultipleAssign>
-      <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,244" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+      <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="508,244" sap2010:WorkflowViewState.IdRef="Switch`1_2">
         <Switch.Default>
           <ui:LogMessage DisplayName="Log Message (Not Supported Asset Type)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[&quot;The specified asset type is not supported.&quot;]" />
         </Switch.Default>
@@ -187,7 +237,7 @@
       </ui:HttpClient.Cookies>
       <ui:HttpClient.Headers>
         <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_FolderId]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[FolderId.ToString]</InArgument>
       </ui:HttpClient.Headers>
       <ui:HttpClient.Parameters>
         <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
