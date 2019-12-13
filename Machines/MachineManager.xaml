@@ -5,11 +5,12 @@
     <x:Property Name="in_MachineConfigFilepath" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="in_MaximumRequestsThreshold" Type="InArgument(x:Int32)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>578,997.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>774.666666666667,1278</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -68,18 +69,18 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Machines." DisplayName="Machine Manager" sap:VirtualizedContainerService.HintSize="558,897.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Machines." DisplayName="Machine Manager" sap:VirtualizedContainerService.HintSize="754.666666666667,1178" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Machine Operation)" Expression="[in_MachineOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="516,776.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Machine Operation)" Expression="[in_MachineOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="712.666666666667,1057.33333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (No Operation Specified)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[&quot;Machine operation not specified.&quot;]" />
       </Switch.Default>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="476,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,819.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="MachinesDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
@@ -91,7 +92,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope (Create Machine)" sap:VirtualizedContainerService.HintSize="434,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" ReadOnly="True" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_MachineConfigFilepath]">
+        <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope (Create Machine)" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" ReadOnly="True" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_MachineConfigFilepath]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -113,26 +114,46 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[MachinesDetails]" DisplayName="For Each Row (Create Machine)" sap:VirtualizedContainerService.HintSize="434,239.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[MachinesDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_MaximumRequestsThreshold">[in_MaximumRequestsThreshold]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[MachinesDetails]" DisplayName="For Each Row (Create Machine)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="MachineDetails" />
               </ActivityAction.Argument>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateMachine workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Machines/CreateMachine.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">[in_RequestsInterval]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineName">[MachineDetails(1).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineType">[MachineDetails(0).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineDescription">[MachineDetails(2).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:Int32" x:Key="in_MachineIndex">[LoopIndex]</InArgument>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineKey">[MachineDetails(3).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineCreateSheetName">Create</InArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
+              <If Condition="[String.IsNullOrWhiteSpace(MachineDetails(5).ToString)]" DisplayName="If Unprocessed Create Machine" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+                <If.Then>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateMachine workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Machines/CreateMachine.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">[in_RequestsInterval]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineName">[MachineDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineType">[MachineDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineDescription">[MachineDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_MachineIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineKey">[MachineDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineCreateSheetName">Create</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                </If.Then>
+                <If.Else>
+                  <ui:LogMessage DisplayName="Log Message (Processed Create Machine)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[String.Format(&quot;Machine already processed. Name: {0} / Id: {1}.&quot;, MachineDetails(1), MachineDetails(4))]">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:LogMessage>
+                </If.Else>
+              </If>
             </ActivityAction>
           </ui:ForEachRow.Body>
           <sap:WorkflowViewStateService.ViewState>
@@ -143,7 +164,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="476,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="806.666666666667,827.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="MachinesDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
@@ -154,7 +175,7 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete Machine)" sap:VirtualizedContainerService.HintSize="434,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_MachineConfigFilepath]">
+        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete Machine)" sap:VirtualizedContainerService.HintSize="764.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_MachineConfigFilepath]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -176,22 +197,43 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[MachinesDetails]" DisplayName="For Each Row (Delete Machine)" sap:VirtualizedContainerService.HintSize="434,239.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow" sap:VirtualizedContainerService.HintSize="764.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[MachinesDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_MaximumRequestsThreshold">[in_MaximumRequestsThreshold]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[MachinesDetails]" DisplayName="For Each Row (Delete Machine)" sap:VirtualizedContainerService.HintSize="764.666666666667,401.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="MachineDetails" />
               </ActivityAction.Argument>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteMachine workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Machines\DeleteMachine.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                  <InArgument x:TypeArguments="x:Int32" x:Key="in_MachineIndex">[LoopIndex]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineId">[MachineDetails(1).ToString]</InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_MachineDeleteSheetName">Delete</InArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
+              <If Condition="[String.IsNullOrWhiteSpace(MachineDetails(2).ToString)]" DisplayName="If Unprocessed Delete Machine" sap:VirtualizedContainerService.HintSize="714,248.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+                <If.Then>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteMachine workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Machines\DeleteMachine.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_MachineIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineId">[MachineDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineDeleteSheetName">Delete</InArgument>
+                      <InArgument x:TypeArguments="x:Double" x:Key="in_RequestsInterval">[in_RequestsInterval]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                </If.Then>
+                <If.Else>
+                  <ui:LogMessage DisplayName="Log Message (Processed Delete Machine)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Warn" Message="[String.Format(&quot;Machine already processed. Name: {0} / Id: {1}.&quot;, MachineDetails(0), MachineDetails(1))]">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:LogMessage>
+                </If.Else>
+              </If>
             </ActivityAction>
           </ui:ForEachRow.Body>
           <sap:WorkflowViewStateService.ViewState>
