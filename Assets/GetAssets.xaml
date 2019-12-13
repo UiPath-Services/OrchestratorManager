@@ -8,7 +8,7 @@
   <this:GetAssets.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
   </this:GetAssets.in_OpenedWorkbook>
-  <sap:VirtualizedContainerService.HintSize>845.333333333333,2513.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>845.333333333333,2497.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -49,10 +49,8 @@
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
     </scg1:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about assets defined in Orchestrator.&#xA;&#xA;Required permissions:&#xA;- Asset: Edit, View" DisplayName="Get Assets" sap:VirtualizedContainerService.HintSize="825.333333333333,2453.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about assets defined in Orchestrator.&#xA;&#xA;Required permissions:&#xA;- Asset: Edit, View" DisplayName="Get Assets" sap:VirtualizedContainerService.HintSize="825.333333333333,2437.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
-      <Variable x:TypeArguments="x:String" Name="Result" />
       <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
       <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Name="FoldersNamesIds" />
       <Variable x:TypeArguments="x:String" Name="FolderName" />
@@ -77,7 +75,7 @@
         <OutArgument x:TypeArguments="x:String">[FolderName]</OutArgument>
       </ui:InputDialog.Result>
     </ui:InputDialog>
-    <If sap2010:Annotation.AnnotationText="A folder named &quot;All&quot; is not supported." Condition="[FolderName = &quot;All&quot;]" DisplayName="If Should Retrieve Assets From All Folders" sap:VirtualizedContainerService.HintSize="783.333333333333,244.666666666667" sap2010:WorkflowViewState.IdRef="If_8">
+    <If sap2010:Annotation.AnnotationText="A folder named &quot;All&quot; is not supported." Condition="[FolderName = &quot;All&quot;]" DisplayName="If Should Retrieve Assets From All Folders" sap:VirtualizedContainerService.HintSize="783.333333333333,241.333333333333" sap2010:WorkflowViewState.IdRef="If_8">
       <sap:WorkflowViewStateService.ViewState>
         <scg1:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -86,7 +84,7 @@
         </scg1:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Assign DisplayName="Assign SelectedFolders (All Folders)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+        <Assign DisplayName="Assign SelectedFolders (All Folders)" sap:VirtualizedContainerService.HintSize="262,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_5">
           <Assign.To>
             <OutArgument x:TypeArguments="s1:String[]">[SelectedFolders]</OutArgument>
           </Assign.To>
@@ -96,7 +94,7 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <Assign DisplayName="Assign SelectedFolders (Single Selected Folder)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+        <Assign DisplayName="Assign SelectedFolders (Single Selected Folder)" sap:VirtualizedContainerService.HintSize="262,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_6">
           <Assign.To>
             <OutArgument x:TypeArguments="s1:String[]">[SelectedFolders]</OutArgument>
           </Assign.To>
@@ -106,13 +104,17 @@
         </Assign>
       </If.Else>
     </If>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Folder" sap:VirtualizedContainerService.HintSize="783.333333333333,1486" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[SelectedFolders]">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Folder" sap:VirtualizedContainerService.HintSize="783.333333333333,1476" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[SelectedFolders]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="FolderName" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="746.666666666667,1347.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="746.666666666667,1338.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+              <Variable x:TypeArguments="x:String" Name="Result" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -136,7 +138,7 @@
                 <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
               </ui:HttpClient.UrlSegments>
             </ui:HttpClient>
-            <If Condition="[StatusCode = 200]" DisplayName="If Get Request Was Successful" sap:VirtualizedContainerService.HintSize="704.666666666667,1193.33333333333" sap2010:WorkflowViewState.IdRef="If_6">
+            <If Condition="[StatusCode = 200]" DisplayName="If Get Request Was Successful" sap:VirtualizedContainerService.HintSize="704.666666666667,1184.66666666667" sap2010:WorkflowViewState.IdRef="If_6">
               <sap:WorkflowViewStateService.ViewState>
                 <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -144,7 +146,7 @@
                 </scg1:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence DisplayName="Write Assets Details" sap:VirtualizedContainerService.HintSize="458.666666666667,1039.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                <Sequence DisplayName="Write Assets Details" sap:VirtualizedContainerService.HintSize="458.666666666667,1032.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
                   </Sequence.Variables>
@@ -154,14 +156,14 @@
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg1:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Get Assets Response)" sap:VirtualizedContainerService.HintSize="416.666666666667,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
-                  <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Populate table of asset for bulk writing to file." DisplayName="For Each Retrieved Asset" sap:VirtualizedContainerService.HintSize="416.666666666667,845.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
+                  <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Get Assets Response)" sap:VirtualizedContainerService.HintSize="416.666666666667,61.3333333333333" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
+                  <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Populate table of asset for bulk writing to file." DisplayName="For Each Retrieved Asset" sap:VirtualizedContainerService.HintSize="416.666666666667,839.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
                     <ui:ForEach.Body>
                       <ActivityAction x:TypeArguments="njl:JObject">
                         <ActivityAction.Argument>
                           <DelegateInArgument x:TypeArguments="njl:JObject" Name="AssetDetails" />
                         </ActivityAction.Argument>
-                        <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="380,678" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                        <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="380,674" sap2010:WorkflowViewState.IdRef="Sequence_18">
                           <Sequence.Variables>
                             <Variable x:TypeArguments="sd:DataRow" Name="NewAssetRow" />
                           </Sequence.Variables>
@@ -170,7 +172,7 @@
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg1:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <Assign DisplayName="Assign NewAssetRow (Initialization)" sap:VirtualizedContainerService.HintSize="338,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+                          <Assign DisplayName="Assign NewAssetRow (Initialization)" sap:VirtualizedContainerService.HintSize="338,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
                             <Assign.To>
                               <OutArgument x:TypeArguments="sd:DataRow">[NewAssetRow]</OutArgument>
                             </Assign.To>
@@ -238,7 +240,7 @@
                               </scg1:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
                           </ui:MultipleAssign>
-                          <If sap2010:Annotation.AnnotationText="Returns empty string if asset is of credential type, since credentials cannot be retrieved via API." Condition="[AssetDetails(&quot;ValueType&quot;).ToString.ToLowerInvariant = &quot;credential&quot;]" DisplayName="If Credential Asset" sap:VirtualizedContainerService.HintSize="338,131.333333333333" sap2010:WorkflowViewState.IdRef="If_7">
+                          <If sap2010:Annotation.AnnotationText="Returns empty string if asset is of credential type, since credentials cannot be retrieved via API." Condition="[AssetDetails(&quot;ValueType&quot;).ToString.ToLowerInvariant = &quot;credential&quot;]" DisplayName="If Credential Asset" sap:VirtualizedContainerService.HintSize="338,128" sap2010:WorkflowViewState.IdRef="If_7">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -287,7 +289,7 @@
                 </Sequence>
               </If.Then>
               <If.Else>
-                <ui:LogMessage DisplayName="Log Message (Get Assets Failure)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to get assets. Server details: Status: {0} / Response: {1}&quot;, StatusCode, Result)]">
+                <ui:LogMessage DisplayName="Log Message (Get Assets Failure)" sap:VirtualizedContainerService.HintSize="200,52" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[String.Format(&quot;Failed to get assets. Server details: Status: {0} / Response: {1}&quot;, StatusCode, Result)]">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg1:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">False</x:Boolean>
