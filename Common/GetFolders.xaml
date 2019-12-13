@@ -2,7 +2,7 @@
   <x:Members>
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
-    <x:Property Name="out_FoldersNamesIds" Type="OutArgument(scg:Dictionary(x:String, x:Double))" />
+    <x:Property Name="out_FoldersNamesIds" Type="OutArgument(scg:Dictionary(x:String, x:String))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -97,10 +97,10 @@
           <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
           <Assign DisplayName="Assign out_FoldersNamesIds (Initialization)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
-              <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Double)">[out_FoldersNamesIds]</OutArgument>
+              <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[out_FoldersNamesIds]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Double)">[New Dictionary(Of String, Double)]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[New Dictionary(Of String, String)]</InArgument>
             </Assign.Value>
           </Assign>
           <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="334,200.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ResultObject.SelectTokens(&quot;value&quot;).Children]">
@@ -111,10 +111,10 @@
                 </ActivityAction.Argument>
                 <Assign DisplayName="Assign out_FoldersNamesIds" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
                   <Assign.To>
-                    <OutArgument x:TypeArguments="x:Double">[out_FoldersNamesIds(FolderData("FullyQualifiedName").ToString)]</OutArgument>
+                    <OutArgument x:TypeArguments="x:String">[out_FoldersNamesIds(FolderData("FullyQualifiedName").ToString)]</OutArgument>
                   </Assign.To>
                   <Assign.Value>
-                    <InArgument x:TypeArguments="x:Double">[Convert.ToDouble(FolderData("Id"))]</InArgument>
+                    <InArgument x:TypeArguments="x:String">[FolderData("Id").ToString]</InArgument>
                   </Assign.Value>
                 </Assign>
               </ActivityAction>
