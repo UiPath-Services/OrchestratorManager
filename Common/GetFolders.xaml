@@ -13,6 +13,7 @@
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="out_FoldersNamesIds" Type="OutArgument(scg:Dictionary(x:String, x:String))" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -67,16 +68,17 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve a dictionary with Orchestrator folders and their Ids." DisplayName="Get Folders" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve a dictionary with Orchestrator folders (or Organization Units) and their Ids." DisplayName="Get Folders" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
       <Variable x:TypeArguments="x:String" Name="Result" />
-      <Variable x:TypeArguments="x:String" Default="201904" Name="OrchestratorVersion" />
       <Variable x:TypeArguments="x:String" Name="FolderOUNameField" />
     </Sequence.Variables>
-    <If Condition="[Convert.ToInt32(OrchestratorVersion) &gt;= 201910]" DisplayName="If Orchestrator Is Newer Than 2019.10" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[in_Config(&quot;OrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If Orchestrator Is 2019.10 or Newer" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Use Folders" sap2010:WorkflowViewState.IdRef="Sequence_4">
           <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/xml" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Get Folders)" EndPoint="[in_OrchestratorURL + &quot;/odata/Folders&quot;]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="GET" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
@@ -136,7 +138,7 @@
         </Sequence>
       </If.Else>
     </If>
-    <If Condition="[StatusCode = 200]" DisplayName="If Request Was Successful" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[StatusCode = 200]" DisplayName="If Request Was Successful" sap2010:WorkflowViewState.IdRef="If_2">
       <If.Then>
         <Sequence DisplayName="Extract Folder/OU Data" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <Sequence.Variables>
@@ -170,8 +172,11 @@
           </ui:ForEach>
         </Sequence>
       </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw (Get Folders Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;GetFoldersFailure&quot;), StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+      </If.Else>
     </If>
-    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxHZXRGb2xkZXJzLnhhbWwqSAOvAQ4CAQFMNEw8AgECTwWKAQoCARWLAQWtAQoCAQNPE09IAgEWUQlrFAIBKG4JiAEUAgEXiwETiwEnAgEEjQEJqwEUAgEGUgtiGwIBLWMLahQCASlvC38bAgEcgAELhwEUAgEYkQELkQHGAQIBEJIBC5kBFAIBDJoBC6oBGAIBB1KFA1KQAwIBOFLpBFLvBAIBN1pMWmICATVSugRSxAQCATNSwwNS9gMCATFS3wJS6gICATBS0ARS3gQCAS5oNmhIAgEsZTdlSgIBKm+FA2+QAwIBJ2/+BG+EBQIBJndMd2ICASRvzwRv2QQCASJvzgNviwQCASBv3wJv6gICAR9v5QRv8wQCAR2FATaFAUECARuCATeCAUoCARmRAbkBkQHDAQIBE5EBnQGRAa0BAgERlwFQlwFzAgEPlAFRlAFmAgENmgGxAZoB6gECAQugARGnARoCAQilATylAVcCAQqiAT2iAXoCAQk=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxHZXRGb2xkZXJzLnhhbWwrSwO0AQ4CAQFRBYwBCgIBFo0BBbIBCgIBAlETUU4CARdTCW0UAgEpcAmKARQCARiNARONAScCAQOPAQmtARQCAQewAQmwAd0BAgEFVAtkGwIBLmULbBQCASpxC4EBGwIBHYIBC4kBFAIBGZMBC5MBxgECARGUAQubARQCAQ2cAQusARgCAQiwAUSwAbABAgEGVIUDVJADAgE5VOkEVO8EAgE4XExcYgIBNlS6BFTEBAIBNFTDA1T2AwIBMlTfAlTqAgIBMVTQBFTeBAIBL2o2akgCAS1nN2dKAgErcYUDcZADAgEocf4EcYQFAgEneUx5YgIBJXHPBHHZBAIBI3HOA3GLBAIBIXHfAnHqAgIBIHHlBHHzBAIBHocBNocBQQIBHIQBN4QBSgIBGpMBuQGTAcMBAgEUkwGdAZMBrQECARKZAVCZAXMCARCWAVGWAWYCAQ6cAbEBnAHqAQIBDKIBEakBGgIBCacBPKcBVwIBC6QBPaQBegIBCg==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -193,19 +198,21 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="553,669" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="561,394" />
       <sap2010:ViewStateData Id="DeserializeJson`1_1" sap:VirtualizedContainerService.HintSize="314,60" />
       <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="314,60" />
       <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
-      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="314,195" />
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="336,519">
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="314,194" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="336,518">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="575,1257">
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="561,666" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="583,1251">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -213,7 +220,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="GetFolders_1" sap:VirtualizedContainerService.HintSize="615,1337" />
+      <sap2010:ViewStateData Id="GetFolders_1" sap:VirtualizedContainerService.HintSize="623,1331" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

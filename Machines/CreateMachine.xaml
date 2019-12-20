@@ -16,8 +16,8 @@
  xmlns:sas="clr-namespace:System.Activities.Statements;assembly=System.Activities"
  xmlns:sc="clr-namespace:System.Collections;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
  xmlns:sc1="clr-namespace:System.Collections;assembly=mscorlib"
- xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
- xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
  xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System"
  xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
  xmlns:sd1="clr-namespace:System.Data;assembly=System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
@@ -35,7 +35,6 @@
  xmlns:ui="http://schemas.uipath.com/workflow/activities"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_RequestsInterval" Type="InArgument(x:Double)" />
     <x:Property Name="in_MachineName" Type="InArgument(x:String)" />
     <x:Property Name="in_MachineType" Type="InArgument(x:String)" />
     <x:Property Name="in_MachineIndex" Type="InArgument(x:Int32)" />
@@ -43,7 +42,7 @@
     <x:Property Name="in_MachineKey" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
-    <x:Property Name="in_MachineCreateSheetName" Type="InArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
   <this:CreateMachine.in_MachineIndex>
     <InArgument x:TypeArguments="x:Int32" />
@@ -54,7 +53,7 @@
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
-    <scg1:List x:TypeArguments="x:String" Capacity="26">
+    <scg:List x:TypeArguments="x:String" Capacity="26">
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System</x:String>
@@ -70,10 +69,10 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>System.IO</x:String>
       <x:String>System.Net</x:String>
-    </scg1:List>
+    </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg1:List x:TypeArguments="AssemblyReference" Capacity="24">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -88,24 +87,26 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
-    </scg1:List>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type, name and description.&#xA;Keys of successfully created machines are added to the file with the list of machines (Config\Machines.xlsx).&#xA;&#xA;Required permissions:&#xA;- Machines: Create, Edit" DisplayName="Create Machine" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
-        <Variable x:TypeArguments="x:String" Default="Success" Name="OperationResult" />
+        <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
         <Sequence DisplayName="Try to Create Machine" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="x:String" Name="Result" />
-            <Variable x:TypeArguments="scg1:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
+            <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
           </Sequence.Variables>
           <Sequence DisplayName="Request Fields Initialization" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <ui:MultipleAssign DisplayName="Multiple Assign (Body Fields)" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
               <ui:MultipleAssign.AssignOperations>
-                <scg1:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
                   <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
                     <ui:AssignOperation.To>
                       <OutArgument x:TypeArguments="x:String">[RequestBody("Name")]</OutArgument>
@@ -122,7 +123,7 @@
                       <InArgument x:TypeArguments="x:String">[in_MachineType]</InArgument>
                     </ui:AssignOperation.Value>
                   </ui:AssignOperation>
-                </scg1:List>
+                </scg:List>
               </ui:MultipleAssign.AssignOperations>
             </ui:MultipleAssign>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_MachineKey)]" DisplayName="If Machine Key is Specified" sap2010:WorkflowViewState.IdRef="If_7">
@@ -140,19 +141,19 @@
           </Sequence>
           <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Machine)" EndPoint="[in_OrchestratorURL + &quot;/odata/Machines&quot;]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
-              <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
             <ui:HttpClient.Cookies>
-              <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Cookies>
             <ui:HttpClient.Headers>
               <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
             </ui:HttpClient.Headers>
             <ui:HttpClient.Parameters>
-              <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Parameters>
             <ui:HttpClient.UrlSegments>
-              <scg1:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+              <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.UrlSegments>
           </ui:HttpClient>
           <If Condition="[StatusCode = 201]" DisplayName="If Request Was Successful" sap2010:WorkflowViewState.IdRef="If_6">
@@ -169,8 +170,8 @@
                         <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                       </ActivityAction.Argument>
                       <Sequence DisplayName="Write Machine Data" sap2010:WorkflowViewState.IdRef="Sequence_19">
-                        <ui:ExcelWriteCell Cell="[&quot;C&quot;+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Id)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="[in_MachineCreateSheetName]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
-                        <ui:ExcelWriteCell Cell="[&quot;D&quot;+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_MachineCreateSheetName]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
+                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineMachineIdColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Id)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
+                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineMachineKeyColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
                       </Sequence>
                     </ActivityAction>
                   </ui:ExcelApplicationScope.Body>
@@ -178,10 +179,10 @@
               </Sequence>
             </If.Then>
             <If.Else>
-              <Throw DisplayName="Throw (Create Machine Failure)" Exception="[New System.Net.WebException(String.Format(&quot;Failed to create machine: Type: {0} / Name: {1}. Request details: Status: {2} / Response: {3}.&quot;, in_MachineType, in_MachineName, StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+              <Throw DisplayName="Throw (Create Machine Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;CreateMachineFailure&quot;), in_MachineType, in_MachineName, StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
             </If.Else>
           </If>
-          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Machine)" Duration="[TimeSpan.FromMilliseconds(in_RequestsInterval)]" sap2010:WorkflowViewState.IdRef="Delay_6" />
+          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Machine)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap2010:WorkflowViewState.IdRef="Delay_6" />
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
@@ -211,13 +212,13 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[&quot;E&quot;+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Result)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_5" SheetName="[in_MachineCreateSheetName]" Text="[OperationResult]" />
+              <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineResultColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Result)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[OperationResult]" />
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXENyZWF0ZU1hY2hpbmUueGFtbD1dA90BDgIBAV4F2wEQAgECYDZgPwIBDWMJuQEUAgEY0AEJ2QEkAgEOwQENywEYAgEDZ1VnegIBGWkLjAEWAgFMjQELnQEbAgE+ngELtwEQAgEduAELuAGJAgIBGtABrwHQAcQBAgEW1gEP1gHuAQIBD8IBD8IBlQECAQnDAQ/KARgCAQRqDX8hAgFVgAENiwESAgFNjQHdA40B6AMCAUuNAcYFjQHMBQIBSo0BpQKNAYYDAgFIlQFMlQFiAgFGjQGXBY0BoQUCAUSNAZ4EjQHSBAIBQo0BtwONAcIDAgFBjQGtBY0BuwUCAT+eARmeAS0CAR6gAQ+yARoCASa1AQ+1AcgCAgEguAGqAbgB3AECARvWASfWAVUCARTWAdgB1gHrAQIBEtYBtQHWAdIBAgEQwgF9wgGSAQIBC8IBbcIBdAIBCsgBOsgBTQIBB8UBO8UBTAIBBXI+ck4CAVxvP29UAgFaej56TgIBWHc/d1QCAVaAARuAAUsCAU6CARGJARoCAVCkARGkAeYBAgE5pQERsQEsAgEntQFNtQGbAgIBIYcBPIcBSwIBU4QBPYQBWAIBUaQB2QGkAeMBAgE8pAG9AaQBzQECATqlAb0BpQHSAQIBN6sBF64BIgIBKG0TdCgDAVULdRN8KAMBVQasARmsAZICAgEwrQEZrQGbAgIBKawBMawBXwIBNawB5gGsAY8CAgEzrAHDAawB4AECATGtATGtAV8CAS6tAecBrQGYAgIBLK0BxAGtAeEBAgEq</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXENyZWF0ZU1hY2hpbmUueGFtbD1eA94BDgIBAV8F3AEQAgECYTZhZwIBDWQJugEUAgEa0QEJ2gEkAgEPwgENzAEYAgEDaFRoeQIBG2oLjQEWAgFRjgELngEbAgFDnwELuAEQAgEfuQELuQGcAgIBHNEBrwHRAcQBAgEY1wEP1wGiAgIBEMMBD8MBlQECAQnEAQ/LARgCAQRrDYABIQIBWoEBDYwBEgIBUo4B3QOOAegDAgFQjgHGBY4BzAUCAU+OAaUCjgGGAwIBTZYBTJYBYgIBS44BlwWOAaEFAgFJjgGeBI4B0gQCAUeOAbcDjgHCAwIBRo4BrQWOAbsFAgFEnwEZnwEtAgEgoQEPswEaAgEptgEPtgGJAgIBIrkBqgG5Ae8BAgEd1wEn1wF4AgEV1wGMAtcBnwICARPXAdgB1wGGAgIBEcMBfcMBkgECAQvDAW3DAXQCAQrJATrJAU0CAQfGATvGAUwCAQVzPnNOAgFhcD9wVAIBX3s+e04CAV14P3hUAgFbgQEbgQFLAgFTgwERigEaAgFVpQERpQHmAQIBPqYBEbIBLAIBKrYBTbYB3AECASOIATyIAUsCAViFAT2FAVgCAValAdkBpQHjAQIBQaUBvQGlAc0BAgE/pgG9AaYB0gECATysARevASICAStuE3UoAwFaC3YTfSgDAVoGrQEZrQHJAgIBNK4BGa4B0wICASytATGtAYUBAgE5rQGdAq0BxgICATetAekBrQGXAgIBNa4BMa4BhgECATGuAZ8CrgHQAgIBL64B6wGuAZkCAgEt</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -226,10 +227,10 @@
       <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,208" />
       <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="661,51">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">True</x:Boolean>
-          </scg1:Dictionary>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="HttpClient_1" sap:VirtualizedContainerService.HintSize="661,22" />
@@ -238,84 +239,92 @@
       <sap2010:ViewStateData Id="ExcelWriteCell_1" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="336,338">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="414,447" />
+      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="414,447">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="436,698">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="661,846">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Delay_6" sap:VirtualizedContainerService.HintSize="661,79">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="683,1242">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="LogMessage_9" sap:VirtualizedContainerService.HintSize="314,91">
+      <sap2010:ViewStateData Id="LogMessage_9" sap:VirtualizedContainerService.HintSize="242,51">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="336,315">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="687,388">
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="687,21">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelWriteCell_5" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="ExcelApplicationScope_3" sap:VirtualizedContainerService.HintSize="414,196" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,2076" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,2287">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,1469" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,1680">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg1:Dictionary>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,2367">
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,1760">
         <sap:WorkflowViewStateService.ViewState>
-          <scg1:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
-          </scg1:Dictionary>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+            <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
+          </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
     </sap2010:ViewStateManager>
