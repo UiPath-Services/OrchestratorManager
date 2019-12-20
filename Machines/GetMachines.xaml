@@ -126,7 +126,6 @@
                   <Sequence.Variables>
                     <Variable x:TypeArguments="x:Int32" Name="SingleMachineDetailsStatusCode" />
                     <Variable x:TypeArguments="x:String" Name="SingleMachineDetailsResult" />
-                    <Variable x:TypeArguments="njl:JObject" Name="SingleMachineDetails" />
                   </Sequence.Variables>
                   <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Get Machine Key)" EndPoint="[in_OrchestratorURL+String.Format(&quot;/odata/Machines({0})&quot;, MachineDetails(&quot;Id&quot;).ToString)]" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="GET" Result="[SingleMachineDetailsResult]" StatusCode="[SingleMachineDetailsStatusCode]" TimeoutMS="6000">
                     <ui:HttpClient.Attachments>
@@ -148,6 +147,9 @@
                   <If Condition="[SingleMachineDetailsStatusCode = 200]" DisplayName="If Get Single Machine Request Was Successful" sap2010:WorkflowViewState.IdRef="If_7">
                     <If.Then>
                       <Sequence DisplayName="Add Single Machine Details" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="njl:JObject" Name="SingleMachineDetails" />
+                        </Sequence.Variables>
                         <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Single Machine Details Response)" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[SingleMachineDetails]" JsonString="[SingleMachineDetailsResult]" />
                         <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{MachineDetails(&quot;Type&quot;).ToString, MachineDetails(&quot;Name&quot;).ToString, MachineDetails(&quot;Id&quot;).ToString, SingleMachineDetails(&quot;LicenseKey&quot;).ToString}]" DataTable="[MachinesDetails]" DisplayName="Add Data Row (Retrieved Machine)" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
                       </Sequence>
@@ -195,7 +197,7 @@
         <Throw DisplayName="Throw (Get Machines Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;GetMachinesFailure&quot;), StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </If.Else>
     </If>
-    <sads:DebugSymbol.Symbol>d05DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXEdldE1hY2hpbmVzLnhhbWw4WAPHAQ4CAQFeBV6ZDgIBWl8FbxUCAU5wBcUBCgIBAl4iXjUCAVtfgANfiwMCAVlf5ARf6gQCAVhnRmdcAgFWX7UEX78EAgFUX78DX/EDAgFSX9oCX+UCAgFRX8sEX9kEAgFPcBNwJwIBA3IJwAEUAgEKwwEJwwHfAQIBBXYLdt4BAgFJdwuiARgCASGjAQu/ASYCAQvDAUXDAbIBAgEGdtEBdtsBAgFMdrUBdsUBAgFKd4QCd7wCAgFHfRGfARwCASKjAYsCowGgAgIBH6kBEbwBHAIBDIMBE5MBIwIBOpQBE54BGAIBI60BE7MBJwIBGbQBE7oBJwIBE7sBE7sBgwICAQ2DAY4DgwGZAwIBRoMB2gWDAeAFAgFFiwFUiwFqAgFDgwGDBYMBoQUCAUGDAdADgwG/BAIBPoMB6AKDAfMCAgE9gwGtBYMBzwUCATuUASGUAUkCASSWAReZASICASycARecAZkCAgEmrQFCrQFWAgEdsAEZsAFIAgEcrQHKAa0B9QECARq0AYUBtAHNAQIBF7cBGbcBSAIBFrQBxwK0AfICAgEUuwH8AbsBgAICARK7AUS7AVcCARC7AcMBuwHuAQIBDpcBGZcBkgICATWYARmYAf0CAgEtnAFanAHsAQIBJ5cB8QGXAY8CAgE4lwHNAZcB5QECATaYAYkCmAGcAgIBM5gBRJgB/gECAS4=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d05DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXEdldE1hY2hpbmVzLnhhbWw4WAPJAQ4CAQFeBV6ZDgIBWl8FbxUCAU5wBccBCgIBAl4iXjUCAVtfgANfiwMCAVlf5ARf6gQCAVhnRmdcAgFWX7UEX78EAgFUX78DX/EDAgFSX9oCX+UCAgFRX8sEX9kEAgFPcBNwJwIBA3IJwgEUAgEKxQEJxQHfAQIBBXYLdt4BAgFJdwukARgCASGlAQvBASYCAQvFAUXFAbIBAgEGdtEBdtsBAgFMdrUBdsUBAgFKd4QCd7wCAgFHfRGhARwCASKlAYsCpQGgAgIBH6sBEb4BHAIBDIIBE5IBIwIBOpMBE6ABGAIBI68BE7UBJwIBGbYBE7wBJwIBE70BE70BgwICAQ2CAY4DggGZAwIBRoIB2gWCAeAFAgFFigFUigFqAgFDggGDBYIBoQUCAUGCAdADggG/BAIBPoIB6AKCAfMCAgE9ggGtBYIBzwUCATuTASGTAUkCASSVARebASICASyeAReeAZkCAgEmrwFCrwFWAgEdsgEZsgFIAgEcrwHKAa8B9QECARq2AYUBtgHNAQIBF7kBGbkBSAIBFrYBxwK2AfICAgEUvQH8Ab0BgAICARK9AUS9AVcCARC9AcMBvQHuAQIBDpkBGZkBkgICATWaARmaAf0CAgEtngFangHsAQIBJ5kB8QGZAY8CAgE4mQHNAZkB5QECATaaAYkCmgGcAgIBM5oBRJoB/gECAS4=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
