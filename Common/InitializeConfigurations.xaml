@@ -88,75 +88,64 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)">[New Dictionary(of String, GenericValue)]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope (Settings)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" ReadOnly="True" Visible="False" WorkbookPath="[in_ConfigFile]">
-      <ui:ExcelApplicationScope.Body>
-        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_14">
-            <ui:ExcelReadRange AddHeaders="True" DataTable="[Settings]" DisplayName="Read Range (Settings Sheet)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="Settings">
-              <ui:ExcelReadRange.Range>
-                <InArgument x:TypeArguments="x:String">
-                  <Literal x:TypeArguments="x:String" Value="" />
-                </InArgument>
-              </ui:ExcelReadRange.Range>
-            </ui:ExcelReadRange>
-            <Sequence sap2010:Annotation.AnnotationText="Read localized settings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localized Settings" sap2010:WorkflowViewState.IdRef="Sequence_13">
-              <Sequence.Variables>
-                <Variable x:TypeArguments="sd:DataTable" Name="LocalizedSettings" />
-              </Sequence.Variables>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[LocalizedSettings]" DisplayName="Read Range (LocalizedSettings Sheet)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="LocalizedSettings">
-                <ui:ExcelReadRange.Range>
-                  <InArgument x:TypeArguments="x:String">
-                    <Literal x:TypeArguments="x:String" Value="" />
-                  </InArgument>
-                </ui:ExcelReadRange.Range>
-              </ui:ExcelReadRange>
-              <Switch x:TypeArguments="x:String" DisplayName="Switch System's Language" Expression="[System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName]" sap2010:WorkflowViewState.IdRef="Switch`1_1">
-                <Switch.Default>
-                  <ui:FilterDataTable DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (EN)" FilterRowsMode="Keep" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
-                    <ui:FilterDataTable.Filters>
-                      <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
-                        <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
-                      </scg:List>
-                    </ui:FilterDataTable.Filters>
-                    <ui:FilterDataTable.SelectColumns>
-                      <scg:List x:TypeArguments="InArgument" Capacity="4">
-                        <InArgument x:TypeArguments="x:String">["Name"]</InArgument>
-                        <InArgument x:TypeArguments="x:String">["EN"]</InArgument>
-                      </scg:List>
-                    </ui:FilterDataTable.SelectColumns>
-                  </ui:FilterDataTable>
-                </Switch.Default>
-                <ui:FilterDataTable x:Key="ja" DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (JA)" FilterRowsMode="Keep" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
-                  <ui:FilterDataTable.Filters>
-                    <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
-                      <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
-                    </scg:List>
-                  </ui:FilterDataTable.Filters>
-                  <ui:FilterDataTable.SelectColumns>
-                    <scg:List x:TypeArguments="InArgument" Capacity="4">
-                      <InArgument x:TypeArguments="x:String">["Name"]</InArgument>
-                      <InArgument x:TypeArguments="x:String">["JA"]</InArgument>
-                    </scg:List>
-                  </ui:FilterDataTable.SelectColumns>
-                </ui:FilterDataTable>
-              </Switch>
-              <Assign DisplayName="Assign Value ColumnName" sap2010:WorkflowViewState.IdRef="Assign_27">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[LocalizedSettings.Columns(1).ColumnName]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">Value</InArgument>
-                </Assign.Value>
-              </Assign>
-              <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedSettings]" />
-            </Sequence>
-          </Sequence>
-        </ActivityAction>
-      </ui:ExcelApplicationScope.Body>
-    </ui:ExcelApplicationScope>
+    <ui:ReadRange AddHeaders="True" DataTable="[Settings]" DisplayName="Read Range (Settings Sheet)" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="Settings" WorkbookPath="[in_ConfigFile]">
+      <ui:ReadRange.Range>
+        <InArgument x:TypeArguments="x:String">
+          <Literal x:TypeArguments="x:String" Value="" />
+        </InArgument>
+      </ui:ReadRange.Range>
+    </ui:ReadRange>
+    <Sequence sap2010:Annotation.AnnotationText="Read localized settings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localized Settings" sap2010:WorkflowViewState.IdRef="Sequence_13">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="sd:DataTable" Name="LocalizedSettings" />
+      </Sequence.Variables>
+      <ui:ReadRange AddHeaders="True" DataTable="[LocalizedSettings]" DisplayName="Read Range (LocalizedSettings Sheet)" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="LocalizedSettings" WorkbookPath="[in_ConfigFile]">
+        <ui:ReadRange.Range>
+          <InArgument x:TypeArguments="x:String">
+            <Literal x:TypeArguments="x:String" Value="" />
+          </InArgument>
+        </ui:ReadRange.Range>
+      </ui:ReadRange>
+      <Switch x:TypeArguments="x:String" DisplayName="Switch System's Language" Expression="[System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName]" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+        <Switch.Default>
+          <ui:FilterDataTable DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (EN)" FilterRowsMode="Keep" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
+            <ui:FilterDataTable.Filters>
+              <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
+                <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
+              </scg:List>
+            </ui:FilterDataTable.Filters>
+            <ui:FilterDataTable.SelectColumns>
+              <scg:List x:TypeArguments="InArgument" Capacity="4">
+                <InArgument x:TypeArguments="x:String">["Name"]</InArgument>
+                <InArgument x:TypeArguments="x:String">["EN"]</InArgument>
+              </scg:List>
+            </ui:FilterDataTable.SelectColumns>
+          </ui:FilterDataTable>
+        </Switch.Default>
+        <ui:FilterDataTable x:Key="ja" DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (JA)" FilterRowsMode="Keep" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
+          <ui:FilterDataTable.Filters>
+            <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
+              <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
+            </scg:List>
+          </ui:FilterDataTable.Filters>
+          <ui:FilterDataTable.SelectColumns>
+            <scg:List x:TypeArguments="InArgument" Capacity="4">
+              <InArgument x:TypeArguments="x:String">["Name"]</InArgument>
+              <InArgument x:TypeArguments="x:String">["JA"]</InArgument>
+            </scg:List>
+          </ui:FilterDataTable.SelectColumns>
+        </ui:FilterDataTable>
+      </Switch>
+      <Assign DisplayName="Assign Value ColumnName" sap2010:WorkflowViewState.IdRef="Assign_27">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[LocalizedSettings.Columns(1).ColumnName]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">Value</InArgument>
+        </Assign.Value>
+      </Assign>
+      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedSettings]" />
+    </Sequence>
     <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[Settings]" DisplayName="For Each Localized Setting Row" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
@@ -178,16 +167,16 @@
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>
-    <sads:DebugSymbol.Symbol>d1lDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxJbml0aWFsaXplQ29uZmlndXJhdGlvbnMueGFtbC4BegGNAQECTwO2AQ4CAQFTBVoOAgE1WwWfASACAQqgAQW0ARUCAQJYUVh6AgE4VVJVXgIBNlvyAVuDAgIBM2ELnAEWAgELoAE2oAFCAgEIpgELsQEQAgEDYg1oIQIBLmkNmwEYAgEMpgEZpgFfAgEEqAEPrwEYAgEFYjxiSAIBMWUTZUICATBisAFiugECAS9tD3MjAgEpdA+RARgCARWSAQ+ZARgCARKaAQ+aAaACAgENrQFBrQFhAgEHqgFCqgFpAgEGbT5tUwIBLHAVcEQCASttxAFt1wECASp0ZHS0AQIBFoQBEZABJgIBIHYTggEoAgEXlwE6lwE/AgEUlAE7lAFkAgETmgGIAZoBlAECARCaAYgCmgGdAgIBDoQBgwGEAYkBAgEohAH2AYQB/AECASeEAc4BhAHjAQIBJYQBOoQBTwIBI4wBPowBRgIBIo0BPo0BRAIBIXZ6doABAgEfdu0BdvMBAgEedsUBdtoBAgEcdjF2RgIBGn5AfkgCARl/QH9GAgEY</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1lDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxJbml0aWFsaXplQ29uZmlndXJhdGlvbnMueGFtbC0BegGNAQECTwOrAQ4CAQFTBVoOAgE1WwVhFAIBLmIFlAEQAgEKlQEFqQEVAgECWFFYegIBOFVSVV4CATZbL1s7AgEzXgteOgIBMlueAVuoAQIBMVu2AVvHAQIBL2YHbBYCASdtB4oBEAIBE4sBB5IBEAIBEJMBB5MBmAICAQuVATaVAUICAQibAQumARACAQNmMWZGAgEsaQ1pPAIBK2ayAWbFAQIBKmbTAWbkAQIBKG1cbawBAgEUfQmJAR4CAR5vC3sgAgEVkAEykAE3AgESjQEzjQFcAgERkwGAAZMBjAECAQ6TAYACkwGVAgIBDJsBGZsBXwIBBJ0BD6QBGAIBBX17fYEBAgEmfe4BffQBAgElfcYBfdsBAgEjfTJ9RwIBIYUBNoUBPgIBIIYBNoYBPAIBH29yb3gCAR1v5QFv6wECARxvvQFv0gECARpvKW8+AgEYdzh3QAIBF3g4eD4CARaiAUGiAWECAQefAUKfAWkCAQY=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="494,60" />
-      <sap2010:ViewStateData Id="ExcelReadRange_1" sap:VirtualizedContainerService.HintSize="314,59" />
-      <sap2010:ViewStateData Id="ExcelReadRange_3" sap:VirtualizedContainerService.HintSize="516,59" />
+      <sap2010:ViewStateData Id="ReadRange_1" sap:VirtualizedContainerService.HintSize="494,87" />
+      <sap2010:ViewStateData Id="ReadRange_2" sap:VirtualizedContainerService.HintSize="516,87" />
       <sap2010:ViewStateData Id="FilterDataTable_2" sap:VirtualizedContainerService.HintSize="314,59" />
       <sap2010:ViewStateData Id="FilterDataTable_1" sap:VirtualizedContainerService.HintSize="314,59" />
-      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="516,241" />
+      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="516,138" />
       <sap2010:ViewStateData Id="Assign_27" sap:VirtualizedContainerService.HintSize="516,60" />
       <sap2010:ViewStateData Id="MergeDataTable_1" sap:VirtualizedContainerService.HintSize="516,64">
         <sap:WorkflowViewStateService.ViewState>
@@ -196,7 +185,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="314,123">
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="494,123">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -205,14 +194,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="336,346">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="494,455" />
       <sap2010:ViewStateData Id="Assign_26" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="464,208">
         <sap:WorkflowViewStateService.ViewState>
@@ -223,7 +204,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ForEachRow_6" sap:VirtualizedContainerService.HintSize="494,356" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="516,1162">
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="516,957">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -231,7 +212,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="GetAllSettings_1" sap:VirtualizedContainerService.HintSize="556,1242" />
+      <sap2010:ViewStateData Id="GetAllSettings_1" sap:VirtualizedContainerService.HintSize="556,1037" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
