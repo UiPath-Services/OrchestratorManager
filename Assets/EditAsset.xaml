@@ -104,7 +104,7 @@
             <Variable x:TypeArguments="x:String" Name="Result" />
           </Sequence.Variables>
           <Sequence sap2010:Annotation.AnnotationText="Verify passed arguments and add them to the request's body." DisplayName="Initialize Fields to Update" sap2010:WorkflowViewState.IdRef="Sequence_17">
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RetrieveFolderId workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/RetrieveFolderId.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RetrieveFolderId workflow" UnSafe="False" WorkflowFileName="Common/GetFolderId.xaml">
               <ui:InvokeWorkflowFile.Arguments>
                 <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
@@ -112,6 +112,7 @@
                 <OutArgument x:TypeArguments="x:String" x:Key="out_FolderId">[FolderId]</OutArgument>
                 <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               </ui:InvokeWorkflowFile.Arguments>
+              <sap2010:WorkflowViewState.IdRef>InvokeWorkflowFile_2</sap2010:WorkflowViewState.IdRef>
             </ui:InvokeWorkflowFile>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_AssetId)]" DisplayName="If Asset Id is Specified" sap2010:WorkflowViewState.IdRef="If_10">
               <If.Then>
@@ -266,11 +267,11 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d0pDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXEFzc2V0c1xFZGl0QXNzZXQueGFtbFRdA44CDgIBAV4FjAIQAgECYDZgZwIBDWMJ6gEUAgEagQIJigIkAgEP8gEN/AEYAgEDZlRmeQIBG2oL0QEWAgE60gEL4wEbAgEp5AEL6AEQAgEf6QEL6QGYAgIBHIECrQGBAsABAgEYhwIPhwKaAgIBEPMBD/MBlgECAQn0AQ/7ARgCAQRrDXMlAgF/dA2CARICAXODAQ2RARICAWeSAQ2dARICAV+eAQ3QARICATvSAd0D0gHoAwIBOdIB3wXSAeUFAgE40gGlAtIBhgMCATbaAUzaAWICATTSAbAF0gG6BQIBMtIBmgTSAewEAgEv0gG3A9IBwgMCAS7SAcYF0gHUBQIBLNsBWtsBZAIBKuQBGeQBNAIBIOYBD+YB+wECASLpAaYB6QHrAQIBHYcCJ4cCcgIBFYcChAKHApcCAgEThwLSAYcC/gECARHzAX7zAZMBAgEL8wFu8wF1AgEK+QE6+QFNAgEH9gE79gFMAgEFcE5wWAMBiQFtU21nAwGHAW9Ob10DAYUBcWtxdgMBgwFuSW5TAwGBAWvFAWvjAQMBgAF0G3RIAgF0dhF9GgIBeoABEYAB3gECAXaDARuDAUoCAWiFARGMARoCAW6PARGPAeIBAgFqkgEbkgFKAgFglAERmwEaAgFingEbngFLAgE8oAERzgEaAgE+5gFJ5gHOAQIBI3s8e1kCAX14PXhQAgF7gAFPgAGxAQIBd4oBPIoBSgIBcYcBPYcBVwIBb48BUY8BtQECAWuZATyZAUoCAWWWAT2WAVICAWOgAcIBoAHjAQIBP6QBE6sBHAIBWqwBE7MBHAIBVbQBE7sBHAIBULwBE80BHgIBRaIBFaIB0AECAUGpAT6pAU0CAV2mAT+mAVsCAVuxAT6xAU0CAViuAT+uAVkCAVa5AT65AU0CAVO2AT+2AVgCAVG9ARXEAR4CAUvFARXMAR4CAUaiAZ4BogHNAQIBQ6IBjgGiAZUBAgFCwgFAwgFaAgFOvwFBvwFkAgFMygFAygFaAgFJxwFBxwFkAgFH</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0pDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXEFzc2V0c1xFZGl0QXNzZXQueGFtbFRdA48CDgIBAV4FjQIQAgECYDZgZwIBDWMJ6wEUAgEaggIJiwIkAgEP8wEN/QEYAgEDZlRmeQIBG2oL0gEWAgE60wEL5AEbAgEp5QEL6QEQAgEf6gEL6gGYAgIBHIICrQGCAsABAgEYiAIPiAKaAgIBEPQBD/QBlgECAQn1AQ/8ARgCAQRrDXQlAgF/dQ2DARICAXOEAQ2SARICAWeTAQ2eARICAV+fAQ3RARICATvTAd0D0wHoAwIBOdMB3wXTAeUFAgE40wGlAtMBhgMCATbbAUzbAWICATTTAbAF0wG6BQIBMtMBmgTTAewEAgEv0wG3A9MBwgMCAS7TAcYF0wHUBQIBLNwBWtwBZAIBKuUBGeUBNAIBIOcBD+cB+wECASLqAaYB6gHrAQIBHYgCJ4gCcgIBFYgChAKIApcCAgETiALSAYgC/gECARH0AX70AZMBAgEL9AFu9AF1AgEK+gE6+gFNAgEH9wE79wFMAgEFcE5wWAMBiQFtU21nAwGHAW9Ob10DAYUBcWtxdgMBgwFuSW5TAwGBAWuOAWunAQMBgAF1G3VIAgF0dxF+GgIBeoEBEYEB3gECAXaEARuEAUoCAWiGARGNARoCAW6QARGQAeIBAgFqkwEbkwFKAgFglQERnAEaAgFinwEbnwFLAgE8oQERzwEaAgE+5wFJ5wHOAQIBI3w8fFkCAX15PXlQAgF7gQFPgQGxAQIBd4sBPIsBSgIBcYgBPYgBVwIBb5ABUZABtQECAWuaATyaAUoCAWWXAT2XAVICAWOhAcIBoQHjAQIBP6UBE6wBHAIBWq0BE7QBHAIBVbUBE7wBHAIBUL0BE84BHgIBRaMBFaMB0AECAUGqAT6qAU0CAV2nAT+nAVsCAVuyAT6yAU0CAVivAT+vAVkCAVa6AT66AU0CAVO3AT+3AVgCAVG+ARXFAR4CAUvGARXNAR4CAUajAZ4BowHNAQIBQ6MBjgGjAZUBAgFCwwFAwwFaAgFOwAFBwAFkAgFMywFAywFaAgFJyAFByAFkAgFH</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="601,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="601,87" />
       <sap2010:ViewStateData Id="Assign_15" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Throw_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="601,208" />
@@ -385,8 +386,8 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="414,196" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="432,423" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="454,634">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="663,2316" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="685,2512">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -394,7 +395,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="494,714" />
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="725,2592" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
