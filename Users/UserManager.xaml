@@ -81,17 +81,17 @@
       </Switch.Default>
       <Sequence x:Key="create" DisplayName="Create" sap2010:WorkflowViewState.IdRef="Sequence_2">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;AssetConfigFilepath&quot;)]">
+        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;UserConfigFilepath&quot;)]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[AssetsDetails]" DisplayName="Read Range (Asset Create List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[UsersDetails]" DisplayName="Read Range (User Create List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -103,34 +103,37 @@
         </ui:ExcelApplicationScope>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow (Create Asset)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[AssetsDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UsersDetails.Rows.Count]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[AssetsDetails]" DisplayName="For Each Row (Create Asset)" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Create User)" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="UserDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(AssetDetails(5).ToString)]" DisplayName="If Unprocessed Create Asset" sap2010:WorkflowViewState.IdRef="If_3">
+              <If Condition="[String.IsNullOrWhiteSpace(UserDetails(8).ToString)]" DisplayName="If Unprocessed Create User" sap2010:WorkflowViewState.IdRef="If_3">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Assets\CreateAsset.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateUser workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Users\CreateUser.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[AssetDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[AssetDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[AssetDetails(3).ToString]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[LoopIndex]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Name">[UserDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Surname">[UserDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UserName">[UserDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Email">[UserDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUInfo">[UserDetails(4).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Roles">[UserDetails(5).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Password">[UserDetails(6).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
                 <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Create Asset)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedAsset&quot;), AssetDetails(0), AssetDetails(4))]" />
+                  <ui:LogMessage DisplayName="Log Message (Processed Create User)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedUser&quot;), UserDetails(2), UserDetails(7))]" />
                 </If.Else>
               </If>
             </ActivityAction>
@@ -139,17 +142,17 @@
       </Sequence>
       <Sequence x:Key="delete" DisplayName="Delete " sap2010:WorkflowViewState.IdRef="Sequence_3">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_Config(&quot;AssetConfigFilepath&quot;)]">
+        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_Config(&quot;UserConfigFilepath&quot;)]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[AssetsDetails]" DisplayName="Read Range (Asset Delete List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="[in_Config(&quot;DeleteOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[UsersDetails]" DisplayName="Read Range (UserDelete List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="[in_Config(&quot;DeleteOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -161,32 +164,31 @@
         </ui:ExcelApplicationScope>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow (Delete Asset)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[AssetsDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UsersDetails.Rows.Count]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[AssetsDetails]" DisplayName="For Each Row (Delete Assets)" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Delete Users)" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="UserDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(AssetDetails(3).ToString)]" DisplayName="If Unprocessed Delete Asset" sap2010:WorkflowViewState.IdRef="If_1">
+              <If Condition="[String.IsNullOrWhiteSpace(UserDetails(2).ToString)]" DisplayName="If Unprocessed Delete User" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteAsset workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Assets\DeleteAsset.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteUser workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Users\DeleteUser.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[AssetDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(2).ToString]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[LoopIndex]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UserId">[UserDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">[LoopIndex]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
                 <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Delete Asset)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedAsset&quot;), AssetDetails(0), AssetDetails(2))]" />
+                  <ui:LogMessage DisplayName="Log Message (Processed Delete User)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedUser&quot;), UserDetails(0), UserDetails(2))]" />
                 </If.Else>
               </If>
             </ActivityAction>
@@ -206,14 +208,13 @@
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsers workflow" UnSafe="False" WorkflowFileName="Users\GetUsers.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsers workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Users\GetUsers.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
-          <sap2010:WorkflowViewState.IdRef>InvokeWorkflowFile_12</sap2010:WorkflowViewState.IdRef>
         </ui:InvokeWorkflowFile>
       </Sequence>
       <Sequence x:Key="edit" DisplayName="Edit" sap2010:WorkflowViewState.IdRef="Sequence_5">
@@ -276,7 +277,7 @@
         </ui:ForEachRow>
       </Sequence>
     </Switch>
-    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFVzZXJzXFVzZXJNYW5hZ2VyLnhhbWxsTQOYAg4CAQFOBZYCDgIBAk5ZTn4CAQNSB4sBEgIBaIwBB8MBEgIBQcQBB9oBEgIBMtsBB5UCEgIBCFAJUMEBAgEFWAlnJAMBiAFoCW0hAwGDAW4JigEZAgFpkgEJoQEkAgFfogEJpwEhAgFaqAEJwgEZAgFCyAEJ0AEkAgE90QEJ2QEhAgEz4QEJ8AEkAgEp8QEJ9gEhAgEk9wEJlAIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGPAVjvAVidAgMBjgFeD2QjAwGJAWtna3IDAYYBalZqcAMBhQFo1wFo/AEDAYQBbiVuMgMBgQFuPW5OAgF/dA+HARQCAWqSAc8BkgHfAQIBZpIB7QGSAZsCAgFlmAEPngEjAgFgpQFnpQFyAgFdpAFWpAFwAgFcogHYAaIB/QECAVuoASWoATICAVioAT2oAU4CAVauAQ+/ARQCAUPIAcwByAHeAQIBP8gB7AHIAZkCAgE+0wFc0wFsAgE71AFP1AFjAgE51gFn1gFyAgE31QFF1QFPAgE10QGCAdEBlwECATThAc0B4QHfAQIBMOEB7QHhAZsCAgEv5wEP7QEjAgEq9AFn9AFyAgEn8wFW8wFwAgEm8QHWAfEB+wECASX3ASX3ATICASL3AT33AU4CASD9AQ+RAhQCAQpePl5PAwGMAWEVYUQDAYsBXroBXugBAwGKAXQddFQCAWt2E4IBKwIBb4UBE4UB9gECAWyYAT6YAU8CAWObARWbAUQCAWKYAboBmAHoAQIBYa4BHa4BVAIBRLABE7oBKwIBSL0BE70B9gECAUXnAT7nAU8CAS3qARXqAUQCASznAbgB5wHkAQIBK/0BHf0BVAIBC/8BE4wCKwIBD48CE48ChQICAQx8Znx2AgF9elR6bgIBfHhTeG0CAXt9U31eAgF5eVN5bQIBeH5Zfm0CAXZ7VHtuAgF1gAFxgAF8AgFzf09/WQIBcXbGAXbfAQIBcIUBmQGFAfMBAgFuhQGKAYUBkAECAW22AWS2AXICAVS3AVO3AV4CAVKzAVGzAWsCAVG0AVm0AW0CAU+yAVSyAW4CAU64AXG4AXwCAUy1AU+1AVkCAUqwAcYBsAHfAQIBSb0BmQG9AfMBAgFHvQGKAb0BkAECAUaIAmSIAnQCAR6DAlSDAm4CAR2BAlOBAm0CARyJAlOJAl4CARqFAlGFAmsCARmCAlOCAm0CARiGAlmGAm0CARaEAlSEAm4CARWKAnGKAnwCAROHAk+HAlkCARH/AcQB/wHbAQIBEI8ClwGPAoICAgEOjwKIAY8CjgECAQ0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFVzZXJzXFVzZXJNYW5hZ2VyLnhhbWxuTQOZAg4CAQFOBZcCDgIBAk5ZTn4CAQNSB44BEgIBZ48BB8UBEgIBQcYBB9sBEgIBMtwBB5YCEgIBCFAJUMEBAgEFWAlnJAMBigFoCW0hAwGFAW4JjQEZAgFolQEJpAEkAgFepQEJqgEhAgFZqwEJxAEZAgFCygEJ0gEkAgE90wEJ2gEhAgEz4gEJ8QEkAgEp8gEJ9wEhAgEk+AEJlQIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGRAVjvAVicAgMBkAFeD2QjAwGLAWtna3IDAYgBalZqbwMBhwFo1wFo/AEDAYYBbiVuMgMBgwFuPW5NAwGBAXQPigEUAgFplQHPAZUB3wECAWWVAe0BlQGaAgIBZJsBD6EBIwIBX6gBZ6gBcgIBXKcBVqcBbwIBW6UB2AGlAf0BAgFaqwElqwEyAgFXqwE9qwFNAgFVsQEPwQEUAgFDygHMAcoB3gECAT/KAewBygGZAgIBPtUBXNUBbAIBO9YBT9YBYwIBOdgBZ9gBcgIBN9cBRdcBTwIBNdMBugHTAc8BAgE04gHNAeIB3wECATDiAe0B4gGbAgIBL+gBD+4BIwIBKvUBZ/UBcgIBJ/QBVvQBcAIBJvIB1gHyAfsBAgEl+AEl+AEyAgEi+AE9+AFOAgEg/gEPkgIUAgEKXj5eTgMBjgFhFWFEAwGNAV64AV7mAQMBjAF0HXRTAgFqdhOFASsCAW6IAROIAfIBAgFrmwE+mwFOAgFingEVngFEAgFhmwG3AZsB5QECAWCxAR2xAVMCAUSzARO8ASsCAUi/ARO/AfIBAgFF6AE+6AFPAgEt6wEV6wFEAgEs6AG4AegB5AECASv+AR3+AVQCAQuAAhONAisCAQ+QAhOQAoUCAgEMggFPggFoAwGAAXhmeHYCAX6AAU+AAWgCAX2BAVCBAWkCAXx+UX5qAgF7eVl5bQIBeXxSfF0CAXd7cXt8AgF1f1J/awIBdHpPelkCAXJ2xQF23AECAXF9Tn1nAgFwgwFSgwFrAgFviAGYAYgB7wECAW2IAYkBiAGPAQIBbLcBZLcBcgIBU7kBULkBaQIBUrUBWbUBbQIBULoBUroBXQIBTrgBcbgBfAIBTLYBT7YBWQIBSrMBxQGzAdwBAgFJvwGYAb8B7wECAUe/AYkBvwGPAQIBRokCZIkCdAIBHoQCVIQCbgIBHYICU4ICbQIBHIoCU4oCXgIBGoYCUYYCawIBGYMCU4MCbQIBGIcCWYcCbQIBFoUCVIUCbgIBFYsCcYsCfAIBE4gCT4gCWQIBEYACxAGAAtsBAgEQkAKXAZACggICAQ6QAogBkAKOAQIBDQ==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -345,7 +346,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="591,761">
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="591,842">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -397,7 +398,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="591,761">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="591,802">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -405,8 +406,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="476,625" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="498,776">
+      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="611,1092" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="633,1243">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -414,7 +415,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="AssetManager_1" sap:VirtualizedContainerService.HintSize="538,856" />
+      <sap2010:ViewStateData Id="AssetManager_1" sap:VirtualizedContainerService.HintSize="673,1323" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
