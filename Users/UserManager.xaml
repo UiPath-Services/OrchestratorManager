@@ -219,17 +219,17 @@
       </Sequence>
       <Sequence x:Key="edit" DisplayName="Edit" sap2010:WorkflowViewState.IdRef="Sequence_5">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Edit)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;AssetConfigFilepath&quot;)]">
+        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Edit)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;UserConfigFilepath&quot;)]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[AssetsDetails]" DisplayName="Read Range (Asset Edit List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="[in_Config(&quot;EditOperationname&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[UsersDetails]" DisplayName="Read Range (User Edit List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="[in_Config(&quot;EditOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -241,35 +241,38 @@
         </ui:ExcelApplicationScope>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow (Edit User)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[AssetsDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UsersDetails.Rows.Count]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[AssetsDetails]" DisplayName="For Each Row (Edit Asset)" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Edit User)" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="UserDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(AssetDetails(5).ToString)]" DisplayName="If Unprocessed Edit Asset" sap2010:WorkflowViewState.IdRef="If_2">
+              <If Condition="[String.IsNullOrWhiteSpace(UserDetails(8).ToString)]" DisplayName="If Unprocessed User Asset" sap2010:WorkflowViewState.IdRef="If_2">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EditAsset workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Assets\EditAsset.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EditUser workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Users\EditUser.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[AssetDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[AssetDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[AssetDetails(3).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(4).ToString]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenedWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[LoopIndex]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Name">[UserDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Surname">[UserDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Email">[UserDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUInfo">[UserDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Roles">[UserDetails(4).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Status">[UserDetails(5).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Password">[UserDetails(6).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UserId">[UserDetails(7).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
                 <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Edit Asset)" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedAsset&quot;), AssetDetails(0), AssetDetails(3), AssetDetails(4))]" />
+                  <ui:LogMessage DisplayName="Log Message (Processed Edit User)" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedEditUser&quot;), UserDetails(7))]" />
                 </If.Else>
               </If>
             </ActivityAction>
@@ -277,7 +280,7 @@
         </ui:ForEachRow>
       </Sequence>
     </Switch>
-    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFVzZXJzXFVzZXJNYW5hZ2VyLnhhbWxuTQOZAg4CAQFOBZcCDgIBAk5ZTn4CAQNSB44BEgIBZ48BB8UBEgIBQcYBB9sBEgIBMtwBB5YCEgIBCFAJUMEBAgEFWAlnJAMBigFoCW0hAwGFAW4JjQEZAgFolQEJpAEkAgFepQEJqgEhAgFZqwEJxAEZAgFCygEJ0gEkAgE90wEJ2gEhAgEz4gEJ8QEkAgEp8gEJ9wEhAgEk+AEJlQIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGRAVjvAVicAgMBkAFeD2QjAwGLAWtna3IDAYgBalZqbwMBhwFo1gFo+wEDAYYBbiVuMgMBgwFuPW5NAwGBAXQPigEUAgFplQHPAZUB3wECAWWVAe0BlQGaAgIBZJsBD6EBIwIBX6gBZ6gBcgIBXKcBVqcBbwIBW6UB1wGlAfwBAgFaqwElqwEyAgFXqwE9qwFNAgFVsQEPwQEUAgFDygHMAcoB3gECAT/KAewBygGZAgIBPtUBXNUBbAIBO9YBT9YBYwIBOdgBZ9gBcgIBN9cBRdcBTwIBNdMBugHTAc8BAgE04gHNAeIB3wECATDiAe0B4gGbAgIBL+gBD+4BIwIBKvUBZ/UBcgIBJ/QBVvQBcAIBJvIB1QHyAfoBAgEl+AEl+AEyAgEi+AE9+AFOAgEg/gEPkgIUAgEKXj5eTgMBjgFhFWFEAwGNAV64AV7mAQMBjAF0HXRTAgFqdhOFASsCAW6IAROIAfIBAgFrmwE+mwFOAgFingEVngFEAgFhmwG3AZsB5QECAWCxAR2xAVMCAUSzARO8ASsCAUi/ARO/AfIBAgFF6AE+6AFPAgEt6wEV6wFEAgEs6AG4AegB5AECASv+AR3+AVQCAQuAAhONAisCAQ+QAhOQAoUCAgEMggFPggFoAwGAAXhmeHYCAX6AAU+AAWgCAX2BAVCBAWkCAXx+UX5qAgF7eVl5bQIBeXxSfF0CAXd7cXt8AgF1f1J/awIBdHpPelkCAXJ2xQF23AECAXF9Tn1nAgFwgwFSgwFrAgFviAGYAYgB7wECAW2IAYkBiAGPAQIBbLcBZLcBcgIBU7kBULkBaQIBUrUBWbUBbQIBULoBUroBXQIBTrgBcbgBfAIBTLYBT7YBWQIBSrMBxQGzAdwBAgFJvwGYAb8B7wECAUe/AYkBvwGPAQIBRokCZIkCdAIBHoQCVIQCbgIBHYICU4ICbQIBHIoCU4oCXgIBGoYCUYYCawIBGYMCU4MCbQIBGIcCWYcCbQIBFoUCVIUCbgIBFYsCcYsCfAIBE4gCT4gCWQIBEYACxAGAAtsBAgEQkAKXAZACggICAQ6QAogBkAKOAQIBDQ==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFVzZXJzXFVzZXJNYW5hZ2VyLnhhbWxxTQOcAg4CAQFOBZoCDgIBAk5ZTn4CAQNSB44BEgIBao8BB8UBEgIBRMYBB9sBEgIBNdwBB5kCEgIBCFAJUMEBAgEFWAlnJAMBjQFoCW0hAwGIAW4JjQEZAgFrlQEJpAEkAgFhpQEJqgEhAgFcqwEJxAEZAgFFygEJ0gEkAgFA0wEJ2gEhAgE24gEJ8QEkAgEs8gEJ9wEhAgEn+AEJmAIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGUAVjvAVicAgMBkwFeD2QjAwGOAWtna3IDAYsBalZqbwMBigFo1gFo+wEDAYkBbiVuMgMBhgFuPW5NAwGEAXQPigEUAgFslQHPAZUB3wECAWiVAe0BlQGaAgIBZ5sBD6EBIwIBYqgBZ6gBcgIBX6cBVqcBbwIBXqUB1wGlAfwBAgFdqwElqwEyAgFaqwE9qwFNAgFYsQEPwQEUAgFGygHMAcoB3gECAULKAewBygGZAgIBQdUBXNUBbAIBPtYBT9YBYwIBPNgBZ9gBcgIBOtcBRdcBTwIBONMBugHTAc8BAgE34gHNAeIB3wECATPiAe0B4gGaAgIBMugBD+4BIwIBLfUBZ/UBcgIBKvQBVvQBbwIBKfIB1QHyAfoBAgEo+AEl+AEyAgEl+AE9+AFNAgEj/gEPlQIUAgEKXj5eTgMBkQFhFWFEAwGQAV64AV7mAQMBjwF0HXRTAgFtdhOFASsCAXGIAROIAfIBAgFumwE+mwFOAgFlngEVngFEAgFkmwG3AZsB5QECAWOxAR2xAVMCAUezARO8ASsCAUu/ARO/AfIBAgFI6AE+6AFOAgEw6wEV6wFEAgEv6AG2AegB4gECAS7+AR3+AVMCAQuAAhOQAisCAQ+TAhOTAuQBAgEMggFPggFoAwGDAXhmeHYDAYEBgAFPgAFoAwGAAYEBUIEBaQIBf35RfmoCAX55WXltAgF8fFJ8XQIBentxe3wCAXh/Un9rAgF3ek96WQIBdXbFAXbcAQIBdH1OfWcCAXODAVKDAWsCAXKIAZgBiAHvAQIBcIgBiQGIAY8BAgFvtwFktwFyAgFWuQFQuQFpAgFVtQFZtQFtAgFTugFSugFdAgFRuAFxuAF8AgFPtgFPtgFZAgFNswHFAbMB3AECAUy/AZgBvwHvAQIBSr8BiQG/AY8BAgFJiwJPiwJoAgEihAJkhAJ0AgEgiQJPiQJoAgEfigJQigJpAgEeiAJRiAJqAgEdjgJQjgJpAgEcggJZggJtAgEahgJShgJdAgEYhQJxhQJ8AgEWgwJPgwJZAgEUgALDAYAC2AECAROHAk6HAmcCARKMAlCMAmkCARGNAlKNAmsCARCTApYBkwLhAQIBDpMChwGTAo0BAgEN</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

@@ -1,0 +1,316 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="GetSingleUser"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_UserId" Type="InArgument(x:String)" />
+    <x:Property Name="out_UserData" Type="OutArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="in_Token" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>GetSingleUser_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Get data about the user whose Id is specified as argument." DisplayName="Get Single User" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="Result" />
+      <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+    </Sequence.Variables>
+    <Assign DisplayName="Assign out_UserData (Initialization)" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">[out_UserData]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">[New Dictionary(Of String, Object)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[String.IsNullOrWhiteSpace(in_UserId) OrElse Not in_UserId.All(Function(c) Char.IsDigit(c))]" DisplayName="If Id is Specified" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Throw DisplayName="Throw (User Id Not Specified)" Exception="[New ArgumentException(String.Format(in_Config(&quot;UserIdNotSpecified&quot;), &quot;&quot;))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+      </If.Then>
+    </If>
+    <If sap2010:Annotation.AnnotationText="Up until Orchestrator 2019.1, there was a bug that prevented the user roles to be returned when getting data from a user.&#xA;For compatibility reasons with Orchestrators lower than 2019.1, instead of querying a single user with GET, make a request for all users and use odata filter to return only the desired one." Condition="[in_Config(&quot;OrchestratorVersion&quot;) &gt;= 201901]" DisplayName="If Orchestrator Version Is 2019.1 or Newer (Request End Point)" sap2010:WorkflowViewState.IdRef="If_5">
+      <If.Then>
+        <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Get User)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Users({0})&quot;, in_UserId)]" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="GET" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:HttpClient.Attachments>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.Attachments>
+          <ui:HttpClient.Cookies>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.Cookies>
+          <ui:HttpClient.Headers>
+            <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
+          </ui:HttpClient.Headers>
+          <ui:HttpClient.Parameters>
+            <InArgument x:TypeArguments="x:String" x:Key="$expand">OrganizationUnits</InArgument>
+          </ui:HttpClient.Parameters>
+          <ui:HttpClient.UrlSegments>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.UrlSegments>
+        </ui:HttpClient>
+      </If.Then>
+      <If.Else>
+        <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Get Users with Filter)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Users/?$filter=Id%20eq%20{0}&quot;, in_UserId)]" sap2010:WorkflowViewState.IdRef="HttpClient_2" Method="GET" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:HttpClient.Attachments>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.Attachments>
+          <ui:HttpClient.Cookies>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.Cookies>
+          <ui:HttpClient.Headers>
+            <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
+          </ui:HttpClient.Headers>
+          <ui:HttpClient.Parameters>
+            <InArgument x:TypeArguments="x:String" x:Key="$expand">OrganizationUnits</InArgument>
+          </ui:HttpClient.Parameters>
+          <ui:HttpClient.UrlSegments>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
+          </ui:HttpClient.UrlSegments>
+        </ui:HttpClient>
+      </If.Else>
+    </If>
+    <If Condition="[StatusCode = 200]" DisplayName="If Request Was Successful" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence DisplayName="Extract User Data" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="njl:JToken" Name="ResultObject" />
+          </Sequence.Variables>
+          <ui:DeserializeJson x:TypeArguments="njl:JToken" DisplayName="Deserialize JSON" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_3" JsonObject="[ResultObject]" JsonString="[Result]" />
+          <If sap2010:Annotation.AnnotationText="Making a request for all users and use odata filter to return only the desired one will still return an array of users. In this case, get just the user entity in order to extract its fields." Condition="[in_Config(&quot;OrchestratorVersion&quot;) &lt; 201901]" DisplayName="If Orchestrator Version Is Older Than 2019.1" sap2010:WorkflowViewState.IdRef="If_6">
+            <If.Then>
+              <Assign DisplayName="Assign ResultObject" sap2010:WorkflowViewState.IdRef="Assign_3">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="njl:JToken">[ResultObject]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="njl:JToken">[ResultObject("value").First]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Then>
+          </If>
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (Id)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New KeyValuePair (Of String, Object) (&quot;Id&quot;, ResultObject(&quot;Id&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (Name)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[New KeyValuePair (Of String, Object) (&quot;Name&quot;, ResultObject(&quot;Name&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (Surname)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyValuePair (Of String, Object) (&quot;Surname&quot;, ResultObject(&quot;Surname&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (UserName)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_4" Item="[New KeyValuePair (Of String, Object) (&quot;UserName&quot;, ResultObject(&quot;UserName&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (EmailAddress)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[New KeyValuePair (Of String, Object) (&quot;EmailAddress&quot;, ResultObject(&quot;EmailAddress&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (IsActive - Status)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_6" Item="[New KeyValuePair (Of String, Object) (&quot;IsActive&quot;, ResultObject(&quot;IsActive&quot;).ToString)]" />
+          <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (CreationTime)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_7" Item="[New KeyValuePair (Of String, Object) (&quot;CreationTime&quot;, ResultObject(&quot;CreationTime&quot;))]" />
+          <Sequence DisplayName="Organization Units" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Default="[New List(Of Dictionary(Of String, Object))]" Name="OUsIdsDisplayNames" />
+            </Sequence.Variables>
+            <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="{x:Null}" DisplayName="For Each Organization Unit (Folder)" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ResultObject.SelectToken(&quot;OrganizationUnits&quot;)]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="njl:JToken">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="njl:JToken" Name="OUData" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Extract Id and DisplayName" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="SingleOUDisplayNameId" />
+                    </Sequence.Variables>
+                    <Assign DisplayName="Assign SingleOUDisplayNameId(&quot;Id)" sap2010:WorkflowViewState.IdRef="Assign_4">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[SingleOUDisplayNameId("Id")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[Convert.ToInt32(OUData("Id"))]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Assign DisplayName="Assign SingleOUDisplayNameId(&quot;DisplayName&quot;)" sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[SingleOUDisplayNameId("DisplayName")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[OUData("DisplayName")]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[OUsIdsDisplayNames]" DisplayName="Add To Collection (Single Organization Unit)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_11" Item="[SingleOUDisplayNameId]" />
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEach.Body>
+            </ui:ForEach>
+            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (OrganizationUnits)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_10" Item="[New KeyValuePair (Of String, Object) (&quot;OrganizationUnits&quot;, OUsIdsDisplayNames)]" />
+          </Sequence>
+          <Sequence DisplayName="Roles" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="Roles" />
+            </Sequence.Variables>
+            <ui:ForEach x:TypeArguments="njl:JToken" CurrentIndex="{x:Null}" DisplayName="For Each Role" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[ResultObject.SelectToken(&quot;RolesList&quot;)]">
+              <ui:ForEach.Body>
+                <ActivityAction x:TypeArguments="njl:JToken">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="njl:JToken" Name="Role" />
+                  </ActivityAction.Argument>
+                  <AddToCollection x:TypeArguments="x:String" Collection="[Roles]" DisplayName="Add To Collection (Single Role)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_8" Item="[Role.ToString]" />
+                </ActivityAction>
+              </ui:ForEach.Body>
+            </ui:ForEach>
+            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[out_UserData]" DisplayName="Add To Collection (RolesList)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_9" Item="[New KeyValuePair (Of String, Object) (&quot;RolesList&quot;, Roles)]" />
+          </Sequence>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw (Get User Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;GetUsersFailure&quot;), StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+      </If.Else>
+    </If>
+    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFVzZXJzXEdldFNpbmdsZVVzZXIueGFtbFpOA94BDgIBAVMFWg4CAXVbBV8KAgFxYAWHAQoCAVOIAQXcAQoCAQJYSlhtAgF4VUtVWQIBdlsTW3ECAXJdCV3UAQIBc2DzAmCuAwIBVGIJchkCAWN1CYUBGQIBVYgBE4gBJwIBA4oBCdcBFAIBB9oBCdoB2AECAQVdRl2nAQIBdGKEA2KPAwIBcGKCBWKIBQIBb2pKamACAW1i0wRi3QQCAWtivwNijwQCAWhtRG1VAgFnYt4CYukCAgFmYukEYvcEAgFkdYQDdY8DAgFidaEFdacFAgFhfUp9YAIBX3XyBHX8BAIBXXXMA3WuBAIBWoABRIABVQIBWXXeAnXpAgIBWHWIBXWWBQIBVo4BC44BxQECAU6PAQuaARACAUebAQubAbICAgFDnAELnAG4AgIBP50BC50BwQICATueAQueAcQCAgE3nwELnwHQAgIBM6ABC6ABzQICAS+hAQuhAccCAgErogELxgEWAgEUxwEL1gEWAgEI2gFB2gGrAQIBBo4BuAGOAcIBAgFRjgGcAY4BrAECAU+PAfwBjwG2AgIBSJEBD5gBGAIBSZsBXpsBbgIBRZsBzwGbAa8CAgFEnAFenAFuAgFBnAHRAZwBtQICAUCdAV6dAW4CAT2dAdQBnQG+AgIBPJ4BXp4BbgIBOZ4B1QGeAcECAgE4nwFenwFuAgE1nwHZAZ8BzQICATSgAV6gAW4CATGgAd4BoAHKAgIBMKEBXqEBbgIBLaEB2QGhAcQCAgEspAFgpAGOAQIBFaYBDcQBGgIBGsUBDcUBwAICARbJAUbJAV0CAQnLAQ3UARoCAQ7VAQ3VAaICAgEKlgE8lgFZAgFMkwE9kwFLAgFKpgG1AaYB8AECASqsARPBAR4CARvFAWDFAXACARjFAeEBxQG9AgIBF8sBnwHLAdIBAgET0QET0QHRAQIBD9UBYNUBcAIBDNUB2AHVAZ8CAgELrgFergGDAQIBHLABFbcBHgIBJrgBFb8BHgIBIsABFcABkAICAR3RAUrRAVMCARHRAb0B0QHOAQIBELUBQLUBXwIBKbIBQbIBXgIBJ70BQL0BVwIBJboBQboBZwIBI8ABZsABfAIBIMAB9AHAAY0CAgEe</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="561,60" />
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="561,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="HttpClient_4" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="HttpClient_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="561,243">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="DeserializeJson`1_3" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="314,168">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_2" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_3" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_4" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_5" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_6" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_7" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="AddToCollection`1_11" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="264,346">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="287,480" />
+      <sap2010:ViewStateData Id="AddToCollection`1_10" sap:VirtualizedContainerService.HintSize="287,22" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AddToCollection`1_8" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,194" />
+      <sap2010:ViewStateData Id="AddToCollection`1_9" sap:VirtualizedContainerService.HintSize="287,22" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="336,1008">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="561,1156" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="583,1781">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetSingleUser_1" sap:VirtualizedContainerService.HintSize="623,1861" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
