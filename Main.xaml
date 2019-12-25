@@ -71,7 +71,7 @@
       <Variable x:TypeArguments="x:String" Name="OrchestratorURL" />
       <Variable x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" Name="Config" />
     </Sequence.Variables>
-    <ui:InputDialog DisplayName="Input Dialog (Entity)" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="Choose entity to operate." Options="[{&quot;Machines&quot;, &quot;Assets&quot;, &quot;Users&quot;}]" Title="Entitiy">
+    <ui:InputDialog DisplayName="Input Dialog (Entity)" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="Choose entity to operate." Options="[{&quot;Machines&quot;, &quot;Assets&quot;, &quot;Users&quot;, &quot;Robots&quot;}]" Title="Entitiy">
       <ui:InputDialog.Result>
         <OutArgument x:TypeArguments="x:String">[Entity]</OutArgument>
       </ui:InputDialog.Result>
@@ -136,8 +136,16 @@
           <InArgument x:TypeArguments="x:String" x:Key="in_UserOperation">[Operation]</InArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="robots" DisplayName="Invoke RobotManager workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Robots\RobotManager.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[OrchestratorURL]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Token">[Token]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[Config]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_RobotOperation">[Operation]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
     </Switch>
-    <sads:DebugSymbol.Symbol>dz5DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1haW4ueGFtbDg/A40BDgIBAUoFThYCAU1PBVMWAgFHVAVZHQIBQloFWtYBAgE8WwVfGAIBOGAFZBgCATRlBW4dAgEmbwWLAQ4CAQJKggFKnQECAVJKpgFK5wECAVFMMUw5AgFPSu4BSvcBAgFOT39PnQECAUxPpgFP9QECAUtRMVE8AgFJT/wBT4cCAgFIV2VXbQIBRVTFAVTrAQIBRFZGVlgCAUNaO1pTAgFBWscBWtMBAgE/WrEBWr0BAgE9XTFdPQIBOls2W0ACATliMWJCAgE2YDZgRwIBNWpDakoCATJoRmhSAgEwa0trXAIBLmxjbGsCASxnRGdOAgEqZbsBZdcBAgEpaURphwECASdvUW9sAgEDcwd6HwIBHHsHggEfAgESgwEHigEfAgEIcQlxuwECAQV1TnVZAgEkd013XgIBInhleG0CASB2Q3ZKAgEec84Bc+wBAgEdfUx9VwIBGn5Nfl4CARiAAWWAAW0CARZ/Q39KAgEUe8oBe+QBAgEThQFNhQFeAgEQhwFlhwFtAgEOiAFLiAFWAgEMhgFDhgFKAgEKgwHIAYMB4AECAQlxiwFxuAECAQdxfHGCAQIBBg==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>dz5DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1haW4ueGFtbD4/A5UBDgIBAUoFThYCAVdPBVMWAgFRVAVZHQIBTFoFWtYBAgFGWwVfGAIBQmAFZBgCAT5lBW4dAgEwbwWTAQ4CAQJKggFKnQECAVxKpgFK+wECAVtMMUw5AgFZSoICSosCAgFYT39PnQECAVZPpgFP9QECAVVRMVE8AgFTT/wBT4cCAgFSV2VXbQIBT1TFAVTrAQIBTlZGVlgCAU1aO1pTAgFLWscBWtMBAgFJWrEBWr0BAgFHXTFdPQIBRFs2W0ACAUNiMWJCAgFAYDZgRwIBP2pDakoCATxoRmhSAgE6a0trXAIBOGxjbGsCATZnRGdOAgE0ZbsBZdcBAgEzaURphwECATFvUW9sAgEDcwd6HwIBJnsHggEfAgEcgwEHigEfAgESiwEHkgEfAgEIcQlxuwECAQV1TnVZAgEud013XgIBLHhleG0CASp2Q3ZKAgEoc84Bc+wBAgEnfUx9VwIBJH5Nfl4CASKAAWWAAW0CASB/Q39KAgEee8oBe+QBAgEdhQFNhQFeAgEahwFlhwFtAgEYiAFLiAFWAgEWhgFDhgFKAgEUgwHIAYMB4AECARONAU2NAV4CARCPAWWPAW0CAQ6OAUOOAUoCAQyQAUyQAVcCAQqLAcoBiwHkAQIBCXGLAXG4AQIBB3F8cYIBAgEG</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -152,8 +160,9 @@
       <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="InvokeWorkflowFile_5" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="Switch`1_2" sap:VirtualizedContainerService.HintSize="476,315" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="498,1185">
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_6" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Switch`1_2" sap:VirtualizedContainerService.HintSize="476,337" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="498,1207">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -161,7 +170,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="538,1265" />
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="538,1327" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
