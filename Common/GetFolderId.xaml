@@ -87,42 +87,56 @@
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Get Folder Id based on its name.&#xA;Limitation: Folders whose names are composed only of digits are not supported." DisplayName="GetFolderId" sap2010:WorkflowViewState.IdRef="Sequence_22">
-    <If Condition="[Not String.IsNullOrWhiteSpace(in_FolderInfo) AndAlso in_FolderInfo.All(Function(c) Char.IsDigit(c))]" DisplayName="If Folder Info Is Numeric" sap2010:WorkflowViewState.IdRef="If_12">
-      <If.Then>
-        <Assign DisplayName="Assign out_FolderId" sap2010:WorkflowViewState.IdRef="Assign_18">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[out_FolderId]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_FolderInfo]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </If.Then>
-      <If.Else>
-        <Sequence DisplayName="Retrieve Folder Id Based on Name" sap2010:WorkflowViewState.IdRef="Sequence_21">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Name="FolderNamesIds" />
-          </Sequence.Variables>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFolders workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\GetFolders.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-              <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="out_FoldersNamesIds">[FolderNamesIds]</OutArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-          <Assign DisplayName="Assign out_FolderId (Retrieved Id)" sap2010:WorkflowViewState.IdRef="Assign_19">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_FolderId]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[FolderNamesIds(in_FolderInfo)]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </Sequence>
-      </If.Else>
-    </If>
-    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxHZXRGb2xkZXJJZC54YW1sEFkDfg4CAQFaBXwKAgECWhNaegIBA1wJYxICARVmCXoUAgEEYTRhQwIBGF41XkMCARZqC3EjAgELcgt5FAIBBW5tbn0CARNtUW1lAgERb2lvdAIBD2xHbFECAQ1qvQFq1QECAQx3NndVAgEIdDd0RQIBBg==</sads:DebugSymbol.Symbol>
+    <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <If Condition="[Not String.IsNullOrWhiteSpace(in_FolderInfo) AndAlso in_FolderInfo.All(Function(c) Char.IsDigit(c))]" DisplayName="If Folder Info Is Numeric" sap2010:WorkflowViewState.IdRef="If_12">
+          <If.Then>
+            <Assign DisplayName="Assign out_FolderId" sap2010:WorkflowViewState.IdRef="Assign_18">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[out_FolderId]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[in_FolderInfo]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </If.Then>
+          <If.Else>
+            <Sequence DisplayName="Retrieve Folder Id Based on Name" sap2010:WorkflowViewState.IdRef="Sequence_21">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Name="FolderNamesIds" />
+              </Sequence.Variables>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFolders workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\GetFolders.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                  <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="out_FoldersNamesIds">[FolderNamesIds]</OutArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <Assign DisplayName="Assign out_FolderId (Retrieved Id)" sap2010:WorkflowViewState.IdRef="Assign_19">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[out_FolderId]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[FolderNamesIds(in_FolderInfo)]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </If.Else>
+        </If>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="scg:KeyNotFoundException" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <ActivityAction x:TypeArguments="scg:KeyNotFoundException">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="scg:KeyNotFoundException" Name="Exception" />
+            </ActivityAction.Argument>
+            <Throw DisplayName="Throw (Folder Id Not Found)" Exception="[New KeyNotFoundException(String.Format(in_Config(&quot;FolderNotFound&quot;), in_FolderInfo), Exception)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXENvbW1vblxHZXRGb2xkZXJJZC54YW1sE1kDjAEOAgEBWgWKARACAQJcCX4OAgEFhgENhgHhAQIBA1wXXH4CAQZeDWUWAgEYaA18GAIBB4YBSIYBtAECAQRjOGNHAgEbYDlgRwIBGWwPcycCAQ50D3sYAgEIcHFwgQECARZvVW9pAgEUcW1xeAIBEm5LblUCARBswQFs2QECAQ95OnlZAgELdjt2SQIBCQ==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -144,7 +158,17 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="625,625">
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="400,108">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="414,270" />
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="436,451">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -152,7 +176,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="GetFolderId_1" sap:VirtualizedContainerService.HintSize="665,705" />
+      <sap2010:ViewStateData Id="GetFolderId_1" sap:VirtualizedContainerService.HintSize="476,531" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

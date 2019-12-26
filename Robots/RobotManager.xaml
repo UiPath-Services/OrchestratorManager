@@ -139,17 +139,17 @@
       </Sequence>
       <Sequence x:Key="delete" DisplayName="Delete " sap2010:WorkflowViewState.IdRef="Sequence_3">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="RobotsDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_Config(&quot;AssetConfigFilepath&quot;)]">
+        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete)" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_Config(&quot;RobotConfigFilepath&quot;)]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[AssetsDetails]" DisplayName="Read Range (Asset Delete List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="[in_Config(&quot;DeleteOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[RobotsDetails]" DisplayName="Read Range (Robot Delete List)" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="[in_Config(&quot;DeleteOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -161,32 +161,32 @@
         </ui:ExcelApplicationScope>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow (Delete Asset)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[AssetsDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[RobotsDetails.Rows.Count]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[AssetsDetails]" DisplayName="For Each Row (Delete Assets)" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Delete Robots)" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(AssetDetails(3).ToString)]" DisplayName="If Unprocessed Delete Asset" sap2010:WorkflowViewState.IdRef="If_1">
+              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(3).ToString)]" DisplayName="If Unprocessed Delete Robot" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteAsset workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Assets\DeleteAsset.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteRobot workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Robots\DeleteRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[AssetDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetId">[AssetDetails(2).ToString]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[RobotDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotId">[RobotDetails(2).ToString]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
                 <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Delete Asset)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedAsset&quot;), AssetDetails(0), AssetDetails(2))]" />
+                  <ui:LogMessage DisplayName="Log Message (Processed Delete Robot)" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedRobot&quot;), RobotDetails(0), RobotDetails(2))]" />
                 </If.Else>
               </If>
             </ActivityAction>
@@ -275,7 +275,7 @@
         </ui:ForEachRow>
       </Sequence>
     </Switch>
-    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbGxNA5cCDgIBAU4FlQIOAgECTlpOgAECAQNSB4sBEgIBaIwBB8MBEgIBQcQBB9kBEgIBMtoBB5QCEgIBCFAJUMEBAgEFWAlnJAMBiAFoCW0hAwGDAW4JigEZAgFpkgEJoQEkAgFfogEJpwEhAgFaqAEJwgEZAgFCyAEJ0AEkAgE90QEJ2AEhAgEz4AEJ7wEkAgEp8AEJ9QEhAgEk9gEJkwIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGPAVjvAVidAgMBjgFeD2QjAwGJAWtna3IDAYYBalZqcAMBhQFo1wFo/AEDAYQBbiVuMgMBgQFuPW5OAgF/dA+HARQCAWqSAc8BkgHfAQIBZpIB7QGSAZsCAgFlmAEPngEjAgFgpQFnpQFyAgFdpAFWpAFwAgFcogHYAaIB/QECAVuoASWoATICAVioAT2oAU4CAVauAQ+/ARQCAUPIAcwByAHeAQIBP8gB7AHIAZoCAgE+0wFc0wFsAgE71AFP1AFjAgE51gFn1gFyAgE31QFF1QFPAgE10QG7AdEB0gECATTgAc0B4AHfAQIBMOAB7QHgAZsCAgEv5gEP7AEjAgEq8wFn8wFyAgEn8gFW8gFwAgEm8AHWAfAB+wECASX2ASX2ATICASL2AT32AU4CASD8AQ+QAhQCAQpePl5PAwGMAWEVYUQDAYsBXroBXugBAwGKAXQddFQCAWt2E4IBKwIBb4UBE4UB9gECAWyYAT6YAU8CAWObARWbAUQCAWKYAboBmAHoAQIBYa4BHa4BVAIBRLABE7oBKwIBSL0BE70B9gECAUXmAT7mAU8CAS3pARXpAUQCASzmAbgB5gHkAQIBK/wBHfwBVAIBC/4BE4sCKwIBD44CE44ChQICAQx8Znx2AgF9elR6bgIBfHhTeG0CAXt9U31eAgF5eVN5bQIBeH5Zfm0CAXZ7VHtuAgF1gAFxgAF8AgFzf09/WQIBcXbGAXbfAQIBcIUBmQGFAfMBAgFuhQGKAYUBkAECAW22AWS2AXICAVS3AVO3AV4CAVKzAVGzAWsCAVG0AVm0AW0CAU+yAVSyAW4CAU64AXG4AXwCAUy1AU+1AVkCAUqwAcYBsAHfAQIBSb0BmQG9AfMBAgFHvQGKAb0BkAECAUaHAmSHAnQCAR6CAlSCAm4CAR2AAlOAAm0CARyIAlOIAl4CARqEAlGEAmsCARmBAlOBAm0CARiFAlmFAm0CARaDAlSDAm4CARWJAnGJAnwCAROGAk+GAlkCARH+AcQB/gHbAQIBEI4ClwGOAoICAgEOjgKIAY4CjgECAQ0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbGxNA5cCDgIBAU4FlQIOAgECTlpOgAECAQNSB4sBEgIBaIwBB8MBEgIBQcQBB9kBEgIBMtoBB5QCEgIBCFAJUMEBAgEFWAlnJAMBiAFoCW0hAwGDAW4JigEZAgFpkgEJoQEkAgFfogEJpwEhAgFaqAEJwgEZAgFCyAEJ0AEkAgE90QEJ2AEhAgEz4AEJ7wEkAgEp8AEJ9QEhAgEk9gEJkwIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGPAVjvAVidAgMBjgFeD2QjAwGJAWtna3IDAYYBalZqcAMBhQFo1wFo/AEDAYQBbiVuMgMBgQFuPW5OAgF/dA+HARQCAWqSAc8BkgHfAQIBZpIB7QGSAZsCAgFlmAEPngEjAgFgpQFnpQFyAgFdpAFWpAFwAgFcogHYAaIB/QECAVuoASWoATICAVioAT2oAU4CAVauAQ+/ARQCAUPIAcwByAHeAQIBP8gB7AHIAZoCAgE+0wFc0wFsAgE71AFP1AFjAgE51gFn1gFyAgE31QFF1QFPAgE10QG7AdEB0gECATTgAc0B4AHfAQIBMOAB7QHgAZsCAgEv5gEP7AEjAgEq8wFn8wFyAgEn8gFW8gFwAgEm8AHWAfAB+wECASX2ASX2ATICASL2AT32AU4CASD8AQ+QAhQCAQpePl5PAwGMAWEVYUQDAYsBXroBXugBAwGKAXQddFQCAWt2E4IBKwIBb4UBE4UB9gECAWyYAT6YAU8CAWObARWbAUQCAWKYAboBmAHoAQIBYa4BHa4BVAIBRLABE7oBKwIBSL0BE70B9gECAUXmAT7mAU8CAS3pARXpAUQCASzmAbgB5gHkAQIBK/wBHfwBVAIBC/4BE4sCKwIBD44CE44ChQICAQx8Znx2AgF9elR6bgIBfHhTeG0CAXt9U31eAgF5eVN5bQIBeH5Zfm0CAXZ7VHtuAgF1gAFxgAF8AgFzf09/WQIBcXbGAXbfAQIBcIUBmQGFAfMBAgFuhQGKAYUBkAECAW22AVG2AWsCAVW0AWS0AXICAVO4AVO4AV4CAVGyAVmyAW0CAU+1AVS1AW4CAU63AXG3AXwCAUyzAU+zAVkCAUqwAcYBsAHfAQIBSb0BmQG9AfMBAgFHvQGKAb0BkAECAUaHAmSHAnQCAR6CAlSCAm4CAR2AAlOAAm0CARyIAlOIAl4CARqEAlGEAmsCARmBAlOBAm0CARiFAlmFAm0CARaDAlSDAm4CARWJAnGJAnwCAROGAk+GAlkCARH+AcQB/gHbAQIBEI4ClwGOAoICAgEOjgKIAY4CjgECAQ0=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -344,7 +344,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="591,761">
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="591,842">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -404,8 +404,8 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="476,625" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="498,776">
+      <sap2010:ViewStateData Id="Switch`1_1" sap:VirtualizedContainerService.HintSize="611,1092" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="633,1243">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -413,7 +413,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="AssetManager_1" sap:VirtualizedContainerService.HintSize="538,856" />
+      <sap2010:ViewStateData Id="AssetManager_1" sap:VirtualizedContainerService.HintSize="673,1323" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
