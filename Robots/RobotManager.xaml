@@ -107,30 +107,33 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Create Asset)" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Create Robot)" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(AssetDetails(5).ToString)]" DisplayName="If Unprocessed Create Asset" sap2010:WorkflowViewState.IdRef="If_3">
+              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(8).ToString)]" DisplayName="If Unprocessed Create Robot" sap2010:WorkflowViewState.IdRef="If_3">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Assets\CreateAsset.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateRobot workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Robots\CreateRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[AssetDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[AssetDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[AssetDetails(3).ToString]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[LoopIndex]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_HostingType">[RobotDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Name">[RobotDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineInfo">[RobotDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Type">[RobotDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">[RobotDetails(4).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Password">[RobotDetails(5).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[RobotDetails(6).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
                 <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Create Asset)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedAsset&quot;), AssetDetails(0), AssetDetails(4))]" />
+                  <ui:LogMessage DisplayName="Log Message (Processed Create Robot)" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[String.Format(in_Config(&quot;ProcessedRobot&quot;), RobotDetails(1), RobotDetails(7))]" />
                 </If.Else>
               </If>
             </ActivityAction>
@@ -171,17 +174,17 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(3).ToString)]" DisplayName="If Unprocessed Delete Robot" sap2010:WorkflowViewState.IdRef="If_1">
+              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(2).ToString)]" DisplayName="If Unprocessed Delete Robot" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteRobot workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Robots\DeleteRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[RobotDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotId">[RobotDetails(2).ToString]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                       <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotData">[RobotDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderData">[RobotDetails(0).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -275,7 +278,7 @@
         </ui:ForEachRow>
       </Sequence>
     </Switch>
-    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbGxNA5cCDgIBAU4FlQIOAgECTlpOgAECAQNSB4sBEgIBaIwBB8MBEgIBQcQBB9kBEgIBMtoBB5QCEgIBCFAJUMEBAgEFWAlnJAMBiAFoCW0hAwGDAW4JigEZAgFpkgEJoQEkAgFfogEJpwEhAgFaqAEJwgEZAgFCyAEJ0AEkAgE90QEJ2AEhAgEz4AEJ7wEkAgEp8AEJ9QEhAgEk9gEJkwIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGPAVjvAVidAgMBjgFeD2QjAwGJAWtna3IDAYYBalZqcAMBhQFo1wFo/AEDAYQBbiVuMgMBgQFuPW5OAgF/dA+HARQCAWqSAc8BkgHfAQIBZpIB7QGSAZsCAgFlmAEPngEjAgFgpQFnpQFyAgFdpAFWpAFwAgFcogHYAaIB/QECAVuoASWoATICAVioAT2oAU4CAVauAQ+/ARQCAUPIAcwByAHeAQIBP8gB7AHIAZoCAgE+0wFc0wFsAgE71AFP1AFjAgE51gFn1gFyAgE31QFF1QFPAgE10QG7AdEB0gECATTgAc0B4AHfAQIBMOAB7QHgAZsCAgEv5gEP7AEjAgEq8wFn8wFyAgEn8gFW8gFwAgEm8AHWAfAB+wECASX2ASX2ATICASL2AT32AU4CASD8AQ+QAhQCAQpePl5PAwGMAWEVYUQDAYsBXroBXugBAwGKAXQddFQCAWt2E4IBKwIBb4UBE4UB9gECAWyYAT6YAU8CAWObARWbAUQCAWKYAboBmAHoAQIBYa4BHa4BVAIBRLABE7oBKwIBSL0BE70B9gECAUXmAT7mAU8CAS3pARXpAUQCASzmAbgB5gHkAQIBK/wBHfwBVAIBC/4BE4sCKwIBD44CE44ChQICAQx8Znx2AgF9elR6bgIBfHhTeG0CAXt9U31eAgF5eVN5bQIBeH5Zfm0CAXZ7VHtuAgF1gAFxgAF8AgFzf09/WQIBcXbGAXbfAQIBcIUBmQGFAfMBAgFuhQGKAYUBkAECAW22AVG2AWsCAVW0AWS0AXICAVO4AVO4AV4CAVGyAVmyAW0CAU+1AVS1AW4CAU63AXG3AXwCAUyzAU+zAVkCAUqwAcYBsAHfAQIBSb0BmQG9AfMBAgFHvQGKAb0BkAECAUaHAmSHAnQCAR6CAlSCAm4CAR2AAlOAAm0CARyIAlOIAl4CARqEAlGEAmsCARmBAlOBAm0CARiFAlmFAm0CARaDAlSDAm4CARWJAnGJAnwCAROGAk+GAlkCARH+AcQB/gHbAQIBEI4ClwGOAoICAgEOjgKIAY4CjgECAQ0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbG9NA5oCDgIBAU4FmAIOAgECTlpOgAECAQNSB44BEgIBaI8BB8YBEgIBQccBB9wBEgIBMt0BB5cCEgIBCFAJUMEBAgEFWAlnJAMBiwFoCW0hAwGGAW4JjQEZAgFplQEJpAEkAgFfpQEJqgEhAgFaqwEJxQEZAgFCywEJ0wEkAgE91AEJ2wEhAgEz4wEJ8gEkAgEp8wEJ+AEhAgEk+QEJlgIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGSAVjvAVidAgMBkQFeD2QjAwGMAWtna3IDAYkBalZqcAMBiAFo1wFo/AEDAYcBbiVuMgMBhAFuPW5OAwGCAXQPigEUAgFqlQHPAZUB3wECAWaVAe0BlQGbAgIBZZsBD6EBIwIBYKgBZ6gBcgIBXacBVqcBcAIBXKUB2AGlAf0BAgFbqwElqwEyAgFYqwE9qwFOAgFWsQEPwgEUAgFDywHMAcsB3gECAT/LAewBywGaAgIBPtYBXNYBbAIBO9cBT9cBYwIBOdkBZ9kBcgIBN9gBRdgBTwIBNdQBuwHUAdIBAgE04wHNAeMB3wECATDjAe0B4wGbAgIBL+kBD+8BIwIBKvYBZ/YBcgIBJ/UBVvUBcAIBJvMB1gHzAfsBAgEl+QEl+QEyAgEi+QE9+QFOAgEg/wEPkwIUAgEKXj5eTwMBjwFhFWFEAwGOAV66AV7oAQMBjQF0HXRUAgFrdhOFASsCAW+IAROIAfYBAgFsmwE+mwFPAgFjngEVngFEAgFimwG6AZsB6AECAWGxAR2xAVQCAUSzARO9ASsCAUjAARPAAfYBAgFF6QE+6QFPAgEt7AEV7AFEAgEs6QG4AekB5AECASv/AR3/AVQCAQuBAhOOAisCAQ+RAhORAoUCAgEMeGZ4dgMBgAF8U3xeAgF+gAFOgAFoAgF9fVV9bwIBfHlZeW0CAXqDAVSDAW4CAXl/VX9vAgF4e3F7fAIBdoEBUoEBbAIBdXpPelkCAXN2xgF23wECAXJ+Tn5oAgFxggFSggFsAgFwiAGZAYgB8wECAW6IAYoBiAGQAQIBbbcBZLcBcgIBVLkBU7kBXgIBUroBU7oBbQIBUbUBWbUBbQIBT7gBcbgBfAIBTbYBT7YBWQIBS7sBVLsBbgIBSrMBxgGzAd8BAgFJwAGZAcAB8wECAUfAAYoBwAGQAQIBRooCZIoCdAIBHoUCVIUCbgIBHYMCU4MCbQIBHIsCU4sCXgIBGocCUYcCawIBGYQCU4QCbQIBGIgCWYgCbQIBFoYCVIYCbgIBFYwCcYwCfAIBE4kCT4kCWQIBEYECxAGBAtsBAgEQkQKXAZECggICAQ6RAogBkQKOAQIBDQ==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -396,7 +399,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="591,761">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="591,842">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
