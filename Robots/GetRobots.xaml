@@ -86,21 +86,62 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about robots defined in Orchestrator.&#xA;&#xA;Required permissions:&#xA;- Robot: Edit, View" DisplayName="Get Robots" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about robots defined in Orchestrator." DisplayName="Get Robots" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="RobotsData" />
+      <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="OUName" />
+      <Variable x:TypeArguments="s1:Double[]" Name="SelectedOUIDs" />
     </Sequence.Variables>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAllRobots workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\GetAllRobots.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsData Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\GetOrganizationUnitsData.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="s1:Double[]" x:Key="in_OUIDs">[{}]</InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[OUsData]</OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InputDialog DisplayName="Input Dialog" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="[in_Config(&quot;ChooseOUMessage&quot;)]" Options="[Enumerable.Concat({&quot;All&quot;}, OUsData.AsEnumerable().Select(Function(r) r.Field(Of String)(&quot;Name&quot;))).ToArray]" Title="[in_Config(&quot;ChooseOUTitle&quot;)]">
+      <ui:InputDialog.Result>
+        <OutArgument x:TypeArguments="ui:GenericValue">[OUName]</OutArgument>
+      </ui:InputDialog.Result>
+    </ui:InputDialog>
+    <If sap2010:Annotation.AnnotationText="Organization Units named &quot;All&quot; are not supported." Condition="[OUName = &quot;All&quot;]" DisplayName="If Should Retrieve Robots From All Organization Units" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Assign DisplayName="Assign SelectedOUIDs (All OUs)" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s1:Double[]">[SelectedOUIDs]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s1:Double[]">[OUsData.AsEnumerable().Select(Function(r) r.Field(Of Double)("ID")).ToArray]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Assign SelectedOUIDs (Single Selected OU)" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s1:Double[]">[SelectedOUIDs]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s1:Double[]">[{Convert.ToDouble(OUsData.Rows.Find(OUName)("ID"))}]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\GetRobotsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[RobotsData]</OutArgument>
+        <InArgument x:TypeArguments="s1:Double[]" x:Key="in_OUIDs">[SelectedOUIDs]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written robot data and write new data about robots." CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
+    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written robot data and write new data about robots." CreateNewFile="False" DisplayName="Excel Application Scope (Robots)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -129,11 +170,24 @@
         </ActivityAction>
       </ui:ExcelApplicationScope.Body>
     </ui:ExcelApplicationScope>
-    <sads:DebugSymbol.Symbol>d0pDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xHZXRSb2JvdHMueGFtbBZbA4UBDgIBAV8FZh0CARhnBYMBIAIBAmRMZFgCASBiS2JfAgEeY2NjbgIBHGFBYUsCARpfuQFf0wECARlngQJnlgICARZtC4ABFgIBA3ENdyECARB4DX4hAgEKfw1/9gECAQRxPHFOAgEUdBN0QgIBE3HAAXHrAQIBEXh/eMUBAgEOexN7QgIBDXi9AnjoAgIBC3/vAX/zAQIBCX8+f0wCAQd/tgF/4QECAQU=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0pDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xHZXRSb2JvdHMueGFtbCtcA64BDgIBAWMFax0CATtsBXAWAgEycQWGAQoCASSHAQWPAR0CARiQAQWsASACAQJmS2ZfAgFEaERoSAIBQ2djZ24CAUFpSWlSAgE/ZUFlSwIBPWPFAWPrAQIBPGx5bKMBAgE5bKwBbK0CAgE3bjhuQAIBNWy0AmzcAgIBM3FzcY8BAgElcwl6EgIBLX0JhAESAgEnjAFMjAFYAgEiigFLigFfAgEgjQFEjQFTAgEeiwFjiwFuAgEciQFBiQFLAgEahwG6AYcB1QECARmQAYoCkAGfAgIBFpYBC6kBFgIBA3g3eIQBAgEwdTh1RwIBLoIBN4IBbAIBKn84f0cCASiaAQ2gASECARChAQ2nASECAQqoAQ2oAfYBAgEEmgE8mgFOAgEUnQETnQFCAgETmgHAAZoB6wECARGhAX+hAcUBAgEOpAETpAFCAgENoQG9AqEB6AICAQuoAe8BqAHzAQIBCagBPqgBTAIBB6gBtgGoAeEBAgEF</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="414,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="509,87" />
+      <sap2010:ViewStateData Id="InputDialog_1" sap:VirtualizedContainerService.HintSize="509,92" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="509,235">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="509,87" />
       <sap2010:ViewStateData Id="ExcelReadRange_2" sap:VirtualizedContainerService.HintSize="314,59" />
       <sap2010:ViewStateData Id="ExcelWriteCell_2" sap:VirtualizedContainerService.HintSize="314,129">
         <sap:WorkflowViewStateService.ViewState>
@@ -152,7 +206,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="414,615">
+      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="509,615">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -161,7 +215,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="436,938">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="531,1427">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -169,7 +223,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="476,1018" />
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="571,1507" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
