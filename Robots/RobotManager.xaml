@@ -162,7 +162,7 @@
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests workflow (Delete Asset)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Delete Asset)" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[RobotsDetails.Rows.Count]</InArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
@@ -176,15 +176,15 @@
               </ActivityAction.Argument>
               <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(2).ToString)]" DisplayName="If Unprocessed Delete Robot" sap2010:WorkflowViewState.IdRef="If_1">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteRobot workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Robots\DeleteRobot.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteRobot Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Robots\DeleteRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                       <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotData">[RobotDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderData">[RobotDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUNameOrID">[RobotDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotNameOrID">[RobotDetails(1).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -278,7 +278,7 @@
         </ui:ForEachRow>
       </Sequence>
     </Switch>
-    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbG9NA5oCDgIBAU4FmAIOAgECTlpOgAECAQNSB44BEgIBaI8BB8YBEgIBQccBB9wBEgIBMt0BB5cCEgIBCFAJUMEBAgEFWAlnJAMBiwFoCW0hAwGGAW4JjQEZAgFplQEJpAEkAgFfpQEJqgEhAgFaqwEJxQEZAgFCywEJ0wEkAgE91AEJ2wEhAgEz4wEJ8gEkAgEp8wEJ+AEhAgEk+QEJlgIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGSAVjvAVidAgMBkQFeD2QjAwGMAWtna3IDAYkBalZqcAMBiAFo1wFo/AEDAYcBbiVuMgMBhAFuPW5OAwGCAXQPigEUAgFqlQHPAZUB3wECAWaVAe0BlQGbAgIBZZsBD6EBIwIBYKgBZ6gBcgIBXacBVqcBcAIBXKUB2AGlAf0BAgFbqwElqwEyAgFYqwE9qwFOAgFWsQEPwgEUAgFDywHMAcsB3gECAT/LAewBywGaAgIBPtYBXNYBbAIBO9cBT9cBYwIBOdkBZ9kBcgIBN9gBRdgBTwIBNdQBuwHUAdIBAgE04wHNAeMB3wECATDjAe0B4wGbAgIBL+kBD+8BIwIBKvYBZ/YBcgIBJ/UBVvUBcAIBJvMB1gHzAfsBAgEl+QEl+QEyAgEi+QE9+QFOAgEg/wEPkwIUAgEKXj5eTwMBjwFhFWFEAwGOAV66AV7oAQMBjQF0HXRUAgFrdhOFASsCAW+IAROIAfYBAgFsmwE+mwFPAgFjngEVngFEAgFimwG6AZsB6AECAWGxAR2xAVQCAUSzARO9ASsCAUjAARPAAfYBAgFF6QE+6QFPAgEt7AEV7AFEAgEs6QG4AekB5AECASv/AR3/AVQCAQuBAhOOAisCAQ+RAhORAoUCAgEMeGZ4dgMBgAF8U3xeAgF+gAFOgAFoAgF9fVV9bwIBfHlZeW0CAXqDAVSDAW4CAXl/VX9vAgF4e3F7fAIBdoEBUoEBbAIBdXpPelkCAXN2xgF23wECAXJ+Tn5oAgFxggFSggFsAgFwiAGZAYgB8wECAW6IAYoBiAGQAQIBbbcBZLcBcgIBVLkBU7kBXgIBUroBU7oBbQIBUbUBWbUBbQIBT7gBcbgBfAIBTbYBT7YBWQIBS7sBVLsBbgIBSrMBxgGzAd8BAgFJwAGZAcAB8wECAUfAAYoBwAGQAQIBRooCZIoCdAIBHoUCVIUCbgIBHYMCU4MCbQIBHIsCU4sCXgIBGocCUYcCawIBGYQCU4QCbQIBGIgCWYgCbQIBFoYCVIYCbgIBFYwCcYwCfAIBE4kCT4kCWQIBEYECxAGBAtsBAgEQkQKXAZECggICAQ6RAogBkQKOAQIBDQ==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d01DOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xSb2JvdE1hbmFnZXIueGFtbG9NA5oCDgIBAU4FmAIOAgECTlpOgAECAQNSB44BEgIBaI8BB8YBEgIBQccBB9wBEgIBMt0BB5cCEgIBCFAJUMEBAgEFWAlnJAMBiwFoCW0hAwGGAW4JjQEZAgFplQEJpAEkAgFfpQEJqgEhAgFaqwEJxQEZAgFCywEJ0wEkAgE91AEJ2wEhAgEz4wEJ8gEkAgEp8wEJ+AEhAgEk+QEJlgIZAgEJUI8BUL4BAgEHUIABUIYBAgEGWM8BWOEBAwGSAVjvAVidAgMBkQFeD2QjAwGMAWtna3IDAYkBalZqcAMBiAFo1wFo/AEDAYcBbiVuMgMBhAFuPW5OAwGCAXQPigEUAgFqlQHPAZUB3wECAWaVAe0BlQGbAgIBZZsBD6EBIwIBYKgBZ6gBcgIBXacBVqcBcAIBXKUB2AGlAf0BAgFbqwElqwEyAgFYqwE9qwFOAgFWsQEPwgEUAgFDywHMAcsB3gECAT/LAewBywGaAgIBPtYBXNYBbAIBO9cBT9cBYwIBOdkBZ9kBcgIBN9gBRdgBTwIBNdQBuwHUAdIBAgE04wHNAeMB3wECATDjAe0B4wGbAgIBL+kBD+8BIwIBKvYBZ/YBcgIBJ/UBVvUBcAIBJvMB1gHzAfsBAgEl+QEl+QEyAgEi+QE9+QFOAgEg/wEPkwIUAgEKXj5eTwMBjwFhFWFEAwGOAV66AV7oAQMBjQF0HXRUAgFrdhOFASsCAW+IAROIAfYBAgFsmwE+mwFPAgFjngEVngFEAgFimwG6AZsB6AECAWGxAR2xAVQCAUSzARO9ASsCAUjAARPAAfYBAgFF6QE+6QFPAgEt7AEV7AFEAgEs6QG4AekB5AECASv/AR3/AVQCAQuBAhOOAisCAQ+RAhORAoUCAgEMeGZ4dgMBgAF8U3xeAgF+gAFOgAFoAgF9fVV9bwIBfHlZeW0CAXqDAVSDAW4CAXl/VX9vAgF4e3F7fAIBdoEBUoEBbAIBdXpPelkCAXN2xgF23wECAXJ+Tn5oAgFxggFSggFsAgFwiAGZAYgB8wECAW6IAYoBiAGQAQIBbbcBZLcBcgIBVLkBU7kBXgIBUrUBWbUBbQIBULoBVLoBbgIBT7gBcbgBfAIBTbsBV7sBcQIBTLYBT7YBWQIBSrMBxgGzAd8BAgFJwAGZAcAB8wECAUfAAYoBwAGQAQIBRooCZIoCdAIBHoUCVIUCbgIBHYMCU4MCbQIBHIsCU4sCXgIBGocCUYcCawIBGYQCU4QCbQIBGIgCWYgCbQIBFoYCVIYCbgIBFYwCcYwCfAIBE4kCT4kCWQIBEYECxAGBAtsBAgEQkQKXAZECggICAQ6RAogBkQKOAQIBDQ==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

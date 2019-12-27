@@ -37,10 +37,10 @@
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OpenWorkbook" Type="InArgument(ui:WorkbookApplication)" />
-    <x:Property Name="in_FolderInfo" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
-    <x:Property Name="in_RobotId" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotIndex" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_RobotNameOrID" Type="InArgument(x:String)" />
+    <x:Property Name="in_OUNameOrID" Type="InArgument(x:String)" />
   </x:Members>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
@@ -84,7 +84,7 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Delete a robot with the given Id.&#xA;&#xA;Required permissions:&#xA;- Robot: Delete" DisplayName="Delete Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete a robot with the given ID." DisplayName="Delete Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
@@ -92,20 +92,31 @@
       <TryCatch.Try>
         <Sequence DisplayName="Try to Delete Robot" sap2010:WorkflowViewState.IdRef="Sequence_16">
           <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="FolderId" />
+            <Variable x:TypeArguments="x:Double" Name="OUID" />
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="x:String" Name="Result" />
+            <Variable x:TypeArguments="x:Double" Name="RobotID" />
           </Sequence.Variables>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RetrieveFolderId workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/GetFolderId.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitID Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\GetOrganizationUnitID.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[in_FolderInfo]</InArgument>
-              <OutArgument x:TypeArguments="x:String" x:Key="out_FolderId">[FolderId]</OutArgument>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+              <OutArgument x:TypeArguments="x:Double" x:Key="out_OUID">[OUID]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_OUNameOrID">[in_OUNameOrID]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" sap2010:Annotation.AnnotationText="This endpoint returns Success (204) even if the robot does not exist.&#xD;&#xA;An improvement to this operation would be to first check whether the robot exists (using a GET request) and throw an exception if it does not." BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Robot)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Robots({0})&quot;, in_RobotId)]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotID Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\GetRobotID.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+              <OutArgument x:TypeArguments="x:Double" x:Key="out_RobotID">[RobotID]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_RobotNameOrID">[in_RobotNameOrID]</InArgument>
+              <InArgument x:TypeArguments="s1:Double[]" x:Key="in_OUIDs">[{OUID}]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" sap2010:Annotation.AnnotationText="This endpoint returns Success (204) even if the robot does not exist.&#xA;An improvement to this operation would be to first check whether the robot exists (using a GET request) and throw an exception if it does not." BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Robot)" EndPoint="[String.Format(&quot;{0}/odata/Robots({1})&quot;, in_OrchestratorURL, RobotID)]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
@@ -114,7 +125,7 @@
             </ui:HttpClient.Cookies>
             <ui:HttpClient.Headers>
               <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[FolderId]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[OUID.ToString]</InArgument>
             </ui:HttpClient.Headers>
             <ui:HttpClient.Parameters>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -164,11 +175,12 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xEZWxldGVSb2JvdC54YW1sJ1cDqAEOAgEBWAWmARACAQJaNlpnAgENXQmEARQCARqbAQmkASQCAQ+MAQ2WARgCAQNjC2sjAgE1bAt9GwIBJn4LggEQAgEegwELgwGaAgIBG5sBrAGbAb8BAgEYoQEPoQGeAgIBEI0BD40BlQECAQmOAQ+VARgCAQRoTGhWAgE/ZVFlZQIBPWdMZ1sCATtpaWl0AgE5ZkdmUQIBN2PDAWPcAQIBNmyIBWyTBQIBNGyPB2yVBwIBM3RMdGICATFs4AZs6gYCAS9sxwVsmQYCASxs4gRs7QQCASts9gZshAcCASl1WnVkAgEnfhl+NAIBH4ABD4AB5QECASGDAagBgwHtAQIBHKEBJ6EBdAIBFaEBiAKhAZsCAgEToQHUAaEBggICARGNAX2NAZIBAgELjQFtjQF0AgEKkwE6kwFNAgEHkAE7kAFMAgEFgAFLgAG4AQIBIg==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xEZWxldGVSb2JvdC54YW1sL1cDswEOAgEBWAWxARACAQJaNlpnAgENXQmPARQCARqmAQmvASQCAQ+XAQ2hARgCAQNkC2wjAgFDbQt2IwIBNXcLiAEbAgEmiQELjQEQAgEejgELjgGaAgIBG6YBrAGmAb8BAgEYrAEPrAGeAgIBEJgBD5gBlQECAQmZAQ+gARgCAQRoUWhlAgFNakxqWwIBS2dpZ3QCAUlpSGlOAgFHZkdmUQIBRWTIAWTrAQIBRHFRcWUCAUF0SnRSAgE/cGlwdAIBPXNPc2ECATtvR29RAgE5bb0BbdUBAgE4cktyVAIBNneDBXeOBQIBNHeJB3ePBwIBM39Mf2ICATF32gZ35AYCAS93wgV3kwYCASx33QR36AQCASt38AZ3/gYCASmAAVqAAWkCASeJARmJATQCAR+LAQ+LAeUBAgEhjgGoAY4B7QECARysASesAXQCARWsAYgCrAGbAgIBE6wB1AGsAYICAgERmAF9mAGSAQIBC5gBbZgBdAIBCp4BOp4BTQIBB5sBO5sBTAIBBYsBS4sBuAECASI=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="464,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="464,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="464,87" />
       <sap2010:ViewStateData Id="HttpClient_1" sap:VirtualizedContainerService.HintSize="464,169">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -192,7 +204,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="486,787">
+      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="486,914">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -233,8 +245,8 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="414,196" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="504,1014" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="526,1210">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="504,1141" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="526,1292">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -242,7 +254,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="566,1290" />
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="566,1372" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
