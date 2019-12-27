@@ -38,15 +38,15 @@
     <x:Property Name="in_OpenedWorkbook" Type="InArgument(ui:WorkbookApplication)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
-    <x:Property Name="in_FolderInfo" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_HostingType" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_Name" Type="InArgument(x:String)" />
-    <x:Property Name="in_MachineInfo" Type="InArgument(x:String)" />
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
     <x:Property Name="in_Password" Type="InArgument(x:String)" />
     <x:Property Name="in_Type" Type="InArgument(x:String)" />
+    <x:Property Name="in_OUNameOrID" Type="InArgument(x:String)" />
+    <x:Property Name="in_MachineNameOrID" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateRobot.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -101,7 +101,7 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create robot with the specified hosting type, name, machine name (or Id), type, username, password and OU Name (or Id).&#xA;Ids of successfully created robots are added to the robots configuration file (Config\Robots.xlsx).&#xA;&#xA;Required permissions:&#xA;- Robot: Create" DisplayName="Create Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create robot with the specified data:&#xD;&#xA;- Hosting type&#xD;&#xA;- Name&#xD;&#xA;- Machine name (or ID)&#xD;&#xA;- Type&#xD;&#xA;- Username&#xD;&#xA;- Password&#xD;&#xA;- OU name (or ID).&#xA;IDs of successfully created robots are added to the robots configuration file (Robots.xlsx)." DisplayName="Create Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Name="Result" />
@@ -112,34 +112,40 @@
         <Sequence DisplayName="Try to Create Robot" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
-            <Variable x:TypeArguments="x:String" Name="FolderId" />
+            <Variable x:TypeArguments="x:Double" Name="OUID" />
           </Sequence.Variables>
           <Sequence DisplayName="Initialize Request Fields" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <Sequence.Variables>
-              <Variable x:TypeArguments="x:String" Name="MachineId" />
+              <Variable x:TypeArguments="x:Double" Name="MachineID" />
             </Sequence.Variables>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RetrieveFolderId workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/GetFolderId.xaml">
-              <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_FolderInfo">[in_FolderInfo]</InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_FolderId">[FolderId]</OutArgument>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              </ui:InvokeWorkflowFile.Arguments>
-            </ui:InvokeWorkflowFile>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetMachineId workflow" UnSafe="False" WorkflowFileName="Common\GetMachineId.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitID Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\GetOrganizationUnitID.xaml">
               <ui:InvokeWorkflowFile.Arguments>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
                 <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_MachineInfo">[in_MachineInfo]</InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_MachineId">[MachineId]</OutArgument>
+                <OutArgument x:TypeArguments="x:Double" x:Key="out_OUID">[OUID]</OutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_OUNameOrID">[in_OUNameOrID]</InArgument>
               </ui:InvokeWorkflowFile.Arguments>
-              <sap2010:WorkflowViewState.IdRef>InvokeWorkflowFile_3</sap2010:WorkflowViewState.IdRef>
             </ui:InvokeWorkflowFile>
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_MachineNameOrID)]" DisplayName="If Machine Name Or ID Was Specified" sap2010:WorkflowViewState.IdRef="If_9">
+              <If.Then>
+                <Sequence>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetMachineID workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\GetMachineID.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+                      <OutArgument x:TypeArguments="x:Double" x:Key="out_MachineID">[MachineID]</OutArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineNameOrID">[in_MachineNameOrID]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (MachineID)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyvaluePair(Of String, Object) (&quot;MachineId&quot;, Convert.ToInt32(MachineID))]" />
+                  <sap2010:WorkflowViewState.IdRef>Sequence_26</sap2010:WorkflowViewState.IdRef>
+                </Sequence>
+              </If.Then>
+            </If>
             <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (HostingType)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New KeyvaluePair(Of String, Object) (&quot;HostingType&quot;, in_HostingType)]" />
             <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Name)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[New KeyvaluePair(Of String, Object) (&quot;Name&quot;, in_Name)]" />
-            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (MachineId)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyvaluePair(Of String, Object) (&quot;MachineId&quot;, Convert.ToInt32(MachineId))]" />
             <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Type)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_4" Item="[New KeyvaluePair(Of String, Object) (&quot;Type&quot;, in_Type)]" />
             <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Username)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[New KeyvaluePair(Of String, Object) (&quot;Username&quot;, in_Username)]" />
             <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Password)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_6" Item="[New KeyvaluePair(Of String, Object) (&quot;Password&quot;, in_Password)]" />
@@ -153,7 +159,7 @@
             </ui:HttpClient.Cookies>
             <ui:HttpClient.Headers>
               <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + in_Token]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[FolderId.ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[OUID.ToString]</InArgument>
             </ui:HttpClient.Headers>
             <ui:HttpClient.Parameters>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -168,7 +174,7 @@
                 <Sequence.Variables>
                   <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
                 </Sequence.Variables>
-                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Robot Response)" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[ResultObject]" JsonString="[Result]" />
+                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Robot)" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[ResultObject]" JsonString="[Result]" />
                 <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Robot Id)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
                   <ui:ExcelApplicationScope.Body>
                     <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -221,19 +227,34 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xDcmVhdGVSb2JvdC54YW1sTWgD4QEOAgEBaQXfARACAQJtNm1nAgENcAm9ARQCARrUAQndASQCAQ/FAQ3PARgCAQNyVHJ5AgEbdQuSARYCAUmTAQukARsCATmlAQu7ARACAR+8AQu8AZoCAgEc1AGsAdQBwQECARjaAQ/aAZ4CAgEQxgEPxgGWAQIBCccBD84BGAIBBHkNgQElAgF0ggENiwElAgFojAENjAGtAgIBY40BDY0BmAICAV6OAQ2OAbUCAgFZjwENjwGYAgIBVJABDZABpAICAU+RAQ2RAaQCAgFKkwHdA5MB6AMCAUiTAcIFkwHIBQIBR5MBpQKTAYYDAgFFmwFMmwFiAgFDkwGTBZMBnQUCAUGTAZwEkwHOBAIBP5MBtwOTAcIDAgE+kwGpBZMBtwUCATycAVqcAW0CATqlARmlAS0CASCnAQ+2ARoCASi5AQ+5Ae4BAgEivAGoAbwB7QECAR3aASfaAXQCARXaAYgC2gGbAgIBE9oB1AHaAYICAgERxgF+xgGTAQIBC8YBbsYBdQIBCswBOswBTQIBB8kBO8kBTAIBBX5OflgCAX57U3tnAgF8fU59XQIBen9rf3YCAXh8SXxTAgF2ecUBed4BAgF1hgFThgFnAgFyiAFPiAFaAgFwhwFPhwFfAgFuhQFrhQF2AgFshAFJhAFTAgFqggGKAYIBpAECAWmMAWCMAW8CAWaMAdkBjAGqAgIBZI0BYI0BbwIBYY0B0gGNAZUCAgFfjgFgjgFvAgFcjgHXAY4BsgICAVqPAWCPAW8CAVePAdIBjwGVAgIBVZABYJABbwIBUpAB1gGQAaECAgFQkQFgkQFvAgFNkQHWAZEBoQICAUurARGrAeQBAgE0rAERtQEsAgEpuQFLuQHBAQIBI6sB1wGrAeEBAgE3qwG7AasBywECATWsAbYBrAHLAQIBMrIBF7IBuwICASqyAS+yAXkCAS+yAY8CsgG4AgIBLbIB2wGyAYkCAgEr</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xDcmVhdGVSb2JvdC54YW1sUGgD5wEOAgEBaQXlARACAQJtNm1nAgENcAnDARQCARraAQnjASQCAQ/LAQ3VARgCAQNyVHJ5AgEbdQuYARYCAUmZAQuqARsCATmrAQvBARACAR/CAQvCAZoCAgEc2gGsAdoBwQECARjgAQ/gAZ4CAgEQzAEPzAGWAQIBCc0BD9QBGAIBBHkNgQElAgF4ggENkgESAgFjkwENkwGtAgIBXpQBDZQBmAICAVmVAQ2VAZgCAgFUlgENlgGkAgIBT5cBDZcBpAICAUqZAd0DmQHoAwIBSJkBwgWZAcgFAgFHmQGlApkBhgMCAUWhAUyhAWICAUOZAZMFmQGdBQIBQZkBnASZAc4EAgE/mQG3A5kBwgMCAT6ZAakFmQG3BQIBPKIBWqIBaQIBOqsBGasBLQIBIK0BD7wBGgIBKL8BD78B7gECASLCAagBwgHtAQIBHeABJ+ABdAIBFeABiALgAZsCAgET4AHUAeABggICARHMAX7MAZMBAgELzAFuzAF1AgEK0gE60gFNAgEHzwE7zwFMAgEFfVN9ZwMBggF/Tn9dAwGAAXxrfHYCAX5+Sn5QAgF8e0l7UwIBennKAXntAQIBeYIBG4IBUAIBZIQBEZABHAIBZpMBYJMBbwIBYZMB2QGTAaoCAgFflAFglAFvAgFclAHSAZQBlQICAVqVAWCVAW8CAVeVAdIBlQGVAgIBVZYBYJYBbwIBUpYB1gGWAaECAgFQlwFglwFvAgFNlwHWAZcBoQICAUuxARGxAdsBAgE0sgERuwEsAgEpvwFLvwHBAQIBI4UBE40BKwIBbI4BE44BuwICAWexAc4BsQHYAQIBN7EBsgGxAcIBAgE1sgG2AbIBywECATK4ARe4AbsCAgEqiwFZiwFtAgF2iQFZiQFtAgF0iAFxiAF8AgFyigFVigFgAgFwhwFPhwFZAgFuhQHHAYUB4QECAW2OAWaOAXUCAWqOAd0BjgG4AgIBaLgBL7gBeQIBL7gBjwK4AbgCAgEtuAHbAbgBiQICASs=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="314,87" />
-      <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="AddToCollection`1_2" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="464,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_5" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="AddToCollection`1_3" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="AddToCollection`1_4" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="AddToCollection`1_5" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="AddToCollection`1_6" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="661,710">
+      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="336,273">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="464,421">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_2" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_4" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_5" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_6" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="661,982">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -270,7 +291,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="683,1650">
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="683,1922">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -303,7 +324,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelWriteCell_8" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="ExcelApplicationScope_4" sap:VirtualizedContainerService.HintSize="414,196" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,1877">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,2149">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -311,7 +332,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,2088">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,2420">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -319,7 +340,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,2140">
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,2500">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
