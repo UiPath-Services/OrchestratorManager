@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="DeleteMachine"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="DeleteMachine"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
@@ -38,8 +38,8 @@
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_OpenWorkbook" Type="InArgument(ui:WorkbookApplication)" />
     <x:Property Name="in_MachineIndex" Type="InArgument(x:Int32)" />
-    <x:Property Name="in_MachineId" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_MachineNameOrID" Type="InArgument(x:String)" />
   </x:Members>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
@@ -80,9 +80,10 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Delete machine with the given Id.&#xA;&#xA;Required permissions:&#xA;- Machines: Delete" DisplayName="Delete Machine" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete machine with the given name or ID." DisplayName="Delete Machine" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
@@ -92,8 +93,18 @@
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="Result" />
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+            <Variable x:TypeArguments="x:Double" Name="MachineID" />
           </Sequence.Variables>
-          <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Machine)" EndPoint="[in_OrchestratorURL + String.Format(&quot;/odata/Machines({0})&quot;, in_MachineId)]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetMachineID Workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\GetMachineID.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
+              <OutArgument x:TypeArguments="x:Double" x:Key="out_MachineID">[MachineID]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_MachineNameOrID">[in_MachineNameOrID]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Delete Machine)" EndPoint="[String.Format(&quot;{0}/odata/Machines({1})&quot;, in_OrchestratorURL, MachineID)]" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="DELETE" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
@@ -139,7 +150,7 @@
         </Catch>
       </TryCatch.Catches>
       <TryCatch.Finally>
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Operation Result)" ExistingWorkbook="[in_OpenWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Machines)" ExistingWorkbook="[in_OpenWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -151,10 +162,11 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXERlbGV0ZU1hY2hpbmUueGFtbB9VA5sBDgIBAVYFmQEQAgECWDZYZwIBDVsJdxQCARqOAQmXASQCAQ9/DYkBGAIBA2ALcBsCASZxC3UQAgEedgt2nAICARuOAa8BjgHCAQIBGJQBD5QBogICARCAAQ+AAZUBAgEJgQEPiAEYAgEEYIYDYJEDAgEyYJMFYJkFAgExaExoYgIBL2DkBGDuBAIBLWDHA2CdBAIBKmDgAmDrAgIBKWD6BGCIBQIBJ3EZcTQCAR9zD3PpAQIBIXaqAXbvAQIBHJQBJ5QBeAIBFZQBjAKUAZ8CAgETlAHYAZQBhgICARGAAX2AAZIBAgELgAFtgAF0AgEKhgE6hgFNAgEHgwE7gwFMAgEFc01zvAECASI=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXERlbGV0ZU1hY2hpbmUueGFtbCZWA6YBDgIBAVcFpAEQAgECWTZZZwIBDVwJggEUAgEamQEJogEkAgEPigENlAEYAgEDYgtqIwIBM2sLexsCASZ8C4ABEAIBHoEBC4EBnAICARuZAacBmQG6AQIBGJ8BD58BogICARCLAQ+LAZUBAgEJjAEPkwEYAgEEaFFoZQIBPWZRZmUCATtlaWV0AgE5Z01nWAIBN2RHZFECATVivwFi2QECATRrhgNrkQMCATJrkgVrmAUCATFzTHNiAgEva+MEa+0EAgEta8cDa5wEAgEqa+ACa+sCAgEpa/kEa4cFAgEnfBl8NAIBH34PfukBAgEhgQGqAYEB7wECARyfASefAXgCARWfAYwCnwGfAgIBE58B2AGfAYYCAgERiwF9iwGSAQIBC4sBbYsBdAIBCpEBOpEBTQIBB44BO44BTAIBBX5NfrwBAgEi</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="464,87" />
       <sap2010:ViewStateData Id="HttpClient_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="464,208">
@@ -172,7 +184,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="486,513">
+      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="486,640">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -213,7 +225,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="414,196" />
       <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="432,423" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="454,619">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="454,574">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -221,7 +233,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="494,699" />
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="494,654" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

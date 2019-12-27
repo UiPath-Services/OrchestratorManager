@@ -35,14 +35,14 @@
  xmlns:ui="http://schemas.uipath.com/workflow/activities"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_MachineName" Type="InArgument(x:String)" />
-    <x:Property Name="in_MachineType" Type="InArgument(x:String)" />
     <x:Property Name="in_MachineIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_OpenedWorkbook" Type="InArgument(ui:WorkbookApplication)" />
-    <x:Property Name="in_MachineKey" Type="InArgument(x:String)" />
     <x:Property Name="in_Token" Type="InArgument(x:String)" />
     <x:Property Name="in_OrchestratorURL" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_Name" Type="InArgument(x:String)" />
+    <x:Property Name="in_Type" Type="InArgument(x:String)" />
+    <x:Property Name="in_Key" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateMachine.in_MachineIndex>
     <InArgument x:TypeArguments="x:Int32" />
@@ -89,9 +89,10 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type, name and description.&#xA;Keys of successfully created machines are added to the file with the list of machines (Config\Machines.xlsx).&#xA;&#xA;Required permissions:&#xA;- Machines: Create, Edit" DisplayName="Create Machine" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified data:&#xD;&#xA;- Type&#xD;&#xA;- Name&#xA;IDs and keys of successfully created machines are added to the machines configuration file (Machines.xlsx)." DisplayName="Create Machine" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
@@ -101,41 +102,14 @@
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="x:String" Name="Result" />
-            <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String)]" Name="RequestBody" />
+            <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
           </Sequence.Variables>
           <Sequence DisplayName="Request Fields Initialization" sap2010:WorkflowViewState.IdRef="Sequence_16">
-            <ui:MultipleAssign DisplayName="Multiple Assign (Body Fields)" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-              <ui:MultipleAssign.AssignOperations>
-                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:String">[RequestBody("Name")]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[in_MachineName]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:String">[RequestBody("Type")]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:String">[in_MachineType]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                </scg:List>
-              </ui:MultipleAssign.AssignOperations>
-            </ui:MultipleAssign>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_MachineKey)]" DisplayName="If Machine Key is Specified" sap2010:WorkflowViewState.IdRef="If_7">
+            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Name)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New KeyvaluePair(Of String, Object) (&quot;Name&quot;, in_Name)]" />
+            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Type)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[New KeyvaluePair(Of String, Object) (&quot;Type&quot;, in_Type)]" />
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_Key)]" DisplayName="If Machine Key is Specified" sap2010:WorkflowViewState.IdRef="If_7">
               <If.Then>
-                <Assign DisplayName="Assign RequestBody(&quot;LicenseKey&quot;)" sap2010:WorkflowViewState.IdRef="Assign_1">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:String">[RequestBody("LicenseKey")]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:String">[in_MachineKey]</InArgument>
-                  </Assign.Value>
-                </Assign>
+                <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (LicenseKey)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyvaluePair(Of String, Object) (&quot;LicenseKey&quot;, in_Key)]" />
               </If.Then>
             </If>
           </Sequence>
@@ -162,16 +136,16 @@
                 <Sequence.Variables>
                   <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
                 </Sequence.Variables>
-                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Machine Response)" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
-                <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Machine Details)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
+                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Machine)" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
+                <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Machine Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
                   <ui:ExcelApplicationScope.Body>
                     <ActivityAction x:TypeArguments="ui:WorkbookApplication">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                       </ActivityAction.Argument>
                       <Sequence DisplayName="Write Machine Data" sap2010:WorkflowViewState.IdRef="Sequence_19">
-                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineMachineIdColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Id)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
-                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineMachineKeyColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
+                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineIDColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine ID)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
+                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineKeyColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
                       </Sequence>
                     </ActivityAction>
                   </ui:ExcelApplicationScope.Body>
@@ -179,7 +153,7 @@
               </Sequence>
             </If.Then>
             <If.Else>
-              <Throw DisplayName="Throw (Create Machine Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;CreateMachineFailure&quot;), in_MachineType, in_MachineName, StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+              <Throw DisplayName="Throw (Create Machine Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;CreateMachineFailure&quot;), in_Type, in_Name, StatusCode, Result))]" sap2010:WorkflowViewState.IdRef="Throw_1" />
             </If.Else>
           </If>
           <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Machine)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap2010:WorkflowViewState.IdRef="Delay_6" />
@@ -206,7 +180,7 @@
         </Catch>
       </TryCatch.Catches>
       <TryCatch.Finally>
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Operation Result)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Machines)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -218,12 +192,13 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXENyZWF0ZU1hY2hpbmUueGFtbD1eA94BDgIBAV8F3AEQAgECYTZhZwIBDWQJugEUAgEa0QEJ2gEkAgEPwgENzAEYAgEDaFRoeQIBG2oLjQEWAgFRjgELngEbAgFDnwELuAEQAgEfuQELuQGcAgIBHNEBrwHRAcQBAgEY1wEP1wGiAgIBEMMBD8MBlQECAQnEAQ/LARgCAQRrDYABIQIBWoEBDYwBEgIBUo4B3QOOAegDAgFQjgHGBY4BzAUCAU+OAaUCjgGGAwIBTZYBTJYBYgIBS44BlwWOAaEFAgFJjgGeBI4B0gQCAUeOAbcDjgHCAwIBRo4BrQWOAbsFAgFEnwEZnwEtAgEgoQEPswEaAgEptgEPtgGJAgIBIrkBqgG5Ae8BAgEd1wEn1wF4AgEV1wGMAtcBnwICARPXAdgB1wGGAgIBEcMBfcMBkgECAQvDAW3DAXQCAQrJATrJAU0CAQfGATvGAUwCAQVzPnNOAgFhcD9wVAIBX3s+e04CAV14P3hUAgFbgQEbgQFLAgFTgwERigEaAgFVpQERpQHmAQIBPqYBEbIBLAIBKrYBTbYB3AECASOIATyIAUsCAViFAT2FAVgCAValAdkBpQHjAQIBQaUBvQGlAc0BAgE/pgG9AaYB0gECATysARevASICAStuE3UoAwFaC3YTfSgDAVoGrQEZrQHJAgIBNK4BGa4B0wICASytATGtAYUBAgE5rQGdAq0BxgICATetAekBrQGXAgIBNa4BMa4BhgECATGuAZ8CrgHQAgIBL64B6wGuAZkCAgEt</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXE1hY2hpbmVzXENyZWF0ZU1hY2hpbmUueGFtbDxfA8QBDgIBAWAFwgEQAgECYjZiZwIBDWUJoAEUAgEatwEJwAEkAgEPqAENsgEYAgEDaVRpeQIBG2sLcxYCAVF0C4QBGwIBQ4UBC54BEAIBH58BC58BnAICARy3AacBtwG8AQIBGL0BD70BogICARCpAQ+pAZUBAgEJqgEPsQEYAgEEbA1smAICAV9tDW2YAgIBWm4NchICAVJ03QN06AMCAVB0xgV0zAUCAU90pQJ0hgMCAU18THxiAgFLdJcFdKEFAgFJdJ4EdNIEAgFHdLcDdMIDAgFGdK0FdLsFAgFEhQEZhQEtAgEghwEPmQEaAgEpnAEPnAH7AQIBIp8BqgGfAe8BAgEdvQEnvQF4AgEVvQGMAr0BnwICARO9AdgBvQGGAgIBEakBfakBkgECAQupAW2pAXQCAQqvATqvAU0CAQesATusAUwCAQVsYGxvAgFibNIBbJUCAgFgbWBtbwIBXW3SAW2VAgIBW24bbkQCAVNwEXCnAgIBVYsBEYsB3QECAT6MARGYASwCASqcAU2cAc4BAgEjcGRwcwIBWHDcAXCkAgIBVosB0AGLAdoBAgFBiwG0AYsBxAECAT+MAboBjAHPAQIBPJIBF5UBIgIBK5MBGZMBwgICATSUARmUAcwCAgEskwExkwF+AgE5kwGWApMBvwICATeTAeIBkwGQAgIBNZQBMZQBfwIBMZQBmAKUAckCAgEvlAHkAZQBkgICAS0=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="MultipleAssign_1" sap:VirtualizedContainerService.HintSize="464,129" />
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="AddToCollection`1_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_2" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="AddToCollection`1_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="464,208" />
       <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="661,51">
         <sap:WorkflowViewStateService.ViewState>
@@ -293,7 +268,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,60" />
-      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="336,315">
+      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="264,275">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -311,7 +286,7 @@
       <sap2010:ViewStateData Id="ExcelWriteCell_5" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="ExcelApplicationScope_3" sap:VirtualizedContainerService.HintSize="414,196" />
       <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,1469" />
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,1680">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,1665">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -319,7 +294,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,1760">
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,1745">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
