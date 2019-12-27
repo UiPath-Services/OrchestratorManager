@@ -101,7 +101,7 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create robot with the specified data:&#xD;&#xA;- Hosting type&#xD;&#xA;- Name&#xD;&#xA;- Machine name (or ID)&#xD;&#xA;- Type&#xD;&#xA;- Username&#xD;&#xA;- Password&#xD;&#xA;- OU name (or ID).&#xA;IDs of successfully created robots are added to the robots configuration file (Robots.xlsx)." DisplayName="Create Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create robot with the specified data:&#xA;- Hosting type&#xA;- Name&#xA;- Machine name (or ID)&#xA;- Type&#xA;- Username&#xA;- Password&#xA;- OU name (or ID).&#xA;IDs of successfully created robots are added to the robots configuration file (Robots.xlsx)." DisplayName="Create Robot" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <TryCatch DisplayName="Try Catch" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Name="Result" />
@@ -129,7 +129,7 @@
             </ui:InvokeWorkflowFile>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_MachineNameOrID)]" DisplayName="If Machine Name Or ID Was Specified" sap2010:WorkflowViewState.IdRef="If_9">
               <If.Then>
-                <Sequence>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_26">
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetMachineID workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\GetMachineID.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InArgument x:TypeArguments="x:String" x:Key="in_Token">[in_Token]</InArgument>
@@ -140,7 +140,6 @@
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                   <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (MachineID)" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyvaluePair(Of String, Object) (&quot;MachineId&quot;, Convert.ToInt32(MachineID))]" />
-                  <sap2010:WorkflowViewState.IdRef>Sequence_26</sap2010:WorkflowViewState.IdRef>
                 </Sequence>
               </If.Then>
             </If>
@@ -215,7 +214,7 @@
         </Catch>
       </TryCatch.Catches>
       <TryCatch.Finally>
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Result)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Robots)" ExistingWorkbook="[in_OpenedWorkbook]" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -227,7 +226,7 @@
         </ui:ExcelApplicationScope>
       </TryCatch.Finally>
     </TryCatch>
-    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xDcmVhdGVSb2JvdC54YW1sUGgD5wEOAgEBaQXlARACAQJtNm1nAgENcAnDARQCARraAQnjASQCAQ/LAQ3VARgCAQNyVHJ5AgEbdQuYARYCAUmZAQuqARsCATmrAQvBARACAR/CAQvCAZoCAgEc2gGsAdoBwQECARjgAQ/gAZ4CAgEQzAEPzAGWAQIBCc0BD9QBGAIBBHkNgQElAgF4ggENkgESAgFjkwENkwGtAgIBXpQBDZQBmAICAVmVAQ2VAZgCAgFUlgENlgGkAgIBT5cBDZcBpAICAUqZAd0DmQHoAwIBSJkBwgWZAcgFAgFHmQGlApkBhgMCAUWhAUyhAWICAUOZAZMFmQGdBQIBQZkBnASZAc4EAgE/mQG3A5kBwgMCAT6ZAakFmQG3BQIBPKIBWqIBaQIBOqsBGasBLQIBIK0BD7wBGgIBKL8BD78B7gECASLCAagBwgHtAQIBHeABJ+ABdAIBFeABiALgAZsCAgET4AHUAeABggICARHMAX7MAZMBAgELzAFuzAF1AgEK0gE60gFNAgEHzwE7zwFMAgEFfVN9ZwMBggF/Tn9dAwGAAXxrfHYCAX5+Sn5QAgF8e0l7UwIBennKAXntAQIBeYIBG4IBUAIBZIQBEZABHAIBZpMBYJMBbwIBYZMB2QGTAaoCAgFflAFglAFvAgFclAHSAZQBlQICAVqVAWCVAW8CAVeVAdIBlQGVAgIBVZYBYJYBbwIBUpYB1gGWAaECAgFQlwFglwFvAgFNlwHWAZcBoQICAUuxARGxAdsBAgE0sgERuwEsAgEpvwFLvwHBAQIBI4UBE40BKwIBbI4BE44BuwICAWexAc4BsQHYAQIBN7EBsgGxAcIBAgE1sgG2AbIBywECATK4ARe4AbsCAgEqiwFZiwFtAgF2iQFZiQFtAgF0iAFxiAF8AgFyigFVigFgAgFwhwFPhwFZAgFuhQHHAYUB4QECAW2OAWaOAXUCAWqOAd0BjgG4AgIBaLgBL7gBeQIBL7gBjwK4AbgCAgEtuAHbAbgBiQICASs=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0xDOlxVc2Vyc1xtYXRldXNcRG9jdW1lbnRzXEdpdEh1YlxPcmNoZXN0cmF0b3JNYW5hZ2VyXFJvYm90c1xDcmVhdGVSb2JvdC54YW1sUGgD5gEOAgEBaQXkARACAQJtNm1nAgENcAnCARQCARrZAQniASQCAQ/KAQ3UARgCAQNyVHJ5AgEbdQuXARYCAUmYAQupARsCATmqAQvAARACAR/BAQvBAZoCAgEc2QGlAdkBugECARjfAQ/fAZ4CAgEQywEPywGWAQIBCcwBD9MBGAIBBHkNgQElAgF4ggENkQESAgFjkgENkgGtAgIBXpMBDZMBmAICAVmUAQ2UAZgCAgFUlQENlQGkAgIBT5YBDZYBpAICAUqYAd0DmAHoAwIBSJgBwgWYAcgFAgFHmAGlApgBhgMCAUWgAUygAWICAUOYAZMFmAGdBQIBQZgBnASYAc4EAgE/mAG3A5gBwgMCAT6YAakFmAG3BQIBPKEBWqEBaQIBOqoBGaoBLQIBIKwBD7sBGgIBKL4BD74B7gECASLBAagBwQHtAQIBHd8BJ98BdAIBFd8BiALfAZsCAgET3wHUAd8BggICARHLAX7LAZMBAgELywFuywF1AgEK0QE60QFNAgEHzgE7zgFMAgEFfVN9ZwMBggF/Tn9dAwGAAXxrfHYCAX5+Sn5QAgF8e0l7UwIBennKAXntAQIBeYIBG4IBUAIBZIQBEY8BHAIBZpIBYJIBbwIBYZIB2QGSAaoCAgFfkwFgkwFvAgFckwHSAZMBlQICAVqUAWCUAW8CAVeUAdIBlAGVAgIBVZUBYJUBbwIBUpUB1gGVAaECAgFQlgFglgFvAgFNlgHWAZYBoQICAUuwARGwAdsBAgE0sQERugEsAgEpvgFLvgHBAQIBI4UBE40BKwIBbI4BE44BuwICAWewAc4BsAHYAQIBN7ABsgGwAcIBAgE1sQG2AbEBywECATK3ARe3AbsCAgEqiwFZiwFtAgF2iQFZiQFtAgF0iAFxiAF8AgFyigFVigFgAgFwhwFPhwFZAgFuhQHHAYUB4QECAW2OAWaOAXUCAWqOAd0BjgG4AgIBaLcBL7cBeQIBL7cBjwK3AbgCAgEttwHbAbcBiQICASs=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -314,7 +313,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="687,21">
+      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="418,21">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -324,7 +323,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ExcelWriteCell_8" sap:VirtualizedContainerService.HintSize="314,87" />
       <sap2010:ViewStateData Id="ExcelApplicationScope_4" sap:VirtualizedContainerService.HintSize="414,196" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="701,2149">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="432,423">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -332,7 +331,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="723,2420">
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="454,709">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -340,7 +339,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="763,2500">
+      <sap2010:ViewStateData Id="ActivityBuilder_1" sap:VirtualizedContainerService.HintSize="494,789">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
