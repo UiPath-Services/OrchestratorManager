@@ -13,7 +13,7 @@
   <this:CreateMachine.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
   </this:CreateMachine.in_OpenedWorkbook>
-  <sap:VirtualizedContainerService.HintSize>864.666666666667,1812.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>626.666666666667,1945.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -62,19 +62,19 @@
       <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type and name.&#xA;IDs and keys of successfully created machines are added to the machines configuration file (Machines.xlsx)." DisplayName="Create Machine" sap:VirtualizedContainerService.HintSize="844.666666666667,1752.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create machine with specified type and name.&#xA;IDs and keys of successfully created machines are added to the machines configuration file (Machines.xlsx)." DisplayName="Create Machine" sap:VirtualizedContainerService.HintSize="606.666666666667,1885.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="802.666666666667,1615.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="564.666666666667,1748" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Machine" sap:VirtualizedContainerService.HintSize="764,1377.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
+        <Sequence DisplayName="Try to Create Machine" sap:VirtualizedContainerService.HintSize="526,1510" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="x:String" Name="Result" />
@@ -85,15 +85,55 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Request Fields Initialization" sap:VirtualizedContainerService.HintSize="722,268.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="484,330" sap2010:WorkflowViewState.IdRef="Sequence_16">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Name)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[New KeyvaluePair(Of String, Object) (&quot;Name&quot;, in_Name)]" />
-            <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (Type)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[New KeyvaluePair(Of String, Object) (&quot;Type&quot;, in_Type)]" />
+            <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Machine Name Is Specified" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_8">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;NameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              </If.Then>
+              <If.Else>
+                <Assign DisplayName="Assign Machine Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[in_Name]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Else>
+            </If>
+            <If Condition="[String.IsNullOrWhiteSpace(in_Type)]" DisplayName="If Type Is Specified" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Type Not Specified)" Exception="[New ArgumentException(&quot;TypeNotSpecified&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+              </If.Then>
+              <If.Else>
+                <Assign DisplayName="Assign Machine Type" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("Type")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[in_Type]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Else>
+            </If>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_Key)]" DisplayName="If Machine Key Is Specified" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_7">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -102,11 +142,18 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <AddToCollection x:TypeArguments="scg:KeyValuePair(x:String, x:Object)" Collection="[RequestBody]" DisplayName="Add To Collection (LicenseKey)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[New KeyvaluePair(Of String, Object) (&quot;LicenseKey&quot;, in_Key)]" />
+                <Assign DisplayName="Assign License Key" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("LicenseKey")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[in_Key]</InArgument>
+                  </Assign.Value>
+                </Assign>
               </If.Then>
             </If>
           </Sequence>
-          <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Machine)" EndPoint="[in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Machines&quot;]" sap:VirtualizedContainerService.HintSize="722,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Machine)" EndPoint="[in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Machines&quot;]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
@@ -123,7 +170,7 @@
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.UrlSegments>
           </ui:HttpClient>
-          <If Condition="[StatusCode = 201]" DisplayName="If Request Was Successful" sap:VirtualizedContainerService.HintSize="722,790.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+          <If Condition="[StatusCode &lt;&gt; 201 OrElse Not Result.Contains(&quot;odata.context&quot;)]" DisplayName="If Request Was Not Successful" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_6">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -131,49 +178,46 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <If.Then>
-              <Sequence sap2010:Annotation.AnnotationText="Extract and write machine key, as well as successful result." DisplayName="Create Machine Success" sap:VirtualizedContainerService.HintSize="476,636.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-                </Sequence.Variables>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Machine)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_6" JsonObject="[ResultObject]" JsonString="[Result]" />
-                <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Machine Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,414" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
-                  <ui:ExcelApplicationScope.Body>
-                    <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-                      <ActivityAction.Argument>
-                        <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-                      </ActivityAction.Argument>
-                      <Sequence DisplayName="Write Machine Data" sap:VirtualizedContainerService.HintSize="376,305.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
-                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineIDColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_4" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
-                        <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineKeyColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
-                      </Sequence>
-                    </ActivityAction>
-                  </ui:ExcelApplicationScope.Body>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:ExcelApplicationScope>
-              </Sequence>
-            </If.Then>
-            <If.Else>
               <Throw DisplayName="Throw (Create Machine Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;ProcessEntityFailure&quot;), StatusCode, Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
-            </If.Else>
+            </If.Then>
           </If>
-          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Machine)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="722,84" sap2010:WorkflowViewState.IdRef="Delay_6">
+          <Sequence DisplayName="Extract and Output Machine Data" sap:VirtualizedContainerService.HintSize="484,608" sap2010:WorkflowViewState.IdRef="Sequence_22">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Machine)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[ResultObject]" JsonString="[Result]" />
+            <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Machine Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,414" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
+              <ui:ExcelApplicationScope.Body>
+                <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Write Machine Data" sap:VirtualizedContainerService.HintSize="376,305.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineIDColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_6" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
+                    <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateMachineKeyColumn&quot;)+(2+in_MachineIndex).ToString]" DisplayName="Write Cell (Machine Key)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_7" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;LicenseKey&quot;).ToString]" />
+                  </Sequence>
+                </ActivityAction>
+              </ui:ExcelApplicationScope.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:ExcelApplicationScope>
+          </Sequence>
+          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Machine)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_6">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -183,7 +227,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="768.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="530.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -221,7 +265,7 @@
         </Catch>
       </TryCatch.Catches>
       <TryCatch.Finally>
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Machines)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Result)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>

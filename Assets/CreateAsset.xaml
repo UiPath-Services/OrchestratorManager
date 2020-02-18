@@ -31,7 +31,6 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="in_OUName" Type="InArgument(x:String)" />
-    <x:Property Name="in_OUID" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateAsset.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -39,7 +38,7 @@
   <this:CreateAsset.in_AssetIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateAsset.in_AssetIndex>
-  <sap:VirtualizedContainerService.HintSize>1018.66666666667,2616.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>626.666666666667,2040</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -92,14 +91,14 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create asset with specified name, type, description and value.&#xA;IDs of successfully created assets are added to the assets configuration file (Assets.xlsx).&#xA;&#xA;Per Robot Assets are not supported currently." DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="998.666666666667,2556.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create asset with specified name, type, description and value.&#xA;IDs of successfully created assets are added to the assets configuration file (Assets.xlsx).&#xA;&#xA;Per Robot Assets are not supported currently." DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="606.666666666667,1980" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="956.666666666667,2386" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="564.666666666667,1809.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Name="Result" />
         <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
@@ -112,7 +111,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Asset" sap:VirtualizedContainerService.HintSize="918,2124.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Try to Create Asset" sap:VirtualizedContainerService.HintSize="526,1548" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
             <Variable x:TypeArguments="x:Int64" Name="OUID" />
@@ -123,114 +122,126 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="876,1263.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="484,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If Condition="[String.IsNullOrWhiteSpace(in_OUID)]" DisplayName="If OU ID Is Not Specified" sap:VirtualizedContainerService.HintSize="834,688.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+            <Sequence DisplayName="Get OU ID" sap:VirtualizedContainerService.HintSize="262,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_30">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If.Then>
-                <Sequence DisplayName="Retrieve OU ID Based on Name" sap:VirtualizedContainerService.HintSize="526,534.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
-                  <Sequence.Variables>
-                    <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
-                  </Sequence.Variables>
+              <If Condition="[String.IsNullOrWhiteSpace(in_OUName)]" DisplayName="If OU Name Is Not Specified" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_11">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Throw DisplayName="Throw (OU Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+                </If.Then>
+              </If>
+              <Sequence DisplayName="Retrieve OU ID Based on Name" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_28">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsData Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\GetOrganizationUnitsData.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                    <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_OUName}]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[OUsData]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <If Condition="[OUsData.Rows.Count = 0]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,278" sap2010:WorkflowViewState.IdRef="If_12">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\GetOrganizationUnitsData.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                      <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_OUName}]</InArgument>
-                      <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[OUsData]</OutArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                  <If Condition="[OUsData.Rows.Count = 0]" DisplayName="If No OU Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_10">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <If.Then>
-                      <Throw DisplayName="Throw (OU Not Found)" Exception="[New Exception(in_Config(&quot;OUNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
-                    </If.Then>
-                  </If>
-                  <Assign DisplayName="Assign OUID (Retrieved ID)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_16">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int64">[OUID]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(OUsData.Rows.Find(in_OUName)("ID"))]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                </Sequence>
+                  <If.Then>
+                    <Throw DisplayName="Throw (OU Not Found)" Exception="[New Exception(in_Config(&quot;OUNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+                  </If.Then>
+                  <If.Else>
+                    <Assign sap2010:Annotation.AnnotationText="Since OU names are unique, it is  guaranteed that OUsData has a single row." DisplayName="Assign OUID" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_19">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int64">[OUID]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(OUsData.Rows(0)("ID"))]</InArgument>
+                      </Assign.Value>
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                    </Assign>
+                  </If.Else>
+                </If>
+              </Sequence>
+            </Sequence>
+            <If Condition="[String.IsNullOrWhiteSpace(in_AssetName)]" DisplayName="If Asset Name Is Specified" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_13">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Asset Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
               </If.Then>
               <If.Else>
-                <Assign DisplayName="Assign OUID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_17">
+                <Assign DisplayName="Assign Asset Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_20">
                   <Assign.To>
-                    <OutArgument x:TypeArguments="x:Int64">[OUID]</OutArgument>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
                   </Assign.To>
                   <Assign.Value>
-                    <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUID)]</InArgument>
+                    <InArgument x:TypeArguments="x:Object">[in_AssetName]</InArgument>
                   </Assign.Value>
                 </Assign>
               </If.Else>
             </If>
-            <ui:MultipleAssign DisplayName="Multiple Assign (Common Body Fields)" sap:VirtualizedContainerService.HintSize="834,158.666666666667" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-              <ui:MultipleAssign.AssignOperations>
-                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:Object">[in_AssetName]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_2">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueScope")]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:Object">["Global"]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
-                    <ui:AssignOperation.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueType")]</OutArgument>
-                    </ui:AssignOperation.To>
-                    <ui:AssignOperation.Value>
-                      <InArgument x:TypeArguments="x:Object">[in_AssetType]</InArgument>
-                    </ui:AssignOperation.Value>
-                  </ui:AssignOperation>
-                </scg:List>
-              </ui:MultipleAssign.AssignOperations>
+            <If Condition="[String.IsNullOrWhiteSpace(in_AssetType)]" DisplayName="If Asset Type Is Specified" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_14">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-            </ui:MultipleAssign>
-            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="834,244" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+              <If.Then>
+                <Throw DisplayName="Throw (Asset Type Not Specified)" Exception="[New ArgumentException(in_Config(&quot;TypeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_7" />
+              </If.Then>
+              <If.Else>
+                <Assign DisplayName="Assign Asset Value Type" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_22">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueType")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[in_AssetType]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Else>
+            </If>
+            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="262,98" sap2010:WorkflowViewState.IdRef="Switch`1_2">
               <Switch.Default>
-                <ui:LogMessage DisplayName="Log Message (Not Supported Asset Type)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[in_Config(&quot;UnsupportedAssetType&quot;)]" />
+                <Throw DisplayName="Throw (Unsupported Type)" Exception="[New ArgumentException(in_Config(&quot;UnsupportedAssetType&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
               </Switch.Default>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
@@ -285,8 +296,16 @@
                 </Assign>
               </Sequence>
             </Switch>
+            <Assign DisplayName="Assign Value Scope" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_21">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueScope")]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">["Global"]</InArgument>
+              </Assign.Value>
+            </Assign>
           </Sequence>
-          <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Asset)" EndPoint="[in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Assets&quot;]" sap:VirtualizedContainerService.HintSize="876,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+          <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Create Asset)" EndPoint="[in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Assets&quot;]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
             <ui:HttpClient.Attachments>
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.Attachments>
@@ -304,7 +323,7 @@
               <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
             </ui:HttpClient.UrlSegments>
           </ui:HttpClient>
-          <If Condition="[StatusCode = 201 AndAlso Result.Contains(&quot;odata.context&quot;)]" DisplayName="If Request Was Successful" sap:VirtualizedContainerService.HintSize="876,543.333333333333" sap2010:WorkflowViewState.IdRef="If_8">
+          <If Condition="[StatusCode &lt;&gt; 201 OrElse Not Result.Contains(&quot;odata.context&quot;)]" DisplayName="If Request Was Not Successful" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_8">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -312,47 +331,45 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <If.Then>
-              <Sequence DisplayName="Create Asset Success" sap:VirtualizedContainerService.HintSize="476,389.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_22">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-                </Sequence.Variables>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Asset Response)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[ResultObject]" JsonString="[Result]">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:DeserializeJson>
-                <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Asset ID)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" Visible="False">
-                  <ui:ExcelApplicationScope.Body>
-                    <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-                      <ActivityAction.Argument>
-                        <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-                      </ActivityAction.Argument>
-                      <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateAssetIDColumn&quot;)+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Asset ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_6" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
-                    </ActivityAction>
-                  </ui:ExcelApplicationScope.Body>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:ExcelApplicationScope>
-              </Sequence>
-            </If.Then>
-            <If.Else>
               <Throw DisplayName="Throw (Create Asset Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;ProcessEntityFailure&quot;), StatusCode, Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
-            </If.Else>
+            </If.Then>
           </If>
-          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Asset)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="722,84" sap2010:WorkflowViewState.IdRef="Delay_6">
+          <Sequence DisplayName="Extract and Output Asset ID" sap:VirtualizedContainerService.HintSize="484,389.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_29">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Asset)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_8" JsonObject="[ResultObject]" JsonString="[Result]">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:DeserializeJson>
+            <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Asset ID)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" Visible="False">
+              <ui:ExcelApplicationScope.Body>
+                <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                  </ActivityAction.Argument>
+                  <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateAssetIDColumn&quot;)+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Asset ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_9" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
+                </ActivityAction>
+              </ui:ExcelApplicationScope.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:ExcelApplicationScope>
+          </Sequence>
+          <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Create Asset)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_6">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -362,7 +379,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="768.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="530.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -398,7 +415,7 @@
             </Sequence>
           </ActivityAction>
         </Catch>
-        <Catch x:TypeArguments="s1:FormatException" sap:VirtualizedContainerService.HintSize="768.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+        <Catch x:TypeArguments="s1:FormatException" sap:VirtualizedContainerService.HintSize="530.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_3">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
