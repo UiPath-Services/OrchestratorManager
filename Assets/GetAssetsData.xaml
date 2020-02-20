@@ -6,14 +6,13 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="out_AssetsData" Type="OutArgument(sd:DataTable)" />
-    <x:Property sap2010:Annotation.AnnotationText="Name of an asset to be used as a filter. Orchestrator does not support multiple Asset names when filtering." Name="in_FilterName" Type="InArgument(x:String)" />
     <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>638.666666666667,2604</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>638.666666666667,2334</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -54,7 +53,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Assets in the specified Organization Unit (OU).&#xA;If no filters are specified, returns data about all Assets.&#xA;&#xA;From Orchestrator 2019.10, there is a new entity called Folder, and Organization Units have been renamed to Classic Folders." DisplayName="Get Assets Data" sap:VirtualizedContainerService.HintSize="618.666666666667,2544" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Assets in the specified Organization Unit (OU).&#xD;&#xA;Since the endpoints related to Assets were not compliant with OData standards, this workflow does not accept filters as arguments.&#xA;&#xA;From Orchestrator 2019.10, there is a new entity called Folder, and Organization Units have been renamed to Classic Folders." DisplayName="Get Assets Data" sap:VirtualizedContainerService.HintSize="618.666666666667,2274" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
     </Sequence.Variables>
@@ -78,25 +77,6 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <If sap2010:Annotation.AnnotationText="Construct OData filter using specified names." Condition="[Not String.IsNullOrWhiteSpace(in_FilterName)]" DisplayName="If Filters Were Specified" sap:VirtualizedContainerService.HintSize="576.666666666667,246.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Assign DisplayName="Assign ODataFilter" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_10">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[ODataFilter]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[String.Format("?$filter=Name eq '{0}'", in_FilterName)]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </If.Then>
-    </If>
     <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUsData]" DisplayName="For Each OU" sap:VirtualizedContainerService.HintSize="576.666666666667,1790.66666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
