@@ -19,19 +19,25 @@
 				<label for="username"><span>_FormUsernameLabel_<span class="required">*</span></span><input type="text" class="input-field" id="username" /></label>
 				<label for="password"><span>_FormPasswordLabel_<span class="required">*</span></span><input type="password" class="input-field" id="password" /></label>
 
-				<label><span> </span><input type="submit" value="_FormSubmitButton_" onclick="submitValues()" /></label>
+				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
+				<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
 			</form>
 		</div>	
 
 		
-		<script type="text/javascript">			
-		function submitValues(){
-			var inputFields = document.getElementsByClassName("input-field");
+		<script type="text/javascript">	
+		function submitValues(elem){
 			var	jsonObject = {};
 			
-			// Include INPUT elements into the output dictionary
-			for(var i = 0; i < inputFields.length; i++){
-				jsonObject[inputFields[i].id] = inputFields[i].value;
+			// Should stop after performing operation
+			if (elem.id == "cancelButton") {
+				jsonObject["shouldStop"] = true;
+				jsonObject["username"] = "";
+				jsonObject["password"] = "";
+			} else {
+				jsonObject["shouldStop"] = false;
+				jsonObject["username"] = document.getElementById("username").value;
+				jsonObject["password"] = document.getElementById("password").value;
 			}
 			
 			// Get JSON representation of dictionary

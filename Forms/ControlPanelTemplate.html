@@ -32,19 +32,25 @@
 					<option value="addremoverobot">_FormAddRemoveRobotsOption_</option>
 				</select></label>
 
-				<label><span> </span><input type="submit" value="_FormSubmitButton_" onclick="submitValues()" /></label>
+				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
+				<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
 			</form>
 		</div>	
 
 		<script type="text/javascript">			
-		function submitValues(){
+		function submitValues(elem){
 			var	jsonObject = {};
-		
-			// Include the selected entity  into the dictionary
-			jsonObject["entity"] = document.getElementById("entity").value;
 			
-			// Include the selected operation into the dictionary
-			jsonObject["operation"] = document.getElementById("operation").value;
+			// Should stop after performing operation
+			if (elem.id == "cancelButton") {
+				jsonObject["shouldStop"] = true;
+				jsonObject["entity"] = "";
+				jsonObject["operation"] = "";
+			} else {
+				jsonObject["shouldStop"] = false;
+				jsonObject["entity"] = document.getElementById("entity").value;
+				jsonObject["operation"] = document.getElementById("operation").value;
+			}
 			
 			// Get JSON representation of dictionary
 			var formData = JSON.stringify(jsonObject);
