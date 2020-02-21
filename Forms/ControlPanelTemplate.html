@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>_FormTitle_</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.png" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style-2">
+			<div class="form-style-2-heading">_FormTitle_</div>
+			<form id="controlPanelForm" action="" method="post">
+				<label for="entity"><span>_FormEntityLabel_</span><select id="entity" onchange="updateOperations()" class="select-field">
+					<option value="asset">_FormAssetOption_</option>
+					<option value="user">_FormUserOption_</option>
+					<option value="machine">_FormMachineOption_</option>
+					<option value="robot">_FormRobotOption_</option>
+					<option value="environment">_FormEnvironmentOption_</option>
+				</select></label>
+				
+				<label for="operation"><span>_FormOperationLabel_</span><select id="operation" class="select-field">
+					<option value="get">_FormGetOption_</option>
+					<option value="create">_FormCreateOption_</option>
+					<option value="edit">_FormEditOption_</option>
+					<option value="delete">_FormDeleteOption_</option>
+					<option value="addremoverobot">_FormAddRemoveRobotsOption_</option>
+				</select></label>
+
+				<label><span> </span><input type="submit" value="_FormSubmitButton_" onclick="submitValues()" /></label>
+			</form>
+		</div>	
+
+		<script type="text/javascript">			
+		function submitValues(){
+			var	jsonObject = {};
+		
+			// Include the selected entity  into the dictionary
+			jsonObject["entity"] = document.getElementById("entity").value;
+			
+			// Include the selected operation into the dictionary
+			jsonObject["operation"] = document.getElementById("operation").value;
+			
+			// Get JSON representation of dictionary
+			var formData = JSON.stringify(jsonObject);
+		
+			window.external.setResult(formData);
+			return true;
+		}
+		
+		function updateOperations(){
+			var selectedEntity = document.getElementById("entity").value;
+			var operationElement = document.getElementById("operation");
+			
+			// Select the appropriate set of operations based on the chosen entity
+			switch (selectedEntity){
+				case "asset":
+					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
+				break;
+				case "user":
+					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
+				break;
+				case "machine":
+					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option>';
+				break;
+				case "robot":
+					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
+				break;
+				case "environment":
+					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoverobot">_FormAddRemoveRobotsOption_</option>';
+				break;
+			}
+		}
+		</script>
+	</body>
+</html>

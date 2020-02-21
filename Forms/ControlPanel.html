@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Orchestrator Manager</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.png" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style-2">
+			<div class="form-style-2-heading">Orchestrator Manager</div>
+			<form id="controlPanelForm" action="" method="post">
+				<label for="entity"><span>エンティティ</span><select id="entity" onchange="updateOperations()" class="select-field">
+					<option value="asset">アセット</option>
+					<option value="user">ユーザー</option>
+					<option value="machine">マシン</option>
+					<option value="robot">ロボット</option>
+					<option value="environment">ロボットグループ</option>
+				</select></label>
+				
+				<label for="operation"><span>操作</span><select id="operation" class="select-field">
+					<option value="get">取得</option>
+					<option value="create">作成</option>
+					<option value="edit">編集</option>
+					<option value="delete">削除</option>
+					<option value="addremoverobot">ロボットの追加・削除</option>
+				</select></label>
+
+				<label><span> </span><input type="submit" value="送信" onclick="submitValues()" /></label>
+			</form>
+		</div>	
+
+		<script type="text/javascript">			
+		function submitValues(){
+			var	jsonObject = {};
+		
+			// Include the selected entity  into the dictionary
+			jsonObject["entity"] = document.getElementById("entity").value;
+			
+			// Include the selected operation into the dictionary
+			jsonObject["operation"] = document.getElementById("operation").value;
+			
+			// Get JSON representation of dictionary
+			var formData = JSON.stringify(jsonObject);
+		
+			window.external.setResult(formData);
+			return true;
+		}
+		
+		function updateOperations(){
+			var selectedEntity = document.getElementById("entity").value;
+			var operationElement = document.getElementById("operation");
+			
+			// Select the appropriate set of operations based on the chosen entity
+			switch (selectedEntity){
+				case "asset":
+					operationElement.innerHTML = '<option value="get">取得</option><option value="create">作成</option><option value="edit">編集</option><option value="delete">削除</option>';
+				break;
+				case "user":
+					operationElement.innerHTML = '<option value="get">取得</option><option value="create">作成</option><option value="edit">編集</option><option value="delete">削除</option>';
+				break;
+				case "machine":
+					operationElement.innerHTML = '<option value="get">取得</option><option value="create">作成</option><option value="delete">削除</option>';
+				break;
+				case "robot":
+					operationElement.innerHTML = '<option value="get">取得</option><option value="create">作成</option><option value="edit">編集</option><option value="delete">削除</option>';
+				break;
+				case "environment":
+					operationElement.innerHTML = '<option value="get">取得</option><option value="create">作成</option><option value="delete">削除</option><option value="addremoverobot">ロボットの追加・削除</option>';
+				break;
+			}
+		}
+		</script>
+	</body>
+</html>
