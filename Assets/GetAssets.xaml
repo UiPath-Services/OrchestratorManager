@@ -63,7 +63,7 @@
   <Sequence sap2010:Annotation.AnnotationText="Retrieve details about assets defined in Orchestrator." DisplayName="Get Assets" sap:VirtualizedContainerService.HintSize="476,950" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
-      <Variable x:TypeArguments="sd:DataTable" Name="SelectedOUsData" />
+      <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -74,14 +74,14 @@
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOrganizationUnits Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="OrganizationUnits/PromptUserForOrganizationUnits.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUs">[SelectedOUsData]</OutArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUs">[OUsData]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Assets\GetAssetsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[AssetsData]</OutArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[SelectedOUsData]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[OUsData]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written asset data and write new data about assets." CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,574" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
