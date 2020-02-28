@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>_FormTitle_</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.png" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style-2">
+			<div class="form-style-2-heading">_FormTitle_</div>
+			<span>_FormChooseOUMessage_</span>
+			<form id="controlPanelForm" action="" method="post">
+			
+				<label><select multiple id="ous"  class="select-field">
+					_FormOUsSelectOptions_
+				</select></label>
+				
+				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
+			</form>
+		</div>	
+
+		<script type="text/javascript">			
+		function submitValues(elem){
+			var	jsonObject = {};
+			jsonObject["ous"] = getSelectValues(document.getElementById("ous"));
+			
+			// Get JSON representation of dictionary
+			var formData = JSON.stringify(jsonObject);
+		
+			window.external.setResult(formData);
+			return true;
+		}
+		
+		// Return an array of the selected opion values
+		// select is an HTML select element
+		// From https://stackoverflow.com/a/5867262/3751868
+		function getSelectValues(select) {
+		  var result = [];
+		  var options = select && select.options;
+		  var opt;
+
+		  for (var i=0, iLen=options.length; i<iLen; i++) {
+			opt = options[i];
+
+			if (opt.selected) {
+			  result.push(opt.value || opt.text);
+			}
+		  }
+		  return result;
+		}
+		</script>
+	</body>
+</html>
