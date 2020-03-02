@@ -1,15 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="InitializeConfigurations" this:InitializeConfigurations.in_ConfigFile="Config\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="InitializeConfigurations" this:InitializeConfigurations.in_ConfigFile="Config\Config.xlsx" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_ConfigFile" Type="InArgument(x:String)" />
     <x:Property Name="out_Config" Type="OutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_Language" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>635.333333333333,1472</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>674,1728</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAllSettings_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
+    <scg:List x:TypeArguments="x:String" Capacity="25">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -35,10 +36,10 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Globalization</x:String>
       <x:String>UiPath.Excel</x:String>
-    </sco:Collection>
+    </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -63,9 +64,9 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
-    </sco:Collection>
+    </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config\Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="615.333333333333,1412" sap2010:WorkflowViewState.IdRef="Sequence_2">
+  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config\Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="654,1668" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="Settings" />
     </Sequence.Variables>
@@ -75,7 +76,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign out_Config (Initialization)" sap:VirtualizedContainerService.HintSize="573.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign out_Config (Initialization)" sap:VirtualizedContainerService.HintSize="612,62" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)">[out_Config]</OutArgument>
       </Assign.To>
@@ -83,16 +84,17 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)">[New Dictionary(of String, GenericValue)]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:ReadRange AddHeaders="True" DataTable="[Settings]" DisplayName="Read Range (Settings Sheet)" sap:VirtualizedContainerService.HintSize="573.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="Settings" WorkbookPath="[in_ConfigFile]">
+    <ui:ReadRange AddHeaders="True" DataTable="[Settings]" DisplayName="Read Range (Settings Sheet)" sap:VirtualizedContainerService.HintSize="612,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_1" SheetName="Settings" WorkbookPath="[in_ConfigFile]">
       <ui:ReadRange.Range>
         <InArgument x:TypeArguments="x:String">
           <Literal x:TypeArguments="x:String" Value="" />
         </InArgument>
       </ui:ReadRange.Range>
     </ui:ReadRange>
-    <Sequence sap2010:Annotation.AnnotationText="Read localized settings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localized Settings" sap:VirtualizedContainerService.HintSize="573.333333333333,604" sap2010:WorkflowViewState.IdRef="Sequence_13">
+    <Sequence sap2010:Annotation.AnnotationText="Read localized settings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localized Settings" sap:VirtualizedContainerService.HintSize="612,860" sap2010:WorkflowViewState.IdRef="Sequence_13">
       <Sequence.Variables>
         <Variable x:TypeArguments="sd:DataTable" Name="LocalizedSettings" />
+        <Variable x:TypeArguments="x:String" Name="Language" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -101,14 +103,36 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:ReadRange AddHeaders="True" DataTable="[LocalizedSettings]" DisplayName="Read Range (LocalizedSettings Sheet)" sap:VirtualizedContainerService.HintSize="531.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="LocalizedSettings" WorkbookPath="[in_ConfigFile]">
+      <ui:ReadRange AddHeaders="True" DataTable="[LocalizedSettings]" DisplayName="Read Range (LocalizedSettings Sheet)" sap:VirtualizedContainerService.HintSize="570,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="LocalizedSettings" WorkbookPath="[in_ConfigFile]">
         <ui:ReadRange.Range>
           <InArgument x:TypeArguments="x:String">
             <Literal x:TypeArguments="x:String" Value="" />
           </InArgument>
         </ui:ReadRange.Range>
       </ui:ReadRange>
-      <Switch x:TypeArguments="x:String" DisplayName="Switch System's Language" Expression="[System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName]" sap:VirtualizedContainerService.HintSize="531.333333333333,145.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+      <If Condition="[String.IsNullOrWhiteSpace(in_Language)]" DisplayName="If No Language Was Specified" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_9">
+        <If.Then>
+          <Assign DisplayName="Assign Language (Retrieved From System)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_28">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[Language]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Then>
+        <If.Else>
+          <Assign DisplayName="Assign Language (Specified by User)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_29">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[Language]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_Language]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Else>
+      </If>
+      <Switch x:TypeArguments="x:String" DisplayName="Switch System's Language" Expression="[Language.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="570,145.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
         <Switch.Default>
           <ui:FilterDataTable DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (EN)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
             <ui:FilterDataTable.Filters>
@@ -138,7 +162,7 @@
           </ui:FilterDataTable.SelectColumns>
         </ui:FilterDataTable>
       </Switch>
-      <Assign DisplayName="Assign Value ColumnName" sap:VirtualizedContainerService.HintSize="531.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+      <Assign DisplayName="Assign Value ColumnName" sap:VirtualizedContainerService.HintSize="570,62" sap2010:WorkflowViewState.IdRef="Assign_27">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[LocalizedSettings.Columns(1).ColumnName]</OutArgument>
         </Assign.To>
@@ -146,7 +170,7 @@
           <InArgument x:TypeArguments="x:String">Value</InArgument>
         </Assign.Value>
       </Assign>
-      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table" sap:VirtualizedContainerService.HintSize="531.333333333333,67.3333333333333" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedSettings]">
+      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table" sap:VirtualizedContainerService.HintSize="570,67.3333333333333" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedSettings]">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
