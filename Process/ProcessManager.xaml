@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>578,788</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>558.666666666667,374.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -68,18 +68,18 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Processes." DisplayName="Process Manager" sap:VirtualizedContainerService.HintSize="558,728" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Processes." DisplayName="Process Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,314.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Process Operation)" Expression="[in_ProcessOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="516,605.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Process Operation)" Expression="[in_ProcessOperation]" sap:VirtualizedContainerService.HintSize="496.666666666667,192" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (No Operation Specified)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[in_Config(&quot;UnsupportedOperation&quot;)]" />
       </Switch.Default>
-      <Sequence x:Key="get" DisplayName="Get" sap:VirtualizedContainerService.HintSize="476,344" sap2010:WorkflowViewState.IdRef="Sequence_10">
+      <Sequence x:Key="get" DisplayName="Get" sap:VirtualizedContainerService.HintSize="476,304" sap2010:WorkflowViewState.IdRef="Sequence_10">
         <Sequence.Variables>
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
         </Sequence.Variables>
@@ -113,7 +113,7 @@
       </Sequence>
       <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,779.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
@@ -123,13 +123,13 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" ReadOnly="True" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;EnvironmentConfigFilepath&quot;)]">
+        <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Excel Application Scope (Create Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" ReadOnly="True" Visible="False" Workbook="[OpenedWorkbook]" WorkbookPath="[in_Config(&quot;ProcessConfigFilepath&quot;)]">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[EnvironmentDetails]" DisplayName="Read Range (Environment Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[ProcessesDetails]" DisplayName="Read Range (Process Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -145,27 +145,23 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Misc/ConfirmNumerousRequests.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Misc/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[ProcessesDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[EnvironmentDetails]" DisplayName="For Each Row (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Create Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="EnvironmentDetails" />
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ProcessDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(EnvironmentDetails(3).ToString)]" DisplayName="If Unprocessed Create Environment" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+              <If Condition="[String.IsNullOrWhiteSpace(ProcessDetails(3).ToString)]" DisplayName="If Unprocessed Create Process" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateEnvironment Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Environments\CreateEnvironment.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcess Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Process\CreateProcess.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenedWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUName">[EnvironmentDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">[EnvironmentDetails(1).ToString]</InArgument>
+                      <scg:Dictionary x:TypeArguments="x:String, Argument" />
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -252,87 +248,6 @@
                 </If.Then>
                 <If.Else>
                   <ui:LogMessage DisplayName="Log Message (Processed Delete Environment)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
-            </ActivityAction>
-          </ui:ForEachRow.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
-      </Sequence>
-      <Sequence x:Key="addremoverobot" DisplayName="Add/Remove Environment Robots" sap:VirtualizedContainerService.HintSize="699.333333333333,779.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
-        <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsDetails" />
-          <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
-        </Sequence.Variables>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove Environment Robots)" sap:VirtualizedContainerService.HintSize="657.333333333333,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_7" Visible="False" Workbook="[OpenWorkbook]" WorkbookPath="[in_Config(&quot;EnvironmentConfigFilepath&quot;)]">
-          <ui:ExcelApplicationScope.Body>
-            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-              </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[EnvironmentsDetails]" DisplayName="Read Range (Add/Remove Environment Robots List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_6" SheetName="[in_Config(&quot;AddRemoveRobotsOperationName&quot;)]" UseFilter="True">
-                <ui:ExcelReadRange.Range>
-                  <InArgument x:TypeArguments="x:String">
-                    <Literal x:TypeArguments="x:String" Value="" />
-                  </InArgument>
-                </ui:ExcelReadRange.Range>
-              </ui:ExcelReadRange>
-            </ActivityAction>
-          </ui:ExcelApplicationScope.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Add/Remove Environment Robots)" sap:VirtualizedContainerService.HintSize="657.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Misc/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentsDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[EnvironmentsDetails]" DisplayName="For Each Row (Add/Remove Environment Robots)" sap:VirtualizedContainerService.HintSize="657.333333333333,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_9">
-          <ui:ForEachRow.Body>
-            <ActivityAction x:TypeArguments="sd:DataRow">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="EnvironmentDetails" />
-              </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(EnvironmentDetails(4).ToString)]" DisplayName="If Unprocessed Add/Remove Environment Robots" sap:VirtualizedContainerService.HintSize="606.666666666667,240.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveEnvironmentRobots Workflow" sap:VirtualizedContainerService.HintSize="360.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Environments\AddRemoveEnvironmentRobots.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUName">[EnvironmentDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">[EnvironmentDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRobotsNames">[EnvironmentDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRobotsNames">[EnvironmentDetails(3).ToString]</InArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Add/Remove Environment Robots)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">False</x:Boolean>

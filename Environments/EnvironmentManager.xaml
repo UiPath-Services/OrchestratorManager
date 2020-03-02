@@ -75,7 +75,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Environment Operation)" Expression="[in_EnvironmentOperation.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,215.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Environment Operation)" Expression="[in_EnvironmentOperation]" sap:VirtualizedContainerService.HintSize="496.666666666667,215.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (No Operation Specified)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[in_Config(&quot;UnsupportedOperation&quot;)]" />
       </Switch.Default>
@@ -113,7 +113,7 @@
       </Sequence>
       <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,779.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsDetails" />
           <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenedWorkbook" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
         </Sequence.Variables>
@@ -129,7 +129,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[EnvironmentDetails]" DisplayName="Read Range (Environment Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[EnvironmentsDetails]" DisplayName="Read Range (Environment Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -148,10 +148,10 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Misc/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentsDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[EnvironmentDetails]" DisplayName="For Each Row (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[EnvironmentsDetails]" DisplayName="For Each Row (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
