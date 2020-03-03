@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>647.333333333333,1158.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>647.333333333333,1378</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -37,7 +37,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="21">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="42">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -59,9 +59,10 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="A tool to help Orchestrator administrators to perform bulk operations on entities like Users, Robots, Assets, Machines, Environments and Processes." DisplayName="Orchestrator Manager" sap:VirtualizedContainerService.HintSize="627.333333333333,1058.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="A tool to help Orchestrator administrators to perform bulk operations on entities like Users, Robots, Assets, Machines, Environments and Processes." DisplayName="Orchestrator Manager" sap:VirtualizedContainerService.HintSize="627.333333333333,1191.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" Name="Config" />
       <Variable x:TypeArguments="x:Boolean" Default="False" Name="ShouldStop" />
@@ -74,9 +75,9 @@
     </sap:WorkflowViewStateService.ViewState>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke InitializeConfigurations Workflow" sap:VirtualizedContainerService.HintSize="585.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Misc/InitializeConfigurations.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFile">Config\Config.xlsx</InArgument>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">[Config]</OutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Language">[in_Language]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilepath">Config\Config.xlsx</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="585.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Misc/Authenticate.xaml">
@@ -84,8 +85,8 @@
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[Config]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <While DisplayName="While User Does Not Stop Execution" sap:VirtualizedContainerService.HintSize="585.333333333333,668" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Config.ContainsKey(&quot;Token&quot;) AndAlso Not ShouldStop]">
-      <Sequence DisplayName="Perform Operation on Entity" sap:VirtualizedContainerService.HintSize="538.666666666667,504" sap2010:WorkflowViewState.IdRef="Sequence_14">
+    <While DisplayName="While User Does Not Stop Execution" sap:VirtualizedContainerService.HintSize="585.333333333333,800.666666666667" sap2010:WorkflowViewState.IdRef="While_1" Condition="[Config.ContainsKey(&quot;Token&quot;) AndAlso Not ShouldStop]">
+      <Sequence DisplayName="Perform Operation on Entity" sap:VirtualizedContainerService.HintSize="538.666666666667,636.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:String" Name="Entity" />
           <Variable x:TypeArguments="x:String" Name="Operation" />
@@ -103,7 +104,7 @@
             <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <Switch x:TypeArguments="x:String" DisplayName="Switch (Entity)" Expression="[Entity]" sap:VirtualizedContainerService.HintSize="496.666666666667,285.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+        <Switch x:TypeArguments="x:String" DisplayName="Switch (Entity)" Expression="[Entity]" sap:VirtualizedContainerService.HintSize="496.666666666667,418" sap2010:WorkflowViewState.IdRef="Switch`1_2">
           <Switch.Default>
             <ui:LogMessage DisplayName="Log Message (Unsupported Entity)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[Config(&quot;UnsupportedEntity&quot;)]" />
           </Switch.Default>
