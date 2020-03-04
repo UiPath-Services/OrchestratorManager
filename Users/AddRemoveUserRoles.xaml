@@ -4,8 +4,8 @@
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
     <x:Property Name="in_UserIndex" Type="InArgument(x:Int32)" />
-    <x:Property Name="in_AddOUsNames" Type="InArgument(x:String)" />
-    <x:Property Name="in_RemoveOUsNames" Type="InArgument(x:String)" />
+    <x:Property Name="in_AddRolesNames" Type="InArgument(x:String)" />
+    <x:Property Name="in_RemoveRolesNames" Type="InArgument(x:String)" />
   </x:Members>
   <sap:VirtualizedContainerService.HintSize>742,1787.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
@@ -58,7 +58,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Add or remove the specified Organization Units to the specified User." DisplayName="Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="722,1727.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Add or remove the specified Roles to the specified User." DisplayName="Add/Remove User's Roles" sap:VirtualizedContainerService.HintSize="722,1727.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -70,12 +70,12 @@
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="641.333333333333,1366.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
+        <Sequence DisplayName="Try to Add/Remove User's Roles" sap:VirtualizedContainerService.HintSize="641.333333333333,1366.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="UserID" />
-            <Variable x:TypeArguments="scg:List(x:Int64)" Name="AddOUsIDs" />
-            <Variable x:TypeArguments="scg:List(x:Int64)" Name="RemoveOUsIDs" />
             <Variable x:TypeArguments="x:Int32" Name="AddRemoveIndex" />
+            <Variable x:TypeArguments="s1:String[]" Name="AddRolesNames" />
+            <Variable x:TypeArguments="s1:String[]" Name="RemoveRolesNames" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -83,9 +83,6 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="599.333333333333,270.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_27">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
-            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -134,10 +131,9 @@
                 </sap:WorkflowViewStateService.ViewState>
               </Assign>
             </Sequence>
-            <Sequence DisplayName="Get OUs IDs" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_35">
+            <Sequence DisplayName="Verify Roles Names" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_40">
               <Sequence.Variables>
-                <Variable x:TypeArguments="s1:String[]" Default="[{}]" Name="AddOUsNames" />
-                <Variable x:TypeArguments="s1:String[]" Default="[{}]" Name="RemoveOUsNames" />
+                <Variable x:TypeArguments="sd:DataTable" Name="RolesData" />
               </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -145,60 +141,63 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <Assign DisplayName="Assign AddOUsNames" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_28">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="s1:String[]">[AddOUsNames]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="s1:String[]">[in_AddOUsNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
-                </Assign.Value>
-              </Assign>
-              <Assign DisplayName="Assign RemoveOUsNames" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_29">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="s1:String[]">[RemoveOUsNames]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="s1:String[]">[in_RemoveOUsNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
-                </Assign.Value>
-              </Assign>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsIDsBasedOnNames Workflow (OUs To Add)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="OrganizationUnits\GetOrganizationUnitsIDsBasedOnNames.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRolesData Workflow" sap:VirtualizedContainerService.HintSize="520.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Roles\GetRolesData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
                   <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">[AddOUsIDs]</OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">[AddOUsNames]</InArgument>
+                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RolesData">[RolesData]</OutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsIDsBasedOnNames Workflow (OUs to Remove)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="OrganizationUnits\GetOrganizationUnitsIDsBasedOnNames.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">[RemoveOUsIDs]</OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">[RemoveOUsNames]</InArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
-              <If Condition="[RemoveOUsIDs.Intersect(AddOUsIDs).Count &gt; 0]" DisplayName="If Any OU Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_41">
+              <Assign DisplayName="Assign AddRolesNames" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_33">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s1:String[]">[AddRolesNames]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s1:String[]">[in_AddRolesNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Assign RemoveRolesNames" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_34">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s1:String[]">[RemoveRolesNames]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s1:String[]">[in_RemoveRolesNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role" sap:VirtualizedContainerService.HintSize="520.666666666667,352.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[AddRolesNames.Concat(RemoveRolesNames)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:String">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:String" Name="RoleName" />
+                    </ActivityAction.Argument>
+                    <If Condition="[RolesData.Rows.Find({RoleName}) Is Nothing]" DisplayName="If Role Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_45">
+                      <If.Then>
+                        <Throw DisplayName="Throw (Role Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRoleNotFound&quot;), RoleName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_29" />
+                      </If.Then>
+                    </If>
+                  </ActivityAction>
+                </ui:ForEach.Body>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <Throw DisplayName="Throw (OU Added And Removed)" Exception="[New ArgumentException(in_Config(&quot;OUAddedAndRemoved&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_27" />
-                </If.Then>
-              </If>
+              </ui:ForEach>
             </Sequence>
           </Sequence>
-          <ui:ForEach x:TypeArguments="scg:List(x:Int64)" CurrentIndex="[AddRemoveIndex]" DisplayName="For Each OUs IDs Set" sap:VirtualizedContainerService.HintSize="599.333333333333,964" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[{AddOUsIDs, RemoveOUsIDs}]">
+          <ui:ForEach x:TypeArguments="s1:String[]" CurrentIndex="[AddRemoveIndex]" DisplayName="For Each Roles Names Set" sap:VirtualizedContainerService.HintSize="599.333333333333,964" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[{AddRolesNames, RemoveRolesNames}]">
             <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="scg:List(x:Int64)">
+              <ActivityAction x:TypeArguments="s1:String[]">
                 <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="scg:List(x:Int64)" Name="OUsIDs" />
+                  <DelegateInArgument x:TypeArguments="s1:String[]" Name="RolesNames" />
                 </ActivityAction.Argument>
-                <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" DisplayName="For Each OU" sap:VirtualizedContainerService.HintSize="562.666666666667,825.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[OUsIDs]">
+                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role Name" sap:VirtualizedContainerService.HintSize="562.666666666667,825.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[RolesNames]">
                   <ui:ForEach.Body>
-                    <ActivityAction x:TypeArguments="x:Int64">
+                    <ActivityAction x:TypeArguments="x:String">
                       <ActivityAction.Argument>
-                        <DelegateInArgument x:TypeArguments="x:Int64" Name="OUID" />
+                        <DelegateInArgument x:TypeArguments="x:String" Name="RoleName" />
                       </ActivityAction.Argument>
                       <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="526,686.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_38">
                         <Sequence.Variables>
@@ -211,15 +210,15 @@
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <Assign DisplayName="Assign Organization Unit ID" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_30">
+                        <Assign DisplayName="Assign Role" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_30">
                           <Assign.To>
-                            <OutArgument x:TypeArguments="x:Object">[RequestBody("organizationUnitId")]</OutArgument>
+                            <OutArgument x:TypeArguments="x:Object">[RequestBody("role")]</OutArgument>
                           </Assign.To>
                           <Assign.Value>
-                            <InArgument x:TypeArguments="x:Object">[OUID]</InArgument>
+                            <InArgument x:TypeArguments="x:Object">[RoleName]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <If Condition="[AddRemoveIndex = 0]" DisplayName="If OU Should Be Added Or Removed" sap:VirtualizedContainerService.HintSize="484,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_44">
+                        <If Condition="[AddRemoveIndex = 0]" DisplayName="If Role Should Be Added Or Removed" sap:VirtualizedContainerService.HintSize="484,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_44">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -227,7 +226,7 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                           <If.Then>
-                            <Assign DisplayName="Assign Toggle OU (Add)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_32">
+                            <Assign DisplayName="Assign Toggle Role (Add)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_32">
                               <Assign.To>
                                 <OutArgument x:TypeArguments="x:Object">[RequestBody("toggle")]</OutArgument>
                               </Assign.To>
@@ -237,7 +236,7 @@
                             </Assign>
                           </If.Then>
                           <If.Else>
-                            <Assign DisplayName="Assign Toggle OU (Remove)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_31">
+                            <Assign DisplayName="Assign Toggle Role (Remove)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_31">
                               <Assign.To>
                                 <OutArgument x:TypeArguments="x:Object">[RequestBody("toggle")]</OutArgument>
                               </Assign.To>
@@ -247,7 +246,7 @@
                             </Assign>
                           </If.Else>
                         </If>
-                        <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Toggle OU)" EndPoint="[String.Format(&quot;{0}/odata/Users({1})/UiPath.Server.Configuration.OData.ToggleOrganizationUnit&quot;, in_Config(&quot;OrchestratorURL&quot;), UserID)]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+                        <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Toggle Role)" EndPoint="[String.Format(&quot;{0}/odata/Users({1})/UiPath.Server.Configuration.OData.ToggleRole&quot;, in_Config(&quot;OrchestratorURL&quot;), UserID)]" sap:VirtualizedContainerService.HintSize="484,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
                           <ui:HttpClient.Attachments>
                             <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                           </ui:HttpClient.Attachments>
@@ -272,10 +271,10 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                           <If.Then>
-                            <Throw DisplayName="Throw (Add/Remove User's Organization Units Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;ProcessEntityFailure&quot;), StatusCode, Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                            <Throw DisplayName="Throw (Add/Remove User's Roles Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;ProcessEntityFailure&quot;), StatusCode, Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
                           </If.Then>
                         </If>
-                        <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Add/Remove User's Organization Units)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_1">
+                        <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay (Add/Remove User's Roles)" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_1">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -285,12 +284,6 @@
                       </Sequence>
                     </ActivityAction>
                   </ui:ForEach.Body>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
                 </ui:ForEach>
               </ActivityAction>
             </ui:ForEach.Body>
@@ -309,7 +302,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s1:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+            <Sequence DisplayName="Failed to Add/Remove User's Roles" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -342,7 +335,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[in_Config(&quot;AddRemoveOrganizationUnitsResultColumn&quot;)+(2+in_UserIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;AddRemoveOrganizationUnitsOperationName&quot;)]" Text="[OperationResult]">
+              <ui:ExcelWriteCell Cell="[in_Config(&quot;AddRemoveRolesResultColumn&quot;)+(2+in_UserIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;AddRemoveRolesOperationName&quot;)]" Text="[OperationResult]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
