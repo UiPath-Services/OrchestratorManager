@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>674,1932</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>674,2320</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAllSettings_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -66,7 +66,7 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config\Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="654,1872" sap2010:WorkflowViewState.IdRef="Sequence_2">
+  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config\Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="654,2260" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="Settings" />
     </Sequence.Variables>
@@ -99,9 +99,33 @@
         </InArgument>
       </ui:ReadRange.Range>
     </ui:ReadRange>
-    <Sequence sap2010:Annotation.AnnotationText="Read localized settings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localized Settings" sap:VirtualizedContainerService.HintSize="612,962" sap2010:WorkflowViewState.IdRef="Sequence_13">
+    <Sequence DisplayName="Initialize Advanced Settings" sap:VirtualizedContainerService.HintSize="612,286" sap2010:WorkflowViewState.IdRef="Sequence_14">
       <Sequence.Variables>
-        <Variable x:TypeArguments="sd:DataTable" Name="LocalizedSettings" />
+        <Variable x:TypeArguments="sd:DataTable" Name="AdvancedSettings" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:ReadRange AddHeaders="True" DataTable="[AdvancedSettings]" DisplayName="Read Range (Advanced Settings Sheet)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_3" SheetName="Advanced Settings" WorkbookPath="[in_ConfigFilepath]">
+        <ui:ReadRange.Range>
+          <InArgument x:TypeArguments="x:String">
+            <Literal x:TypeArguments="x:String" Value="" />
+          </InArgument>
+        </ui:ReadRange.Range>
+      </ui:ReadRange>
+      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add advanced settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table (Advanced Settings)" sap:VirtualizedContainerService.HintSize="334,67.3333333333333" sap2010:WorkflowViewState.IdRef="MergeDataTable_2" MissingSchemaAction="Add" Source="[AdvancedSettings]">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:MergeDataTable>
+    </Sequence>
+    <Sequence sap2010:Annotation.AnnotationText="Read localization strings from the configuration file and add them to the Config dictionary." DisplayName="Initialize Localization Strings" sap:VirtualizedContainerService.HintSize="612,1024" sap2010:WorkflowViewState.IdRef="Sequence_13">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="sd:DataTable" Name="LocalizedStrings" />
         <Variable x:TypeArguments="x:String" Name="Language" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
@@ -111,7 +135,7 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:ReadRange AddHeaders="True" DataTable="[LocalizedSettings]" DisplayName="Read Range (LocalizedSettings Sheet)" sap:VirtualizedContainerService.HintSize="570,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="LocalizedSettings" WorkbookPath="[in_ConfigFilepath]">
+      <ui:ReadRange AddHeaders="True" DataTable="[LocalizedStrings]" DisplayName="Read Range (Localization Sheet)" sap:VirtualizedContainerService.HintSize="570,86.6666666666667" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="Localization" WorkbookPath="[in_ConfigFilepath]">
         <ui:ReadRange.Range>
           <InArgument x:TypeArguments="x:String">
             <Literal x:TypeArguments="x:String" Value="" />
@@ -142,7 +166,7 @@
       </If>
       <Switch x:TypeArguments="x:String" DisplayName="Switch System's Language" Expression="[Language.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="570,145.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
         <Switch.Default>
-          <ui:FilterDataTable DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (EN)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
+          <ui:FilterDataTable DataTable="[LocalizedStrings]" DisplayName="Filter DataTable (EN)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[LocalizedStrings]" SelectColumnsMode="Keep">
             <ui:FilterDataTable.Filters>
               <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
                 <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
@@ -156,7 +180,7 @@
             </ui:FilterDataTable.SelectColumns>
           </ui:FilterDataTable>
         </Switch.Default>
-        <ui:FilterDataTable x:Key="ja" DataTable="[LocalizedSettings]" DisplayName="Filter DataTable (JA)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[LocalizedSettings]" SelectColumnsMode="Keep">
+        <ui:FilterDataTable x:Key="ja" DataTable="[LocalizedStrings]" DisplayName="Filter DataTable (JA)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[LocalizedStrings]" SelectColumnsMode="Keep">
           <ui:FilterDataTable.Filters>
             <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
               <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
@@ -178,15 +202,20 @@
           <InArgument x:TypeArguments="ui:GenericValue">[New GenericValue(Language.ToUpperInvariant)]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign DisplayName="Assign Value ColumnName" sap:VirtualizedContainerService.HintSize="570,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+      <Assign sap2010:Annotation.AnnotationText="Change the name of the column from the language code (e.g., EN or JA) to &quot;Value&quot; in order to merge the DataTables." DisplayName="Assign Value ColumnName" sap:VirtualizedContainerService.HintSize="570,124" sap2010:WorkflowViewState.IdRef="Assign_27">
         <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[LocalizedSettings.Columns(1).ColumnName]</OutArgument>
+          <OutArgument x:TypeArguments="x:String">[LocalizedStrings.Columns(1).ColumnName]</OutArgument>
         </Assign.To>
         <Assign.Value>
           <InArgument x:TypeArguments="x:String">Value</InArgument>
         </Assign.Value>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
       </Assign>
-      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized settings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table" sap:VirtualizedContainerService.HintSize="570,67.3333333333333" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedSettings]">
+      <ui:MergeDataTable sap2010:Annotation.AnnotationText="Add localized strings to the overall settings table." Destination="[Settings]" DisplayName="Merge Data Table (Localization)" sap:VirtualizedContainerService.HintSize="570,67.3333333333333" sap2010:WorkflowViewState.IdRef="MergeDataTable_1" MissingSchemaAction="Add" Source="[LocalizedStrings]">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

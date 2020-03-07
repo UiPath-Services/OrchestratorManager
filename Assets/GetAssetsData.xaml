@@ -30,6 +30,7 @@
       <x:String>System.Net</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
       <x:String>Newtonsoft.Json</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -46,6 +47,7 @@
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>System.Xml</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -134,7 +136,7 @@
                 <ui:ForEach.Body>
                   <ActivityAction x:TypeArguments="njl:JObject">
                     <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="njl:JObject" Name="AssetDetails" />
+                      <DelegateInArgument x:TypeArguments="njl:JObject" Name="AssetData" />
                     </ActivityAction.Argument>
                     <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,897.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_24">
                       <Sequence.Variables>
@@ -174,7 +176,7 @@
                           <OutArgument x:TypeArguments="x:Object">[NewAssetRow(2)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(AssetDetails("Id"))]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(AssetData("Id"))]</InArgument>
                         </Assign.Value>
                       </Assign>
                       <Assign DisplayName="Assign Asset Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_21">
@@ -182,7 +184,7 @@
                           <OutArgument x:TypeArguments="x:Object">[NewAssetRow(3)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[AssetDetails("Name")]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[AssetData("Name")]</InArgument>
                         </Assign.Value>
                       </Assign>
                       <Assign DisplayName="Assign Asset Type" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_22">
@@ -190,10 +192,10 @@
                           <OutArgument x:TypeArguments="x:Object">[NewAssetRow(4)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[AssetDetails("ValueType")]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[AssetData("ValueType")]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <If sap2010:Annotation.AnnotationText="Returns empty string if asset is of credential type, since credentials cannot be retrieved via API." Condition="[AssetDetails(&quot;ValueType&quot;).ToString.ToLowerInvariant = &quot;credential&quot;]" DisplayName="If Credential Asset" sap:VirtualizedContainerService.HintSize="262,131.333333333333" sap2010:WorkflowViewState.IdRef="If_12">
+                      <If sap2010:Annotation.AnnotationText="Returns only username if Asset is of credential type, since passwords cannot be retrieved via Orchestrator API." Condition="[AssetData(&quot;ValueType&quot;).ToString.ToLowerInvariant = &quot;credential&quot;]" DisplayName="If Credential Asset" sap:VirtualizedContainerService.HintSize="262,131.333333333333" sap2010:WorkflowViewState.IdRef="If_13">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -202,12 +204,12 @@
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
                         <If.Then>
-                          <Assign sap2010:Annotation.AnnotationText="Credential assets cannot be retrieved via API requests." DisplayName="Assign Asset Value (Credential)" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_16">
+                          <Assign sap2010:Annotation.AnnotationText="Passwords cannot be retrieved via Orchestrator API requests." DisplayName="Assign Asset Value (Credential Username)" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_23">
                             <Assign.To>
                               <OutArgument x:TypeArguments="x:Object">[NewAssetRow(5)]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
-                              <InArgument x:TypeArguments="x:Object">[String.Empty]</InArgument>
+                              <InArgument x:TypeArguments="x:Object">[AssetData("CredentialUsername").ToString]</InArgument>
                             </Assign.Value>
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -217,12 +219,12 @@
                           </Assign>
                         </If.Then>
                         <If.Else>
-                          <Assign DisplayName="Assign Asset Value" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_17">
+                          <Assign DisplayName="Assign Asset Value" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_24">
                             <Assign.To>
                               <OutArgument x:TypeArguments="x:Object">[NewAssetRow(5)]</OutArgument>
                             </Assign.To>
                             <Assign.Value>
-                              <InArgument x:TypeArguments="x:Object">[AssetDetails("Value").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:Object">[AssetData("Value").ToString]</InArgument>
                             </Assign.Value>
                           </Assign>
                         </If.Else>
