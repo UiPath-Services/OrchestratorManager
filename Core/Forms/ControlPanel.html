@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Orchestrator Manager</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style">
+			<div class="form-style-heading">Orchestrator Manager</div>
+			<form id="controlPanelForm" action="" method="post">
+				<label for="entity"><span>Entity</span><select id="entity" onchange="updateOperations()" class="select-field">
+					<option value="asset">Asset</option>
+					<option value="user">User</option>
+					<option value="machine">Machine</option>
+					<option value="robot">Robot</option>
+					<option value="environment">Environment</option>
+					<option value="process">Process</option>
+				</select></label>
+				
+				<label for="operation"><span>Operation</span><select id="operation" class="select-field">
+					<option value="get">Get</option>
+					<option value="create">Create</option>
+					<option value="createcredential">Create Credential</option>
+					<option value="edit">Edit</option>
+					<option value="editcredential">Edit Credential</option>
+					<option value="delete">Delete</option>
+				</select></label>
+
+				<div class="buttons">
+				<input type="submit" value="OK" id="submitButton" onclick="submitValues(this)" />
+				<input type="submit" value="Cancel" id="cancelButton" onclick="submitValues(this)" />
+				<div>
+			</form>
+		</div>	
+
+		<script type="text/javascript">			
+		function submitValues(elem){
+			var	jsonObject = {};
+			
+			// Should stop after performing operation
+			if (elem.id == "cancelButton") {
+				jsonObject["shouldStop"] = true;
+				jsonObject["entity"] = "";
+				jsonObject["operation"] = "";
+			} else {
+				jsonObject["shouldStop"] = false;
+				jsonObject["entity"] = document.getElementById("entity").value;
+				jsonObject["operation"] = document.getElementById("operation").value;
+			}
+			
+			// Get JSON representation of dictionary
+			var formData = JSON.stringify(jsonObject);
+		
+			window.external.setResult(formData);
+			return true;
+		}
+		
+		function updateOperations(){
+			var selectedEntity = document.getElementById("entity").value;
+			var operationElement = document.getElementById("operation");
+			
+			// Select the appropriate set of operations based on the chosen entity
+			switch (selectedEntity){
+				case "asset":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="createcredential">Create Credential</option><option value="edit">Edit</option><option value="editcredential">Edit Credential</option><option value="delete">Delete</option>';
+				break;
+				case "user":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="edit">Edit</option><option value="delete">Delete</option><option value="addremoveou">Add Or Remove OUs</option><option value="addremoverole">Add Or Remove Roles</option>';
+				break;
+				case "machine":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="delete">Delete</option>';
+				break;
+				case "robot":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="edit">Edit</option><option value="delete">Delete</option>';
+				break;
+				case "environment":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="delete">Delete</option><option value="addremoverobot">Add Or Remove Robots</option>';
+				break;
+				case "process":
+					operationElement.innerHTML = '<option value="get">Get</option><option value="create">Create</option><option value="delete">Delete</option>';
+				break;
+			}
+		}
+		</script>
+	</body>
+</html>
