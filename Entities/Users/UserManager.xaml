@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>558.666666666667,577.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>558.666666666667,676</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="46">
@@ -63,7 +63,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed related to Users." DisplayName="User Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,477.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Users." DisplayName="User Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,616" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -88,11 +88,11 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (User Operation)" Expression="[in_UserOperation]" sap:VirtualizedContainerService.HintSize="496.666666666667,262" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (User Operation)" Expression="[in_UserOperation]" sap:VirtualizedContainerService.HintSize="496.666666666667,400.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (No Operation Specified)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[in_Config(&quot;UnsupportedOperation&quot;)]" />
       </Switch.Default>
-      <Sequence x:Key="get" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get" sap:VirtualizedContainerService.HintSize="376,224" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="get" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get" sap:VirtualizedContainerService.HintSize="376,358.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -100,14 +100,15 @@
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsers workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities/Users/GetUsers.xaml">
+        <ui:LogMessage DisplayName="Log Message (Get)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetOperationName&quot;))]" />
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsers Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities/Users/GetUsers.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,779.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,916.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -118,6 +119,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (User)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;CreateOperationName&quot;))]" />
         <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_8" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -146,7 +148,7 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Create User)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Create User)" sap:VirtualizedContainerService.HintSize="764.666666666667,401.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
@@ -190,7 +192,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="edit" DisplayName="Edit" sap:VirtualizedContainerService.HintSize="672.666666666667,819.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_7">
+      <Sequence x:Key="edit" DisplayName="Edit" sap:VirtualizedContainerService.HintSize="672.666666666667,916.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -201,6 +203,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (Edit)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;EditOperationName&quot;))]" />
         <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Edit)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_6" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -229,7 +232,7 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Edit User)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Edit User)" sap:VirtualizedContainerService.HintSize="630.666666666667,396" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
@@ -272,7 +275,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,819.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_6">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -283,6 +286,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (Delete)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;DeleteOperationName&quot;))]" />
         <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -350,7 +354,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="addremoveou" DisplayName="Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="672.666666666667,819.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_10">
+      <Sequence x:Key="addremoveou" DisplayName="Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="708.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_10">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -361,7 +365,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove User's Organization Units)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Add/Remove User's Organization Units)" sap:VirtualizedContainerService.HintSize="666.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AddRemoveUserOrganizationUnitsOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove User's Organization Units)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="666.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -383,21 +388,21 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Add/Remove User's Organization Units)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Add/Remove User's Organization Units)" sap:VirtualizedContainerService.HintSize="666.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UsersDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Add/Remove User's Organization Unit)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[UsersDetails]" DisplayName="For Each Row (Add/Remove User's Organization Unit)" sap:VirtualizedContainerService.HintSize="666.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="UserDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(UserDetails(3).ToString)]" DisplayName="If Unprocessed Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
+              <If Condition="[String.IsNullOrWhiteSpace(UserDetails(3).ToString)]" DisplayName="If Unprocessed Add/Remove User's Organization Units" sap:VirtualizedContainerService.HintSize="616,240.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
                 <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveUserOrganizationUnits Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities/Users/AddRemoveUserOrganizationUnits.xaml">
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveUserOrganizationUnits Workflow" sap:VirtualizedContainerService.HintSize="370,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities/Users/AddRemoveUserOrganizationUnits.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                       <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
@@ -429,7 +434,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="addremoverole" DisplayName="Add/Remove User's Roles" sap:VirtualizedContainerService.HintSize="672.666666666667,819.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence x:Key="addremoverole" DisplayName="Add/Remove User's Roles" sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="UsersDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -440,6 +445,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (Add/remove User's Roles)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormUserOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AddRemoveUserRolesOperationName&quot;))]" />
         <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove User's Roles)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_11" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
