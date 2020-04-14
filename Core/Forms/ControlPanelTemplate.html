@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="FormStyle.css">
 	</head>
 
-	<body>
+	<body onload="hideUserOption()">
 		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
 
 		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
@@ -18,7 +18,7 @@
 			<form id="controlPanelForm" action="" method="post">
 				<label for="entity"><span>_FormEntityLabel_</span><select id="entity" onchange="updateOperations()" class="select-field">
 					<option value="asset">_FormAssetOption_</option>
-					<option value="user">_FormUserOption_</option>
+					<option id="userOption" value="user">_FormUserOption_</option>
 					<option value="machine">_FormMachineOption_</option>
 					<option value="robot">_FormRobotOption_</option>
 					<option value="environment">_FormEnvironmentOption_</option>
@@ -41,10 +41,17 @@
 			</form>
 		</div>	
 
-		<script type="text/javascript">			
+		<script type="text/javascript">	
+		function hideUserOption(){
+			// Hide Users option in case of Cloud Platform
+			if ("_FormOrchestratorType_" == "cloud") {
+				document.getElementById("userOption").outerHTML = "";
+			}
+		}
+		
 		function submitValues(elem){
 			var	jsonObject = {};
-			
+
 			// Should stop after performing operation
 			if (elem.id == "cancelButton") {
 				jsonObject["shouldStop"] = true;

@@ -15,41 +15,71 @@
 		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
 		<div class="form-style">
 			<div class="form-style-heading">_FormTitle_</div>
-
+			
 			<form id="authenticationPanelForm" action="" method="post">
-				<label for="orchestratorURL"><span>_FormOrchestratorURLLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormOrchestratorURLValue_" class="input-field" id="orchestratorURL" /></label>
-				<label for="orchestratorTenant"><span>_FormOrchestratorTenantLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormOrchestratorTenantValue_" class="input-field" id="orchestratorTenant" /></label>
-				<label for="workbooksFolderPath"><span>_FormWorkbooksFolderPathLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormWorkbooksFolderPathValue_" class="input-field" id="workbooksFolderPath" /></label>
-				<label for="username"><span>_FormUsernameLabel_<span class="required">*</span></span><input required="required" type="text" class="input-field" id="username" /></label>
-				<label for="password"><span>_FormPasswordLabel_<span class="required">*</span></span><input required="required" type="password" class="input-field" id="password" /></label>
+				<div class="orchestratorType">
+					<label for="onpremise"><input type="radio" onclick="orchestratorTypeCheck()" id="onPremises" name="orchestratorType" value="onPremises" checked="checked"/>_FormOnPremisesOrchestratorLabel_</label>
+					<label for="cloud"><input type="radio" onclick="orchestratorTypeCheck()" id="cloud" name="orchestratorType" value="cloud"/>_FormCloudOrchestratorLabel_</label>
+				</div>
+				
+				<div class="orchestratorOptions" id="onPremiseOrchestratorOptions">
+					<label for="username"><span>_FormUsernameLabel_<span class="required">*</span></span><input required="required" type="text" class="input-field" id="username" /></label>
+					<label for="password"><span>_FormPasswordLabel_<span class="required">*</span></span><input required="required" type="password" class="input-field" id="password" /></label>
+					<label for="orchestratorURL"><span>_FormOrchestratorURLLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormOrchestratorURLValue_" class="input-field" id="orchestratorURL" /></label>
+				</div>
+				
+				<div class="orchestratorOptions" id="cloudOrchestratorOptions">
+					<label for="clientID"><span>_FormClientIDLabel_<span class="required">*</span></span><input required="required" type="text" class="input-field" id="clientID" /></label>
+					<label for="userKey"><span>_FormUserKeyLabel_<span class="required">*</span></span><input required="required" type="text" class="input-field" id="userKey" /></label>
+					<label for="accountName"><span>_FormAccountNameLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormAccountNameValue_" class="input-field" id="accountName" /></label>
+				</div>
+				
+				<div class="orchestratorOptions" id="commonOrchestratorOptions">
+					<label for="tenantName"><span>_FormTenantNameLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormTenantNameValue_" class="input-field" id="tenantName" /></label>
+					<label for="workbooksFolderPath"><span>_FormWorkbooksFolderPathLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormWorkbooksFolderPathValue_" class="input-field" id="workbooksFolderPath" /></label>
+				<div/>
 				
 				<div class="buttons">
-				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
-				<input formnovalidate="formnovalidate" type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)"/>
+					<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
+					<input formnovalidate="formnovalidate" type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)"/>
 				</div>
 				<span class="accountLockoutWarning">_FormAccountLockoutWarning_</span>
 			</form>
 		</div>	
 		
 		<script type="text/javascript">	
+		function orchestratorTypeCheck() {
+			if (document.getElementById('onPremises').checked) {
+				document.getElementById('onPremiseOrchestratorOptions').style.display = 'block';
+				document.getElementById('cloudOrchestratorOptions').style.display = 'none';
+			} else {
+				document.getElementById('onPremiseOrchestratorOptions').style.display = 'none';
+				document.getElementById('cloudOrchestratorOptions').style.display = 'block';
+			}
+		}
+		
 		function submitValues(elem) {
 			var	jsonObject = {};
 			
 			// Should stop after performing operation
 			if (elem.id == "cancelButton") {
 				jsonObject["shouldStop"] = true;
-				jsonObject["orchestratorURL"] = "";
-				jsonObject["orchestratorTenant"] = "";
-				jsonObject["workbooksFolderPath"] = "";
-				jsonObject["username"] = "";
-				jsonObject["password"] = "";
 			} else {
+				// Should get on-premises or cloud parameters
+				if (document.getElementById('onPremises').checked) {
+					jsonObject["orchestratorType"] = "onPremises";
+					jsonObject["username"] = document.getElementById("username").value;
+					jsonObject["password"] = document.getElementById("password").value;
+					jsonObject["orchestratorURL"] = document.getElementById("orchestratorURL").value;
+				} else {
+					jsonObject["orchestratorType"] = "cloud";
+					jsonObject["clientID"] = document.getElementById("clientID").value;
+					jsonObject["userKey"] = document.getElementById("userKey").value;
+					jsonObject["accountName"] = document.getElementById("accountName").value;
+				}
 				jsonObject["shouldStop"] = false;
-				jsonObject["orchestratorURL"] = document.getElementById("orchestratorURL").value;
-				jsonObject["orchestratorTenant"] = document.getElementById("orchestratorTenant").value;
+				jsonObject["tenantName"] = document.getElementById("tenantName").value;
 				jsonObject["workbooksFolderPath"] = document.getElementById("workbooksFolderPath").value;
-				jsonObject["username"] = document.getElementById("username").value;
-				jsonObject["password"] = document.getElementById("password").value;
 			}
 			
 			// Get JSON representation of dictionary
