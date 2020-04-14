@@ -67,11 +67,6 @@
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
   <Sequence sap2010:Annotation.AnnotationText="Authenticate to on-premises Orchestrator instance and store authentication token in Config." DisplayName="Authenticate On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="568,974.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Sequence.Variables>
-      <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
-      <Variable x:TypeArguments="x:String" Name="Result" />
-      <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -114,6 +109,10 @@
       </Assign>
     </Sequence>
     <Sequence DisplayName="Get API Token" sap:VirtualizedContainerService.HintSize="526,377.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
+        <Variable x:TypeArguments="x:String" Name="Result" />
+      </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -130,15 +129,9 @@
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
         </ui:HttpClient.Headers>
         <ui:HttpClient.Parameters>
-          <InArgument x:TypeArguments="x:String" x:Key="tenancyName">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;TenantName&quot;)" />
-          </InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="usernameOrEmailAddress">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Username" />
-          </InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="password">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Password" />
-          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="tenancyName">[io_Config("TenantName")]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="usernameOrEmailAddress">[in_Username]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="password">[in_Password]</InArgument>
         </ui:HttpClient.Parameters>
         <ui:HttpClient.UrlSegments>
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -153,6 +146,9 @@
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
           <Sequence DisplayName="Extract Token" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
