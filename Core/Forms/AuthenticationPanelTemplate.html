@@ -1,6 +1,6 @@
 <!-- saved from url=(0016)http://localhost -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,11 +18,16 @@
 			
 			<form id="authenticationPanelForm" action="" method="post">
 				<div class="orchestratorType">
-					<label for="onpremise"><input type="radio" onclick="orchestratorTypeCheck()" id="onPremises" name="orchestratorType" value="onPremises" _FormOnPremisesOrchestratorCheck_/>_FormOnPremisesOrchestratorLabel_</label>
+					<label for="onPremises"><input type="radio" onclick="orchestratorTypeCheck()" id="onPremises" name="orchestratorType" value="onPremises" _FormOnPremisesOrchestratorCheck_/>_FormOnPremisesOrchestratorLabel_</label>
 					<label for="cloud"><input type="radio" onclick="orchestratorTypeCheck()" id="cloud" name="orchestratorType" value="cloud" _FormCloudOrchestratorCheck_/>_FormCloudOrchestratorLabel_</label>
 				</div>
 				
 				<div class="orchestratorOptions" id="onPremiseOrchestratorOptions">
+					<label for="orchestratorVersion"><span>_FormOrchestratorVersionLabel_</span><select id="orchestratorVersion" class="select-field">
+						<option id="v201804" value="201804" _Form201804Selected_>2018.4</option>	
+						<option id="v201904" value="201904" _Form201904Selected_>2019.4</option>
+						<option id="v201910" value="201910" _Form201910Selected_>2019.10</option>
+					</select></label>
 					<label for="username"><span>_FormUsernameLabel_<span class="required">*</span></span><input required="required" type="text" class="input-field" id="username" /></label>
 					<label for="password"><span>_FormPasswordLabel_<span class="required">*</span></span><input required="required" type="password" class="input-field" id="password" /></label>
 					<label for="orchestratorURL"><span>_FormOrchestratorURLLabel_<span class="required">*</span></span><input required="required" type="text" value="_FormOrchestratorURLValue_" class="input-field" id="orchestratorURL" /></label>
@@ -52,89 +57,133 @@
 			</form>
 		</div>	
 		
-		<script type="text/javascript">	
-		function startup() {
-			useSavedCredentialCheck();
-			saveCredentialCheck();
-			orchestratorTypeCheck();
-		}
-		
-		function useSavedCredentialCheck() {
-			if (document.getElementById('useSavedCredentialCheckbox').checked) {
-				document.getElementById('saveCredentialCheckbox').checked = false;
-				disableTextInput(true);
-			} else {
-				disableTextInput(false);
-			}
-		}
-		
-		function saveCredentialCheck() {
-			if (document.getElementById('saveCredentialCheckbox').checked) {
-				document.getElementById('useSavedCredentialCheckbox').checked = false;
-				disableTextInput(false);
-			}
-		}
-		
-		function disableTextInput(flag) {
-			var textInputElementsIDs = ["username", "password", "userKey", "clientID"];
-		
-			// Disable or enable text input based on a flag
-			// Disabled inputs should be cleared of any existing value and should not be a required form field
-			for (var i = 0; i < textInputElementsIDs.length; i++) {
-				var elementID = textInputElementsIDs[i];
-				document.getElementById(elementID).disabled =  flag;
-				if (document.getElementById(elementID).disabled) {
-					document.getElementById(elementID).value = "";
-					document.getElementById(elementID).required = false;
+		<script type="text/javascript">
+		/** @type {function()} */
+		var startup;
+		/** @type {function()} */
+		var orchestratorTypeCheck;
+		/** @type {function()} */
+		var useSavedCredentialCheck;
+		/** @type {function()} */
+		var saveCredentialCheck;
+		/** @type {function(HTMLElement): boolean} */
+		var submitValues;
+
+		// IIFE to avoid polluting the global scope
+		(function () {
+			'use strict';
+
+			startup = function () {
+				useSavedCredentialCheck();
+				saveCredentialCheck();
+				orchestratorTypeCheck();
+			};
+
+			useSavedCredentialCheck = function () {
+				if (document.getElementById('useSavedCredentialCheckbox').checked) {
+					document.getElementById('saveCredentialCheckbox').checked = false;
+					disableTextInput(true);
+				} else {
+					disableTextInput(false);
 				}
 			}
-		}
-		
-		function orchestratorTypeCheck() {
-			if (document.getElementById('onPremises').checked) {
-				document.getElementById('onPremiseOrchestratorOptions').style.display = 'block';
-				document.getElementById('cloudOrchestratorOptions').style.display = 'none';
-			} else {
-				document.getElementById('onPremiseOrchestratorOptions').style.display = 'none';
-				document.getElementById('cloudOrchestratorOptions').style.display = 'block';
+
+			saveCredentialCheck = function () {
+				if (document.getElementById('saveCredentialCheckbox').checked) {
+					document.getElementById('useSavedCredentialCheckbox').checked = false;
+					disableTextInput(false);
+				}
 			}
-		}
-		
-		function submitValues(elem) {
-			var	jsonObject = {};
-			
-			// Should stop after performing operation
-			if (elem.id == "cancelButton") {
-				jsonObject["shouldStop"] = true;
-			} else {
-				jsonObject["shouldStop"] = false;
-				var formElement = document.getElementById("authenticationPanelForm");
-				var	inputElements = formElement.getElementsByTagName("input");
-				
-				// Add input elements to the output dictionary
-				for(var i = 0; i < inputElements.length; i++){
-					var inputElement = inputElements[i];
-					if (inputElement.type == "text" || inputElement.type == "password") {
-						jsonObject[inputElement.id] = inputElement.value;
-					} else if (inputElement.type == "checkbox") {
-						jsonObject[inputElement.id] = inputElement.checked;
+
+			/** @param {boolean} flag */
+			function disableTextInput(flag) {
+				var i, len;
+				/** @type {Array.<string>} */
+				var textInputElementsIDs = ['username', 'password', 'userKey', 'clientID'];
+				/** @type {HTMLInputElement} */
+				var element;
+
+				// Disable or enable text input based on a flag
+				// Disabled inputs should be cleared of any existing value and should not be a required form field
+				for (i = 0, len = textInputElementsIDs.length; i < len; i += 1) {
+					element = document.getElementById(textInputElementsIDs[i]);
+					element.disabled = flag;
+					if (element.disabled) {
+						element.value = '';
+						element.required = false;
 					}
 				}
-				
-				if (document.getElementById('onPremises').checked) {
-					jsonObject["orchestratorType"] = "onPremises";
-				} else {
-					jsonObject["orchestratorType"] = "cloud";
-				}	
 			}
-			
-			// Get JSON representation of dictionary
-			var formData = JSON.stringify(jsonObject);
-		
-			window.external.setResult(formData);
-			
-			return true;
-		}
+
+			orchestratorTypeCheck = function () {
+				if (document.getElementById('onPremises').checked) {
+					document.getElementById('onPremiseOrchestratorOptions').style.display = 'block';
+					document.getElementById('cloudOrchestratorOptions').style.display = 'none';
+				} else {
+					document.getElementById('onPremiseOrchestratorOptions').style.display = 'none';
+					document.getElementById('cloudOrchestratorOptions').style.display = 'block';
+				}
+			}
+
+			/** @enum {string} */
+			var ORCHESTRATOR_TYPE = {
+				onPremises: 'onPremises',
+				cloud: 'cloud'
+			};
+
+			/**
+			 * @param {HTMLElement} elem
+			 * @returns {boolean}
+			 */
+			submitValues = function(elem) {
+				var i, len;
+				/** @type {{shouldStop: boolean, orchestratorType: ORCHESTRATOR_TYPE}|Object.<string|boolean>} */
+				var jsonObject = {};
+				/** @type {HTMLElement} */
+				var formElement;
+				/** @type {HTMLCollectionOf.<HTMLInputElement>} */
+				var inputElements;
+				/** @type {HTMLInputElement} */
+				var inputElement;
+				/** @type {string} */
+				var formData;
+
+				// Should stop after performing operation
+				if (elem.id === 'cancelButton') {
+					jsonObject.shouldStop = true;
+				} else {
+					jsonObject.shouldStop = false;
+					formElement = document.getElementById('authenticationPanelForm');
+					inputElements = formElement.getElementsByTagName('input');
+
+					// Add input elements to the output dictionary
+					for (i = 0, len = inputElements.length; i < len; i += 1) {
+						inputElement = inputElements[i];
+						if (inputElement.type === 'text' || inputElement.type === 'password') {
+							jsonObject[inputElement.id] = inputElement.value;
+						} else if (inputElement.type === 'checkbox') {
+							jsonObject[inputElement.id] = inputElement.checked;
+						}
+					}
+					
+					jsonObject['orchestratorVersion'] = document.getElementById('orchestratorVersion').value;
+
+					if (document.getElementById('onPremises').checked) {
+						jsonObject.orchestratorType = ORCHESTRATOR_TYPE.onPremises;
+					} else {
+						jsonObject.orchestratorType = ORCHESTRATOR_TYPE.cloud;
+					}
+				}
+
+				// Get JSON representation of dictionary
+				formData = JSON.stringify(jsonObject);
+
+				// noinspection JSDeprecatedSymbols,JSUnresolvedFunction
+				window.external.setResult(formData);
+
+				return true;
+			}
+		}());
 		</script>
 	</body>
 </html>

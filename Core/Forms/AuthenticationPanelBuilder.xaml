@@ -5,10 +5,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>686,3972</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,4360.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AuthenticationPanelBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -31,6 +31,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Security</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -57,7 +58,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Build the form to be used as the authentication panel of the tool." DisplayName="Authentication Panel Builder" sap:VirtualizedContainerService.HintSize="696,3807.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Build the form to be used as the authentication panel of the tool." DisplayName="Authentication Panel Builder" sap:VirtualizedContainerService.HintSize="696,4196" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="AuthenticationPanelHtml" />
       <Variable x:TypeArguments="x:Boolean" Name="CloudCredentialExists" />
@@ -133,14 +134,77 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Sequence DisplayName="Form On-Premises Elements" sap:VirtualizedContainerService.HintSize="654,460" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Form On-Premises Elements" sap:VirtualizedContainerService.HintSize="654,848.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign DisplayName="Assign Orchestrator URL Label" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_13">
+      <Sequence DisplayName="Orchestrator Version" sap:VirtualizedContainerService.HintSize="304,348.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Assign DisplayName="Assign Orchestrator Version Label" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_45">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormOrchestratorVersionLabel_", in_Config("FormOrchestratorVersionLabel"))]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <If Condition="[Not String.IsNullOrWhiteSpace(in_Config(&quot;FormOrchestratorVersionLabel&quot;))]" DisplayName="If On-Premises Orchestrator Version is Specified" sap:VirtualizedContainerService.HintSize="642.666666666667,346" sap2010:WorkflowViewState.IdRef="If_11">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <Switch x:TypeArguments="x:String" DisplayName="Switch On-Premises Orchestrator Version" Expression="[in_Config(&quot;OnPremisesOrchestratorVersion&quot;)]" sap:VirtualizedContainerService.HintSize="496.666666666667,296" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+              <Switch.Default>
+                <Throw DisplayName="Throw (Orchestrator Version Not Supported)" Exception="[New ArgumentException(in_Config(&quot;OnPremisesOrchestratorVersionNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              </Switch.Default>
+              <Assign x:Key="201804" DisplayName="Assign Orchestrator Version 2018.4" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_46">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_Form201804Selected_", "selected")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign x:Key="201904" DisplayName="Assign Orchestrator Version 2019.4" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_47">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_Form201904Selected_", "selected")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign x:Key="201910" DisplayName="Assign Orchestrator Version 2019.10" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_48">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_Form201910Selected_", "selected")]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Switch>
+          </If.Then>
+        </If>
+        <Assign DisplayName="Assign Orchestrator Version Not Selected" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_49">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[Regex.Replace(AuthenticationPanelHtml, "_Form(\d){6}Selected_", String.Empty)]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </Sequence>
+      <Assign DisplayName="Assign Orchestrator URL Label" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_13">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
@@ -148,15 +212,15 @@
           <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormOrchestratorURLLabel_", in_Config("FormOrchestratorURLLabel"))]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign DisplayName="Assign Orchestrator URL Value" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_14">
+      <Assign DisplayName="Assign Orchestrator URL Value" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_14">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
         <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormOrchestratorURLValue_", in_Config("OrchestratorURL"))]</InArgument>
+          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormOrchestratorURLValue_", in_Config("OnPremisesOrchestratorURL"))]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign DisplayName="Assign Username Label" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign DisplayName="Assign Username Label" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_2">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
@@ -164,7 +228,7 @@
           <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormUsernameLabel_", in_Config("FormUsernameLabel"))]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign DisplayName="Assign Password Label" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign DisplayName="Assign Password Label" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_3">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
@@ -209,7 +273,7 @@
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
         <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormAccountNameValue_", in_Config("AccountName"))]</InArgument>
+          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormAccountNameValue_", in_Config("CloudAccountName"))]</InArgument>
         </Assign.Value>
       </Assign>
     </Sequence>
@@ -226,6 +290,12 @@
       <ui:GetSecureCredential Password="{x:Null}" Username="{x:Null}" CredentialType="Generic" DisplayName="Get Secure Credential (Cloud)" sap:VirtualizedContainerService.HintSize="570,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_4" PersistanceType="Enterprise" Result="[CloudCredentialExists]" Target="[in_Config(&quot;CloudCredentialName&quot;)]" />
       <ui:GetSecureCredential Password="{x:Null}" Username="{x:Null}" CredentialType="Generic" DisplayName="Get Secure Credential (On-Premises)" sap:VirtualizedContainerService.HintSize="570,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_5" PersistanceType="Enterprise" Result="[OnPremisesCredentialExists]" Target="[in_Config(&quot;OnPremisesCredentialName&quot;)]" />
       <If Condition="[CloudCredentialExists OrElse OnPremisesCredentialExists]" DisplayName="If Credential Exists in Windows Credential Manager" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
         <If.Then>
           <Assign DisplayName="Assign Use Saved Credential Checkbox (Checked)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_32">
             <Assign.To>

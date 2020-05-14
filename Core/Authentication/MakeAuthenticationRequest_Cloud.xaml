@@ -81,7 +81,7 @@
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[Not String.IsNullOrWhiteSpace(in_AccountName) AndAlso in_AccountName &lt;&gt; io_Config(&quot;AccountName&quot;)]" DisplayName="If Account Name Is Specified" sap:VirtualizedContainerService.HintSize="484,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+      <If Condition="[Not String.IsNullOrWhiteSpace(in_AccountName) AndAlso in_AccountName &lt;&gt; io_Config(&quot;CloudAccountName&quot;)]" DisplayName="If Account Name Is Specified" sap:VirtualizedContainerService.HintSize="484,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -93,7 +93,7 @@
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">[io_Config("ConfigFilePath")]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">Settings</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">AccountName</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">CloudAccountName</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">[in_AccountName]</InArgument>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
@@ -102,7 +102,7 @@
       </If>
       <Assign DisplayName="Assign Account Name" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_1">
         <Assign.To>
-          <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("AccountName")]</OutArgument>
+          <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("CloudAccountName")]</OutArgument>
         </Assign.To>
         <Assign.Value>
           <InArgument x:TypeArguments="ui:GenericValue">[in_AccountName]</InArgument>
@@ -184,7 +184,7 @@
                 <x:Boolean x:Key="IsPinned">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:LogMessage DisplayName="Log Message (Failed Authentication)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[io_Config(&quot;TokenNotRetrieved&quot;)]">
+            <ui:LogMessage DisplayName="Log Message (Failed Authentication)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[String.Format(io_Config(&quot;TokenNotRetrieved&quot;), Result)]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -209,7 +209,7 @@
         <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("OrchestratorURL")]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="ui:GenericValue">[New GenericValue(String.Format("{0}/{1}/{2}", io_Config("CloudPlatformURL"), io_Config("AccountName"), io_Config("TenantName")))]</InArgument>
+        <InArgument x:TypeArguments="ui:GenericValue">[New GenericValue(String.Format("{0}/{1}/{2}", io_Config("CloudPlatformURL"), io_Config("CloudAccountName"), io_Config("TenantName")))]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">

@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>604.666666666667,1287.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1043.33333333333,1933.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Authentication_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -68,21 +68,21 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Get authentication data from user and try to perform authentication.&#xA;If authentication is successful, an authentication token is included in Config to be used in subsequent requests." DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="614.666666666667,1122.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+  <Sequence sap2010:Annotation.AnnotationText="Get authentication data from user and try to perform authentication.&#xA;If authentication is successful, an authentication token is included in Config to be used in subsequent requests." DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="1053.33333333333,1768.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <While DisplayName="While User Cancels or Authentication Succeeds" sap:VirtualizedContainerService.HintSize="572.666666666667,968.666666666667" sap2010:WorkflowViewState.IdRef="While_2">
+    <While DisplayName="While User Cancels or Authentication Succeeds" sap:VirtualizedContainerService.HintSize="1011.33333333333,1631.33333333333" sap2010:WorkflowViewState.IdRef="While_2">
       <While.Variables>
         <Variable x:TypeArguments="x:Boolean" Default="False" Name="ShouldStop" />
       </While.Variables>
       <While.Condition>
         <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="Not ShouldStop" sap2010:WorkflowViewState.IdRef="VisualBasicValue`1_1" />
       </While.Condition>
-      <Sequence DisplayName="Attempts Authentication" sap:VirtualizedContainerService.HintSize="526,804.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence DisplayName="Attempts Authentication" sap:VirtualizedContainerService.HintSize="964.666666666667,1467.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="njl:JObject" Name="AuthenticationData" />
         </Sequence.Variables>
@@ -91,23 +91,31 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetCredential Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Core/Authentication/GetAuthenticationData.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetCredential Workflow" sap:VirtualizedContainerService.HintSize="922.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Core/Authentication/GetAuthenticationData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
             <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
             <OutArgument x:TypeArguments="njl:JObject" x:Key="out_AuthenticationData">[AuthenticationData]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <If Condition="[Not ShouldStop]" DisplayName="If User Did Not Stop Execution" sap:VirtualizedContainerService.HintSize="484,586" sap2010:WorkflowViewState.IdRef="If_12">
+        <If Condition="[Not ShouldStop]" DisplayName="If User Did Not Stop Execution" sap:VirtualizedContainerService.HintSize="922.666666666667,1248.66666666667" sap2010:WorkflowViewState.IdRef="If_12">
           <If.Then>
-            <Sequence DisplayName="Perform Authentication" sap:VirtualizedContainerService.HintSize="304,432" sap2010:WorkflowViewState.IdRef="Sequence_10">
+            <Sequence DisplayName="Perform Authentication" sap:VirtualizedContainerService.HintSize="776.666666666667,1094.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_10">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[Not String.IsNullOrWhiteSpace(AuthenticationData(&quot;tenantName&quot;).ToString) AndAlso AuthenticationData(&quot;tenantName&quot;).ToString &lt;&gt; io_Config(&quot;TenantName&quot;)]" DisplayName="If Tenant Name Is Specified" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+              <Assign DisplayName="Assign Orchestrator Type" sap:VirtualizedContainerService.HintSize="734.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_12">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("OrchestratorType")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="ui:GenericValue">[AuthenticationData("orchestratorType").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[Not String.IsNullOrWhiteSpace(AuthenticationData(&quot;tenantName&quot;).ToString) AndAlso AuthenticationData(&quot;tenantName&quot;).ToString &lt;&gt; io_Config(&quot;TenantName&quot;)]" DisplayName="If Tenant Name Is Specified" sap:VirtualizedContainerService.HintSize="734.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -141,7 +149,7 @@
                   </Sequence>
                 </If.Then>
               </If>
-              <If Condition="[Not String.IsNullOrWhiteSpace(AuthenticationData(&quot;workbooksFolderPath&quot;).ToString) AndAlso AuthenticationData(&quot;workbooksFolderPath&quot;).ToString &lt;&gt; io_Config(&quot;EntitiesWorkbooksFolderPath&quot;)]" DisplayName="If Workbooks Folder Path is Specified" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_10">
+              <If Condition="[Not String.IsNullOrWhiteSpace(AuthenticationData(&quot;workbooksFolderPath&quot;).ToString) AndAlso AuthenticationData(&quot;workbooksFolderPath&quot;).ToString &lt;&gt; io_Config(&quot;EntitiesWorkbooksFolderPath&quot;)]" DisplayName="If Workbooks Folder Path is Specified" sap:VirtualizedContainerService.HintSize="734.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_10">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -175,18 +183,54 @@
                   </Sequence>
                 </If.Then>
               </If>
-              <Assign DisplayName="Assign Orchestrator Type" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_11">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("OrchestratorType")]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="ui:GenericValue">[AuthenticationData("orchestratorType").ToString]</InArgument>
-                </Assign.Value>
-              </Assign>
+              <If Condition="[io_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso AuthenticationData(&quot;orchestratorVersion&quot;).ToString &lt;&gt; io_Config(&quot;OnPremisesOrchestratorVersion&quot;)]" DisplayName="If a Different On-Premises Orchestrator Version is Specified" sap:VirtualizedContainerService.HintSize="734.666666666667,434.666666666667" sap2010:WorkflowViewState.IdRef="If_13">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Sequence DisplayName="Update On-Premises Orchestrator Version in Configuration File" sap:VirtualizedContainerService.HintSize="376,280.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateConfigurationFile Workflow (On-Premises Orchestrator Version)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Common/UpdateConfigurationFile.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">
+                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;ConfigFilePath&quot;)" />
+                        </InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                          <Literal x:TypeArguments="x:String">Settings</Literal>
+                        </InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">
+                          <Literal x:TypeArguments="x:String">OnPremisesOrchestratorVersion</Literal>
+                        </InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">
+                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="AuthenticationData(&quot;orchestratorVersion&quot;).ToString" />
+                        </InArgument>
+                        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="io_Config" />
+                        </InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                    <Assign DisplayName="Assign On-Premises Orchestrator Version" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_13">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("OnPremisesOrchestratorVersion")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="ui:GenericValue">[New GenericValue(AuthenticationData("orchestratorVersion").ToString)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Then>
+              </If>
               <If Condition="[io_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot;]" DisplayName="If On-Premises or Cloud Orchestrator" sap:VirtualizedContainerService.HintSize="734.666666666667,240.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
@@ -202,15 +246,9 @@
                 <If.Else>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate_Cloud Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate_Cloud.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                        <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="io_Config" />
-                      </InOutArgument>
-                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">
-                        <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="ShouldStop" />
-                      </OutArgument>
-                      <InArgument x:TypeArguments="njl:JObject" x:Key="in_AuthenticationData">
-                        <mva:VisualBasicValue x:TypeArguments="njl:JObject" ExpressionText="AuthenticationData" />
-                      </InArgument>
+                      <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
+                      <InArgument x:TypeArguments="njl:JObject" x:Key="in_AuthenticationData">[AuthenticationData]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Else>
