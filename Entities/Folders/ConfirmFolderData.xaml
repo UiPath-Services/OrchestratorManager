@@ -1,9 +1,9 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmFolderData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmFolderData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
-    <x:Property Name="in_FolderName" Type="InArgument(x:String)" />
     <x:Property Name="in_FolderID" Type="InArgument(x:String)" />
     <x:Property Name="out_FoldersData" Type="OutArgument(sd:DataTable)" />
+    <x:Property Name="in_FullyQualifiedFolderName" Type="InArgument(x:String)" />
   </x:Members>
   <sap:VirtualizedContainerService.HintSize>558,1589.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
@@ -69,7 +69,7 @@
         <Throw DisplayName="Throw (Folder ID Not Specified)" Exception="[New ArgumentException(in_Config(&quot;FolderIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
       </If.Then>
     </If>
-    <If Condition="[String.IsNullOrWhiteSpace(in_FolderName)]" DisplayName="If Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="526,214" sap2010:WorkflowViewState.IdRef="If_12">
+    <If Condition="[String.IsNullOrWhiteSpace(in_FullyQualifiedFolderName)]" DisplayName="If Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="526,214" sap2010:WorkflowViewState.IdRef="If_12">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -90,18 +90,10 @@
       </sap:WorkflowViewStateService.ViewState>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFoldersData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities\Folders\GetFoldersData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InArgument>
-          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-            <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{Convert.ToInt64(in_FolderID)}" />
-          </InArgument>
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-            <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
-          </InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
-            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="out_FoldersData" />
-          </OutArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{Convert.ToInt64(in_FolderID)}]</InArgument>
+          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[out_FoldersData]</OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
       <If Condition="[out_FoldersData.Rows.Count = 0]" DisplayName="If No Folder Found With Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_13">
@@ -115,7 +107,7 @@
           <Throw DisplayName="Throw (Folder Not Found)" Exception="[New ArgumentException(in_Config(&quot;FolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_7" />
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="Since Folder IDs and fully qualified names are unique, it is guaranteed that FoldersData has a single row." Condition="[out_FoldersData.Rows(0)(&quot;Name&quot;).ToString &lt;&gt; in_FolderName]" DisplayName="If the Folder ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,259.333333333333" sap2010:WorkflowViewState.IdRef="If_17">
+      <If sap2010:Annotation.AnnotationText="Since Folder IDs and fully qualified names are unique, it is guaranteed that FoldersData has a single row." Condition="[out_FoldersData.Rows(0)(&quot;FolderName&quot;).ToString &lt;&gt; in_FullyQualifiedFolderName]" DisplayName="If the Folder ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,259.333333333333" sap2010:WorkflowViewState.IdRef="If_17">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

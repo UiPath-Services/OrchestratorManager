@@ -24,6 +24,7 @@
 					<option id="environmentOption" value="environment">_FormEnvironmentOption_</option>
 					<option id="processOption" value="process">_FormProcessOption_</option>
 					<option id="ouOption" value="ou">_FormOrganizationUnitOption_</option>
+					<option id="folderOption" value="folder">_FormFolderOption_</option>
 				</select></label>
 				
 				<label for="operation"><span>_FormOperationLabel_</span><select id="operation" class="select-field">
@@ -45,12 +46,17 @@
 		<script type="text/javascript">
 		function hideUserOption() {
 			'use strict';
-			// Hide options not available in UiPath Automation Cloud  or on-premises Orchestrator version 2019.10+
+			// Hide options according to Orchestrator type and version
 			if ('_FormOrchestratorType_' === 'cloud') {
+				// UiPath Automation Cloud
 				document.getElementById('userOption').outerHTML = '';
 				document.getElementById('ouOption').outerHTML = '';
 			} else if (Number('_FormOrchestratorVersion_') >= 201910) {
+				// Newer On-Premises Orchestrator (2019.10+)
 				document.getElementById('ouOption').outerHTML = '';
+			} else {
+				// Older On-Premises Orchestrator
+				document.getElementById('folderOption').outerHTML = '';
 			}
 		}
 
@@ -95,25 +101,24 @@
 			switch (selectedEntity) {
 				case 'asset':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="createcredential">_FormCreateCredentialOption_</option><option value="edit">_FormEditOption_</option><option value="editcredential">_FormEditCredentialOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
+					break;
 				case 'user':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option><option value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
-				break;
-				case 'machine':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
+					break;
 				case 'robot':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
+					break;
 				case 'environment':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoverobot">_FormAddRemoveEnvironmentRobotsOption_</option>';
-				break;
+					break;
 				case 'process':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="updateprocesstolatestpackageversion">_FormUpdateProcessToLatestPackageVersionOption_</option><option value="rollbackprocesstopreviouspackageversion">_FormRollbackProcessToPreviousPackageVersionOption_</option>';
-				break;
+					break;
+				case 'machine':
 				case 'ou':
+				case 'folder':
 					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
+					break;
 			}
 		}
 		</script>
