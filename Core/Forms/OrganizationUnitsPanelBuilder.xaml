@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>408,1259.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>602,1503.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>OrganizationUnitsPanelBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -54,9 +54,10 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Builds the form to prompt the user for the desired Organization Unit." DisplayName="Organization Units Panel Builder" sap:VirtualizedContainerService.HintSize="388,1199.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Builds the form to prompt the user for the desired Organization Unit." DisplayName="Organization Units Panel Builder" sap:VirtualizedContainerService.HintSize="612,1338.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="OrganizationUnitsPanelHtml" />
     </Sequence.Variables>
@@ -66,8 +67,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[OrganizationUnitsPanelHtml]" DisplayName="Read Text File" FileName="[in_Config(&quot;OrganizationUnitsPanelTemplatePath&quot;)]" sap:VirtualizedContainerService.HintSize="346,134.666666666667" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Assign DisplayName="Assign Form Title" sap:VirtualizedContainerService.HintSize="346,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:ReadTextFile Content="[OrganizationUnitsPanelHtml]" DisplayName="Read Text File" FileName="[in_Config(&quot;OrganizationUnitsPanelTemplatePath&quot;)]" sap:VirtualizedContainerService.HintSize="570,134.666666666667" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Assign DisplayName="Assign Form Title" sap:VirtualizedContainerService.HintSize="570,62" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml]</OutArgument>
       </Assign.To>
@@ -75,15 +76,29 @@
         <InArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml.Replace("_FormTitle_", in_Config("FormTitle"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign Form OU Label" sap:VirtualizedContainerService.HintSize="346,62" sap2010:WorkflowViewState.IdRef="Assign_3">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml.Replace("_FormOULabel_", in_Config("FormOULabel"))]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <Assign DisplayName="Assign Submit Button" sap:VirtualizedContainerService.HintSize="346,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If Cloud or On-Premises Newer than 2019.10" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Assign DisplayName="Assign Form OU Label (Folders)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml.Replace("_FormOULabel_", in_Config("FormFolderLabel"))]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Assign Form OU Label" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml.Replace("_FormOULabel_", in_Config("FormOULabel"))]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <Assign DisplayName="Assign Submit Button" sap:VirtualizedContainerService.HintSize="570,62" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml]</OutArgument>
       </Assign.To>
@@ -91,7 +106,7 @@
         <InArgument x:TypeArguments="x:String">[OrganizationUnitsPanelHtml.Replace("_FormSubmitButton_", in_Config("FormSubmitButton"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Sequence DisplayName="OUs Select Input" sap:VirtualizedContainerService.HintSize="346,406.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="OUs Select Input" sap:VirtualizedContainerService.HintSize="570,406.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:String" Default="[&quot;&lt;option selected value=&quot;&quot;ID&quot;&quot;&gt;Name&lt;/option&gt;&quot;]" Name="SelectOptionTemplate" />
         <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="OUsSelectOptions" />

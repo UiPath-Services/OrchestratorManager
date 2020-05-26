@@ -4,7 +4,7 @@
     <x:Property Name="out_ShouldStop" Type="OutArgument(x:Boolean)" />
     <x:Property Name="in_AuthenticationData" Type="InArgument(njl:JObject)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>686,1280.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,1107.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -42,9 +42,12 @@
       <AssemblyReference>System.Xml</AssemblyReference>
       <AssemblyReference>System.Xml.Linq</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to Automation Cloud Orchestrator." DisplayName="Cloud Platform Orchestrator" sap:VirtualizedContainerService.HintSize="696,1116" sap2010:WorkflowViewState.IdRef="Sequence_15">
+  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to Automation Cloud Orchestrator." DisplayName="Cloud Platform Orchestrator" sap:VirtualizedContainerService.HintSize="696,942.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ClientID" />
       <Variable x:TypeArguments="x:String" Name="UserKey" />
@@ -125,25 +128,15 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;saveCredentialCheckbox&quot;))]" DisplayName="If Cloud Platform Credential Should be Saved" sap:VirtualizedContainerService.HintSize="654,394.666666666667" sap2010:WorkflowViewState.IdRef="If_13">
+    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;saveCredentialCheckbox&quot;))]" DisplayName="If Cloud Platform Credential Should be Saved" sap:VirtualizedContainerService.HintSize="654,221.333333333333" sap2010:WorkflowViewState.IdRef="If_13">
       <If.Then>
-        <Sequence DisplayName="Save Cloud Platform Credential" sap:VirtualizedContainerService.HintSize="376,240.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
+        <ui:AddCredential sap2010:Annotation.AnnotationText="Save Cloud Platform Credential" CredentialType="Generic" DisplayName="Add Credential (Cloud Platform Orchestrator)" sap:VirtualizedContainerService.HintSize="200,67.3333333333333" sap2010:WorkflowViewState.IdRef="AddCredential_2" Password="[in_AuthenticationData(&quot;userKey&quot;).ToString]" PersistanceType="Enterprise" Target="[io_Config(&quot;CloudCredentialName&quot;)]" Username="[in_AuthenticationData(&quot;clientID&quot;).ToString]">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:AddCredential CredentialType="Generic" DisplayName="Add Credential (Cloud Platform Orchestrator)" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddCredential_2" Password="[in_AuthenticationData(&quot;userKey&quot;).ToString]" PersistanceType="Enterprise" Target="OrchestratorManager_CloudCredential" Username="[in_AuthenticationData(&quot;clientID&quot;).ToString]" />
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateConfigurationFile Workflow (Cloud Platform Orchestrator Credential Name)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Common/UpdateConfigurationFile.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">[io_Config("ConfigFilePath")]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">Advanced Settings</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">CloudCredentialName</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">OrchestratorManager_CloudCredential</InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
+        </ui:AddCredential>
       </If.Then>
     </If>
   </Sequence>

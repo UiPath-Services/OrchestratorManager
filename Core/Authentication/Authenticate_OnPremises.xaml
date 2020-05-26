@@ -4,7 +4,7 @@
     <x:Property Name="in_AuthenticationData" Type="InArgument(njl:JObject)" />
     <x:Property Name="out_ShouldStop" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>686,1280.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,1100</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -47,7 +47,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to On-Premises Orchestrator." DisplayName="On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="696,1116" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to On-Premises Orchestrator." DisplayName="On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="696,935.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Username" />
       <Variable x:TypeArguments="x:String" Name="Password" />
@@ -127,25 +127,9 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;saveCredentialCheckbox&quot;))]" DisplayName="If On-Premises Credential Should be Saved" sap:VirtualizedContainerService.HintSize="654,394.666666666667" sap2010:WorkflowViewState.IdRef="If_14">
+    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;saveCredentialCheckbox&quot;))]" DisplayName="If On-Premises Credential Should be Saved" sap:VirtualizedContainerService.HintSize="654,214" sap2010:WorkflowViewState.IdRef="If_14">
       <If.Then>
-        <Sequence DisplayName="Save On-Premises Credential" sap:VirtualizedContainerService.HintSize="376,240.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <ui:AddCredential CredentialType="Generic" DisplayName="Add Credential (On-Premises Orchestrator)" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddCredential_1" Password="[in_AuthenticationData(&quot;password&quot;).ToString]" PersistanceType="Enterprise" Target="OrchestratorManager_OnPremisesCredential" Username="[in_AuthenticationData(&quot;username&quot;).ToString]" />
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateConfigurationFile Workflow (On-Premises Orchestrator Credential Name)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Common/UpdateConfigurationFile.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">[io_Config("ConfigFilePath")]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">Advanced Settings</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">OnPremisesCredentialName</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">OrchestratorManager_OnPremisesCredential</InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
+        <ui:AddCredential CredentialType="Generic" DisplayName="Add Credential (On-Premises Orchestrator)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddCredential_1" Password="[in_AuthenticationData(&quot;password&quot;).ToString]" PersistanceType="Enterprise" Target="[io_Config(&quot;OnPremisesCredentialName&quot;)]" Username="[in_AuthenticationData(&quot;username&quot;).ToString]" />
       </If.Then>
     </If>
   </Sequence>
