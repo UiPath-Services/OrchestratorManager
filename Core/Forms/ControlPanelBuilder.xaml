@@ -5,7 +5,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>390,1232.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>390,1340</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>FormBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="21">
@@ -56,7 +56,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Builds the form to be used as the control panel of the tool." DisplayName="Control Panel Builder" sap:VirtualizedContainerService.HintSize="376,1168" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Builds the form to be used as the control panel of the tool." DisplayName="Control Panel Builder" sap:VirtualizedContainerService.HintSize="376,1175.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ControlPanelHtml" />
     </Sequence.Variables>
@@ -275,14 +275,39 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Assign DisplayName="Assign Orchestrator Type" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_25">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[ControlPanelHtml]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[ControlPanelHtml.Replace("_FormOrchestratorType_", in_Config("OrchestratorType"))]</InArgument>
-      </Assign.Value>
-    </Assign>
+    <Sequence DisplayName="Adjust Options According to Orchestrator Type and Version" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign Orchestrator Type" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_25">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[ControlPanelHtml]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[ControlPanelHtml.Replace("_FormOrchestratorType_", in_Config("OrchestratorType"))]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <If sap2010:Annotation.AnnotationText="Used to hide options that depend on Orchestrator version.&#xD;&#xA;For example, Organization Units should not appear when using Orchestrator 2019.10+." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot;]" DisplayName="If On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="484,278" sap2010:WorkflowViewState.IdRef="If_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Assign DisplayName="Assign On-Premises Orchestrator Version" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ControlPanelHtml]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[ControlPanelHtml.Replace("_FormOrchestratorVersion_", in_Config("OnPremisesOrchestratorVersion"))]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Then>
+      </If>
+    </Sequence>
     <ui:WriteTextFile DisplayName="Write Text File" FileName="[in_Config(&quot;ControlPanelPath&quot;)]" sap:VirtualizedContainerService.HintSize="334,134.666666666667" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[ControlPanelHtml]" />
   </Sequence>
 </Activity>
