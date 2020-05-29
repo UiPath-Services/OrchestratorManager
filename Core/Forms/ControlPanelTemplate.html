@@ -52,12 +52,18 @@
 				// UiPath Automation Cloud
 				document.getElementById('userOption').outerHTML = '';
 				document.getElementById('ouOption').outerHTML = '';
-			} else if (Number('_FormOrchestratorVersion_') >= 201910) {
-				// Newer On-Premises Orchestrator (2019.10+)
-				document.getElementById('ouOption').outerHTML = '';
 			} else {
-				// Older On-Premises Orchestrator
-				document.getElementById('folderOption').outerHTML = '';
+				// On-Premises Orchestrator
+				switch (_FormOrchestratorVersion_) {
+					case 201804:
+					case 201904:
+						document.getElementById('folderOption').outerHTML = '';
+						break;
+					case 201910:
+					case 202004:
+						document.getElementById('ouOption').outerHTML = '';
+						break;
+				}
 			}
 		}
 
@@ -101,27 +107,31 @@
 			// Select the appropriate set of operations based on the chosen entity
 			switch (selectedEntity) {
 				case 'asset':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="createcredential">_FormCreateCredentialOption_</option><option value="edit">_FormEditOption_</option><option value="editcredential">_FormEditCredentialOption_</option><option value="delete">_FormDeleteOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 				case 'user':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option><option value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
+					operationElement.innerHTML = '<option id="getOption value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveOUOption" value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option><option id="addRemoveRoleOption" value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
 					break;
 				case 'robot':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
+					operationElement.innerHTML = '<option id="getOption value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 				case 'environment':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoverobot">_FormAddRemoveEnvironmentRobotsOption_</option>';
+					operationElement.innerHTML = '<option id="getOption value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRobotOption" value="addremoverobot">_FormAddRemoveEnvironmentRobotsOption_</option>';
 					break;
 				case 'process':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="updateprocesstolatestpackageversion">_FormUpdateProcessToLatestPackageVersionOption_</option><option value="rollbackprocesstopreviouspackageversion">_FormRollbackProcessToPreviousPackageVersionOption_</option>';
+					operationElement.innerHTML = '<option id="getOption value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="updateProcessToLatestPackageVersionOption" value="updateprocesstolatestpackageversion">_FormUpdateProcessToLatestPackageVersionOption_</option><option id="rollBackProcessToPreviousPackageVersionOption" value="rollbackprocesstopreviouspackageversion">_FormRollbackProcessToPreviousPackageVersionOption_</option>';
 					break;
 				case 'queue':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="downloadqueueitems">_FormDownloadQueueItemsOption_</option><option value="uploadqueueitems">_FormUploadQueueItemsOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadQueueItemsOption" value="downloadqueueitems">_FormDownloadQueueItemsOption_</option>';
+					// On-Premises Orchestrator 2018.4 does not support bulk upload of Queue items
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ != 201804) {
+						operationElement.innerHTML = operationElement.innerHTML + '<option id="uploadQueueItemsOption" value="uploadqueueitems">_FormUploadQueueItemsOption_</option>'			
+					}
 					break;
 				case 'machine':
 				case 'ou':
 				case 'folder':
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option>';
+					operationElement.innerHTML = '<option id="getOption value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 			}
 		}
