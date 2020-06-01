@@ -2,9 +2,6 @@
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Two-letter ISO 639 code of the language to be used on Orchestrator Manager's interface. If this argument is not specified, the language is selected based on the system’s locale settings. " Name="in_Language" Type="InArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="Path to the Excel workbook that contains the configuration parameters to be used by Orchestrator Manager." Name="in_ConfigFilePath" Type="InArgument(x:String)" />
-    <x:Property sap2010:Annotation.AnnotationText="URL to the Orchestrator's instance to which Orchestrator Manager should connect. If this argument is specified, it overwrites the OrchestratorURL argument defined in the configuration file." Name="in_OrchestratorURL" Type="InArgument(x:String)" />
-    <x:Property sap2010:Annotation.AnnotationText="Tenant name to be used by Orchestrator Manager. If this argument is specified, it overwrites the OrchestratorTenant argument defined in the configuration file." Name="in_OrchestratorTenant" Type="InArgument(x:String)" />
-    <x:Property sap2010:Annotation.AnnotationText="Path to the folder that contains the entities workbooks. If this argument is specified, it overwrites the EntitiesWorkbooksFolderPath argument defined in the configuration file." Name="in_EntitiesWorkbooksFolderPath" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -79,12 +76,15 @@
     </sap:WorkflowViewStateService.ViewState>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke InitializeConfigurations Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Core/InitializeConfigurations.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">[Config]</OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Language">[in_Language]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">Config.xlsx</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorURL">[in_OrchestratorURL]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_OrchestratorTenant">[in_OrchestratorTenant]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_EntitiesWorkbooksFolderPath">[in_EntitiesWorkbooksFolderPath]</InArgument>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">
+          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="Config" />
+        </OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Language">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Language" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">
+          <Literal x:TypeArguments="x:String">Config.xlsx</Literal>
+        </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate.xaml">
