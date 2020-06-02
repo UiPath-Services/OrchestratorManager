@@ -1,11 +1,11 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="GetProcessesIDsBasedOnNames" this:GetProcessesIDsBasedOnNames.in_ProcessesNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="out_ProcessesIDs" Type="OutArgument(scg:List(x:Int64))" />
     <x:Property Name="in_ProcessesNames" Type="InArgument(s:String[])" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>740.666666666667,1460</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>740.666666666667,1560</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -95,8 +95,8 @@
               <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UniqueProcessesNames]</InArgument>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUsData]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_ProcessesData">[ProcessesData]</OutArgument>
+              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[in_OUFoldersData]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Processes exist and were properly retrieved.&#xA;This verification prevents requests if the specified Process names do not exist." DisplayName="For Each Process Name" sap:VirtualizedContainerService.HintSize="520.666666666667,398" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[UniqueProcessesNames]">
@@ -105,7 +105,7 @@
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="x:String" Name="ProcessName" />
                 </ActivityAction.Argument>
-                <If Condition="[ProcessesData.Rows.Find({ProcessName, Convert.ToInt64(in_OUsData.Rows(0)(&quot;ID&quot;))}) Is Nothing]" DisplayName="If Process Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_38">
+                <If Condition="[ProcessesData.Rows.Find({ProcessName, Convert.ToInt64(in_OUFoldersData.Rows(0)(&quot;ID&quot;))}) Is Nothing]" DisplayName="If Process Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_38">
                   <If.Then>
                     <Throw DisplayName="Throw (Invalid Process Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedProcessNotFound&quot;), ProcessName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_26" />
                   </If.Then>

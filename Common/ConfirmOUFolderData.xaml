@@ -1,9 +1,9 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmOU_FolderData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmOUFolderData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
-    <x:Property Name="in_OUName" Type="InArgument(x:String)" />
-    <x:Property Name="in_OUID" Type="InArgument(x:String)" />
-    <x:Property Name="out_OUsData" Type="OutArgument(sd:DataTable)" />
+    <x:Property Name="in_OUFolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_OUFolderID" Type="InArgument(x:String)" />
+    <x:Property Name="out_OUFoldersData" Type="OutArgument(sd:DataTable)" />
   </x:Members>
   <sap:VirtualizedContainerService.HintSize>516,770.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
@@ -71,12 +71,12 @@
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmFolderData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities\Folders\ConfirmFolderData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">[in_OUID]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[out_OUsData]</OutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">[in_OUName]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">[in_OUFolderID]</InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[out_OUFoldersData]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">[in_OUFolderName]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:FilterDataTable DataTable="[out_OUsData]" DisplayName="Filter Data Table" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[out_OUsData]" SelectColumnsMode="Keep">
+          <ui:FilterDataTable DataTable="[out_OUFoldersData]" DisplayName="Filter Data Table" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[out_OUFoldersData]" SelectColumnsMode="Keep">
             <ui:FilterDataTable.Filters>
               <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
                 <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
@@ -91,7 +91,7 @@
           </ui:FilterDataTable>
           <Assign DisplayName="Assign ID Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_OUsData.Columns("FolderID").ColumnName]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderID").ColumnName]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">ID</InArgument>
@@ -99,7 +99,7 @@
           </Assign>
           <Assign DisplayName="Assign Name Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_OUsData.Columns("FolderName").ColumnName]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderName").ColumnName]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">Name</InArgument>
@@ -111,9 +111,9 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmOrganizationUnitData Workflow" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\ConfirmOrganizationUnitData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_OUName">[in_OUName]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_OUID">[in_OUID]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[out_OUsData]</OutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_OUName">[in_OUFolderName]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_OUID">[in_OUFolderID]</InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[out_OUFoldersData]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">

@@ -4,7 +4,7 @@
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
     <x:Property Name="out_QueuesData" Type="OutArgument(sd:DataTable)" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)">
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
@@ -107,11 +107,11 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUsData]" DisplayName="For Each OU" sap:VirtualizedContainerService.HintSize="475.333333333333,1615.33333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="475.333333333333,1615.33333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUNameAndID" />
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUFolderNameAndID" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="424.666666666667,1462.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
             <Sequence.Variables>
@@ -129,7 +129,7 @@
                 <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/QueueDefinitions{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
-                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUNameAndID("ID"))]</InArgument>
+                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
                 <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
                 <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
                 <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
@@ -169,20 +169,20 @@
                           <InArgument x:TypeArguments="sd:DataRow">[out_QueuesData.NewRow()]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <Assign DisplayName="Assign OU ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_20">
+                      <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_20">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Object">[NewQueueRow(0)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(OUNameAndID("ID"))]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <Assign DisplayName="Assign OU Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_21">
+                      <Assign DisplayName="Assign OU/Folder Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_21">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Object">[NewQueueRow(1)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[OUNameAndID("Name")]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[OUFolderNameAndID("Name")]</InArgument>
                         </Assign.Value>
                       </Assign>
                       <Assign DisplayName="Assign Queue ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_12">

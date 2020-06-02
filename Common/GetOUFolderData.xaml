@@ -1,17 +1,17 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="GetOU_FolderData" this:GetOU_FolderData.in_FilterIDs="[{}]" this:GetOU_FolderData.in_FilterNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="GetOUFolderData" this:GetOUFolderData.in_FilterIDs="[{}]" this:GetOUFolderData.in_FilterNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="out_OUsData" Type="OutArgument(sd:DataTable)">
+    <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
+    <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
+    <x:Property Name="out_OUFoldersData" Type="OutArgument(sd:DataTable)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
-    <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -79,7 +79,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Choose to use Organization Units or Folders based on Orchestrator type and version.&#xA;Folders were introduced in 2019.10 and Organization Units were relabeled as Classic Folders." DisplayName="Get Organization Units or Folders Data" sap:VirtualizedContainerService.HintSize="526,556" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Choose to use Organization Units or Folders based on Orchestrator type and version.&#xA;Folders were introduced in 2019.10 and Organization Units were relabeled as Classic Folders." DisplayName="Get Organization Units/Folders Data" sap:VirtualizedContainerService.HintSize="526,556" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -101,10 +101,10 @@
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
               <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[out_OUsData]</OutArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[out_OUFoldersData]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:FilterDataTable DataTable="[out_OUsData]" DisplayName="Filter Data Table" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[out_OUsData]" SelectColumnsMode="Keep">
+          <ui:FilterDataTable DataTable="[out_OUFoldersData]" DisplayName="Filter Data Table" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_1" OutputDataTable="[out_OUFoldersData]" SelectColumnsMode="Keep">
             <ui:FilterDataTable.Filters>
               <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
                 <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
@@ -119,7 +119,7 @@
           </ui:FilterDataTable>
           <Assign DisplayName="Assign ID Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_OUsData.Columns("FolderID").ColumnName]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderID").ColumnName]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">ID</InArgument>
@@ -127,7 +127,7 @@
           </Assign>
           <Assign DisplayName="Assign Name Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_OUsData.Columns("FolderName").ColumnName]</OutArgument>
+              <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderName").ColumnName]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">Name</InArgument>
@@ -139,7 +139,7 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsData Workflow" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\GetOrganizationUnitsData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[out_OUsData]</OutArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[out_OUFoldersData]</OutArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>

@@ -1,16 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Activity mc:Ignorable="sap sap2010" x:Class="GetRobotsData" this:GetRobotsData.in_FilterNames="[{}]" this:GetRobotsData.in_FilterIDs="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_RobotsData" Type="OutArgument(sd:DataTable)" />
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>537.333333333333,2432</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>507.333333333333,2536.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="50">
@@ -69,7 +68,7 @@
       <AssemblyReference>System.Collections.Immutable</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Robots in the specified Organization Units (OU).&#xA;If no filters are specified, returns data about all Robots." DisplayName="Get Robots Data" sap:VirtualizedContainerService.HintSize="517.333333333333,2372" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Robots in the specified Organization Units/Folders.&#xA;If no filters are specified, returns data about all Robots." DisplayName="Get Robots Data" sap:VirtualizedContainerService.HintSize="517.333333333333,2372" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
     </Sequence.Variables>
@@ -100,11 +99,11 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUsData]" DisplayName="For Each OU" sap:VirtualizedContainerService.HintSize="475.333333333333,1828.66666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="475.333333333333,1828.66666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUNameAndID" />
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUFolderNameAndID" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="424.666666666667,1676" sap2010:WorkflowViewState.IdRef="Sequence_13">
             <Sequence.Variables>
@@ -122,7 +121,7 @@
                 <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
-                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUNameAndID("ID"))]</InArgument>
+                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
                 <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
                 <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
                 <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
@@ -161,20 +160,20 @@
                           <InArgument x:TypeArguments="sd:DataRow">[out_RobotsData.NewRow()]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <Assign DisplayName="Assign OU ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_18">
+                      <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_18">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Object">[NewRobotRow(0)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[OUNameAndID("ID")]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[OUFolderNameAndID("ID")]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <Assign DisplayName="Assign OU Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_19">
+                      <Assign DisplayName="Assign OU/Folder Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_19">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Object">[NewRobotRow(1)]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[OUNameAndID("Name")]</InArgument>
+                          <InArgument x:TypeArguments="x:Object">[OUFolderNameAndID("Name")]</InArgument>
                         </Assign.Value>
                       </Assign>
                       <Assign DisplayName="Assign Robot ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_20">

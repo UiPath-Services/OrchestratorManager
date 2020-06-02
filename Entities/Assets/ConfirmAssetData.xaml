@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmAssetData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmAssetData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_AssetID" Type="InArgument(x:String)" />
     <x:Property Name="in_AssetName" Type="InArgument(x:String)" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>588,1622</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>558,1726.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -28,6 +27,7 @@
       <x:String>System.Net.Mail</x:String>
       <x:String>Microsoft.VisualBasic</x:String>
       <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -45,6 +45,8 @@
       <AssemblyReference>System.Xml.Linq</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified Asset ID refers to an Asset whose name matches the specified name." DisplayName="Check Asset Arguments" sap:VirtualizedContainerService.HintSize="568,1562" sap2010:WorkflowViewState.IdRef="Sequence_25">
@@ -80,7 +82,7 @@
     <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified name matches the name of the asset specified by the ID." DisplayName="Confirm Asset Data" sap:VirtualizedContainerService.HintSize="526,931.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_26">
       <Sequence.Variables>
         <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
-        <Variable x:TypeArguments="x:Int64" Name="OUID" />
+        <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -89,19 +91,25 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign DisplayName="Assign OUID" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_12">
+      <Assign DisplayName="Assign OUFolderID" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_12">
         <Assign.To>
-          <OutArgument x:TypeArguments="x:Int64">[OUID]</OutArgument>
+          <OutArgument x:TypeArguments="x:Int64">[OUFolderID]</OutArgument>
         </Assign.To>
         <Assign.Value>
-          <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUsData.Rows(0)("ID"))]</InArgument>
+          <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUFoldersData.Rows(0)("ID"))]</InArgument>
         </Assign.Value>
       </Assign>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="The Name filter is not used because of current limitations of the API, which make the OData operator &quot;eq&quot; behave like &quot;contains&quot;, thus returning more results than it should.&#xA;For this reason, all assets in the OU are retrieved and the filtering is done locally using the Find method." DisplayName="Invoke GetAssetsData Workflow" sap:VirtualizedContainerService.HintSize="484,198.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/Assets/GetAssetsData.xaml">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="The Name filter is not used because of current limitations of the API, which make the OData operator &quot;eq&quot; behave like &quot;contains&quot;, thus returning more results than it should.&#xA;For this reason, all assets in the OU/Folder are retrieved and the filtering is done locally using the Find method." DisplayName="Invoke GetAssetsData Workflow" sap:VirtualizedContainerService.HintSize="484,198.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/Assets/GetAssetsData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[AssetsData]</OutArgument>
-          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUsData]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+          </InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">
+            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="AssetsData" />
+          </OutArgument>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+            <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
+          </InArgument>
         </ui:InvokeWorkflowFile.Arguments>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -109,12 +117,12 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </ui:InvokeWorkflowFile>
-      <If Condition="[AssetsData.Rows.Find({in_AssetName, OUID}) Is Nothing]" DisplayName="If No Asset Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_16">
+      <If Condition="[AssetsData.Rows.Find({in_AssetName, OUFolderID}) Is Nothing]" DisplayName="If No Asset Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_16">
         <If.Then>
           <Throw DisplayName="Throw (Asset Not Found)" Exception="[New Exception(in_Config(&quot;AssetNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_11" />
         </If.Then>
       </If>
-      <If Condition="[AssetsData.Rows.Find({in_AssetName, OUID})(&quot;AssetID&quot;).ToString &lt;&gt; in_AssetID]" DisplayName="If the Asset ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_15">
+      <If Condition="[AssetsData.Rows.Find({in_AssetName, OUFolderID})(&quot;AssetID&quot;).ToString &lt;&gt; in_AssetID]" DisplayName="If the Asset ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_15">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

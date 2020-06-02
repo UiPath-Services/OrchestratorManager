@@ -53,7 +53,7 @@
   <Sequence sap2010:Annotation.AnnotationText="Retrieve details about Queues defined in Orchestrator." DisplayName="Get Queues" sap:VirtualizedContainerService.HintSize="476,950" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="QueuesData" />
-      <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
+      <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -61,33 +61,19 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOrganizationUnits Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/PromptUserForOrganizationUnits.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUs">
-          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUsData" />
-        </OutArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[OUFoldersData]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueuesData Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities/Queues/GetQueuesData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s1:Int64[]" ExpressionText="{}{}" />
-        </InArgument>
-        <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="{}{}" />
-        </InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueuesData">
-          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="QueuesData" />
-        </OutArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">
-          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUsData" />
-        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+        <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueuesData">[QueuesData]</OutArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[OUFoldersData]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written Queue data and write new data about Queues." CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,574" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">

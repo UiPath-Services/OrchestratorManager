@@ -10,11 +10,6 @@
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="in_OUName" Type="InArgument(x:String)">
-      <x:Property.Attributes>
-        <RequiredArgumentAttribute />
-      </x:Property.Attributes>
-    </x:Property>
     <x:Property Name="in_RobotName" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotType" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotIndex" Type="InArgument(x:Int32)">
@@ -30,8 +25,13 @@
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
     <x:Property Name="in_MachineName" Type="InArgument(x:String)" />
     <x:Property Name="in_Password" Type="InArgument(x:String)" />
+    <x:Property Name="in_OUFolderName" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,1580</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>470.666666666667,948.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -83,46 +83,46 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Edit a robot according to the values passed as arguments." DisplayName="Edit Robot" sap:VirtualizedContainerService.HintSize="480.666666666667,1415.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Edit a robot according to the values passed as arguments." DisplayName="Edit Robot" sap:VirtualizedContainerService.HintSize="480.666666666667,784" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,1292.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,661.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Edit Robot" sap:VirtualizedContainerService.HintSize="376,1031.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
+        <Sequence DisplayName="Try to Edit Robot" sap:VirtualizedContainerService.HintSize="376,400" sap2010:WorkflowViewState.IdRef="Sequence_19">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
             <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="x:String" Name="Result" />
-            <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
+            <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence sap2010:Annotation.AnnotationText="It is assumed that empty arguments indicate that the current value should be kept. &#xA;Updating fields with blank values is not currently supported." DisplayName="Initialize Fields to Update" sap:VirtualizedContainerService.HintSize="334,812.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence sap2010:Annotation.AnnotationText="It is assumed that empty arguments indicate that the current value should be kept. &#xA;Updating fields with blank values is not currently supported." DisplayName="Initialize Fields to Update" sap:VirtualizedContainerService.HintSize="334,181.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Get OU ID" sap:VirtualizedContainerService.HintSize="526,686.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_23">
+            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_23">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_OUName)]" DisplayName="If OU Name Is Not Specified" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_24">
+              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_24">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -130,18 +130,26 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                  <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
                 </If.Then>
               </If>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOU-FolderData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Common/GetOU-FolderData.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_OUName}]</InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">[OUsData]</OutArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s1:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="{}{in_OUFolderName}" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                  </OutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
-              <If Condition="[OUsData.Rows.Count = 0]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_25">
+              <If Condition="[OUFoldersData.Rows.Count = 0]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_25">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -149,7 +157,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU Not Found)" Exception="[New Exception(in_Config(&quot;OUNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
                 </If.Then>
               </If>
             </Sequence>
@@ -293,7 +301,7 @@
               <InArgument x:TypeArguments="x:String" x:Key="in_Method">patch</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots({1})", in_Config("OrchestratorURL"), in_RobotID)]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUsData.Rows(0)("ID"))]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFoldersData.Rows(0)("ID"))]</InArgument>
               <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
               <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>

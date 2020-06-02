@@ -1,12 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmRobotData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmRobotData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_RobotName" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotID" Type="InArgument(x:String)" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>588,1508</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>558,1572.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -48,6 +47,7 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified Robot ID refers to a Robot whose name matches the specified name." DisplayName="Confirm Robot Data" sap:VirtualizedContainerService.HintSize="568,1408" sap2010:WorkflowViewState.IdRef="Sequence_21">
@@ -93,11 +93,21 @@
       </sap:WorkflowViewStateService.ViewState>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[RobotsData]</OutArgument>
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
-          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{Convert.ToInt64(in_RobotID)}]</InArgument>
-          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUsData]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+          </InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
+            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+          </OutArgument>
+          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+            <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+          </InArgument>
+          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+            <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{Convert.ToInt64(in_RobotID)}" />
+          </InArgument>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+            <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
+          </InArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
       <If Condition="[RobotsData.Rows.Count = 0]" DisplayName="If No Robot Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_13">
