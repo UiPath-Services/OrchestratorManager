@@ -374,7 +374,10 @@
                   </sap:WorkflowViewStateService.ViewState>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+                      <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+                        <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="io_Config" />
+                      </InOutArgument>
+                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AuthenticationSuccessful" />
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                   <Throw sap2010:Annotation.AnnotationText="Exception thrown so that the request is retried by Retry Scope using the new token." DisplayName="Throw (Token Expired)" Exception="[New ArgumentException(io_Config(&quot;TokenExpired&quot;))]" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="Throw_4">
@@ -429,7 +432,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New System.Net.WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </If.Then>
     </If>
     <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator due to a large number of consecutive requests." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(io_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606,117.333333333333" sap2010:WorkflowViewState.IdRef="Delay_1">
