@@ -9,7 +9,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>696,1092</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>872,1559.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Authenticate_OnPremises_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -66,21 +66,32 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Authenticate to on-premises Orchestrator instance and store authentication token in Config." DisplayName="Make Authentication Request On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="706,927.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Authenticate to on-premises Orchestrator instance and store authentication token in Config." DisplayName="Make Authentication Request On-Premises Orchestrator" sap:VirtualizedContainerService.HintSize="882,1394.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Update Configuration File" sap:VirtualizedContainerService.HintSize="664,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Update Configuration File" sap:VirtualizedContainerService.HintSize="840,536.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="OrchestratorURL" />
+      </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[in_OrchestratorURL &lt;&gt; io_Config(&quot;OnPremisesOrchestratorURL&quot;)]" DisplayName="If Orchestrator URL Is Specified" sap:VirtualizedContainerService.HintSize="484,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+      <Assign DisplayName="Assign OrchestratorURL" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[OrchestratorURL]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[(New Uri(in_OrchestratorURL)).GetLeftPart(UriPartial.Authority)]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <If Condition="[OrchestratorURL &lt;&gt; io_Config(&quot;OnPremisesOrchestratorURL&quot;)]" DisplayName="If Orchestrator URL Is Specified" sap:VirtualizedContainerService.HintSize="484,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -90,11 +101,21 @@
         <If.Then>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateConfigurationFile Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/UpdateConfigurationFile.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">[io_Config("ConfigFilePath")]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">Settings</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">OnPremisesOrchestratorURL</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">[in_OrchestratorURL]</InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;ConfigFilePath&quot;)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                <Literal x:TypeArguments="x:String">Settings</Literal>
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterName">
+                <Literal x:TypeArguments="x:String">OnPremisesOrchestratorURL</Literal>
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ParameterValue">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="OrchestratorURL" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="io_Config" />
+              </InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </If.Then>
@@ -104,11 +125,11 @@
           <OutArgument x:TypeArguments="ui:GenericValue">[io_Config("OrchestratorURL")]</OutArgument>
         </Assign.To>
         <Assign.Value>
-          <InArgument x:TypeArguments="ui:GenericValue">[in_OrchestratorURL]</InArgument>
+          <InArgument x:TypeArguments="ui:GenericValue">[OrchestratorURL]</InArgument>
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Sequence DisplayName="Get API Token" sap:VirtualizedContainerService.HintSize="664,695.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Get API Token" sap:VirtualizedContainerService.HintSize="840,695.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
         <Variable x:TypeArguments="x:String" Name="Result" />
@@ -118,7 +139,7 @@
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Authenticate)" EndPoint="[io_Config(&quot;OrchestratorURL&quot;).Trim+&quot;/api/account/authenticate&quot;]" sap:VirtualizedContainerService.HintSize="622,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+      <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (Authenticate)" EndPoint="[io_Config(&quot;OrchestratorURL&quot;).Trim+&quot;/api/account/authenticate&quot;]" sap:VirtualizedContainerService.HintSize="798,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="POST" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
         <ui:HttpClient.Attachments>
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
         </ui:HttpClient.Attachments>
@@ -137,7 +158,7 @@
           <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
         </ui:HttpClient.UrlSegments>
       </ui:HttpClient>
-      <If Condition="[StatusCode = 200]" DisplayName="If Successfully Authenticated" sap:VirtualizedContainerService.HintSize="622,541.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+      <If Condition="[StatusCode = 200]" DisplayName="If Successfully Authenticated" sap:VirtualizedContainerService.HintSize="798,541.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -145,14 +166,14 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Sequence DisplayName="Extract Token" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Extract Token" sap:VirtualizedContainerService.HintSize="376,358" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <Sequence.Variables>
               <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
