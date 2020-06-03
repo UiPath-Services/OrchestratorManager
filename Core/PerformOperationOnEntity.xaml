@@ -2,7 +2,7 @@
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>805.333333333333,1428</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>805.333333333333,1298.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="17">
@@ -44,7 +44,7 @@
       <AssemblyReference>WindowsBase</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Perform operations on entities until the execution is stopped." DisplayName="Perform Operation on Entity" sap:VirtualizedContainerService.HintSize="815.333333333333,1263.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_15">
+  <Sequence sap2010:Annotation.AnnotationText="Perform operations on entities until the execution is stopped." DisplayName="Perform Operation on Entity" sap:VirtualizedContainerService.HintSize="815.333333333333,1134" sap2010:WorkflowViewState.IdRef="Sequence_15">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Boolean" Name="ShouldStop" />
     </Sequence.Variables>
@@ -59,14 +59,14 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <While DisplayName="While User Does Not Stop Execution" sap:VirtualizedContainerService.HintSize="773.333333333333,1014" sap2010:WorkflowViewState.IdRef="While_1">
+    <While DisplayName="While User Does Not Stop Execution" sap:VirtualizedContainerService.HintSize="773.333333333333,884.666666666667" sap2010:WorkflowViewState.IdRef="While_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <While.Condition>[Not ShouldStop]</While.Condition>
-      <Sequence DisplayName="Check Token and Invoke Entity Manager" sap:VirtualizedContainerService.HintSize="726.666666666667,850" sap2010:WorkflowViewState.IdRef="Sequence_14">
+      <Sequence DisplayName="Check Token and Invoke Entity Manager" sap:VirtualizedContainerService.HintSize="726.666666666667,720.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:String" Name="Entity" />
           <Variable x:TypeArguments="x:String" Name="Operation" />
@@ -76,7 +76,21 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <If Condition="[in_Config.ContainsKey(&quot;Token&quot;)]" DisplayName="If Token Was Retrieved" sap:VirtualizedContainerService.HintSize="684.666666666667,216" sap2010:WorkflowViewState.IdRef="If_3">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetEntityAndOperation Workflow" sap:VirtualizedContainerService.HintSize="684.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Core/GetEntityAndOperation.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_Entity">[Entity]</OutArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_Operation">[Operation]</OutArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+        <If Condition="[ShouldStop]" DisplayName="If User Stopped Execution" sap:VirtualizedContainerService.HintSize="684.666666666667,502" sap2010:WorkflowViewState.IdRef="If_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -84,40 +98,16 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <If.Then>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetEntityAndOperation Workflow" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Core/GetEntityAndOperation.xaml">
-              <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_Entity">[Entity]</OutArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_Operation">[Operation]</OutArgument>
-                <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
-              </ui:InvokeWorkflowFile.Arguments>
+            <ui:LogMessage DisplayName="Log Message (Stopped Execution)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[in_Config(&quot;StoppedExecution&quot;)]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-            </ui:InvokeWorkflowFile>
+            </ui:LogMessage>
           </If.Then>
           <If.Else>
-            <Assign DisplayName="Assign ShouldStop" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:Boolean">[ShouldStop]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:Boolean">True</InArgument>
-              </Assign.Value>
-            </Assign>
-          </If.Else>
-        </If>
-        <If Condition="[Not ShouldStop]" DisplayName="If Should Not Stop" sap:VirtualizedContainerService.HintSize="684.666666666667,502" sap2010:WorkflowViewState.IdRef="If_2">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <If.Then>
             <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,348" sap2010:WorkflowViewState.IdRef="TryCatch_1">
               <TryCatch.Try>
                 <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EntityManager Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Core/EntityManager.xaml">
@@ -182,16 +172,6 @@
                 </Catch>
               </TryCatch.Catches>
             </TryCatch>
-          </If.Then>
-          <If.Else>
-            <ui:LogMessage DisplayName="Log Message (Stopped Execution)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[in_Config(&quot;StoppedExecution&quot;)]">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-            </ui:LogMessage>
           </If.Else>
         </If>
       </Sequence>

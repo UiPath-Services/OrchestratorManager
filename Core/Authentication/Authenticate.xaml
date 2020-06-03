@@ -1,11 +1,12 @@
 <Activity mc:Ignorable="sap sap2010" x:Class="Authenticate" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="out_AuthenticationSuccessful" Type="OutArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>830.666666666667,1745.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>930.666666666667,1847.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Authentication_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -68,21 +69,21 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Get authentication data from user and try to perform authentication.&#xA;If authentication is successful, an authentication token is included in Config to be used in subsequent requests." DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="840.666666666667,1580.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+  <Sequence sap2010:Annotation.AnnotationText="Get authentication data from user and try to perform authentication.&#xA;If authentication is successful, an authentication token is included in Config to be used in subsequent requests." DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="940.666666666667,1682.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <While DisplayName="While User Cancels or Authentication Succeeds" sap:VirtualizedContainerService.HintSize="798.666666666667,1443.33333333333" sap2010:WorkflowViewState.IdRef="While_2">
+    <While DisplayName="While User Cancels or Authentication Succeeds" sap:VirtualizedContainerService.HintSize="898.666666666667,1443.33333333333" sap2010:WorkflowViewState.IdRef="While_2">
       <While.Variables>
         <Variable x:TypeArguments="x:Boolean" Default="False" Name="ShouldStop" />
       </While.Variables>
       <While.Condition>
         <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="Not ShouldStop" sap2010:WorkflowViewState.IdRef="VisualBasicValue`1_1" />
       </While.Condition>
-      <Sequence DisplayName="Attempts Authentication" sap:VirtualizedContainerService.HintSize="752,1279.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence DisplayName="Attempts Authentication" sap:VirtualizedContainerService.HintSize="852,1279.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="njl:JObject" Name="AuthenticationData" />
         </Sequence.Variables>
@@ -91,15 +92,25 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAuthenticationData Workflow" sap:VirtualizedContainerService.HintSize="710,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Core/Authentication/GetAuthenticationData.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAuthenticationData Workflow" sap:VirtualizedContainerService.HintSize="810,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Core/Authentication/GetAuthenticationData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[ShouldStop]</OutArgument>
             <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
             <OutArgument x:TypeArguments="njl:JObject" x:Key="out_AuthenticationData">[AuthenticationData]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <If Condition="[Not ShouldStop]" DisplayName="If User Did Not Stop Execution" sap:VirtualizedContainerService.HintSize="710,1060.66666666667" sap2010:WorkflowViewState.IdRef="If_12">
+        <If Condition="[ShouldStop]" DisplayName="If User Stopped Execution" sap:VirtualizedContainerService.HintSize="810,1060.66666666667" sap2010:WorkflowViewState.IdRef="If_12">
           <If.Then>
+            <ui:LogMessage DisplayName="Log Message (Stopped Execution)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[io_Config(&quot;StoppedExecution&quot;)]">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:LogMessage>
+          </If.Then>
+          <If.Else>
             <Sequence DisplayName="Perform Authentication" sap:VirtualizedContainerService.HintSize="564,906.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_10">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -244,9 +255,17 @@
                 </If.Else>
               </If>
             </Sequence>
-          </If.Then>
+          </If.Else>
         </If>
       </Sequence>
     </While>
+    <Assign DisplayName="Assign Authentication Successful" sap:VirtualizedContainerService.HintSize="898.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_14">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Boolean">[out_AuthenticationSuccessful]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Boolean">[io_Config.ContainsKey("Token")]</InArgument>
+      </Assign.Value>
+    </Assign>
   </Sequence>
 </Activity>
