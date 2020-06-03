@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>686,2923.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,2818</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetAllSettings_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -66,7 +66,7 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="696,2758.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+  <Sequence sap2010:Annotation.AnnotationText="Initialize, populate and output a configuration dictionary to be used throughout the project. &#xA;The contents of the dictionary are retrieved from a configuration file (Config.xlsx by default) and include settings and localized strings.&#xA;The localized strings are chosen based on the system's locale settings." DisplayName="Initialize Configurations" sap:VirtualizedContainerService.HintSize="696,2653.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -265,23 +265,21 @@
         </sap:WorkflowViewStateService.ViewState>
       </ui:ForEachRow>
     </Sequence>
-    <If Condition="[Not Directory.Exists(out_Config(&quot;EntitiesWorkbooksFolderPath&quot;))]" DisplayName="If Mandatory Arguments Are Not Specified" sap:VirtualizedContainerService.HintSize="654,366.666666666667" sap2010:WorkflowViewState.IdRef="If_16">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
+    <If Condition="[String.IsNullOrWhiteSpace(out_Config(&quot;EntitiesWorkbooksFolderPath&quot;))]" DisplayName="If Workbooks Folder Path Is Specified" sap:VirtualizedContainerService.HintSize="654,261.333333333333" sap2010:WorkflowViewState.IdRef="If_17">
       <If.Then>
-        <Sequence DisplayName="Mandatory Arguments Not Specified" sap:VirtualizedContainerService.HintSize="376,212.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
+        <Assign sap2010:Annotation.AnnotationText="Set a folder in Desktop as default location for entity workbooks." DisplayName="Assign Entities Workbooks Folder Path (Default)" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_32">
+          <Assign.To>
+            <OutArgument x:TypeArguments="ui:GenericValue">[out_Config("EntitiesWorkbooksFolderPath")]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="ui:GenericValue">[Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\OrchestratorManagerWorkbooks"]</InArgument>
+          </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[out_Config(&quot;MandatoryArgumentsNotSpecified&quot;)]" />
-          <Throw DisplayName="Throw" Exception="[New ArgumentException(out_Config(&quot;MandatoryArgumentsNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
-        </Sequence>
+        </Assign>
       </If.Then>
     </If>
   </Sequence>
