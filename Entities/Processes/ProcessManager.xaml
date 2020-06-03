@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>790,1618.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>790,1664</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -68,7 +68,7 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Processes." DisplayName="Process Manager" sap:VirtualizedContainerService.HintSize="800,1454" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Processes." DisplayName="Process Manager" sap:VirtualizedContainerService.HintSize="800,1499.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -93,7 +93,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Process Operation)" Expression="[in_ProcessOperation]" sap:VirtualizedContainerService.HintSize="758,1238.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Process Operation)" Expression="[in_ProcessOperation]" sap:VirtualizedContainerService.HintSize="758,1284" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_13">
           <sap:WorkflowViewStateService.ViewState>
@@ -121,7 +121,7 @@
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -161,13 +161,18 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[ProcessesDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Create Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Create Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ProcessDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(ProcessDetails(5).ToString)]" DisplayName="If Unprocessed Create Process" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(ProcessDetails(5).ToString)]" DisplayName="If Unprocessed Create Process" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_4">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcess Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities/Processes/CreateProcess.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
@@ -202,7 +207,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -242,13 +247,18 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[ProcessesDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Delete Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Delete Process)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ProcessDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(ProcessDetails(4).ToString)]" DisplayName="If Unprocessed Delete Process" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_3">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(ProcessDetails(4).ToString)]" DisplayName="If Unprocessed Delete Process" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteProcess Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities/Processes/DeleteProcess.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
@@ -283,7 +293,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="updateprocesstolatestpackageversion" DisplayName="Update Process To Latest Package Version" sap:VirtualizedContainerService.HintSize="718,954" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence x:Key="updateprocesstolatestpackageversion" DisplayName="Update Process To Latest Package Version" sap:VirtualizedContainerService.HintSize="718,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -323,31 +333,26 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[ProcessesDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Update Process To Latest Package Version)" sap:VirtualizedContainerService.HintSize="676,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_9">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Update Process To Latest Package Version)" sap:VirtualizedContainerService.HintSize="676,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_9">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ProcessDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(ProcessDetails(2).ToString)]" DisplayName="If Unprocessed Update Process To Latest Package Version" sap:VirtualizedContainerService.HintSize="625.333333333333,240.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(ProcessDetails(2).ToString)]" DisplayName="If Unprocessed Update Process To Latest Package Version" sap:VirtualizedContainerService.HintSize="625.333333333333,286" sap2010:WorkflowViewState.IdRef="If_5">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UpdateProcessToLatestPackageVersion Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Entities\Processes\UpdateProcessToLatestPackageVersion.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_ProcessIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ProcessDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ProcessDetails(1).ToString" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_ProcessIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[ProcessDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">[ProcessDetails(1).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -372,7 +377,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="rollbackprocesstopreviouspackageversion" DisplayName="Rollback Process To Previous Package Version" sap:VirtualizedContainerService.HintSize="718,954" sap2010:WorkflowViewState.IdRef="Sequence_12">
+      <Sequence x:Key="rollbackprocesstopreviouspackageversion" DisplayName="Rollback Process To Previous Package Version" sap:VirtualizedContainerService.HintSize="718,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_12">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -412,31 +417,26 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[ProcessesDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Rollback Process To Previous Package Version)" sap:VirtualizedContainerService.HintSize="676,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_10">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[ProcessesDetails]" DisplayName="For Each Row (Rollback Process To Previous Package Version)" sap:VirtualizedContainerService.HintSize="676,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_10">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ProcessDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(ProcessDetails(2).ToString)]" DisplayName="If Unprocessed Rollback Process To Previous Package Version" sap:VirtualizedContainerService.HintSize="625.333333333333,240.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(ProcessDetails(2).ToString)]" DisplayName="If Unprocessed Rollback Process To Previous Package Version" sap:VirtualizedContainerService.HintSize="625.333333333333,286" sap2010:WorkflowViewState.IdRef="If_6">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RollbackProcessToPreviousPackageVersion Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities\Processes\RollbackProcessToPreviousPackageVersion.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_ProcessIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ProcessDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ProcessDetails(1).ToString" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_ProcessIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[ProcessDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">[ProcessDetails(1).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>

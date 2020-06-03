@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>744.666666666667,1595.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>744.666666666667,1640.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="46">
@@ -63,7 +63,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Robots." DisplayName="Robot Manager" sap:VirtualizedContainerService.HintSize="754.666666666667,1430.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Robots." DisplayName="Robot Manager" sap:VirtualizedContainerService.HintSize="754.666666666667,1476" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -88,7 +88,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Robot Operation)" Expression="[in_RobotOperation]" sap:VirtualizedContainerService.HintSize="712.666666666667,1215.33333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Robot Operation)" Expression="[in_RobotOperation]" sap:VirtualizedContainerService.HintSize="712.666666666667,1260.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_7">
           <sap:WorkflowViewStateService.ViewState>
@@ -116,7 +116,7 @@
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_6">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="RobotsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -156,46 +156,31 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[RobotsDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Create Robot)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Create Robot)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(8).ToString)]" DisplayName="If Unprocessed Create Robot" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(RobotDetails(8).ToString)]" DisplayName="If Unprocessed Create Robot" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_4">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateRobot Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities/Robots/CreateRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_HostingType">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(1).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(2).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotType">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(3).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(4).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Password">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(5).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(6).ToString" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_HostingType">[RobotDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotName">[RobotDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_MachineName">[RobotDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotType">[RobotDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">[RobotDetails(4).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Password">[RobotDetails(5).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[RobotDetails(6).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -220,7 +205,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="edit" DisplayName="Edit" sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_5">
+      <Sequence x:Key="edit" DisplayName="Edit" sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="RobotsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -260,13 +245,18 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Edit Robot)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Edit Robot)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(7).ToString)]" DisplayName="If Unprocessed Edit Robot" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(RobotDetails(7).ToString)]" DisplayName="If Unprocessed Edit Robot" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_2">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EditRobot Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities/Robots/EditRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
@@ -304,7 +294,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,954" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="RobotsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -344,37 +334,28 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Delete Robots)" sap:VirtualizedContainerService.HintSize="630.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[RobotsDetails]" DisplayName="For Each Row (Delete Robots)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotDetails" />
               </ActivityAction.Argument>
-              <If Condition="[String.IsNullOrWhiteSpace(RobotDetails(4).ToString)]" DisplayName="If Unprocessed Delete Robot" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(RobotDetails(4).ToString)]" DisplayName="If Unprocessed Delete Robot" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_1">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteRobot Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities/Robots/DeleteRobot.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderID">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(1).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotID">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(2).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotName">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotDetails(3).ToString" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_RobotIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderID">[RobotDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[RobotDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotID">[RobotDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RobotName">[RobotDetails(3).ToString]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
