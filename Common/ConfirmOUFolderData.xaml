@@ -5,7 +5,7 @@
     <x:Property Name="in_OUFolderID" Type="InArgument(x:String)" />
     <x:Property Name="out_OUFoldersData" Type="OutArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>516,770.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>654,1218</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -50,7 +50,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Choose to use Organization Units or Folders based on Orchestrator type and version.&#xA;Folders were introduced in 2019.10 and Organization Units were relabeled as Classic Folders.&#xA;&#xA;In addition to confirming whether the ID and the Name of OU/Folder match, output data about OUs/Folders for optional use when manipulating other entities." DisplayName="Confirm Organization Unit/Folder Data" sap:VirtualizedContainerService.HintSize="526,606" sap2010:WorkflowViewState.IdRef="Sequence_24">
+  <Sequence sap2010:Annotation.AnnotationText="Choose to use Organization Units or Folders based on Orchestrator type and version.&#xA;Folders were introduced in 2019.10 and Organization Units were relabeled as Classic Folders.&#xA;&#xA;In addition to confirming whether the ID and the Name of OU/Folder match, output data about OUs/Folders for optional use when manipulating other entities." DisplayName="Confirm Organization Unit/Folder Data" sap:VirtualizedContainerService.HintSize="664,1053.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_24">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -58,12 +58,12 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If Cloud or On-Premises Newer than 2019.10" sap:VirtualizedContainerService.HintSize="484,402" sap2010:WorkflowViewState.IdRef="If_18">
+    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If Cloud or On-Premises Newer than 2019.10" sap:VirtualizedContainerService.HintSize="622,869.333333333333" sap2010:WorkflowViewState.IdRef="If_18">
       <If.Then>
-        <Sequence sap2010:Annotation.AnnotationText="After retrieving data about Folders, modify the columns of the table to make it have the same columns and columns' names as OUs.&#xA;This is done to simplify accessing data about OU/Folders when it is necessary to have the ID to make calls to other endpoints." DisplayName="Confirm and Format Folder Data" sap:VirtualizedContainerService.HintSize="200,248" sap2010:WorkflowViewState.IdRef="Sequence_25">
+        <Sequence sap2010:Annotation.AnnotationText="After retrieving data about Folders, modify the columns of the table to make it have the same columns and columns' names as OUs.&#xA;This is done to simplify accessing data about OU/Folders when it is necessary to have the ID to make calls to other endpoints." DisplayName="Confirm and Format Folder Data" sap:VirtualizedContainerService.HintSize="376,717.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_25">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
@@ -89,7 +89,7 @@
               </scg:List>
             </ui:FilterDataTable.SelectColumns>
           </ui:FilterDataTable>
-          <Assign DisplayName="Assign ID Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign DisplayName="Assign ID Column's Name" sap:VirtualizedContainerService.HintSize="334,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderID").ColumnName]</OutArgument>
             </Assign.To>
@@ -97,7 +97,7 @@
               <InArgument x:TypeArguments="x:String">ID</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="Assign Name Column's Name" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign DisplayName="Assign Name Column's Name" sap:VirtualizedContainerService.HintSize="334,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[out_OUFoldersData.Columns("FolderName").ColumnName]</OutArgument>
             </Assign.To>
@@ -105,10 +105,23 @@
               <InArgument x:TypeArguments="x:String">Name</InArgument>
             </Assign.Value>
           </Assign>
+          <Assign sap2010:Annotation.AnnotationText="Reassign primary key after changing table strutcture." DisplayName="Assign out_OUFoldersData.PrimaryKey" sap:VirtualizedContainerService.HintSize="334,105.333333333333" sap2010:WorkflowViewState.IdRef="Assign_3">
+            <Assign.To>
+              <OutArgument x:TypeArguments="sd:DataColumn[]">[out_OUFoldersData.PrimaryKey]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="sd:DataColumn[]">[{out_OUFoldersData.Columns("Name")}]</InArgument>
+            </Assign.Value>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </Assign>
         </Sequence>
       </If.Then>
       <If.Else>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmOrganizationUnitData Workflow" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\ConfirmOrganizationUnitData.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmOrganizationUnitData Workflow" sap:VirtualizedContainerService.HintSize="200,52" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\ConfirmOrganizationUnitData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_OUName">[in_OUFolderName]</InArgument>
