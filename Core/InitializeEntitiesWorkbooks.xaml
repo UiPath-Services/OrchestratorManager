@@ -2,7 +2,7 @@
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>602,1362.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>598.666666666667,1123.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -38,9 +38,12 @@
       <AssemblyReference>System.Xml.Linq</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Check whether entities workbooks exist and copy them from templates if they don't." DisplayName="Initialize Entities Workbooks" sap:VirtualizedContainerService.HintSize="612,1158" sap2010:WorkflowViewState.IdRef="Sequence_18">
+  <Sequence sap2010:Annotation.AnnotationText="Check whether entities workbooks exist and copy them from templates if they don't." DisplayName="Initialize Entities Workbooks" sap:VirtualizedContainerService.HintSize="608.666666666667,958.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="TemplateWorkbooksPath" />
     </Sequence.Variables>
@@ -51,41 +54,20 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[Not Directory.Exists(in_Config(&quot;EntitiesWorkbooksFolderPath&quot;))]" DisplayName="If Entities Workbooks Folder Exist" sap:VirtualizedContainerService.HintSize="570,239.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
+    <If Condition="[Not Directory.Exists(in_Config(&quot;EntitiesWorkbooksFolderPath&quot;))]" DisplayName="If Entities Workbooks Folder Exist" sap:VirtualizedContainerService.HintSize="566.666666666667,239.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
       <If.Then>
         <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_Config(&quot;EntitiesWorkbooksFolderPath&quot;)]" />
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Automation Cloud and On-Premises Orchestrator 2019.10+ use Folders instead of Organization Units. In these versions, Organization Units have been renamed to Classic Folders." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If Cloud or On-Premises Newer than 2019.10" sap:VirtualizedContainerService.HintSize="570,261.333333333333" sap2010:WorkflowViewState.IdRef="If_5">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Assign DisplayName="Assign TemplateWorkbooksPath (Using Folders)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[TemplateWorkbooksPath]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}", in_Config("WorkbooksUsingFoldersPath"), in_Config("Language"))]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </If.Then>
-      <If.Else>
-        <Assign DisplayName="Assign TemplateWorkbooksPath (Using OUs)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[TemplateWorkbooksPath]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}", in_Config("WorkbooksUsingOUsPath"), in_Config("Language"))]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </If.Else>
-    </If>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Entity Workbook" sap:VirtualizedContainerService.HintSize="570,454.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(TemplateWorkbooksPath, &quot;*.xlsx&quot;)]">
+    <Assign DisplayName="Assign TemplateWorkbooksPath" sap:VirtualizedContainerService.HintSize="566.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[TemplateWorkbooksPath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}", in_Config("WorkbooksTemplatesPath"), in_Config("Language"))]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Entity Workbook" sap:VirtualizedContainerService.HintSize="566.666666666667,454.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(TemplateWorkbooksPath, &quot;*.xlsx&quot;)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
