@@ -96,15 +96,15 @@
           <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{Convert.ToInt64(in_ID)}]</InArgument>
           <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
           <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueuesData">[QueuesData]</OutArgument>
-          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUFoldersData]</InArgument>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[in_OUFoldersData]</InArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-      <If Condition="[QueuesData.Rows.Count = 0]" DisplayName="If No Queue Found with Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">
+      <If Condition="[QueuesData.Rows.Find({in_OUFoldersData(0)(&quot;Name&quot;), in_Name}) Is Nothing]" DisplayName="If No Queue Found with Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">
         <If.Then>
           <Throw DisplayName="Throw (Queue Not Found)" Exception="[New Exception(in_Config(&quot;QueueNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="Since Queue IDs and names are unique, it is guaranteed that QueuesData has a single row." Condition="[QueuesData.Rows(0)(&quot;QueueName&quot;).ToString &lt;&gt; in_Name]" DisplayName="If the Specified Name Matches the Name Retrieved by the ID" sap:VirtualizedContainerService.HintSize="484,259.333333333333" sap2010:WorkflowViewState.IdRef="If_10">
+      <If sap2010:Annotation.AnnotationText="Since Queue IDs and names are unique, it is guaranteed that QueuesData has a single row." Condition="[QueuesData.Rows.Find({in_OUFoldersData(0)(&quot;Name&quot;), in_Name})(&quot;QueueName&quot;).ToString &lt;&gt; in_Name]" DisplayName="If the Specified Name Matches the Name Retrieved by the ID" sap:VirtualizedContainerService.HintSize="484,259.333333333333" sap2010:WorkflowViewState.IdRef="If_10">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

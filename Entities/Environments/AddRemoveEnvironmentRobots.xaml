@@ -155,11 +155,21 @@
               </If>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetEnvironmentsData Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/Environments/GetEnvironmentsData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUFoldersData]</InArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_EnvironmentName}]</InArgument>
-                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">[EnvironmentsData]</OutArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="{}{in_EnvironmentName}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s1:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <If Condition="[EnvironmentsData.Rows.Count = 0]" DisplayName="If No Environment Is Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,261.333333333333" sap2010:WorkflowViewState.IdRef="If_25">
@@ -214,18 +224,34 @@
               </Assign>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Add)" sap:VirtualizedContainerService.HintSize="354,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUFoldersData]</InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">[AddRobotsIDs]</OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_RobotsNames">[AddRobotsNames]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">
+                    <mva:VisualBasicReference x:TypeArguments="scg:List(x:Int64)" ExpressionText="AddRobotsIDs" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_RobotsNames">
+                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="AddRobotsNames" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Remove)" sap:VirtualizedContainerService.HintSize="354,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUFoldersData]</InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">[RemoveRobotsIDs]</OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_RobotsNames">[RemoveRobotsNames]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">
+                    <mva:VisualBasicReference x:TypeArguments="scg:List(x:Int64)" ExpressionText="RemoveRobotsIDs" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_RobotsNames">
+                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="RemoveRobotsNames" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <If Condition="[RemoveRobotsIDs.Intersect(AddRobotsIDs).Count &gt; 0]" DisplayName="If Any Robot Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="354,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_41">

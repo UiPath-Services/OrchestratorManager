@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmUserData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmUserData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_ID" Type="InArgument(x:String)" />
@@ -74,7 +74,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Throw DisplayName="Throw (Username Not Specified)" Exception="[New ArgumentException(in_Config(&quot;NameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+        <Throw DisplayName="Throw (Username Not Specified)" Exception="[New ArgumentException(in_Config(&quot;UsernameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
       </If.Then>
     </If>
     <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified name matches the name of the user specified by the ID." DisplayName="Confirm User Data" sap:VirtualizedContainerService.HintSize="526,762.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
@@ -90,18 +90,10 @@
       </sap:WorkflowViewStateService.ViewState>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
-            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
-          </OutArgument>
-          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-            <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{Convert.ToInt64(in_ID)}" />
-          </InArgument>
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-            <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
-          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
+          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{Convert.ToInt64(in_ID)}]</InArgument>
+          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
       <If Condition="[UsersData.Rows.Count = 0]" DisplayName="If No User Found with Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">

@@ -6,7 +6,7 @@
     <x:Property Name="in_ProcessIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_OUFolderName" Type="InArgument(x:String)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,898.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>470.666666666667,938.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -113,18 +113,10 @@
               </If>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">
-                    <mva:VisualBasicValue x:TypeArguments="s1:Int64[]" ExpressionText="{}{}" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">
-                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="{}{in_OUFolderName}" />
-                  </InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">
-                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-                  </OutArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_OUFolderName}]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <If Condition="[OUFoldersData.Rows.Count = 0]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,278" sap2010:WorkflowViewState.IdRef="If_2">
@@ -135,7 +127,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
                 </If.Then>
                 <If.Else>
                   <Assign sap2010:Annotation.AnnotationText="Since OU/Folder IDs and names are unique, it is guaranteed that OUFoldersData has a single row." DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_5">
