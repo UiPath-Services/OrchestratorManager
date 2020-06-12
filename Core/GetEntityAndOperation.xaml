@@ -5,7 +5,7 @@
     <x:Property Name="out_Operation" Type="OutArgument(x:String)" />
     <x:Property Name="out_ShouldStop" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>716,1157.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>716,1304.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -50,7 +50,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Prompts the user for an Orchestrator entity and the desired operation to be performed on the chosen entity." DisplayName="Get Entity And Operation" sap:VirtualizedContainerService.HintSize="726,992.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
+  <Sequence sap2010:Annotation.AnnotationText="Prompts the user for an Orchestrator entity and the desired operation to be performed on the chosen entity." DisplayName="Get Entity And Operation" sap:VirtualizedContainerService.HintSize="726,1140" sap2010:WorkflowViewState.IdRef="Sequence_13">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ControlPanelOutput" />
     </Sequence.Variables>
@@ -66,7 +66,7 @@
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:CustomInput DisplayName="Custom Input" Height="[in_Config(&quot;FormsHeight&quot;)-100]" sap:VirtualizedContainerService.HintSize="684,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[ControlPanelOutput]" URI="[in_Config(&quot;ControlPanelPath&quot;)]" Width="[in_Config(&quot;FormsWidth&quot;)-100]" />
-    <If Condition="[String.IsNullOrWhiteSpace(ControlPanelOutput) OrElse ControlPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="684,614" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[String.IsNullOrWhiteSpace(ControlPanelOutput) OrElse ControlPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="684,761.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Assign DisplayName="Assign out_ShouldStop (True)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
           <Assign.To>
@@ -78,7 +78,7 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="376,460" sap2010:WorkflowViewState.IdRef="Sequence_14">
+        <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="376,607.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
           <Sequence.Variables>
             <Variable x:TypeArguments="njl:JObject" Name="ControlPanelJSON" />
           </Sequence.Variables>
@@ -96,6 +96,19 @@
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">[ControlPanelJSON("entity").ToString]</InArgument>
             </Assign.Value>
+          </Assign>
+          <Assign sap2010:Annotation.AnnotationText="Store entity to show it as selected in the next run." DisplayName="Assign Selected Entity" sap:VirtualizedContainerService.HintSize="334,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_5">
+            <Assign.To>
+              <OutArgument x:TypeArguments="ui:GenericValue">[in_Config("SelectedEntity")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="ui:GenericValue">[out_Entity]</InArgument>
+            </Assign.Value>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
           </Assign>
           <Assign DisplayName="Assign out_Operation" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
