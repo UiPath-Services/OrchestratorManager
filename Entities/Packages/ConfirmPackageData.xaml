@@ -1,11 +1,12 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmPackageData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConfirmPackageData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_Version" Type="InArgument(x:String)" />
     <x:Property Name="in_Name" Type="InArgument(x:String)" />
     <x:Property Name="out_Key" Type="OutArgument(x:String)" />
+    <x:Property Name="in_PackagesData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>582,1545.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>540,1011.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="19">
@@ -49,7 +50,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified Package and version exist." DisplayName="Check Package Arguments" sap:VirtualizedContainerService.HintSize="592,1380.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
+  <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified Package and version exist." DisplayName="Check Package Arguments" sap:VirtualizedContainerService.HintSize="550,846.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -57,7 +58,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Package Name Is Not Specified" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_7">
+    <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Package Name Is Not Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_7">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -68,7 +69,7 @@
         <Throw DisplayName="Throw (Package Name not Specified)" Exception="[New ArgumentException(in_Config(&quot;NameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
       </If.Then>
     </If>
-    <If Condition="[String.IsNullOrWhiteSpace(in_Version)]" DisplayName="If Version Is Not Specified" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_8">
+    <If Condition="[String.IsNullOrWhiteSpace(in_Version)]" DisplayName="If Version Is Not Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_8">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -79,55 +80,26 @@
         <Throw DisplayName="Throw (Version not Specified)" Exception="[New ArgumentException(in_Config(&quot;VersionNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
       </If.Then>
     </If>
-    <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified Package name and version exist." DisplayName="Confirm Package Data" sap:VirtualizedContainerService.HintSize="550,750" sap2010:WorkflowViewState.IdRef="Sequence_18">
-      <Sequence.Variables>
-        <Variable x:TypeArguments="sd:DataTable" Name="PackagesData" />
-      </Sequence.Variables>
+    <If Condition="[in_PackagesData.Rows.Find({in_Name, in_Version}) Is Nothing]" DisplayName="If Specified Version Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_10">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get all versions of the specified Package." DisplayName="Invoke GetPackagesData Workflow" sap:VirtualizedContainerService.HintSize="508,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Packages\GetPackagesData.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{in_Name}]</InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_PackagesData">[PackagesData]</OutArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </ui:InvokeWorkflowFile>
-      <If Condition="[PackagesData.Rows.Count = 0]" DisplayName="If No Package Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_9">
-        <If.Then>
-          <Throw DisplayName="Throw (Package not Found)" Exception="[New Exception(in_Config(&quot;PackageNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
-        </If.Then>
-      </If>
-      <If Condition="[PackagesData.Rows.Find({in_Name, in_Version}) Is Nothing]" DisplayName="If Specified Version Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_10">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <If.Then>
-          <Throw DisplayName="Throw (Package Version not Found)" Exception="[New ArgumentException(in_Config(&quot;PackageVersionNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
-        </If.Then>
-        <If.Else>
-          <Assign DisplayName="Assign out_Key" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[out_Key]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[PackagesData.Rows.Find({in_Name, in_Version})("Key").ToString]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </If.Else>
-      </If>
-    </Sequence>
+      <If.Then>
+        <Throw DisplayName="Throw (Package Version not Found)" Exception="[New ArgumentException(in_Config(&quot;PackageVersionNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Assign out_Key" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[out_Key]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_PackagesData.Rows.Find({in_Name, in_Version})("Key").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
   </Sequence>
 </Activity>
