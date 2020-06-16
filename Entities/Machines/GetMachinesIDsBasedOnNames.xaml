@@ -5,7 +5,7 @@
     <x:Property Name="in_MachinesNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_MachinesData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>740.666666666667,1473.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>552.666666666667,802</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="18">
@@ -48,7 +48,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Machines.&#xA;Exceptions are thrown if the names are not specified or do not refer to valid Machines." DisplayName="Get Machines IDs Based on Names" sap:VirtualizedContainerService.HintSize="750.666666666667,1268.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_27">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Machines.&#xA;Exceptions are thrown if the names are not specified or do not refer to valid Machines." DisplayName="Get Machines IDs Based on Names" sap:VirtualizedContainerService.HintSize="562.666666666667,637.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_27">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -56,7 +56,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign out_MachinesIDs (Initialization)" sap:VirtualizedContainerService.HintSize="708.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_33">
+    <Assign DisplayName="Assign out_MachinesIDs (Initialization)" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_33">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(x:Int64)">[out_MachinesIDs]</OutArgument>
       </Assign.To>
@@ -64,71 +64,29 @@
         <InArgument x:TypeArguments="scg:List(x:Int64)">[New List(Of Int64)]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[in_MachinesNames IsNot Nothing]" DisplayName="If Machines Names Are Specified" sap:VirtualizedContainerService.HintSize="708.666666666667,1029.33333333333" sap2010:WorkflowViewState.IdRef="If_16">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Machines exist.&#xA;This verification prevents requests if the specified Machine names do not exist." DisplayName="For Each Machine Name" sap:VirtualizedContainerService.HintSize="520.666666666667,398" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[in_MachinesNames]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="MachineName" />
+          </ActivityAction.Argument>
+          <If Condition="[in_MachinesData.Rows.Find({MachineName}) Is Nothing]" DisplayName="If Machine Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_17">
+            <If.Then>
+              <Throw DisplayName="Throw (Invalid Machine Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedMachineNotFound&quot;), MachineName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
+            </If.Then>
+            <If.Else>
+              <AddToCollection x:TypeArguments="x:Int64" Collection="[out_MachinesIDs]" DisplayName="Add To Collection (Machine ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[Convert.ToInt64(in_MachinesData.Rows.Find({MachineName})(&quot;ID&quot;))]" />
+            </If.Else>
+          </If>
+        </ActivityAction>
+      </ui:ForEach.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Sequence DisplayName="Get Machines IDs" sap:VirtualizedContainerService.HintSize="562.666666666667,875.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_29">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="s:String[]" Name="UniqueMachinesNames" />
-          </Sequence.Variables>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign UniqueMachinesNames" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_34">
-            <Assign.To>
-              <OutArgument x:TypeArguments="s:String[]">[UniqueMachinesNames]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="s:String[]">[in_MachinesNames.Distinct().ToArray]</InArgument>
-            </Assign.Value>
-          </Assign>
-          <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Machines exist.&#xA;This verification prevents requests if the specified Machine names do not exist." DisplayName="For Each Machine Name" sap:VirtualizedContainerService.HintSize="520.666666666667,398" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[UniqueMachinesNames]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="MachineName" />
-                </ActivityAction.Argument>
-                <If Condition="[in_MachinesData.Rows.Find({MachineName}) Is Nothing]" DisplayName="If Machine Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_15">
-                  <If.Then>
-                    <Throw DisplayName="Throw (Invalid Machine Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedMachineNotFound&quot;), MachineName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
-                  </If.Then>
-                </If>
-              </ActivityAction>
-            </ui:ForEach.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEach>
-          <ui:ForEachRow CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Get Machine's ID" DataTable="[in_MachinesData]" DisplayName="For Each Machine" sap:VirtualizedContainerService.HintSize="520.666666666667,243.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
-            <ui:ForEachRow.Body>
-              <ActivityAction x:TypeArguments="sd:DataRow">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="sd:DataRow" Name="MachineData" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:Int64" Collection="[out_MachinesIDs]" DisplayName="Add To Collection (Machine ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Convert.ToInt64(MachineData(&quot;ID&quot;))]" />
-              </ActivityAction>
-            </ui:ForEachRow.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEachRow>
-        </Sequence>
-      </If.Then>
-    </If>
+    </ui:ForEach>
   </Sequence>
 </Activity>
