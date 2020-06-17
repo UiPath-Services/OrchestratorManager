@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Activity mc:Ignorable="sap sap2010" x:Class="GetUsersIDsBasedOnUsernames" this:GetUsersIDsBasedOnUsernames.in_Usernames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_UsersIDs" Type="OutArgument(scg:List(x:Int64))" />
     <x:Property Name="in_Usernames" Type="InArgument(s:String[])" />
+    <x:Property Name="in_UsersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>584,1222</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>552.666666666667,802</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="18">
@@ -30,7 +30,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="14">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="28">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>System.Data</AssemblyReference>
@@ -45,9 +45,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Users.&#xA;Exceptions are thrown if the usernames are not specified or do not refer to valid Users." DisplayName="Get Users IDs Based On Names" sap:VirtualizedContainerService.HintSize="564,1162" sap2010:WorkflowViewState.IdRef="Sequence_37">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Users.&#xA;Exceptions are thrown if the usernames are not specified or do not refer to valid Users." DisplayName="Get Users IDs Based On Names" sap:VirtualizedContainerService.HintSize="562.666666666667,637.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_37">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -55,7 +56,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign out_UsersIDs (Initialization)" sap:VirtualizedContainerService.HintSize="522,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign out_UsersIDs (Initialization)" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(x:Int64)">[out_UsersIDs]</OutArgument>
       </Assign.To>
@@ -63,80 +64,29 @@
         <InArgument x:TypeArguments="scg:List(x:Int64)">[New List(Of Int64)]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[in_Usernames IsNot Nothing]" DisplayName="If Usernames Are Specified" sap:VirtualizedContainerService.HintSize="522,922.666666666667" sap2010:WorkflowViewState.IdRef="If_39">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Users exist and were properly retrieved.&#xA;This verification prevents requests if the specified usernames do not exist." DisplayName="For Each Username" sap:VirtualizedContainerService.HintSize="520.666666666667,398" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_Usernames]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="Username" />
+          </ActivityAction.Argument>
+          <If Condition="[in_UsersData.Rows.Find({Username}) Is Nothing]" DisplayName="If User Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_40">
+            <If.Then>
+              <Throw DisplayName="Throw (Invalid Username)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedUserNotFound&quot;), Username))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_27" />
+            </If.Then>
+            <If.Else>
+              <AddToCollection x:TypeArguments="x:Int64" Collection="[out_UsersIDs]" DisplayName="Add To Collection (User ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Convert.ToInt64(in_UsersData.Rows.Find({Username})(&quot;ID&quot;))]" />
+            </If.Else>
+          </If>
+        </ActivityAction>
+      </ui:ForEach.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Sequence DisplayName="Get Users IDs" sap:VirtualizedContainerService.HintSize="376,768.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_38">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
-            <Variable x:TypeArguments="s:String[]" Name="UniqueUsernames" />
-          </Sequence.Variables>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign Usernames" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_2">
-            <Assign.To>
-              <OutArgument x:TypeArguments="s:String[]">[UniqueUsernames]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="s:String[]">[in_Usernames.Distinct().ToArray]</InArgument>
-            </Assign.Value>
-          </Assign>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UniqueUsernames]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-          <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Users exist and were properly retrieved.&#xA;This verification prevents requests if the specified usernames do not exist." DisplayName="For Each Username" sap:VirtualizedContainerService.HintSize="334,164.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[UniqueUsernames]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="Username" />
-                </ActivityAction.Argument>
-                <If Condition="[UsersData.Rows.Find({Username}) Is Nothing]" DisplayName="If User Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_38">
-                  <If.Then>
-                    <Throw DisplayName="Throw (Invalid Username)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedUserNotFound&quot;), Username))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_26" />
-                  </If.Then>
-                </If>
-              </ActivityAction>
-            </ui:ForEach.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEach>
-          <ui:ForEachRow CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Get User's ID" DataTable="[UsersData]" DisplayName="For Each User" sap:VirtualizedContainerService.HintSize="334,243.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
-            <ui:ForEachRow.Body>
-              <ActivityAction x:TypeArguments="sd:DataRow">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="sd:DataRow" Name="UserData" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:Int64" Collection="[out_UsersIDs]" DisplayName="Add To Collection (User ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[Convert.ToInt64(UserData(&quot;ID&quot;))]" />
-              </ActivityAction>
-            </ui:ForEachRow.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEachRow>
-        </Sequence>
-      </If.Then>
-    </If>
+    </ui:ForEach>
   </Sequence>
 </Activity>
