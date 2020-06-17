@@ -17,11 +17,12 @@
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
+    <x:Property Name="out_AllOUsFoldersAccessed" Type="OutArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>516.666666666667,1691.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>516.666666666667,1589.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetEnvironmentsData_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -53,7 +54,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -74,12 +75,12 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Environments of the given OU/Folders.&#xA;If no filters are specified, returns data about all Environments." DisplayName="Get Environments Data" sap:VirtualizedContainerService.HintSize="526.666666666667,1526.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Environments of the given OUs/Classic Folders.&#xA;If no filters are specified, returns data about all Environments.&#xA;&#xA;The flag out_AllOUFolderAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Environments Data" sap:VirtualizedContainerService.HintSize="526.666666666667,1424.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
-      <Variable x:TypeArguments="x:Boolean" Default="True" Name="AccessedOUFolders" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -87,7 +88,15 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:BuildDataTable DataTable="[out_EnvironmentsData]" DisplayName="Build Data Table (Environments Data)" sap:VirtualizedContainerService.HintSize="484.666666666667,58.6666666666667" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;OUID&quot; type=&quot;xs:long&quot; /&gt;&#xA;                &lt;xs:element name=&quot;OUName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentID&quot; type=&quot;xs:long&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Robots&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+    <ui:BuildDataTable DataTable="[out_EnvironmentsData]" DisplayName="Build Data Table (Environments Data)" sap:VirtualizedContainerService.HintSize="484.666666666667,58.6666666666667" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;OUID&quot; type=&quot;xs:long&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;OUName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;EnvironmentID&quot; type=&quot;xs:long&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;EnvironmentName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Robots&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
+    <Assign DisplayName="Assign out_AllOUFolderAccessed (Initialization)" sap:VirtualizedContainerService.HintSize="484.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Boolean">[out_AllOUsFoldersAccessed]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+      </Assign.Value>
+    </Assign>
     <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_EnvironmentsData.PrimaryKey" sap:VirtualizedContainerService.HintSize="484.666666666667,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="sd:DataColumn[]">[out_EnvironmentsData.PrimaryKey]</OutArgument>
@@ -121,10 +130,9 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Try to Get Environments Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="466.666666666667,1518.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
+              <Sequence DisplayName="Try to Get Environments Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="466.666666666667,1516" sap2010:WorkflowViewState.IdRef="Sequence_7">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="x:String" Name="Result" />
-                  <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
                 </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -140,7 +148,7 @@
                     <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
                     <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
                     <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
-                    <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
+                    <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
                     <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                 </ui:InvokeWorkflowFile>
@@ -256,9 +264,9 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <ui:LogMessage DisplayName="Log Message (Failed to Get Data from OU/Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Error" Message="[String.Format(in_Config(&quot;FailedToGetDataFromOUFolder&quot;), OUFolderNameAndID(&quot;Name&quot;))]" />
-                    <Assign DisplayName="Assign AccessedOUFolders (False)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+                    <Assign DisplayName="Assign out_AllOUFolderAccessed (False)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_9">
                       <Assign.To>
-                        <OutArgument x:TypeArguments="x:Boolean">[AccessedOUFolders]</OutArgument>
+                        <OutArgument x:TypeArguments="x:Boolean">[out_AllOUsFoldersAccessed]</OutArgument>
                       </Assign.To>
                       <Assign.Value>
                         <InArgument x:TypeArguments="x:Boolean">False</InArgument>
@@ -272,10 +280,5 @@
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>
-    <If Condition="[Not AccessedOUFolders]" DisplayName="If Successfully Accessed OU/Folders" sap:VirtualizedContainerService.HintSize="484.666666666667,214" sap2010:WorkflowViewState.IdRef="If_1">
-      <If.Then>
-        <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
-      </If.Then>
-    </If>
   </Sequence>
 </Activity>

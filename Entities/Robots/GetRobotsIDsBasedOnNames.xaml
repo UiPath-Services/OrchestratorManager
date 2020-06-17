@@ -1,11 +1,12 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="GetRobotsIDsBasedOnNames" this:GetRobotsIDsBasedOnNames.in_RobotsNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="GetRobotsIDsBasedOnNames" this:GetRobotsIDsBasedOnNames.in_RobotsNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_RobotsIDs" Type="OutArgument(scg:List(x:Int64))" />
     <x:Property Name="in_RobotsNames" Type="InArgument(s:String[])" />
-    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_RobotsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_OUFolderID" Type="InArgument(x:Int64)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>554,1326.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>552.666666666667,802</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -49,14 +50,14 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Robots.&#xA;Exceptions are thrown if the names are not specified or do not refer to valid Robots." DisplayName="Get Robots IDs Based On Names" sap:VirtualizedContainerService.HintSize="564,1162" sap2010:WorkflowViewState.IdRef="Sequence_39">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve IDs of a set of Robots.&#xA;Exceptions are thrown if the names are not specified or do not refer to valid Robots." DisplayName="Get Robots IDs Based On Names" sap:VirtualizedContainerService.HintSize="562.666666666667,637.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_39">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign out_RobotsIDs (Initialization)" sap:VirtualizedContainerService.HintSize="522,62" sap2010:WorkflowViewState.IdRef="Assign_25">
+    <Assign DisplayName="Assign out_RobotsIDs (Initialization)" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_25">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(x:Int64)">[out_RobotsIDs]</OutArgument>
       </Assign.To>
@@ -64,91 +65,29 @@
         <InArgument x:TypeArguments="scg:List(x:Int64)">[New List(Of Int64)]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[in_RobotsNames.Length &gt; 0]" DisplayName="If Robots Names Are Specified" sap:VirtualizedContainerService.HintSize="522,922.666666666667" sap2010:WorkflowViewState.IdRef="If_39">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Robots exist and were properly retrieved.&#xA;This verification prevents requests if the specified Robot names do not exist." DisplayName="For Each Robot Name" sap:VirtualizedContainerService.HintSize="520.666666666667,398" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[in_RobotsNames]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="RobotName" />
+          </ActivityAction.Argument>
+          <If Condition="[in_RobotsData.Rows.Find({in_OUFolderID, RobotName}) Is Nothing]" DisplayName="If Robot Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_40">
+            <If.Then>
+              <Throw DisplayName="Throw (Invalid Robot Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRobotNotFound&quot;), RobotName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_27" />
+            </If.Then>
+            <If.Else>
+              <AddToCollection x:TypeArguments="x:Int64" Collection="[out_RobotsIDs]" DisplayName="Add To Collection (Robot ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_13" Item="[Convert.ToInt64(in_RobotsData.Rows.Find({in_OUFolderID, RobotName})(&quot;RobotID&quot;))]" />
+            </If.Else>
+          </If>
+        </ActivityAction>
+      </ui:ForEach.Body>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Sequence DisplayName="Get Robots IDs" sap:VirtualizedContainerService.HintSize="376,768.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_38">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="sd:DataTable" Name="RobotsData" />
-            <Variable x:TypeArguments="s:String[]" Name="UniqueRobotsNames" />
-          </Sequence.Variables>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign RobotsNames" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_24">
-            <Assign.To>
-              <OutArgument x:TypeArguments="s:String[]">[UniqueRobotsNames]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="s:String[]">[in_RobotsNames.Distinct().ToArray]</InArgument>
-            </Assign.Value>
-          </Assign>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
-                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
-              </OutArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UniqueRobotsNames" />
-              </InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-                <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-              </InArgument>
-              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-                <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUFoldersData" />
-              </InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-          <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Verifies whether the specified Robots exist and were properly retrieved.&#xA;This verification prevents requests if the specified Robot names do not exist." DisplayName="For Each Robot Name" sap:VirtualizedContainerService.HintSize="334,164.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[UniqueRobotsNames]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="RobotName" />
-                </ActivityAction.Argument>
-                <If Condition="[RobotsData.Rows.Find({RobotName, Convert.ToInt64(in_OUFoldersData.Rows(0)(&quot;ID&quot;))}) Is Nothing]" DisplayName="If Robot Was Not Found" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_38">
-                  <If.Then>
-                    <Throw DisplayName="Throw (Invalid Robot Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRobotNotFound&quot;), RobotName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_26" />
-                  </If.Then>
-                </If>
-              </ActivityAction>
-            </ui:ForEach.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEach>
-          <ui:ForEachRow CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Get Robot's ID" DataTable="[RobotsData]" DisplayName="For Each Robot" sap:VirtualizedContainerService.HintSize="334,243.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
-            <ui:ForEachRow.Body>
-              <ActivityAction x:TypeArguments="sd:DataRow">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="sd:DataRow" Name="RobotData" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:Int64" Collection="[out_RobotsIDs]" DisplayName="Add To Collection (Robot ID)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_12" Item="[Convert.ToInt64(RobotData(&quot;RobotID&quot;))]" />
-              </ActivityAction>
-            </ui:ForEachRow.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEachRow>
-        </Sequence>
-      </If.Then>
-    </If>
+    </ui:ForEach>
   </Sequence>
 </Activity>

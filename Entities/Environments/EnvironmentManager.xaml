@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>528.666666666667,922.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>790,2206.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -68,7 +68,7 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Environments." DisplayName="Environment Manager" sap:VirtualizedContainerService.HintSize="538.666666666667,758" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Environments." DisplayName="Environment Manager" sap:VirtualizedContainerService.HintSize="800,2042" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -78,7 +78,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Environment Manager)" sap:VirtualizedContainerService.HintSize="496.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_8" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;EnvironmentConfigFilePath&quot;))]">
+    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Environment Manager)" sap:VirtualizedContainerService.HintSize="758,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_8" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;EnvironmentConfigFilePath&quot;))]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -93,7 +93,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Environment Operation)" Expression="[in_EnvironmentOperation]" sap:VirtualizedContainerService.HintSize="496.666666666667,542.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Environment Operation)" Expression="[in_EnvironmentOperation]" sap:VirtualizedContainerService.HintSize="758,1826.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_12">
           <sap:WorkflowViewStateService.ViewState>
@@ -105,7 +105,12 @@
           <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;ErrorMessageBoxTitle&quot;)]" DisplayName="Message Box (Unsupported Operation)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[in_Config(&quot;UnsupportedOperation&quot;)]" />
         </Sequence>
       </Switch.Default>
-      <Sequence x:Key="get" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get" sap:VirtualizedContainerService.HintSize="376,358.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_10">
+      <Sequence x:Key="get" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get" sap:VirtualizedContainerService.HintSize="526,1006.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_10">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsData" />
+          <Variable x:TypeArguments="x:Boolean" Name="AllOUsFoldersAcccessed" />
+        </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -113,19 +118,70 @@
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Get)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormEnvironmentOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetOperationName&quot;))]" />
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetEnvironments Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities/Environments/GetEnvironments.xaml">
+        <ui:LogMessage DisplayName="Log Message (Get)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormEnvironmentOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetOperationName&quot;))]" />
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[OUFoldersData]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Environments beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetEnvironmentData Workflow (Get Enrivonments)" sap:VirtualizedContainerService.HintSize="484,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Entities/Environments/GetEnvironmentsData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+            </OutArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUsFoldersAccessed">
+              <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="AllOUsFoldersAcccessed" />
+            </OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetEnvironments Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities/Environments/GetEnvironments.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+              <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+            </InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_EnvironmentsData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xD;&#xA;Access failures are logged by GetEnvironments.xaml, but a message box is also displayed in this case." Condition="[Not AllOUsFoldersAcccessed]" DisplayName="If Successfully Accessed OU/Folders" sap:VirtualizedContainerService.HintSize="484,292.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
+          </If.Then>
+        </If>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,1171.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="672.666666666667,1188" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsData" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -156,18 +212,32 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentsDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get OU/Folder data beforehand to avoid one request per row." DisplayName="Invoke GetOUFolderData Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
             <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Environments beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetEnvironmentsData Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Entities\Environments\GetEnvironmentsData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+            </OutArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUsFoldersAccessed" />
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -190,12 +260,27 @@
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateEnvironment Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Entities/Environments/CreateEnvironment.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[EnvironmentDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">[EnvironmentDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">
+                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(0).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(1).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                      </InArgument>
+                      <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_EnvironmentsData">
+                        <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+                      </InOutArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -220,10 +305,12 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="672.666666666667,1314.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
+          <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsData" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -260,6 +347,47 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentsDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow (Delete Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Environments beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetEnvironmentsData Workflow (Delete Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Entities\Environments\GetEnvironmentsData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+            </OutArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUsFoldersAccessed" />
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
         <ui:ForEachRow sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." CurrentIndex="[LoopIndex]" DataTable="[EnvironmentsDetails]" DisplayName="For Each Row (Delete Environment)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
@@ -270,13 +398,33 @@
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteEnvironment Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities/Environments/DeleteEnvironment.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderID">[EnvironmentDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[EnvironmentDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentID">[EnvironmentDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">[EnvironmentDetails(3).ToString]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">
+                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderID">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(0).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(1).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentID">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(2).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(3).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                      </InArgument>
+                      <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_EnvironmentsData">
+                        <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+                      </InOutArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -302,11 +450,13 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
       </Sequence>
-      <Sequence x:Key="addremoverobot" DisplayName="Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="718,1171.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence x:Key="addremoverobot" DisplayName="Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="718,1565.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="RobotsData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="EnvironmentsData" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -343,12 +493,62 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[EnvironmentsDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get OU/Folder data beforehand to avoid one request per row." DisplayName="Invoke GetOUFolderData Workflow (Add/Remove Environment's Robots)" sap:VirtualizedContainerService.HintSize="676,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about OU/Folder beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetOUFolderData Workflow (Add/Remove Environment's Robots)" sap:VirtualizedContainerService.HintSize="676,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
             <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Environments beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetEnvironmentsData Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="676,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_24" UnSafe="False" WorkflowFileName="Entities\Environments\GetEnvironmentsData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_EnvironmentsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+            </OutArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUsFoldersAccessed" />
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Robots beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Invoke GetRobotsData workflow" sap:VirtualizedContainerService.HintSize="676,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+            </OutArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+            </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUsFoldersAccessed" />
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -371,14 +571,36 @@
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveEnvironmentRobots Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities/Environments/AddRemoveEnvironmentRobots.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[EnvironmentDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">[EnvironmentDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRobotsNames">[EnvironmentDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRobotsNames">[EnvironmentDetails(3).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_EnvironmentIndex">
+                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(0).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(1).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRobotsNames">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(2).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRobotsNames">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="EnvironmentDetails(3).ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_EnvironmentsData">
+                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="EnvironmentsData" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">
+                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+                      </InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>

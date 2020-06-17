@@ -331,26 +331,14 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create User)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-                <Literal x:TypeArguments="x:String">post</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Users&quot;" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
-              </InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[in_Config("OrchestratorURL") + "/odata/Users"]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-                <Literal x:TypeArguments="x:Int32" Value="201" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">201</InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Result" />
-              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <Sequence DisplayName="Extract and Output User ID" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_36">
@@ -396,7 +384,7 @@
                 <OutArgument x:TypeArguments="x:Object">[NewUserRow("Username")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:Object">[ResultObject("UserName")]</InArgument>
+                <InArgument x:TypeArguments="x:Object">[in_UserName]</InArgument>
               </Assign.Value>
             </Assign>
             <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewUserRow]" DataTable="[io_UsersData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
