@@ -7,11 +7,12 @@
     <x:Property Name="in_DownloadFolderPath" Type="InArgument(x:String)" />
     <x:Property Name="in_OUFolderName" Type="InArgument(x:String)" />
     <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_QueuesData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,891.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>704.666666666667,2220.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DownloadQueueItems_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="46">
@@ -69,19 +70,19 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Download items of the specified Queue to the specified local folder path." DisplayName="Download Queue Items" sap:VirtualizedContainerService.HintSize="480.666666666667,726.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Download items of the specified Queue to the specified local folder path." DisplayName="Download Queue Items" sap:VirtualizedContainerService.HintSize="714.666666666667,2056" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,604" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="672.666666666667,1933.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Download Queue Items" sap:VirtualizedContainerService.HintSize="242,366" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Try to Download Queue Items" sap:VirtualizedContainerService.HintSize="634,1695.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="QueueID" />
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
@@ -92,14 +93,14 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="592,1398.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_10">
+            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="550,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_10">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -139,13 +140,10 @@
                 </If.Else>
               </If>
             </Sequence>
-            <Sequence DisplayName="Get Queue ID" sap:VirtualizedContainerService.HintSize="262,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
-              <Sequence.Variables>
-                <Variable x:TypeArguments="sd:DataTable" Name="QueuesData" />
-              </Sequence.Variables>
+            <Sequence DisplayName="Get Queue ID" sap:VirtualizedContainerService.HintSize="550,562" sap2010:WorkflowViewState.IdRef="Sequence_5">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
@@ -160,16 +158,7 @@
                   <Throw DisplayName="Throw (Queue Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;QueueNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
                 </If.Then>
               </If>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueuesData Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueuesData.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{in_QueueName}]</InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueuesData">[QueuesData]</OutArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[in_OUFoldersData]</InArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
-              <If Condition="[QueuesData.Rows.Count = 0 OrElse QueuesData.Rows.Find({in_OUFolderName, in_QueueName}) Is Nothing]" DisplayName="If No Queue Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,278" sap2010:WorkflowViewState.IdRef="If_4">
+              <If Condition="[in_QueuesData.Rows.Find({OUFolderID, in_QueueName}) Is Nothing]" DisplayName="If No Queue Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_4">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -180,26 +169,26 @@
                   <Throw DisplayName="Throw (Queue Not Found)" Exception="[New Exception(in_Config(&quot;QueueNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
                 </If.Then>
                 <If.Else>
-                  <Assign sap2010:Annotation.AnnotationText="Since only one Queue name is passed for retrieval, the QueueData table is guaranteed to have a single row." DisplayName="Assign QueueID" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign DisplayName="Assign QueueID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[QueueID]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(QueuesData.Rows.Find({in_OUFolderName, in_QueueName})("QueueID"))]</InArgument>
+                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_QueuesData.Rows.Find({OUFolderID, in_QueueName})("QueueID"))]</InArgument>
                     </Assign.Value>
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
                   </Assign>
                 </If.Else>
               </If>
             </Sequence>
-            <If Condition="[Not Directory.Exists(in_DownloadFolderPath)]" DisplayName="If Download Folder Path Exists" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_5">
+            <If Condition="[String.IsNullOrWhiteSpace(in_DownloadFolderPath)]" DisplayName="If Download Folder Path Is not Specified" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_12">
+              <If.Then>
+                <Throw DisplayName="Throw (Download Folder Path not Specified)" Exception="[New ArgumentException(in_Config(&quot;QueueItemsDownloadPathNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_11" />
+              </If.Then>
+            </If>
+            <If Condition="[Not Directory.Exists(in_DownloadFolderPath)]" DisplayName="If Download Folder Path Exists" sap:VirtualizedContainerService.HintSize="550,239.333333333333" sap2010:WorkflowViewState.IdRef="If_5">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
@@ -207,7 +196,7 @@
                 <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_DownloadFolderPath]" />
               </If.Then>
             </If>
-            <Assign DisplayName="Assign QueueItemsFilePath" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign DisplayName="Assign QueueItemsFilePath" sap:VirtualizedContainerService.HintSize="550,62" sap2010:WorkflowViewState.IdRef="Assign_4">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[QueueItemsFilePath]</OutArgument>
               </Assign.To>
@@ -216,7 +205,7 @@
               </Assign.Value>
             </Assign>
           </Sequence>
-          <Sequence sap2010:Annotation.AnnotationText="Because of different parameters like ResourcePath, the request cannot be done by invoking MakeHTTPRequest.xaml." DisplayName="Download Queue Items" sap:VirtualizedContainerService.HintSize="200,164.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+          <Sequence sap2010:Annotation.AnnotationText="Because of different parameters like ResourcePath, the request cannot be done by invoking MakeHTTPRequest.xaml." DisplayName="Download Queue Items" sap:VirtualizedContainerService.HintSize="592,164.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="Result" />
               <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
@@ -228,16 +217,16 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="484,900.666666666667" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[in_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(in_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
+            <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="606,1602" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[in_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(in_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
               <ui:RetryScope.ActivityBody>
                 <ActivityAction>
-                  <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="242,644.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="564,1379.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET)" EndPoint="[String.Format(&quot;{0}/odata/QueueDefinitions({1})/UiPathODataSvc.Reports()&quot;, in_Config(&quot;OrchestratorURL&quot;), QueueID)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="GET" ResourcePath="[QueueItemsFilePath]" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
+                    <ui:HttpClient Body="{x:Null}" ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET)" EndPoint="[String.Format(&quot;{0}/odata/QueueDefinitions({1})/UiPathODataSvc.Reports()&quot;, in_Config(&quot;OrchestratorURL&quot;), QueueID)]" sap:VirtualizedContainerService.HintSize="522,22" sap2010:WorkflowViewState.IdRef="HttpClient_1" Method="GET" ResourcePath="[QueueItemsFilePath]" Result="[Result]" StatusCode="[StatusCode]" TimeoutMS="6000">
                       <ui:HttpClient.Attachments>
                         <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                       </ui:HttpClient.Attachments>
@@ -256,7 +245,7 @@
                         <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                       </ui:HttpClient.UrlSegments>
                     </ui:HttpClient>
-                    <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[StatusCode = 401 AndAlso Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="200,148" sap2010:WorkflowViewState.IdRef="If_6">
+                    <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[StatusCode = 401 AndAlso Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="522,633.333333333333" sap2010:WorkflowViewState.IdRef="If_6">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -288,7 +277,7 @@
                         </Sequence>
                       </If.Then>
                     </If>
-                    <If sap2010:Annotation.AnnotationText="Connectivity issues that prevent successful request are represented by the value 0 of the StatusCode property." Condition="[StatusCode = 0]" DisplayName="If Request Failed due to Connectivity Issues" sap:VirtualizedContainerService.HintSize="200,131.333333333333" sap2010:WorkflowViewState.IdRef="If_7">
+                    <If sap2010:Annotation.AnnotationText="Connectivity issues that prevent successful request are represented by the value 0 of the StatusCode property." Condition="[StatusCode = 0]" DisplayName="If Request Failed due to Connectivity Issues" sap:VirtualizedContainerService.HintSize="522,256" sap2010:WorkflowViewState.IdRef="If_7">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -300,7 +289,7 @@
                         <Throw DisplayName="Throw (Request Failed due to Connectivity Issues)" Exception="[New WebException(in_Config(&quot;ConnectivityIssuesFailure&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
                       </If.Then>
                     </If>
-                    <If sap2010:Annotation.AnnotationText="Server errors are represented by values in the range of 500 to 599 of the StatusCode property." Condition="[StatusCode &gt;= 500 AndAlso StatusCode &lt; 600]" DisplayName="If Server Error" sap:VirtualizedContainerService.HintSize="200,131.333333333333" sap2010:WorkflowViewState.IdRef="If_8">
+                    <If sap2010:Annotation.AnnotationText="Server errors are represented by values in the range of 500 to 599 of the StatusCode property." Condition="[StatusCode &gt;= 500 AndAlso StatusCode &lt; 600]" DisplayName="If Server Error" sap:VirtualizedContainerService.HintSize="522,256" sap2010:WorkflowViewState.IdRef="If_8">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -326,12 +315,12 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:RetryScope>
-            <If Condition="[StatusCode &lt;&gt; 200]" DisplayName="If Request Was Successful" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">
+            <If Condition="[StatusCode &lt;&gt; 200]" DisplayName="If Request Was Successful" sap:VirtualizedContainerService.HintSize="606,214" sap2010:WorkflowViewState.IdRef="If_9">
               <If.Then>
                 <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New System.Net.WebException(String.Format(in_Config(&quot;ProcessEntityFailure&quot;), StatusCode, Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
               </If.Then>
             </If>
-            <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="484,84" sap2010:WorkflowViewState.IdRef="Delay_1">
+            <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(in_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606,84" sap2010:WorkflowViewState.IdRef="Delay_1">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -342,7 +331,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="638.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -353,7 +342,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Download Queue Items" sap:VirtualizedContainerService.HintSize="376,288" sap2010:WorkflowViewState.IdRef="Sequence_9">
+            <Sequence DisplayName="Failed to Download Queue Items" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_9">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -368,7 +357,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:LogMessage>
-              <Assign DisplayName="Assign (OperationResult)" sap:VirtualizedContainerService.HintSize="334,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_5">
+              <Assign DisplayName="Assign (OperationResult)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_5">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
                 </Assign.To>
