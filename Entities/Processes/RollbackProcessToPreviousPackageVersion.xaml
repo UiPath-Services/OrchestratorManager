@@ -5,6 +5,8 @@
     <x:Property Name="in_ProcessName" Type="InArgument(x:String)" />
     <x:Property Name="in_ProcessIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_OUFolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ProcessesData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <sap:VirtualizedContainerService.HintSize>470.666666666667,898.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
@@ -57,7 +59,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Rollback the specified process to the previous package version." DisplayName="Rollback Process to Previous Package Version" sap:VirtualizedContainerService.HintSize="480.666666666667,734" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Rollback the specified process to the previous Package version." DisplayName="Rollback Process to Previous Package Version" sap:VirtualizedContainerService.HintSize="480.666666666667,734" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -72,7 +74,6 @@
         <Sequence DisplayName="Try to Rollback Process to Previous Package Version" sap:VirtualizedContainerService.HintSize="376,350" sap2010:WorkflowViewState.IdRef="Sequence_16">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="Result" />
-            <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
             <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
             <Variable x:TypeArguments="x:Int64" Name="ProcessID" />
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
@@ -82,25 +83,21 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_27">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
-            </Sequence.Variables>
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_31">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence sap2010:Annotation.AnnotationText="Get OUFolderData (and not only OU/Folder ID) to use it to retrieve processes IDs." DisplayName="Get OU/Folder Data" sap:VirtualizedContainerService.HintSize="200,131.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_26">
+            <Sequence DisplayName="Get OU/Folder Data" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_29">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_1">
+              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_4">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -108,18 +105,10 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                  <Throw DisplayName="Throw (OU/Folder Name not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
                 </If.Then>
               </If>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="s1:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_FilterNames">[{in_OUFolderName}]</InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
-              <If Condition="[OUFoldersData.Rows.Count = 0]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,278" sap2010:WorkflowViewState.IdRef="If_2">
+              <If Condition="[in_OUFoldersData.Rows.Find({in_OUFolderName}) Is Nothing]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_5">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -127,26 +116,21 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
                 </If.Then>
                 <If.Else>
-                  <Assign sap2010:Annotation.AnnotationText="Since OU/Folder IDs and names are unique, it is guaranteed that OUFoldersData has a single row." DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_5">
+                  <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_7">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[OUFolderID]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(OUFoldersData.Rows(0)("ID"))]</InArgument>
+                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUFoldersData.Rows.Find({in_OUFolderName})("ID"))]</InArgument>
                     </Assign.Value>
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
                   </Assign>
                 </If.Else>
               </If>
             </Sequence>
-            <Sequence DisplayName="Get Process ID" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_28">
+            <Sequence DisplayName="Get Process ID" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_30">
               <Sequence.Variables>
                 <Variable x:TypeArguments="scg:List(x:Int64)" Name="ProcessesIDs" />
               </Sequence.Variables>
@@ -156,7 +140,7 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_ProcessName)]" DisplayName="If Process Name Is Specified" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_3">
+              <If Condition="[String.IsNullOrWhiteSpace(in_ProcessName)]" DisplayName="If Process Name Is Specified" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_6">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -164,23 +148,24 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (Process Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;ProcessNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                  <Throw DisplayName="Throw (Process Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;ProcessNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
                 </If.Then>
               </If>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetProcessesIDsBasedOnNames Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Entities/Processes/GetProcessesIDsBasedOnNames.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetProcessesIDsBasedOnNames Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities/Processes/GetProcessesIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
                   <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                   <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_ProcessesIDs">[ProcessesIDs]</OutArgument>
                   <InArgument x:TypeArguments="s1:String[]" x:Key="in_ProcessesNames">[{in_ProcessName}]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ProcessesData">[in_ProcessesData]</InArgument>
+                  <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
-              <Assign sap2010:Annotation.AnnotationText="Since only one Process name is passed for retrieval, the ProcessesIDs list is guaranteed to have a single ID." DisplayName="Assign ProcessID" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_6">
+              <Assign sap2010:Annotation.AnnotationText="Since only one Process name is passed for retrieval, the ProcessesIDs list is guaranteed to have a single ID." DisplayName="Assign ProcessID" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_8">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:Int64">[ProcessID]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(ProcessesIDs(0))]</InArgument>
+                  <InArgument x:TypeArguments="x:Int64">[ProcessesIDs(0)]</InArgument>
                 </Assign.Value>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -190,16 +175,30 @@
               </Assign>
             </Sequence>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Processes are actually exposed by the Release endpoints.&#xA;The processes endpoints refer to Packages." DisplayName="Invoke MakeHTTPRequest Workflow (Rollback Process to Previous Package Version)" sap:VirtualizedContainerService.HintSize="334,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Processes are actually exposed by the Release endpoints.&#xA;The Processes endpoints refer to Packages." DisplayName="Invoke MakeHTTPRequest Workflow (Rollback Process to Previous Package Version)" sap:VirtualizedContainerService.HintSize="334,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Releases({1})/UiPath.Server.Configuration.OData.RollbackToPreviousReleaseVersion", in_Config("OrchestratorURL"), ProcessID)]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFolderID)]</InArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
-              <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
+                <Literal x:TypeArguments="x:String">post</Literal>
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Releases({1})/UiPath.Server.Configuration.OData.RollbackToPreviousReleaseVersion&quot;, in_Config(&quot;OrchestratorURL&quot;), ProcessID)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Body">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(OUFolderID)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
+                <Literal x:TypeArguments="x:Int32" Value="200" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
+              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
+                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Result" />
+              </OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
