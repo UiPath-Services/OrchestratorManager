@@ -10,11 +10,15 @@
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
+    <x:Property Name="in_AssetsData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <this:GetAssets.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
   </this:GetAssets.in_OpenedWorkbook>
-  <sap:VirtualizedContainerService.HintSize>466,1114.66666666667</sap:VirtualizedContainerService.HintSize>
+  <this:GetAssets.in_AssetsData>
+    <InArgument x:TypeArguments="sd:DataTable" />
+  </this:GetAssets.in_AssetsData>
+  <sap:VirtualizedContainerService.HintSize>466,861.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -60,36 +64,13 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about assets defined in Orchestrator." DisplayName="Get Assets" sap:VirtualizedContainerService.HintSize="476,950" sap2010:WorkflowViewState.IdRef="Sequence_14">
-    <Sequence.Variables>
-      <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
-      <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
-    </Sequence.Variables>
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve details about assets defined in Orchestrator." DisplayName="Get Assets" sap:VirtualizedContainerService.HintSize="476,696.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[OUFoldersData]</OutArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities/Assets/GetAssetsData.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">
-          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="AssetsData" />
-        </OutArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-        </InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
     <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written asset data and write new data about assets." CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,574" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
@@ -126,7 +107,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:ExcelWriteCell>
-            <ui:ExcelWriteRange AddHeaders="False" DataTable="[AssetsData]" DisplayName="Write Range (Assets Details)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_2" SheetName="[in_Config(&quot;GetOperationName&quot;)]" StartingCell="A2" />
+            <ui:ExcelWriteRange AddHeaders="False" DataTable="[in_AssetsData]" DisplayName="Write Range (Assets Details)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_2" SheetName="[in_Config(&quot;GetOperationName&quot;)]" StartingCell="A2" />
           </Sequence>
         </ActivityAction>
       </ui:ExcelApplicationScope.Body>
