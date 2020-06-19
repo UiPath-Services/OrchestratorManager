@@ -84,7 +84,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="242,270.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_27">
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="449.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_27">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -163,34 +163,18 @@
               </Assign>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsIDsBasedOnNames Workflow (OUs to Add)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\GetOrganizationUnitsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">
-                    <mva:VisualBasicReference x:TypeArguments="scg:List(x:Int64)" ExpressionText="AddOUsIDs" />
-                  </OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">
-                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="AddOUsNames.Distinct().ToArray" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUsData" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">[AddOUsIDs]</OutArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">[AddOUsNames.Distinct().ToArray]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUsData]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOrganizationUnitsIDsBasedOnNames Workflow (OUs to Remove)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Entities\OrganizationUnits\GetOrganizationUnitsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">
-                    <mva:VisualBasicReference x:TypeArguments="scg:List(x:Int64)" ExpressionText="RemoveOUsIDs" />
-                  </OutArgument>
-                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">
-                    <mva:VisualBasicValue x:TypeArguments="s1:String[]" ExpressionText="RemoveOUsNames.Distinct().ToArray" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_OUsData" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_OUsIDs">[RemoveOUsIDs]</OutArgument>
+                  <InArgument x:TypeArguments="s1:String[]" x:Key="in_OUsNames">[RemoveOUsNames.Distinct().ToArray]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[in_OUsData]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
               <If Condition="[RemoveOUsIDs.Intersect(AddOUsIDs).Count &gt; 0]" DisplayName="If Any OU Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_41">
@@ -221,7 +205,6 @@
                       <Sequence DisplayName="Add/Remove OU" sap:VirtualizedContainerService.HintSize="376,373.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_38">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
-                          <Variable x:TypeArguments="x:String" Name="Result" />
                         </Sequence.Variables>
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -266,14 +249,24 @@
                         </If>
                         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Toggle OU)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
                           <ui:InvokeWorkflowFile.Arguments>
-                            <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-                            <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
-                            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users({1})/UiPath.Server.Configuration.OData.ToggleOrganizationUnit", in_Config("OrchestratorURL"), UserID)]</InArgument>
-                            <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
+                            <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+                              <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                            </InOutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Method">
+                              <Literal x:TypeArguments="x:String">post</Literal>
+                            </InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+                              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users({1})/UiPath.Server.Configuration.OData.ToggleOrganizationUnit&quot;, in_Config(&quot;OrchestratorURL&quot;), UserID)" />
+                            </InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Body">
+                              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
+                            </InArgument>
                             <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-                            <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
+                            <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
+                              <Literal x:TypeArguments="x:Int32" Value="200" />
+                            </InArgument>
                             <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-                            <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
+                            <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
                           </ui:InvokeWorkflowFile.Arguments>
                         </ui:InvokeWorkflowFile>
                       </Sequence>

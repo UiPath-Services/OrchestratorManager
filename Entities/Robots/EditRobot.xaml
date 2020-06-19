@@ -100,7 +100,6 @@
         <Sequence DisplayName="Try to Edit Robot" sap:VirtualizedContainerService.HintSize="376,400" sap2010:WorkflowViewState.IdRef="Sequence_19">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
-            <Variable x:TypeArguments="x:String" Name="Result" />
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
@@ -293,14 +292,26 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Edit Robot)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">patch</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots({1})", in_Config("OrchestratorURL"), in_RobotID)]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[OUFolderID]</InArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
+                <Literal x:TypeArguments="x:String">patch</Literal>
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Robots({1})&quot;, in_Config(&quot;OrchestratorURL&quot;), in_RobotID)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Body">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="OUFolderID" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
+                <Literal x:TypeArguments="x:Int32" Value="200" />
+              </InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </Sequence>

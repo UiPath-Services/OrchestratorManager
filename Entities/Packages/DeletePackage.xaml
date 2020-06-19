@@ -8,7 +8,7 @@
     <x:Property Name="in_Version" Type="InArgument(x:String)" />
     <x:Property Name="io_PackagesData" Type="InOutArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>504.666666666667,1528.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>470.666666666667,952</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -55,17 +55,17 @@
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
     <scg:Dictionary x:TypeArguments="x:String, x:Object">
-      <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Delete a Package based on the given Name and Version.&#xA;To prevent accidental deletion, the workflow confirms whether the Package name and version match the Package with the specified key." DisplayName="Delete Package" sap:VirtualizedContainerService.HintSize="514.666666666667,1364" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete a Package based on the given Name and Version.&#xA;To prevent accidental deletion, the workflow confirms whether the Package name and version match the Package with the specified key." DisplayName="Delete Package" sap:VirtualizedContainerService.HintSize="480.666666666667,787.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="472.666666666667,1210" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,633.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
@@ -80,23 +80,15 @@
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmPackageData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Packages\ConfirmPackageData.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                </InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Version">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Version" />
-                </InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Name">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
-                </InArgument>
-                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesData">
-                  <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="io_PackagesData" />
-                </InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_Version]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
+                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesData">[io_PackagesData]</InArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
             <If Condition="[String.IsNullOrWhiteSpace(in_Key)]" DisplayName="If Key Is Not Specified" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_15">
@@ -124,12 +116,20 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Delete Package)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">delete</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Processes('{1}')", in_Config("OrchestratorURL"), in_Key)]</InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
+                <Literal x:TypeArguments="x:String">delete</Literal>
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Processes('{1}')&quot;, in_Config(&quot;OrchestratorURL&quot;), in_Key)" />
+              </InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
+                <Literal x:TypeArguments="x:Int32" Value="204" />
+              </InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
               <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
             </ui:InvokeWorkflowFile.Arguments>
@@ -144,7 +144,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="438.666666666667,359.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>

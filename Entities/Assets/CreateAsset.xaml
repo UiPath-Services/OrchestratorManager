@@ -284,28 +284,14 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-                <Literal x:TypeArguments="x:String">post</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Assets&quot;" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="OUFolderID" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-                <Literal x:TypeArguments="x:Int32" Value="201" />
-              </InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[in_Config("OrchestratorURL") + "/odata/Assets"]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[OUFolderID]</InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">201</InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Result" />
-              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <Sequence DisplayName="Extract and Output Asset ID" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_29">
@@ -343,7 +329,7 @@
               </sap:WorkflowViewStateService.ViewState>
             </ui:ExcelApplicationScope>
           </Sequence>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="334,214.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_32">
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="304,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_32">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewAssetRow" />
             </Sequence.Variables>
@@ -362,7 +348,7 @@
                 <InArgument x:TypeArguments="sd:DataRow">[io_AssetsData.NewRow()]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_26">
+            <Assign DisplayName="Assign Cached OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_26">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewAssetRow("OUID")]</OutArgument>
               </Assign.To>
@@ -370,7 +356,7 @@
                 <InArgument x:TypeArguments="x:Object">[OUFolderID]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Asset Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+            <Assign DisplayName="Assign Cached Asset Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_27">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewAssetRow("AssetName")]</OutArgument>
               </Assign.To>
