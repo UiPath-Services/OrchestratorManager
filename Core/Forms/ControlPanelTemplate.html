@@ -1,6 +1,6 @@
+<!-- saved from url=(0016)http://localhost -->
 <!DOCTYPE html>
-<!-- saved from url=(0014)about:internet -->
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="FormStyle.css">
 	</head>
 
-	<body>
+	<body onload="hideUserOption(); updateOperations()">
 		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
 
 		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
@@ -17,76 +17,130 @@
 			<div class="form-style-heading">_FormTitle_</div>
 			<form id="controlPanelForm" action="" method="post">
 				<label for="entity"><span>_FormEntityLabel_</span><select id="entity" onchange="updateOperations()" class="select-field">
-					<option value="asset">_FormAssetOption_</option>
-					<option value="user">_FormUserOption_</option>
-					<option value="machine">_FormMachineOption_</option>
-					<option value="robot">_FormRobotOption_</option>
-					<option value="environment">_FormEnvironmentOption_</option>
-					<option value="process">_FormProcessOption_</option>
+					<option id="assetOption" value="asset" _FormAssetSelected_>_FormAssetOption_</option>
+					<option id="userOption" value="user" _FormUserSelected_>_FormUserOption_</option>
+					<option id="machineOption" value="machine" _FormMachineSelected_>_FormMachineOption_</option>
+					<option id="robotOption" value="robot" _FormRobotSelected_>_FormRobotOption_</option>
+					<option id="environmentOption" value="environment" _FormEnvironmentSelected_>_FormEnvironmentOption_</option>
+					<option id="processOption" value="process" _FormProcessSelected_>_FormProcessOption_</option>
+					<option id="ouOption" value="ou" _FormOUSelected_>_FormOrganizationUnitOption_</option>
+					<option id="folderOption" value="folder" _FormFolderSelected_>_FormFolderOption_</option>
+					<option id="queueOption" value="queue" _FormQueueSelected_>_FormQueueOption_</option>
+					<option id="packageOption" value="package" _FormPackageSelected_>_FormPackageOption_</option>
 				</select></label>
 				
 				<label for="operation"><span>_FormOperationLabel_</span><select id="operation" class="select-field">
-					<option value="get">_FormGetOption_</option>
-					<option value="create">_FormCreateOption_</option>
-					<option value="createcredential">_FormCreateCredentialOption_</option>
-					<option value="edit">_FormEditOption_</option>
-					<option value="editcredential">_FormEditCredentialOption_</option>
-					<option value="delete">_FormDeleteOption_</option>
+					<option id="getOption" value="get">_FormGetOption_</option>
+					<option id="createOption" value="create">_FormCreateOption_</option>
+					<option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option>
+					<option id="editOption" value="edit">_FormEditOption_</option>
+					<option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option>
+					<option id="deleteOption" value="delete">_FormDeleteOption_</option>
 				</select></label>
 
 				<div class="buttons">
 				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
 				<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
-				<div>
+				</div>
 			</form>
 		</div>	
 
-		<script type="text/javascript">			
-		function submitValues(elem){
-			var	jsonObject = {};
-			
-			// Should stop after performing operation
-			if (elem.id == "cancelButton") {
-				jsonObject["shouldStop"] = true;
-				jsonObject["entity"] = "";
-				jsonObject["operation"] = "";
+		<script type="text/javascript">
+		function hideUserOption() {
+			'use strict';
+			// Hide options according to Orchestrator type and version
+			if ('_FormOrchestratorType_' === 'cloud') {
+				// UiPath Automation Cloud
+				document.getElementById('userOption').outerHTML = '';
+				document.getElementById('ouOption').outerHTML = '';
 			} else {
-				jsonObject["shouldStop"] = false;
-				jsonObject["entity"] = document.getElementById("entity").value;
-				jsonObject["operation"] = document.getElementById("operation").value;
+				// On-Premises Orchestrator
+				switch (_FormOrchestratorVersion_) {
+					case 201804:
+					case 201904:
+						document.getElementById('folderOption').outerHTML = '';
+						break;
+					case 201910:
+					case 202004:
+						document.getElementById('ouOption').outerHTML = '';
+						break;
+				}
 			}
-			
+		}
+
+		/**
+		 * @param {HTMLElement} elem
+		 * @returns {boolean}
+		 */
+		function submitValues(elem) {
+			'use strict';
+
+			/** @type {{shouldStop: boolean, entity: string, operation: string}} */
+			var	jsonObject = {};
+			/** @type {string} */
+			var formData;
+
+			// Should stop after performing operation
+			if (elem.id === 'cancelButton') {
+				jsonObject.shouldStop = true;
+			} else {
+				jsonObject.shouldStop = false;
+				jsonObject.entity = document.getElementById('entity').value;
+				jsonObject.operation = document.getElementById('operation').value;
+			}
+
 			// Get JSON representation of dictionary
-			var formData = JSON.stringify(jsonObject);
-		
+			formData = JSON.stringify(jsonObject);
+
+			// noinspection JSDeprecatedSymbols,JSUnresolvedFunction
 			window.external.setResult(formData);
 			return true;
 		}
-		
-		function updateOperations(){
-			var selectedEntity = document.getElementById("entity").value;
-			var operationElement = document.getElementById("operation");
-			
+
+		function updateOperations() {
+			'use strict';
+
+			/** @type {string} */
+			var selectedEntity = document.getElementById('entity').value;
+			/** @type {HTMLElement} */
+			var operationElement = document.getElementById('operation');
+
 			// Select the appropriate set of operations based on the chosen entity
-			switch (selectedEntity){
-				case "asset":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="createcredential">_FormCreateCredentialOption_</option><option value="edit">_FormEditOption_</option><option value="editcredential">_FormEditCredentialOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
-				case "user":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option><option value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
-				break;
-				case "machine":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
-				case "robot":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="edit">_FormEditOption_</option><option value="delete">_FormDeleteOption_</option>';
-				break;
-				case "environment":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="addremoverobot">_FormAddRemoveEnvironmentRobotsOption_</option>';
-				break;
-				case "process":
-					operationElement.innerHTML = '<option value="get">_FormGetOption_</option><option value="create">_FormCreateOption_</option><option value="delete">_FormDeleteOption_</option><option value="updateprocesstolatestpackageversion">_FormUpdateProcessToLatestPackageVersionOption_</option><option value="rollbackprocesstopreviouspackageversion">_FormRollbackProcessToPreviousPackageVersionOption_</option>';
-				break;
+			switch (selectedEntity) {
+				case 'asset':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					break;
+				case 'user':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRoleOption" value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
+					// From Orchestrator 2019.10, Organization Units have been renamed to Folders
+					if ('_FormOrchestratorType_' === 'onpremises' || _FormOrchestratorVersion_ < 201910) {
+						operationElement.innerHTML = operationElement.innerHTML + '<option id="addRemoveOUOption" value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option>';
+					}
+					break;
+				case 'robot':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					break;
+				case 'environment':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRobotOption" value="addremoverobot">_FormAddRemoveEnvironmentRobotsOption_</option>';
+					break;
+				case 'process':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="updateProcessToLatestPackageVersionOption" value="updateprocesstolatestpackageversion">_FormUpdateProcessToLatestPackageVersionOption_</option><option id="rollBackProcessToPreviousPackageVersionOption" value="rollbackprocesstopreviouspackageversion">_FormRollbackProcessToPreviousPackageVersionOption_</option>';
+					break;
+				case 'queue':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadQueueItemsOption" value="downloadqueueitems">_FormDownloadQueueItemsOption_</option>';
+					// On-Premises Orchestrator 2018.4 does not support bulk upload of Queue items
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ != 201804) {
+						operationElement.innerHTML = operationElement.innerHTML + '<option id="uploadQueueItemsOption" value="uploadqueueitems">_FormUploadQueueItemsOption_</option>';		
+					}
+					break;
+				case 'package':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadPackageOption" value="downloadpackage">_FormDownloadPackageOption_</option><option id="uploadPackageOption" value="uploadpackage">_FormUploadPackageOption_</option>';
+					break;
+				case 'machine':
+				case 'ou':
+				case 'folder':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					break;
 			}
 		}
 		</script>

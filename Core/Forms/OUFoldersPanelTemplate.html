@@ -1,0 +1,79 @@
+<!-- saved from url=(0016)http://localhost -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>_FormTitle_</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style">
+			<div class="form-style-heading">_FormTitle_</div>
+			
+			<form id="controlPanelForm" action="" method="post">
+				
+				<label><span id="OULabel">_FormOULabel_</span><select multiple id="ous" class="select-field">
+					_FormOUsSelectOptions_
+				</select></label>
+				
+				<div class="buttons">
+					<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues()" />
+				</div>
+			</form>
+		</div>	
+
+		<script type="text/javascript">
+		/** @type {function (): boolean} */
+		var submitValues;
+
+		(function () {
+			'use strict';
+
+			/** @returns {boolean} */
+			submitValues = function () {
+				/** @type {{ous: Array.<string>}} */
+				var	jsonObject = {ous: getSelectValues(document.getElementById('ous'))};
+				// Get JSON representation of dictionary
+				/** @type {string} */
+				var formData = JSON.stringify(jsonObject);
+
+				// noinspection JSDeprecatedSymbols,JSUnresolvedFunction
+				window.external.setResult(formData);
+				return true;
+			};
+
+			/**
+			 * Returns an array of the selected option values
+			 * The function argument "select" is an HTML select element
+			 * From https://stackoverflow.com/a/5867262/3751868
+			 * @param {HTMLSelectElement} select
+			 * @returns {Array.<string>}
+			 */
+			function getSelectValues(select) {
+				var i, len;
+				/** @type {Array.<string>} */
+				var result = [];
+				/** @type {HTMLOptionsCollection} */
+				var options = select.options;
+				/** @type {HTMLOptionElement} */
+				var opt;
+
+				for (i = 0, len = options.length; i < len; i += 1) {
+					opt = options[i];
+
+					if (opt.selected) {
+					    result.push(opt.value || opt.text);
+					}
+				}
+				return result;
+			}
+		}());
+		</script>
+	</body>
+</html>

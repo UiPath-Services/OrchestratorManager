@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Activity mc:Ignorable="sap sap2010" x:Class="GetEnvironmentsData" this:GetEnvironmentsData.in_FilterNames="[{}]" this:GetEnvironmentsData.in_FilterIDs="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="GetEnvironmentsData" this:GetEnvironmentsData.in_FilterNames="[{}]" this:GetEnvironmentsData.in_FilterIDs="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sn="clr-namespace:System.Net;assembly=System" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))">
@@ -13,16 +12,17 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
-    <x:Property Name="in_OUsData" Type="InArgument(sd:DataTable)">
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
+    <x:Property Name="out_AllOUFoldersAccessed" Type="OutArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>579.333333333333,2272</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>516.666666666667,1589.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetEnvironmentsData_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -54,7 +54,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -75,9 +75,10 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Environments of the given OUs.&#xA;If no filters are specified, returns data about all Environments." DisplayName="Get Environments Data" sap:VirtualizedContainerService.HintSize="559.333333333333,2212" sap2010:WorkflowViewState.IdRef="Sequence_6">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Environments of the given OUs/Classic Folders.&#xA;If no filters are specified, returns data about all Environments.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Environments Data" sap:VirtualizedContainerService.HintSize="526.666666666667,1424.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
     </Sequence.Variables>
@@ -87,8 +88,16 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:BuildDataTable DataTable="[out_EnvironmentsData]" DisplayName="Build Data Table (Environments Data)" sap:VirtualizedContainerService.HintSize="517.333333333333,58.6666666666667" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;OUID&quot; type=&quot;xs:long&quot; /&gt;&#xA;                &lt;xs:element name=&quot;OUName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentID&quot; type=&quot;xs:long&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Robots&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
-    <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_EnvironmentsData.PrimaryKey" sap:VirtualizedContainerService.HintSize="517.333333333333,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:BuildDataTable DataTable="[out_EnvironmentsData]" DisplayName="Build Data Table (Environments Data)" sap:VirtualizedContainerService.HintSize="484.666666666667,58.6666666666667" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;OUID&quot; type=&quot;xs:long&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;OUName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentID&quot; type=&quot;xs:long&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;EnvironmentName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Robots&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;" />
+    <Assign DisplayName="Assign out_AllOUFoldersAccessed (Initialization)" sap:VirtualizedContainerService.HintSize="484.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Boolean">[out_AllOUFoldersAccessed]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_EnvironmentsData.PrimaryKey" sap:VirtualizedContainerService.HintSize="484.666666666667,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="sd:DataColumn[]">[out_EnvironmentsData.PrimaryKey]</OutArgument>
       </Assign.To>
@@ -101,133 +110,173 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="517.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="484.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
         <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUsData]" DisplayName="For Each OU" sap:VirtualizedContainerService.HintSize="517.333333333333,1668.66666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="484.666666666667,729.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUNameAndID" />
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUFolderNameAndID" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="466.666666666667,1516" sap2010:WorkflowViewState.IdRef="Sequence_7">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="x:String" Name="Result" />
-              <Variable x:TypeArguments="x:Int32" Name="StatusCode" />
-            </Sequence.Variables>
+          <TryCatch sap2010:Annotation.AnnotationText="Catch errors when accessing a single OU/Folder so there is no impact when accessing others." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="434,576.666666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Get Environments)" sap:VirtualizedContainerService.HintSize="424.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Core/MakeHTTPRequest.xaml">
-              <ui:InvokeWorkflowFile.Arguments>
-                <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Environments{1}&amp;$expand=Robots", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
-                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUNameAndID("ID"))]</InArgument>
-                <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
-                <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode">[StatusCode]</OutArgument>
-                <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
-              </ui:InvokeWorkflowFile.Arguments>
-            </ui:InvokeWorkflowFile>
-            <Sequence DisplayName="Extract Environment Data" sap:VirtualizedContainerService.HintSize="424.666666666667,1297.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_13">
-              <Sequence.Variables>
-                <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-              </Sequence.Variables>
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Environment Data)" sap:VirtualizedContainerService.HintSize="382.666666666667,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_3" JsonObject="[ResultObject]" JsonString="[Result]" />
-              <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Environment" sap:VirtualizedContainerService.HintSize="382.666666666667,1103.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[ResultObject.SelectTokens(&quot;value&quot;).Children]">
-                <ui:ForEach.Body>
-                  <ActivityAction x:TypeArguments="njl:JObject">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="njl:JObject" Name="Environment" />
-                    </ActivityAction.Argument>
-                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="346,964.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
-                      <Sequence.Variables>
-                        <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="EnvironmentRobotsNames" />
-                        <Variable x:TypeArguments="sd:DataRow" Name="NewEnvironmentRow" />
-                      </Sequence.Variables>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                      <Assign DisplayName="Assign NewEnvironmentRow (Initialization)" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_4">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="sd:DataRow">[NewEnvironmentRow]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="sd:DataRow">[out_EnvironmentsData.NewRow()]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <Assign DisplayName="Assign OU ID" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_3">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(0)]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(OUNameAndID("ID"))]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <Assign DisplayName="Assign OU Name" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_5">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(1)]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[OUNameAndID("Name")]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <Assign DisplayName="Assign Environment ID" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_6">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(2)]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(Environment("Id"))]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <Assign DisplayName="Assign Environment Name" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_7">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(3)]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[Environment("Name")]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Robot In Environment" sap:VirtualizedContainerService.HintSize="304,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[Environment.SelectTokens(&quot;Robots&quot;).Children]">
-                        <ui:ForEach.Body>
-                          <ActivityAction x:TypeArguments="njl:JObject">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="njl:JObject" Name="EnvironmentRobot" />
-                            </ActivityAction.Argument>
-                            <AddToCollection x:TypeArguments="x:String" Collection="[EnvironmentRobotsNames]" DisplayName="Add To Collection (Robot)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[EnvironmentRobot(&quot;Name&quot;).ToString]" />
-                          </ActivityAction>
-                        </ui:ForEach.Body>
-                      </ui:ForEach>
-                      <Assign DisplayName="Assign Robots Names" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_8">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(4)]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Object">[String.Join(", ", EnvironmentRobotsNames)]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewEnvironmentRow]" DataTable="[out_EnvironmentsData]" DisplayName="Add Data Row (Environment Data)" sap:VirtualizedContainerService.HintSize="304,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
-                    </Sequence>
-                  </ActivityAction>
-                </ui:ForEach.Body>
-              </ui:ForEach>
-            </Sequence>
-          </Sequence>
+            <TryCatch.Try>
+              <Sequence DisplayName="Try to Get Environments Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="466.666666666667,1516" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="x:String" Name="Result" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Get Environments)" sap:VirtualizedContainerService.HintSize="424.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Environments{1}&amp;$expand=Robots", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
+                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
+                    <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
+                    <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
+                    <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <Sequence DisplayName="Extract Environment Data" sap:VirtualizedContainerService.HintSize="424.666666666667,1297.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Environment Data)" sap:VirtualizedContainerService.HintSize="382.666666666667,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_3" JsonObject="[ResultObject]" JsonString="[Result]" />
+                  <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Environment" sap:VirtualizedContainerService.HintSize="382.666666666667,1103.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[ResultObject.SelectTokens(&quot;value&quot;).Children]">
+                    <ui:ForEach.Body>
+                      <ActivityAction x:TypeArguments="njl:JObject">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="njl:JObject" Name="Environment" />
+                        </ActivityAction.Argument>
+                        <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="346,964.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="EnvironmentRobotsNames" />
+                            <Variable x:TypeArguments="sd:DataRow" Name="NewEnvironmentRow" />
+                          </Sequence.Variables>
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign DisplayName="Assign NewEnvironmentRow (Initialization)" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="sd:DataRow">[NewEnvironmentRow]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="sd:DataRow">[out_EnvironmentsData.NewRow()]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(0)]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign DisplayName="Assign OU/Folder Name" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(1)]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[OUFolderNameAndID("Name")]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign DisplayName="Assign Environment ID" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(2)]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(Environment("Id"))]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign DisplayName="Assign Environment Name" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(3)]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[Environment("Name")]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Robot In Environment" sap:VirtualizedContainerService.HintSize="304,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[Environment.SelectTokens(&quot;Robots&quot;).Children]">
+                            <ui:ForEach.Body>
+                              <ActivityAction x:TypeArguments="njl:JObject">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="njl:JObject" Name="EnvironmentRobot" />
+                                </ActivityAction.Argument>
+                                <AddToCollection x:TypeArguments="x:String" Collection="[EnvironmentRobotsNames]" DisplayName="Add To Collection (Robot)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[EnvironmentRobot(&quot;Name&quot;).ToString]" />
+                              </ActivityAction>
+                            </ui:ForEach.Body>
+                          </ui:ForEach>
+                          <Assign DisplayName="Assign Robots Names" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_8">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">[NewEnvironmentRow(4)]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">[String.Join(", ", EnvironmentRobotsNames)]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewEnvironmentRow]" DataTable="[out_EnvironmentsData]" DisplayName="Add Data Row (Environment Data)" sap:VirtualizedContainerService.HintSize="304,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
+                        </Sequence>
+                      </ActivityAction>
+                    </ui:ForEach.Body>
+                  </ui:ForEach>
+                </Sequence>
+              </Sequence>
+            </TryCatch.Try>
+            <TryCatch.Catches>
+              <Catch x:TypeArguments="sn:WebException" sap:VirtualizedContainerService.HintSize="400,359.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ActivityAction x:TypeArguments="sn:WebException">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="sn:WebException" Name="Exception" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Failed to Access OU/Folder" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <ui:LogMessage DisplayName="Log Message (Failed to Get Data from OU/Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Error" Message="[String.Format(in_Config(&quot;FailedToGetDataFromOUFolder&quot;), OUFolderNameAndID(&quot;Name&quot;))]" />
+                    <Assign DisplayName="Assign out_AllOUFoldersAccessed (False)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[out_AllOUFoldersAccessed]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </ActivityAction>
+              </Catch>
+            </TryCatch.Catches>
+          </TryCatch>
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>

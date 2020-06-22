@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MakeHTTPRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MakeHTTPRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))">
       <x:Property.Attributes>
@@ -28,10 +28,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>638,2372.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>638,3076</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MakeHTTPRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -54,6 +54,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Net</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -77,30 +78,38 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,2308" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,2911.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="606,1792.66666666667" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[io_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(io_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
+    <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="606,1927.33333333333" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[io_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(io_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
       <ui:RetryScope.ActivityBody>
         <ActivityAction>
-          <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="564,1570" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="564,1704.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="If the OUID argument is not specified by a workflow invoking this one, the value of in_OUID is set to 0 by default.&#xA;On the other hand, using that default value would translate into making a HTTP Request with 0 as the value of the X-UIPATH-OrganizationUnitId request's header.&#xA;To avoid such a problem, do not include X-UIPATH-OrganizationUnitId if OUID is 0.&#xA;Note that IDs of OUs start from 1 (Default), so 0 would not be a valid ID." DisplayName="Switch HTTP Method" Expression="[in_Method.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="522,347.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="If the OUID argument is not specified by a workflow invoking this one, the value of in_OUID is set to 0 by default.&#xA;On the other hand, using that default value would translate into making a HTTP Request with 0 as the value of the X-UIPATH-OrganizationUnitId request's header.&#xA;To avoid such a problem, do not include X-UIPATH-OrganizationUnitId if OUID is 0.&#xA;Note that IDs of OUs start from 1 (Default), so 0 would not be a valid ID." DisplayName="Switch HTTP Method (On-Premises)" Expression="[in_Method.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="522,347.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
               <Switch.Default>
                 <Throw DisplayName="Throw (Method Not Supported)" Exception="[New ArgumentException(io_Config(&quot;HTTPMethodNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
               </Switch.Default>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
@@ -121,6 +130,7 @@
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -141,6 +151,7 @@
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -168,6 +179,7 @@
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -188,6 +200,7 @@
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -215,6 +228,7 @@
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -235,6 +249,7 @@
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -262,6 +277,7 @@
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -282,6 +298,7 @@
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -309,6 +326,7 @@
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -329,6 +347,7 @@
                     <ui:HttpClient.Headers>
                       <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
                       <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -340,7 +359,7 @@
                 </If.Else>
               </If>
             </Switch>
-            <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[out_StatusCode = 401 AndAlso out_Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="522,498.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+            <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[out_StatusCode = 401 AndAlso out_Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="522,633.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -349,18 +368,20 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence DisplayName="Retrieve New Token" sap:VirtualizedContainerService.HintSize="376,302.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <Sequence DisplayName="Retrieve New Token" sap:VirtualizedContainerService.HintSize="376,437.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Authenticate.xaml">
+                  <ui:LogMessage DisplayName="Log Message (Token Expired)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[io_Config(&quot;TokenExpired&quot;)]" />
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+                      <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AuthenticationSuccessful" />
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
-                  <Throw sap2010:Annotation.AnnotationText="Exception thrown so that the request is retried by Retry Scope using the new token." DisplayName="Throw (Token Expired)" Exception="[New ArgumentException(&quot;TokenExpired&quot;)]" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="Throw_4">
+                  <Throw sap2010:Annotation.AnnotationText="Exception thrown so that the request is retried by Retry Scope using the new token." DisplayName="Throw (Token Expired)" Exception="[New ArgumentException(io_Config(&quot;TokenExpired&quot;))]" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="Throw_4">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -389,7 +410,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Throw DisplayName="Throw (Request Failed due to Server Error)" Exception="[New WebException(io_Config(&quot;ServerErrorFailure&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+                <Throw DisplayName="Throw (Request Failed due to Server Error)" Exception="[New WebException(String.Format(io_Config(&quot;ServerErrorFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
               </If.Then>
             </If>
           </Sequence>
@@ -412,10 +433,44 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New System.Net.WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </If.Then>
     </If>
-    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(io_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606,84" sap2010:WorkflowViewState.IdRef="Delay_1">
+    <TryCatch sap2010:Annotation.AnnotationText="If a request is done to an inexistent endpoint, it gets redirected and the request is considered successful (status 200) , returning a HTML instead of a JSON.&#xA;To avoid such false positive requests, try to deserialize JSON to confirm a proper result was returned." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="606,395.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <TryCatch.Try>
+        <ui:DeserializeJson x:TypeArguments="njl:JObject" JsonObject="{x:Null}" DisplayName="Deserialize JSON (Result)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonString="[out_Result]" />
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Invalid Resut" sap:VirtualizedContainerService.HintSize="376,248.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message (Invalid Result)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[io_Config(&quot;InvalidResponseErrorFailure&quot;)]" />
+              <Throw DisplayName="Throw (Invalid Result)" Exception="[New Exception(io_Config(&quot;InvalidResponseErrorFailure&quot;), Exception)]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator due to a large number of consecutive requests." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(io_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606,117.333333333333" sap2010:WorkflowViewState.IdRef="Delay_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
