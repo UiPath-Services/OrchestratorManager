@@ -7,7 +7,7 @@
     <x:Property Name="in_FullyQualifiedFolderName" Type="InArgument(x:String)" />
     <x:Property Name="io_FoldersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,969.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>726.666666666667,969.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -57,7 +57,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Delete an Folder based on the given ID.&#xA;To prevent accidental deletion, the workflow confirms whether the Foler name specified match the name of the given ID." DisplayName="Delete Folder" sap:VirtualizedContainerService.HintSize="480.666666666667,804.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Delete a Folder based on the given ID.&#xA;To prevent accidental deletion, the workflow confirms whether the Folder name specified match the name of the given ID." DisplayName="Delete Folder" sap:VirtualizedContainerService.HintSize="480.666666666667,804.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -80,40 +80,22 @@
           </sap:WorkflowViewStateService.ViewState>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmFolderData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities/Folders/ConfirmFolderData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_FolderID" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_FullyQualifiedFolderName" />
-              </InArgument>
-              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
-                <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="io_FoldersData" />
-              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">[in_FolderID]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">[in_FullyQualifiedFolderName]</InArgument>
+              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[io_FoldersData]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Delete Folder)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-                <Literal x:TypeArguments="x:String">delete</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Folders({1})&quot;, in_Config(&quot;OrchestratorURL&quot;), in_FolderID)" />
-              </InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">delete</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Folders({1})", in_Config("OrchestratorURL"), in_FolderID)]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-                <Literal x:TypeArguments="x:Int32" Value="204" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Result" />
-              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:RemoveDataRow RowIndex="{x:Null}" sap2010:Annotation.AnnotationText="Remove the deleted Folder from the cached local data." DataTable="[io_FoldersData]" DisplayName="Remove Data Row" sap:VirtualizedContainerService.HintSize="334,67.3333333333333" sap2010:WorkflowViewState.IdRef="RemoveDataRow_1" Row="[io_FoldersData.Rows.Find({in_FullyQualifiedFolderName})]">
