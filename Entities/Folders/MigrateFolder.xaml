@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>677.333333333333,1156.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>680.666666666667,793.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateFolder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -75,20 +75,20 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate a Classic Folder to a Modern Folder based on the specified migration policies." DisplayName="Migrate Folder" sap:VirtualizedContainerService.HintSize="622.666666666667,992" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate a Classic Folder to a Modern Folder based on the specified migration policies." DisplayName="Migrate Folder" sap:VirtualizedContainerService.HintSize="476,628.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="580.666666666667,869.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="434,491.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
         <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="ErrorMessages" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Migrate Classic Folder" sap:VirtualizedContainerService.HintSize="542,631.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_46">
+        <Sequence DisplayName="Try to Migrate Classic Folder" sap:VirtualizedContainerService.HintSize="542,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_46">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -124,7 +124,7 @@
               </If.Then>
             </If>
           </Sequence>
-          <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Most migration steps depend on if Environments should be migrated to the same or to different Modern Folders.&#xA;If Environments are migrated to the same Modern Folder, the migration of other entities (e.g., Assets and Queues) is done in bulk to the specified Modern Folder.&#xA;If Environments are migrated to different Modern Folders, the migration of other entities (e.g., Assets and Queues) is done using an auxiliary Excel workbok that defines the target Modern Folder for each entity individually." DisplayName="Switch Environment Migration Policy" Expression="[in_EnvironmentMigrationPolicy.ToLowerInvariant.Replace(&quot; &quot;, String.Empty)]" sap:VirtualizedContainerService.HintSize="500,430" sap2010:WorkflowViewState.IdRef="Switch`1_19">
+          <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Most migration steps depend on if Environments should be migrated to the same or to different Modern Folders.&#xA;If Environments are migrated to the same Modern Folder, the migration of other entities (e.g., Assets and Queues) is done in bulk to the specified Modern Folder.&#xA;If Environments are migrated to different Modern Folders, the migration of other entities (e.g., Assets and Queues) is done using an auxiliary Excel workbok that defines the target Modern Folder for each entity individually." DisplayName="Switch Environment Migration Policy" Expression="[in_EnvironmentMigrationPolicy.ToLowerInvariant.Replace(&quot; &quot;, String.Empty)]" sap:VirtualizedContainerService.HintSize="500,297.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_19">
             <Switch.Default>
               <Throw DisplayName="Throw (Environment Migration Policy not Specified)" Exception="[New ArgumentException(in_Config(&quot;EnvironmentMigrationPolicyInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_26" />
             </Switch.Default>
@@ -148,25 +148,19 @@
             </ui:InvokeWorkflowFile>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="environmentstodifferentmodernfolders" DisplayName="Invoke MigrateEnvironmentsToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateEnvironmentsToDifferentFolders.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                </InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderName" />
-                </InArgument>
-                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
-                  <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData" />
-                </InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
           </Switch>
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="546.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,319.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
@@ -180,7 +174,7 @@
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message (Failed to Migrate Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[Exception.Message]">
+              <ui:LogMessage DisplayName="Log Message (Failed to Migrate Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[String.Format(&quot;{0}: {1}&quot;, Exception.Source, Exception.Message)]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -188,7 +182,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:LogMessage>
-              <AddToCollection x:TypeArguments="x:String" Collection="[ErrorMessages]" DisplayName="Add To Collection (Failed to Migrate Folder)" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[String.Format(&quot;{0}: {1}&quot;, Exception.Source, Exception.Message)]" />
+              <AddToCollection x:TypeArguments="x:String" Collection="[ErrorMessages]" DisplayName="Add To Collection (Failed to Migrate Folder)" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Exception.Message]" />
             </Sequence>
           </ActivityAction>
         </Catch>
