@@ -12,7 +12,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>672.666666666667,1108.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>672,1008.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>SetFolderUsers_RegularUsers_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -83,7 +83,6 @@
     <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,694.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="Assignment" />
-        <Variable x:TypeArguments="scg:List(x:Int64)" Default="[New List(Of Int64)]" Name="UserRolesIDs" />
         <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RolesPerFolder" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
@@ -147,22 +146,12 @@
     </Sequence>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Assign AD User to Folder)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InOutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-          <Literal x:TypeArguments="x:String">post</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;OrchestratorURL&quot;) + &quot;/odata/Folders/UiPath.Server.Configuration.OData.AssignDomainUser&quot;" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Body">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
-        </InArgument>
+        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[in_Config("OrchestratorURL") + "/odata/Folders/UiPath.Server.Configuration.OData.AssignDomainUser"]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-          <Literal x:TypeArguments="x:Int32" Value="204" />
-        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
         <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
       </ui:InvokeWorkflowFile.Arguments>

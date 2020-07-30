@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>680.666666666667,1066</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>706,1066</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateEnvironmentsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="24">
@@ -74,39 +74,6 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Folder Migration Confirmation Panel" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
-      <Sequence.Variables>
-        <Variable x:TypeArguments="x:String" Name="FolderMigrationPanelOutput" />
-      </Sequence.Variables>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FolderMigrationPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Core\Forms\FolderMigrationPanelBuilder.xaml">
-        <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderName" />
-          </InArgument>
-        </ui:InvokeWorkflowFile.Arguments>
-      </ui:InvokeWorkflowFile>
-      <ui:CustomInput DisplayName="Custom Input" Height="[in_Config(&quot;FormsHeight&quot;)-100]" sap:VirtualizedContainerService.HintSize="484,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[FolderMigrationPanelOutput]" URI="[in_Config(&quot;FolderMigrationPanelPath&quot;)]" Width="[in_Config(&quot;FormsWidth&quot;)-100]" />
-      <If Condition="[String.IsNullOrWhiteSpace(FolderMigrationPanelOutput) OrElse FolderMigrationPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_1">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <If.Then>
-          <Throw DisplayName="Throw (Operation Cancelled by User)" Exception="[New Exception(in_Config(&quot;OperationCanceledByUser&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
-        </If.Then>
-      </If>
-    </Sequence>
     <Sequence sap2010:Annotation.AnnotationText="Preemptively get data about entities to be migrated for shared use among workflows." DisplayName="Get Entities Data" sap:VirtualizedContainerService.HintSize="379.333333333333,148" sap2010:WorkflowViewState.IdRef="Sequence_6">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -154,6 +121,35 @@
         <OutArgument x:TypeArguments="ui:WorkbookApplication" x:Key="out_FolderMigrationWorkbook">[FolderMigrationWorkbook]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
+    <Sequence DisplayName="Folder Migration Confirmation Panel" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="FolderMigrationPanelOutput" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FolderMigrationPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Core\Forms\FolderMigrationPanelBuilder.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:CustomInput DisplayName="Custom Input" Height="[in_Config(&quot;FormsHeight&quot;)-100]" sap:VirtualizedContainerService.HintSize="484,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[FolderMigrationPanelOutput]" URI="[in_Config(&quot;FolderMigrationPanelPath&quot;)]" Width="[in_Config(&quot;FormsWidth&quot;)-100]" />
+      <If Condition="[String.IsNullOrWhiteSpace(FolderMigrationPanelOutput) OrElse FolderMigrationPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Throw DisplayName="Throw (Operation Cancelled by User)" Exception="[New Exception(in_Config(&quot;OperationCanceledByUser&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        </If.Then>
+      </If>
+    </Sequence>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateProcessesToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateProcessesToDifferentFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>

@@ -2,7 +2,7 @@
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>598.666666666667,1123.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>698,1302.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -41,9 +41,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Check whether entities workbooks exist and copy them from templates if they don't." DisplayName="Initialize Entities Workbooks" sap:VirtualizedContainerService.HintSize="608.666666666667,958.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
+  <Sequence sap2010:Annotation.AnnotationText="Check whether entities workbooks exist and copy them from templates if they don't." DisplayName="Initialize Entities Workbooks" sap:VirtualizedContainerService.HintSize="608.666666666667,1238" sap2010:WorkflowViewState.IdRef="Sequence_18">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="TemplateWorkbooksPath" />
     </Sequence.Variables>
@@ -56,7 +57,12 @@
     </sap:WorkflowViewStateService.ViewState>
     <If Condition="[Not Directory.Exists(in_Config(&quot;EntitiesWorkbooksFolderPath&quot;))]" DisplayName="If Entities Workbooks Folder Exist" sap:VirtualizedContainerService.HintSize="566.666666666667,239.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
       <If.Then>
-        <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_Config(&quot;EntitiesWorkbooksFolderPath&quot;)]" />
+        <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder (Entities Workbooks)" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[in_Config(&quot;EntitiesWorkbooksFolderPath&quot;)]" />
+      </If.Then>
+    </If>
+    <If Condition="[Not Directory.Exists(String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;LogsFolderName&quot;)))]" DisplayName="If Logs Folder Exists" sap:VirtualizedContainerService.HintSize="566.666666666667,239.333333333333" sap2010:WorkflowViewState.IdRef="If_7">
+      <If.Then>
+        <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder (Logs)" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" Path="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;LogsFolderName&quot;))]" />
       </If.Then>
     </If>
     <Assign DisplayName="Assign TemplateWorkbooksPath" sap:VirtualizedContainerService.HintSize="566.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_2">

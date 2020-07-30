@@ -8,12 +8,11 @@
     <x:Property Name="in_FoldersData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_ProcessMigrationPolicy" Type="InArgument(x:String)" />
     <x:Property Name="in_RobotMigrationPolicy" Type="InArgument(x:String)" />
-    <x:Property Name="io_ErrorMessages" Type="InOutArgument(scg:List(x:String))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>677.333333333333,736.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1288,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateEnvironmentsToSameFolder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -73,14 +72,17 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to a single Modern Folder." DisplayName="Migrate Environments to Same Folder" sap:VirtualizedContainerService.HintSize="421.333333333333,572" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to a single Modern Folder." DisplayName="Migrate Environments to Same Folder" sap:VirtualizedContainerService.HintSize="421.333333333333,776.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="ErrorMessages" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Validate Modern Folders" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
+    <Sequence DisplayName="Validate Modern Folder" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -117,7 +119,7 @@
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
-        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[io_ErrorMessages]</InOutArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssetsToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateAssetsToSameFolder.xaml">
@@ -127,7 +129,7 @@
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
-        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[io_ErrorMessages]</InOutArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueuesToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateQueuesToSameFolder.xaml">
@@ -136,9 +138,40 @@
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
-        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[io_ErrorMessages]</InOutArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_QueueMigrationPolicy">[in_QueueMigrationPolicy]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
+    <If sap2010:Annotation.AnnotationText="Due to the potentially large number of messages during migration, they are output to a separate log file instead of added to the migration workbook." Condition="[ErrorMessages.Count &gt; 0]" DisplayName="If There Are Error Messages" sap:VirtualizedContainerService.HintSize="379.333333333333,164.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Sequence DisplayName="Output Error Messages to File" sap:VirtualizedContainerService.HintSize="376,390.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="ErrorMessagesFileName" />
+          </Sequence.Variables>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="Assign ErrorMessagesFileName" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ErrorMessagesFileName]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}\{2}-FolderMigrationErrors-{3:yyyyMMddHHmmss}.log", in_Config("EntitiesWorkbooksFolderPath"), in_Config("LogsFolderName"), in_ClassicFolderName, Now)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:WriteTextFile DisplayName="Write Text File" FileName="[ErrorMessagesFileName]" sap:VirtualizedContainerService.HintSize="334,134.666666666667" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[String.Join(Environment.NewLine, ErrorMessages)]" />
+          <Throw DisplayName="Throw (Error Messages Output to File)" Exception="[New Exception(String.Format(in_Config(&quot;ErrorMessagesOutputToFile&quot;), ErrorMessagesFileName))]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_14" />
+        </Sequence>
+      </If.Then>
+    </If>
   </Sequence>
 </Activity>
