@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>672,1476.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>667.333333333333,1611.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateAssetsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="23">
@@ -60,7 +60,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets to the specified Modern Folders." DisplayName="Migrate Assets to Different Folders" sap:VirtualizedContainerService.HintSize="677.333333333333,1412" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets to the specified Modern Folders." DisplayName="Migrate Assets to Different Folders" sap:VirtualizedContainerService.HintSize="677.333333333333,1546.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataRow" Name="ClassicFolderAsset" />
       <Variable x:TypeArguments="sd:DataTable" Name="AssetsMigrationDetails" />
@@ -94,20 +94,20 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <ui:ForEachRow sap2010:Annotation.AnnotationText="Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- AssetMigrationDetails(0) refers to Classic Folder name&#xA;- AssetMigrationDetails(1) refers to Asset name&#xA;- AssetMigrationDetails(2) refers to Modern Folder name&#xA;- AssetMigrationDetails(3) refers to Result" CurrentIndex="[LoopIndex]" DataTable="[AssetsMigrationDetails]" DisplayName="For Each Asset" sap:VirtualizedContainerService.HintSize="635.333333333333,1082" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow sap2010:Annotation.AnnotationText="Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- AssetMigrationDetails(0) refers to Classic Folder name&#xA;- AssetMigrationDetails(1) refers to Asset name&#xA;- AssetMigrationDetails(2) refers to Modern Folder name&#xA;- AssetMigrationDetails(3) refers to Result" CurrentIndex="[LoopIndex]" DataTable="[AssetsMigrationDetails]" DisplayName="For Each Asset" sap:VirtualizedContainerService.HintSize="635.333333333333,1216.66666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetMigrationDetails" />
           </ActivityAction.Argument>
-          <If sap2010:Annotation.AnnotationText="Only process rows whose Result column is empty and Modern Folder name is specified." Condition="[String.IsNullOrWhiteSpace(AssetMigrationDetails(3).ToString) AndAlso Not String.IsNullOrWhiteSpace(AssetMigrationDetails(2).ToString)]" DisplayName="If Row Should Be Processed" sap:VirtualizedContainerService.HintSize="584.666666666667,834" sap2010:WorkflowViewState.IdRef="If_5">
+          <If sap2010:Annotation.AnnotationText="Only process rows whose Result column is empty and Modern Folder name is specified." Condition="[String.IsNullOrWhiteSpace(AssetMigrationDetails(3).ToString) AndAlso Not String.IsNullOrWhiteSpace(AssetMigrationDetails(2).ToString)]" DisplayName="If Row Should Be Processed" sap:VirtualizedContainerService.HintSize="584.666666666667,968.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <If.Then>
-              <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets to interfer with each other." DisplayName="Try Catch (Migrate Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="438.666666666667,649.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+              <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets to interfer with each other." DisplayName="Try Catch (Migrate Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="438.666666666667,784" sap2010:WorkflowViewState.IdRef="TryCatch_2">
                 <TryCatch.Variables>
                   <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
                 </TryCatch.Variables>
@@ -119,7 +119,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <TryCatch.Try>
-                  <Sequence DisplayName="Try to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,380.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                  <Sequence DisplayName="Try to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,515.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="x:Int64" Name="ModernFolderID" />
                       <Variable x:TypeArguments="x:Int64" Name="ClassicFolderID" />
@@ -206,6 +206,7 @@
                         </Assign>
                       </If.Else>
                     </If>
+                    <ui:LogMessage DisplayName="Log Message (Migrate Asset)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateAsset&quot;), ClassicFolderAsset(&quot;AssetName&quot;).ToString)]" />
                     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
                       <ui:InvokeWorkflowFile.Arguments>
                         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[ModernFolderID]</InArgument>
