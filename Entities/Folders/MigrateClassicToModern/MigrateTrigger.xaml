@@ -1,0 +1,172 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateTrigger" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_ClassicFolderData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ModernFolderData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ClassicFolderTrigger" Type="InArgument(sd:DataRow)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>684,1078.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>MigrateQueueDefinition_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="22">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Trigger from Classic Folder to Modern Folder." DisplayName="Migrate Trigger" sap:VirtualizedContainerService.HintSize="684,1014" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int64" Name="ModernTriggerQueueID" />
+      <Variable x:TypeArguments="x:Int64" Name="ModernTriggerProcessID" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Log Message (Migrate Trigger)" sap:VirtualizedContainerService.HintSize="642,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateTrigger&quot;), in_ClassicFolderTrigger(&quot;TriggerName&quot;).ToString)]" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get Process ID in Modern Folder based on the name of the Process in Classic Folder." DisplayName="Invoke GetModernProcessID Workflow" sap:VirtualizedContainerService.HintSize="642,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Processes\GetModernProcessID.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_ClassicProcessID">[Convert.ToInt64(in_ClassicFolderTrigger("ProcessID"))]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_ClassicFolderData]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_ModernFolderData]</InArgument>
+        <OutArgument x:TypeArguments="x:Int64" x:Key="out_ModernProcessID">[ModernTriggerProcessID]</OutArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:InvokeWorkflowFile>
+    <If Condition="[Convert.ToInt64(in_ClassicFolderTrigger(&quot;QueueID&quot;)) = 0]" DisplayName="If Trigger Queue ID is Specified" sap:VirtualizedContainerService.HintSize="642,286" sap2010:WorkflowViewState.IdRef="If_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Assign DisplayName="Assign ModernTriggerQueueID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int64">[ModernTriggerQueueID]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int64">0</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get Queue ID in Modern Folder based on the name of the Queue in Classic Folder." DisplayName="Invoke GetModernQueueID Workflow" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\Queues\GetModernQueueID.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_ClassicFolderData]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_ModernFolderData]</InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:Int64" x:Key="in_ClassicQueueID">[Convert.ToInt64(in_ClassicFolderTrigger("QueueID"))]</InArgument>
+            <OutArgument x:TypeArguments="x:Int64" x:Key="out_ModernQueueID">[ModernTriggerQueueID]</OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:InvokeWorkflowFile>
+      </If.Else>
+    </If>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateTriggerRequest Workflow" sap:VirtualizedContainerService.HintSize="642,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Triggers\CreateTriggerRequest.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_ClassicFolderTrigger("TriggerName").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_InputArgumentsDefinition">[in_ClassicFolderTrigger("InputArgumentsDefinition").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Enabled">[in_ClassicFolderTrigger("Enabled").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_UseCalendar">[in_ClassicFolderTrigger("UseCalendar").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_CalendarID">[Convert.ToInt64(in_ClassicFolderTrigger("CalendarID"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_StartProcessCronDetails">[in_ClassicFolderTrigger("StartProcessCronDetails").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_StartProcessCron">[in_ClassicFolderTrigger("StartProcessCron").ToString]</InArgument>
+        <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="in_ExecutorRobots" />
+        <InArgument x:TypeArguments="x:String" x:Key="in_StopStrategy">[in_ClassicFolderTrigger("StopStrategy").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_StartStrategy">[Convert.ToInt32(in_ClassicFolderTrigger("StartStrategy"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_StopProcessDate">[in_ClassicFolderTrigger("StopProcessDate").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ExternalJobKey">[in_ClassicFolderTrigger("ExternalJobKey").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_JobPriority">[in_ClassicFolderTrigger("JobPriority").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_ItemsActivationThreshold">[Convert.ToInt64(in_ClassicFolderTrigger("ItemsActivationThreshold"))]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_ItemsPerJobActivationTarget">[Convert.ToInt64(in_ClassicFolderTrigger("ItemsPerJobActivationTarget"))]</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_MaxJobsForActivation">[Convert.ToInt32(in_ClassicFolderTrigger("MaxJobsForActivation"))]</InArgument>
+        <OutArgument x:TypeArguments="x:Int64" x:Key="out_TriggerID" />
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_ModernFolderData.Rows(0)("ID"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_RuntimeType">[in_ClassicFolderTrigger("RuntimeType").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_ProcessID">[ModernTriggerProcessID]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_TimezoneID">[in_ClassicFolderTrigger("TimezoneID").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_QueueID">[ModernTriggerQueueID]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_StopProcessExpression">[in_ClassicFolderTrigger("StopProcessExpression").ToString]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Disable Trigger in Classic Folder to avoid conflicts with new Trigger in Modern Folder." DisplayName="Invoke EnableTrigger Workflow" sap:VirtualizedContainerService.HintSize="642,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Triggers\EnableTrigger.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderData.Rows(0)(&quot;ID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_TriggerID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderTrigger(&quot;TriggerID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="in_Enabled">
+          <Literal x:TypeArguments="x:Boolean" />
+        </InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:InvokeWorkflowFile>
+  </Sequence>
+</Activity>

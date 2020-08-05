@@ -6,11 +6,12 @@
     <x:Property Name="in_ClassicFolderQueuesData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="out_FolderMigrationWorkbook" Type="OutArgument(ui:WorkbookApplication)" />
     <x:Property Name="in_ClassicFolderProcessesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ClassicFolderTriggersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>677.333333333333,912</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1326,856</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>InitializeFolderMigrationWorkbook_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="44">
@@ -62,7 +63,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create Classic Folder migration workbook if it doesn't exist and populate it with related entities' data." DisplayName="Initialize Folder Migration Workbook" sap:VirtualizedContainerService.HintSize="567.333333333333,747.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Create Classic Folder migration workbook if it doesn't exist and populate it with related entities' data." DisplayName="Initialize Folder Migration Workbook" sap:VirtualizedContainerService.HintSize="566,733" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="FolderMigrationTemplateFilePath" />
       <Variable x:TypeArguments="x:String" Name="FolderMigrationWorkbookFilePath" />
@@ -73,7 +74,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign FolderMigrationTemplateFilePath" sap:VirtualizedContainerService.HintSize="525.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign FolderMigrationTemplateFilePath" sap:VirtualizedContainerService.HintSize="524,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[FolderMigrationTemplateFilePath]</OutArgument>
       </Assign.To>
@@ -81,7 +82,7 @@
         <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}\{2}", in_Config("WorkbooksTemplatesPath"), in_Config("Language"), in_Config("FolderMigrationTemplateFilePath"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign FolderMigrationWorkbookFilePath" sap:VirtualizedContainerService.HintSize="525.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Assign FolderMigrationWorkbookFilePath" sap:VirtualizedContainerService.HintSize="524,60" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[FolderMigrationWorkbookFilePath]</OutArgument>
       </Assign.To>
@@ -89,7 +90,7 @@
         <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}-{2}", in_Config("EntitiesWorkbooksFolderPath"), in_ClassicFolderName, Path.GetFileName(FolderMigrationTemplateFilePath))]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[Not File.Exists(FolderMigrationWorkbookFilePath)]" DisplayName="If Folder Migration Workbook Exists in Specified Folder" sap:VirtualizedContainerService.HintSize="525.333333333333,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[Not File.Exists(FolderMigrationWorkbookFilePath)]" DisplayName="If Folder Migration Workbook Exists in Specified Folder" sap:VirtualizedContainerService.HintSize="524,235" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -97,7 +98,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolderMigrationWorkbook Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\CreateFolderMigrationWorkbook.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolderMigrationWorkbook Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\CreateFolderMigrationWorkbook.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
               <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
@@ -117,11 +118,14 @@
             <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ProcessesData">
               <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_ClassicFolderProcessesData" />
             </InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_TriggersData">
+              <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_ClassicFolderTriggersData" />
+            </InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </If.Then>
     </If>
-    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Folder Migration Workbook)" sap:VirtualizedContainerService.HintSize="525.333333333333,125.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[out_FolderMigrationWorkbook]" WorkbookPath="[FolderMigrationWorkbookFilePath]">
+    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Folder Migration Workbook)" sap:VirtualizedContainerService.HintSize="524,124" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[out_FolderMigrationWorkbook]" WorkbookPath="[FolderMigrationWorkbookFilePath]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>

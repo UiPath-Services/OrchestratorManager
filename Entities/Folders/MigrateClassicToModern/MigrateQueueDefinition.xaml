@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>640.666666666667,501.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>684,734.666666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateQueueDefinition_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -59,11 +59,9 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Queue definition from Classic Folder to Modern Folder." DisplayName="Migrate Queue Definition" sap:VirtualizedContainerService.HintSize="376,436.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Queue definition from Classic Folder to Modern Folder." DisplayName="Migrate Queue Definition" sap:VirtualizedContainerService.HintSize="684,670" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int64" Name="ModernQueueProcessID" />
-      <Variable x:TypeArguments="x:Int64" Name="ModernQueueProcessScheduleID" />
-      <Variable x:TypeArguments="x:Int64" Name="ModernQueueTriggerID" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -71,11 +69,11 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message (Migrate Queue)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateQueue&quot;), in_ClassicFolderQueue(&quot;QueueName&quot;).ToString)]" />
-    <If Condition="[Convert.ToInt64(in_ClassicFolderQueue(&quot;ProcessID&quot;)) = 0]" DisplayName="If Queue Process ID is Specified" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:LogMessage DisplayName="Log Message (Migrate Queue)" sap:VirtualizedContainerService.HintSize="642,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateQueue&quot;), in_ClassicFolderQueue(&quot;QueueName&quot;).ToString)]" />
+    <If Condition="[Convert.ToInt64(in_ClassicFolderQueue(&quot;ProcessID&quot;)) = 0]" DisplayName="If Queue Process ID is Specified" sap:VirtualizedContainerService.HintSize="642,286" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
@@ -90,19 +88,23 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueueDefinition_GetModernQueueProcessID Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateQueueDefinition_GetModernQueueProcessID.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get Queue ID in Modern Folder based on the name of the Queue in Classic Folder." DisplayName="Invoke GetModernProcessID Workflow" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\Processes\GetModernProcessID.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="x:Int64" x:Key="in_ClassicProcessID">[Convert.ToInt64(in_ClassicFolderQueue("ProcessID"))]</InArgument>
             <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_ClassicFolderData]</InArgument>
             <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_ModernFolderData]</InArgument>
             <OutArgument x:TypeArguments="x:Int64" x:Key="out_ModernProcessID">[ModernQueueProcessID]</OutArgument>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_QueueName">[in_ClassicFolderQueue("QueueName").ToString]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
         </ui:InvokeWorkflowFile>
       </If.Else>
     </If>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateQueueRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities\Queues\CreateQueueRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateQueueRequest Workflow" sap:VirtualizedContainerService.HintSize="642,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities\Queues\CreateQueueRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_ClassicFolderQueue("QueueName").ToString]</InArgument>
