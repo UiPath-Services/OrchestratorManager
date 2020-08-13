@@ -28,10 +28,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>638,3076</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1340,3113.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MakeHTTPRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="44">
+    <scg:List x:TypeArguments="x:String" Capacity="46">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -55,10 +55,11 @@
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Net</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="36">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -86,7 +87,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,2911.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,3048.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -436,17 +437,31 @@
         <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </If.Then>
     </If>
-    <TryCatch sap2010:Annotation.AnnotationText="If a request is done to an inexistent endpoint, it gets redirected and the request is considered successful (status 200) , returning a HTML instead of a JSON.&#xA;To avoid such false positive requests, try to deserialize JSON to confirm a proper result was returned." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="606,395.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch sap2010:Annotation.AnnotationText="If a request is done to an inexistent endpoint, it gets redirected and the request is considered successful (status 200) , returning a HTML instead of a JSON.&#xA;To avoid such false positive requests, try to deserialize the response JSON to confirm a proper result was returned." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="606,532.666666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Variables>
+        <Variable x:TypeArguments="njl:JToken" Name="ParsedJSON" />
+      </TryCatch.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <ui:DeserializeJson x:TypeArguments="njl:JObject" JsonObject="{x:Null}" DisplayName="Deserialize JSON (Result)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonString="[out_Result]" />
+        <If Condition="[Not String.IsNullOrWhiteSpace(out_Result)]" DisplayName="If Result Exists" sap:VirtualizedContainerService.HintSize="484,216" sap2010:WorkflowViewState.IdRef="If_11">
+          <If.Then>
+            <Assign DisplayName="Assign ParsedJSON" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="njl:JToken">[ParsedJSON]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="njl:JToken">[JToken.Parse(out_Result)]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </If.Then>
+        </If>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="488.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>

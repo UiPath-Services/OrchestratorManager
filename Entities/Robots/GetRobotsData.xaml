@@ -135,18 +135,10 @@
                 </sap:WorkflowViewStateService.ViewState>
                 <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Robots)" sap:VirtualizedContainerService.HintSize="340.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                      <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                    </InArgument>
-                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-                      <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(OUFolderNameAndID(&quot;ID&quot;))" />
-                    </InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                      <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Robots{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
-                    </InArgument>
-                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-                      <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-                    </OutArgument>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                 </ui:InvokeWorkflowFile>
                 <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Robot" sap:VirtualizedContainerService.HintSize="340.666666666667,1325.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
@@ -155,7 +147,7 @@
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="njl:JObject" Name="Robot" />
                       </ActivityAction.Argument>
-                      <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,1186.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                      <Sequence DisplayName="Extract Robot Data" sap:VirtualizedContainerService.HintSize="304,1186.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
