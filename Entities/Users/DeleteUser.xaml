@@ -7,7 +7,7 @@
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
     <x:Property Name="io_UsersData" Type="InOutArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,969.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>701.333333333333,869.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -75,32 +75,24 @@
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmUserData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities/Users/ConfirmUserData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ID">[in_ID]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_ID">[Convert.ToInt64(in_ID)]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Username">[in_Username]</InArgument>
               <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[io_UsersData]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Delete User)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-                <Literal x:TypeArguments="x:String">delete</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users({1})&quot;, in_Config(&quot;OrchestratorURL&quot;), in_ID)" />
-              </InArgument>
+              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Method">delete</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users({1})", in_Config("OrchestratorURL"), in_ID)]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-                <Literal x:TypeArguments="x:Int32" Value="204" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
               <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
               <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:RemoveDataRow RowIndex="{x:Null}" sap2010:Annotation.AnnotationText="Remove the deleted User from the cached local data." DataTable="[io_UsersData]" DisplayName="Remove Data Row" sap:VirtualizedContainerService.HintSize="334,67.3333333333333" sap2010:WorkflowViewState.IdRef="RemoveDataRow_1" Row="[io_UsersData.Rows.Find({in_Username})]">
+          <ui:RemoveDataRow RowIndex="{x:Null}" sap2010:Annotation.AnnotationText="Remove the deleted User from the cached local data." DataTable="[io_UsersData]" DisplayName="Remove Data Row" sap:VirtualizedContainerService.HintSize="334,67.3333333333333" sap2010:WorkflowViewState.IdRef="RemoveDataRow_1" Row="[io_UsersData.Select(&quot;ID = &quot; + in_ID.ToString)(0)]">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>

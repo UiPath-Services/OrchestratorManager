@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="SetFolderUser" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="SetFolderUser" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))">
       <x:Property.Attributes>
@@ -7,12 +7,15 @@
     </x:Property>
     <x:Property Name="in_FolderID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_Roles" Type="InArgument(scg:Dictionary(x:Int64, x:String))" />
-    <x:Property Name="in_User" Type="InArgument(sd:DataRow)" />
+    <x:Property Name="in_UserType" Type="InArgument(x:String)" />
+    <x:Property Name="in_UserID" Type="InArgument(x:Int64)" />
+    <x:Property Name="in_UserDomain" Type="InArgument(x:String)" />
+    <x:Property Name="in_Username" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>700,1304.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1336,1304.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -86,7 +89,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[in_User Is Nothing]" DisplayName="If User Is Specified, Get User Type" sap:VirtualizedContainerService.HintSize="522,216" sap2010:WorkflowViewState.IdRef="If_4">
+    <If Condition="[String.IsNullOrWhiteSpace(in_UserType)]" DisplayName="If User Is Specified, Get User Type" sap:VirtualizedContainerService.HintSize="522,216" sap2010:WorkflowViewState.IdRef="If_4">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -102,7 +105,7 @@
             <OutArgument x:TypeArguments="x:String">[UserType]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_User("Type").ToString]</InArgument>
+            <InArgument x:TypeArguments="x:String">[in_UserType]</InArgument>
           </Assign.Value>
         </Assign>
       </If.Else>
@@ -126,7 +129,7 @@
               <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
             </InArgument>
             <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">
-              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_User(&quot;ID&quot;))" />
+              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_UserID" />
             </InArgument>
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
@@ -154,7 +157,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <If Condition="[String.IsNullOrWhiteSpace(in_User(&quot;Domain&quot;).ToString)]" DisplayName="If Domain is Specified" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+          <If Condition="[String.IsNullOrWhiteSpace(in_UserDomain)]" DisplayName="If Domain is Specified" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_6">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -175,7 +178,7 @@
                   <OutArgument x:TypeArguments="x:String">[Domain]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[in_User("Domain").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String">[in_UserDomain]</InArgument>
                 </Assign.Value>
               </Assign>
             </If.Else>
@@ -189,10 +192,10 @@
                 <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
               </InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_User(&quot;Type&quot;).ToString" />
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserType" />
               </InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_UserName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_User(&quot;Username&quot;).ToString" />
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Username" />
               </InArgument>
               <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_UserRoles">
                 <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
