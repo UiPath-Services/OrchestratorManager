@@ -1,0 +1,403 @@
+<Activity mc:Ignorable="sads sap sap2010" x:Class="AddRemoveOrganizationUnits" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:s1="clr-namespace:System;assembly=mscorlib" xmlns:s2="clr-namespace:System;assembly=System" xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities" xmlns:sa1="clr-namespace:System.Activities;assembly=System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sae="clr-namespace:System.Activities.Expressions;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sas="clr-namespace:System.Activities.Statements;assembly=System.Activities" xmlns:sc="clr-namespace:System.Collections;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sc1="clr-namespace:System.Collections;assembly=mscorlib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:sd1="clr-namespace:System.Data;assembly=System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sd2="clr-namespace:System.Data;assembly=System.Data.DataSetExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sd3="clr-namespace:System.Diagnostics;assembly=System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sd4="clr-namespace:System.Drawing;assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" xmlns:si="clr-namespace:System.IO;assembly=mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sl="clr-namespace:System.Linq;assembly=System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sx="clr-namespace:System.Xml;assembly=System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" xmlns:uc="clr-namespace:UiPath.Core;assembly=UiPath.System.Activities" xmlns:uca="clr-namespace:UiPath.Core.Activities;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_OpenWorkbook" Type="InArgument(ui:WorkbookApplication)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_AddRolesNames" Type="InArgument(x:String)" />
+    <x:Property Name="in_RemoveRolesNames" Type="InArgument(x:String)" />
+    <x:Property Name="in_UsersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_RolesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_Username" Type="InArgument(x:String)" />
+    <x:Property Name="in_UserType" Type="InArgument(x:String)" />
+    <x:Property Name="in_FolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_FolderIndex" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_FoldersData" Type="InArgument(sd:DataTable)" />
+  </x:Members>
+  <sap:VirtualizedContainerService.HintSize>717.333333333333,3100.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="17">
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>Newtonsoft.Json.Serialization</x:String>
+      <x:String>Newtonsoft.Json.Converters</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Linq</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Add or remove the specified Roles to/from the specified User in the specified Folder.&#xA;This operation is only available in the case of Modern Folders with &quot;Custom Roles&quot; as Role Assignment Model." DisplayName="Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="727.333333333333,3036" sap2010:WorkflowViewState.IdRef="Sequence_14">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="685.333333333333,2898.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Variables>
+        <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
+      </TryCatch.Variables>
+      <TryCatch.Try>
+        <Sequence DisplayName="Try to Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="646.666666666667,2660.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="s1:String[]" Name="AddRolesNames" />
+            <Variable x:TypeArguments="s1:String[]" Name="RemoveRolesNames" />
+            <Variable x:TypeArguments="sd:DataRow" Name="User" />
+            <Variable x:TypeArguments="sd:DataRow" Name="Folder" />
+            <Variable x:TypeArguments="scg:Dictionary(x:Int64, x:String)" Name="FolderUserRoles" />
+          </Sequence.Variables>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="604.666666666667,2396.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_27">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If Condition="[String.IsNullOrWhiteSpace(in_FolderName)]" DisplayName="If Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_49">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Folder Name not Specified)" Exception="[New ArgumentException(in_Config(&quot;FolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_33" />
+              </If.Then>
+            </If>
+            <If Condition="[String.IsNullOrWhiteSpace(in_UserType) OrElse Not {&quot;User&quot;, &quot;DirectoryUser&quot;, &quot;DirectoryGroup&quot;}.Contains(in_UserType)]" DisplayName="If User Type Is Specified" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_50">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (User Type Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;UserTypeInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_34" />
+              </If.Then>
+            </If>
+            <If Condition="[String.IsNullOrWhiteSpace(in_Username)]" DisplayName="If Username Is Specified" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_51">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Username not Specified)" Exception="[New ArgumentException(in_Config(&quot;UsernameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_35" />
+              </If.Then>
+            </If>
+            <Assign DisplayName="Assign User" sap:VirtualizedContainerService.HintSize="562.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_35">
+              <Assign.To>
+                <OutArgument x:TypeArguments="sd:DataRow">[User]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="sd:DataRow">[in_UsersData.Rows.Find({in_UserType, in_Username})]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <If Condition="[User Is Nothing]" DisplayName="If User Exists" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_52">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (User not Found)" Exception="[New ArgumentException(in_Config(&quot;UserNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_36" />
+              </If.Then>
+            </If>
+            <Assign DisplayName="Assign Folder" sap:VirtualizedContainerService.HintSize="562.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_36">
+              <Assign.To>
+                <OutArgument x:TypeArguments="sd:DataRow">[Folder]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="sd:DataRow">[in_FoldersData.Rows.Find({in_FolderName})]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <If Condition="[Folder Is Nothing]" DisplayName="If Folder Exists" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_53">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Folder Not Found)" Exception="[New ArgumentException(in_Config(&quot;FolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_37" />
+              </If.Then>
+            </If>
+            <If Condition="[Folder(&quot;Type&quot;).ToString.ToLowerInvariant = &quot;classic&quot;]" DisplayName="If Modern Folder" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_54">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Operation not Supported by Classic Folders)" Exception="[New ArgumentException(in_Config(&quot;OperationNotSupportedByClassicFolder&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_38" />
+              </If.Then>
+            </If>
+            <If Condition="[Folder(&quot;RoleAssignmentModel&quot;).ToString.ToLowerInvariant.Replace(&quot; &quot;, String.Empty) = &quot;inheritfromtenant&quot;]" DisplayName="If Folder's Role Assignment Model is Inherit from Tenant" sap:VirtualizedContainerService.HintSize="562.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_55">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Custom Roles not Supported)" Exception="[New ArgumentException(in_Config(&quot;CustomRolesNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_39" />
+              </If.Then>
+            </If>
+            <Sequence DisplayName="Verify Roles Names" sap:VirtualizedContainerService.HintSize="562.666666666667,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_40">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If Condition="[String.IsNullOrWhiteSpace(in_AddRolesNames) AndAlso String.IsNullOrWhiteSpace(in_RemoveRolesNames)]" DisplayName="If No Roles Specified" sap:VirtualizedContainerService.HintSize="520.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_60">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Throw DisplayName="Throw (No Roles Specified)" Exception="[New ArgumentException(in_Config(&quot;RoleNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_43" />
+                </If.Then>
+              </If>
+              <Assign DisplayName="Assign AddRolesNames" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_33">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s1:String[]">[AddRolesNames]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s1:String[]">[in_AddRolesNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Assign RemoveRolesNames" sap:VirtualizedContainerService.HintSize="520.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_34">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s1:String[]">[RemoveRolesNames]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s1:String[]">[in_RemoveRolesNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role" sap:VirtualizedContainerService.HintSize="520.666666666667,352.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[AddRolesNames.Concat(RemoveRolesNames)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:String">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:String" Name="RoleName" />
+                    </ActivityAction.Argument>
+                    <If Condition="[in_RolesData.Rows.Find({RoleName}) Is Nothing]" DisplayName="If Role Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_45">
+                      <If.Then>
+                        <Throw DisplayName="Throw (Role Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRoleNotFound&quot;), RoleName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_29" />
+                      </If.Then>
+                    </If>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:ForEach>
+              <If Condition="[RemoveRolesNames.Intersect(AddRolesNames).Count &gt; 0]" DisplayName="If Any Role Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="520.666666666667,214" sap2010:WorkflowViewState.IdRef="If_47">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Throw DisplayName="Throw (Role Added And Removed)" Exception="[New ArgumentException(in_Config(&quot;RoleAddedAndRemoved&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_31" />
+                </If.Then>
+              </If>
+            </Sequence>
+            <Sequence DisplayName="Determine User Roles" sap:VirtualizedContainerService.HintSize="562.666666666667,1342.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_45">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetFolderUserRoles workflow" sap:VirtualizedContainerService.HintSize="520.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_26" UnSafe="False" WorkflowFileName="Entities/Folders/GetFolderUserRoles.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Username">[in_Username]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">[in_FolderName]</InArgument>
+                  <OutArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="out_FolderUserRoles">[FolderUserRoles]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role to Add" sap:VirtualizedContainerService.HintSize="520.666666666667,354.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[AddRolesNames]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:String">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:String" Name="AddRoleName" />
+                    </ActivityAction.Argument>
+                    <If Condition="[Not FolderUserRoles.ContainsValue(AddRoleName)]" DisplayName="If User Has Role to Add" sap:VirtualizedContainerService.HintSize="484,216" sap2010:WorkflowViewState.IdRef="If_58">
+                      <If.Then>
+                        <Assign DisplayName="Assign Role to Add" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_40">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[FolderUserRoles(Convert.ToInt64(in_RolesData.Rows.Find({AddRoleName})("ID")))]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">[AddRoleName]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </If.Then>
+                    </If>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role to Remove" sap:VirtualizedContainerService.HintSize="520.666666666667,430" sap2010:WorkflowViewState.IdRef="ForEach`1_11" Values="[RemoveRolesNames]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:String">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:String" Name="RemoveRoleName" />
+                    </ActivityAction.Argument>
+                    <If Condition="[FolderUserRoles.ContainsValue(RemoveRoleName)]" DisplayName="If User Has Role to Remove" sap:VirtualizedContainerService.HintSize="484,291.333333333333" sap2010:WorkflowViewState.IdRef="If_59">
+                      <If.Then>
+                        <InvokeMethod DisplayName="Invoke Method (Remove Role)" sap:VirtualizedContainerService.HintSize="237.333333333333,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Remove">
+                          <InvokeMethod.TargetObject>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)">[FolderUserRoles]</InArgument>
+                          </InvokeMethod.TargetObject>
+                          <InArgument x:TypeArguments="x:Int64">
+                            <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="FolderUserRoles.FirstOrDefault(Function (R) R.Value = RemoveRoleName).Key" />
+                          </InArgument>
+                        </InvokeMethod>
+                      </If.Then>
+                    </If>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <If sap2010:Annotation.AnnotationText="It is necessary to specify at least one Role for a User that belongs to a Modern Folder using Custom Roles." Condition="[FolderUserRoles.Count = 0]" DisplayName="If No Roles" sap:VirtualizedContainerService.HintSize="520.666666666667,259.333333333333" sap2010:WorkflowViewState.IdRef="If_61">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Throw DisplayName="Throw (Not Possible to Remove All Roles)" Exception="[New Exception(in_Config(&quot;NotPossibleToRemoveAllRoles&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_44" />
+                </If.Then>
+              </If>
+            </Sequence>
+          </Sequence>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Changes to Roles must be done by reassigning the User to the Folder with the desired Roles." DisplayName="Invoke SetFolderUser Workflow (Reassign with New Roles)" sap:VirtualizedContainerService.HintSize="604.666666666667,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="Entities\Folders\SetFolderUser.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">[Convert.ToInt64(Folder("ID"))]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_Roles">[FolderUserRoles]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UserType">[in_UserType]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">[Convert.ToInt64(User("ID"))]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UserDomain">[User("Domain").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Username">[in_Username]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </ui:InvokeWorkflowFile>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="651.333333333333,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s1:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s1:Exception" Name="Exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Failed to Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[Exception.Message]">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:LogMessage>
+              <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[Exception.Message]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+      <TryCatch.Finally>
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Result)" ExistingWorkbook="[in_OpenWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <ui:ExcelWriteCell Cell="[in_Config(&quot;AddRemoveFolderUserRolesResultColumn&quot;)+(2+in_FolderIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;AddRemoveFolderUserRolesOperationName&quot;)]" Text="[OperationResult]">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:ExcelWriteCell>
+            </ActivityAction>
+          </ui:ExcelApplicationScope.Body>
+        </ui:ExcelApplicationScope>
+      </TryCatch.Finally>
+    </TryCatch>
+  </Sequence>
+</Activity>
