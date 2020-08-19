@@ -14,7 +14,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1339.33333333333,3256</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,3296</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -131,9 +131,7 @@
             <TryCatch.Try>
               <Sequence DisplayName="Try to Get Queues Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="382.666666666667,2060" sap2010:WorkflowViewState.IdRef="Sequence_14">
                 <Sequence.Variables>
-                  <Variable x:TypeArguments="x:String" Name="Result" />
                   <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-                  <Variable x:TypeArguments="sd:DataRow" Name="NewQueueRow" />
                 </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -143,18 +141,10 @@
                 </sap:WorkflowViewStateService.ViewState>
                 <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="As of July 2020, this endpoint does not return values for ProcessScheduleId unless it is explicitly specified in a OData &quot;select&quot; statement." DisplayName="Invoke MakeGetRequest Wworkflow (Get Queues)" sap:VirtualizedContainerService.HintSize="340.666666666667,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                      <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                    </InArgument>
-                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-                      <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(OUFolderNameAndID(&quot;ID&quot;))" />
-                    </InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                      <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/QueueDefinitions{1}&amp;$select=Name,Description,MaxNumberOfRetries,AcceptAutomaticallyRetry,EnforceUniqueReference,SpecificDataJsonSchema,OutputDataJsonSchema,AnalyticsDataJsonSchema,ProcessScheduleId,SlaInMinutes,RiskSlaInMinutes,ReleaseId,Id&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
-                    </InArgument>
-                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-                      <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-                    </OutArgument>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/QueueDefinitions{1}&amp;$select=Name,Description,MaxNumberOfRetries,AcceptAutomaticallyRetry,EnforceUniqueReference,SpecificDataJsonSchema,OutputDataJsonSchema,AnalyticsDataJsonSchema,ProcessScheduleId,SlaInMinutes,RiskSlaInMinutes,ReleaseId,Id", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -169,6 +159,9 @@
                         <DelegateInArgument x:TypeArguments="njl:JObject" Name="Queue" />
                       </ActivityAction.Argument>
                       <Sequence DisplayName="Extract Queue Data" sap:VirtualizedContainerService.HintSize="304,1640.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="sd:DataRow" Name="NewQueueRow" />
+                        </Sequence.Variables>
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

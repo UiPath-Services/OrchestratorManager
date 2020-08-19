@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1339.33333333333,2037.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,2037.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -74,8 +74,6 @@
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
-      <Variable x:TypeArguments="njl:JObject" Name="PackageVersionsResultObject" />
-      <Variable x:TypeArguments="sd:DataRow" Name="NewPackageRow" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -155,16 +153,10 @@
     </Sequence>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Packages are actually exposed by the Process endpoints.&#xA;Processes can be handled using the Release endpoints." DisplayName="Invoke MakeGetRequest Workflow (Get Packages)" sap:VirtualizedContainerService.HintSize="419.333333333333,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID" />
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Processes{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
-        </InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-        </OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Processes{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -179,6 +171,9 @@
             <DelegateInArgument x:TypeArguments="njl:JObject" Name="Package" />
           </ActivityAction.Argument>
           <Sequence sap2010:Annotation.AnnotationText="Retrieve data about all versions of a Package." DisplayName="Get Package Versions" sap:VirtualizedContainerService.HintSize="382.666666666667,1074" sap2010:WorkflowViewState.IdRef="Sequence_11">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="njl:JObject" Name="PackageVersionsResultObject" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -188,16 +183,10 @@
             </sap:WorkflowViewStateService.ViewState>
             <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Package Versions)" sap:VirtualizedContainerService.HintSize="340.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                </InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                 <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID" />
-                <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Processes/UiPath.Server.Configuration.OData.GetProcessVersions(processId='{1}')?$orderby=Published&quot;, in_Config(&quot;OrchestratorURL&quot;), Package(&quot;Id&quot;).ToString)" />
-                </InArgument>
-                <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-                  <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="PackageVersionsResultObject" />
-                </OutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Processes/UiPath.Server.Configuration.OData.GetProcessVersions(processId='{1}')?$orderby=Published", in_Config("OrchestratorURL"), Package("Id").ToString)]</InArgument>
+                <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[PackageVersionsResultObject]</OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
             <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Package Version" sap:VirtualizedContainerService.HintSize="340.666666666667,824.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[PackageVersionsResultObject.SelectToken(&quot;value&quot;).Children]">
@@ -207,6 +196,9 @@
                     <DelegateInArgument x:TypeArguments="njl:JObject" Name="PackageVersion" />
                   </ActivityAction.Argument>
                   <Sequence DisplayName="Extract Package Version Data" sap:VirtualizedContainerService.HintSize="304,686" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="sd:DataRow" Name="NewPackageRow" />
+                    </Sequence.Variables>
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>

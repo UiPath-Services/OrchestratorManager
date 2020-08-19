@@ -11,7 +11,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1339.33333333333,2510</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,2550</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -78,7 +78,6 @@
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Default="[New JObject()]" Name="ResultObject" />
-      <Variable x:TypeArguments="sd:DataRow" Name="NewQueueItemRow" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -170,18 +169,10 @@
     </If>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Queue Items)" sap:VirtualizedContainerService.HintSize="340.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/MakeGetRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_OUFolderID" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/QueueItems{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
-        </InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-        </OutArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[in_OUFolderID]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/QueueItems{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="340.666666666667,1578.66666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
@@ -191,6 +182,9 @@
             <DelegateInArgument x:TypeArguments="njl:JObject" Name="QueueItem" />
           </ActivityAction.Argument>
           <Sequence DisplayName="Extract Queue Item Data" sap:VirtualizedContainerService.HintSize="304,1440" sap2010:WorkflowViewState.IdRef="Sequence_11">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataRow" Name="NewQueueItemRow" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
