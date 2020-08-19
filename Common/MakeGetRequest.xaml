@@ -5,7 +5,7 @@
     <x:Property Name="in_Endpoint" Type="InArgument(x:String)" />
     <x:Property Name="out_ResultObject" Type="OutArgument(njl:JObject)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1339.33333333333,1553.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>686,1859.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -59,11 +59,11 @@
       <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Coordinate pagination of results for HTTP requests of type GET." DisplayName="Make Get Request" sap:VirtualizedContainerService.HintSize="526,1488.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
+  <Sequence sap2010:Annotation.AnnotationText="Coordinate pagination of results for HTTP requests of type GET." DisplayName="Make Get Request" sap:VirtualizedContainerService.HintSize="526,1794.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:Int32" Default="0" Name="RequestSkipSize" />
-      <Variable x:TypeArguments="x:Int64" Default="0" Name="TotalResultSize" />
-      <Variable x:TypeArguments="x:Int32" Default="0" Name="BatchResultSize" />
+      <Variable x:TypeArguments="x:Int32" Name="RequestSkipSize" />
+      <Variable x:TypeArguments="x:Int64" Name="TotalResultSize" />
+      <Variable x:TypeArguments="x:Int32" Name="BatchResultSize" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -77,6 +77,30 @@
       </Assign.To>
       <Assign.Value>
         <InArgument x:TypeArguments="njl:JObject">[New JObject()]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Assign RequestSkipSize (Initialization)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_46">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[RequestSkipSize]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">0</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Assign TotalResultSize (Initialization)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_47">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int64">[TotalResultSize]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int64">0</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Assign BatchResultSize (Initialization)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_48">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[BatchResultSize]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">0</InArgument>
       </Assign.Value>
     </Assign>
     <DoWhile DisplayName="Do While" sap:VirtualizedContainerService.HintSize="484,1264" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[TotalResultSize &gt; BatchResultSize]">
