@@ -9,13 +9,12 @@
     <x:Property Name="in_Roles" Type="InArgument(scg:Dictionary(x:Int64, x:String))" />
     <x:Property Name="in_UserType" Type="InArgument(x:String)" />
     <x:Property Name="in_UserID" Type="InArgument(x:Int64)" />
-    <x:Property Name="in_UserDomain" Type="InArgument(x:String)" />
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1336,1304.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1351.33333333333,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -79,9 +78,10 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Assign the specified User to the specified Folder.&#xA;The assignment method depends on whether a User belongs to Active Directory.&#xA;&#xA;As of Orchestrator 2020.4, there can be the following types of Users: User, Robot, DirectoryUser and DirectoryGroup." DisplayName="Set User to Folder" sap:VirtualizedContainerService.HintSize="564,1240" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Assign the specified User to the specified Folder.&#xA;The assignment method depends on whether a User belongs to Active Directory.&#xA;&#xA;As of Orchestrator 2020.4, there can be the following types of Users: User, Robot, DirectoryUser and DirectoryGroup." DisplayName="Set User to Folder" sap:VirtualizedContainerService.HintSize="538.666666666667,580.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="UserType" />
+      <Variable x:TypeArguments="x:String" Name="Domain" />
+      <Variable x:TypeArguments="x:String" Name="UsernameWithoutDomain" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -89,130 +89,68 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[String.IsNullOrWhiteSpace(in_UserType)]" DisplayName="If User Is Specified, Get User Type" sap:VirtualizedContainerService.HintSize="522,216" sap2010:WorkflowViewState.IdRef="If_4">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Throw DisplayName="Throw (User not Found)" Exception="[New ArgumentException(in_Config(&quot;UserNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
-      </If.Then>
-      <If.Else>
-        <Assign DisplayName="Assign UserType" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_30">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[UserType]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_UserType]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </If.Else>
-    </If>
-    <If sap2010:Annotation.AnnotationText="As of Orchestrator 2020.4, there can be the following types of Users: User, Robot, DirectoryUser and DirectoryGroup." Condition="[UserType = &quot;User&quot;]" DisplayName="If Regular User" sap:VirtualizedContainerService.HintSize="522,286" sap2010:WorkflowViewState.IdRef="If_5">
+    <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="As of Orchestrator 2020.4, there can be the following types of Users: User, Robot, DirectoryUser and DirectoryGroup." DisplayName="Switch" Expression="[in_UserType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,393.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+      <Switch.Default>
+        <Throw DisplayName="Throw (User Type Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;UserTypeInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+      </Switch.Default>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SetFolderUser_RegularUser Workflow" sap:VirtualizedContainerService.HintSize="335.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser_RegularUser.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">
-              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_FolderID" />
-            </InArgument>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_UserRoles">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">
-              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_UserID" />
-            </InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:InvokeWorkflowFile>
-      </If.Then>
-    </If>
-    <If sap2010:Annotation.AnnotationText="As of Orchestrator 2020.4, there can be the following types of Users: User, Robot, DirectoryUser and DirectoryGroup." Condition="[UserType = &quot;DirectoryUser&quot; OrElse UserType = &quot;DirectoryGroup&quot;]" DisplayName="If Active Directory User/Group" sap:VirtualizedContainerService.HintSize="522,470.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <Sequence DisplayName="Assign Directory User/Group" sap:VirtualizedContainerService.HintSize="376,271.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_15">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="Domain" />
-          </Sequence.Variables>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <If Condition="[String.IsNullOrWhiteSpace(in_UserDomain)]" DisplayName="If Domain is Specified" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_6">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <If.Then>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetDomain Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Common\GetDomain.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <OutArgument x:TypeArguments="x:String" x:Key="out_Domain">[Domain]</OutArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
-            </If.Then>
-            <If.Else>
-              <Assign DisplayName="Assign Domain" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_32">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:String">[Domain]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:String">[in_UserDomain]</InArgument>
-                </Assign.Value>
-              </Assign>
-            </If.Else>
-          </If>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SetFolderUser_ADUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser_ADUser.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_FolderID" />
-              </InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserType" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_UserName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Username" />
-              </InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_UserRoles">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Domain">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Domain" />
-              </InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
-      </If.Then>
-    </If>
+      <Throw x:Key="robot" DisplayName="Throw (Cannot Assign Robot User to Folder)" Exception="[New Exception(in_Config(&quot;CannotAssignRobotUserToFolder&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="user" DisplayName="Invoke SetFolderUser_RegularUser Workflow" sap:VirtualizedContainerService.HintSize="335.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser_RegularUser.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">[in_FolderID]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_UserRoles">[in_Roles]</InArgument>
+          <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">[in_UserID]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="directoryuser" DisplayName="Invoke SetFolderUser_DirectoryUserOrGroup Workflow (Directory User)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser_DirectoryUserOrGroup.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Username">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Username" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserType" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">
+            <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_FolderID" />
+          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_Roles">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
+          </InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="directorygroup" DisplayName="Invoke SetFolderUser_DirectoryUserOrGroup Workflow (Directory Group)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser_DirectoryUserOrGroup.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Username">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Username" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserType" />
+          </InArgument>
+          <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">
+            <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_FolderID" />
+          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_Roles">
+            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="in_Roles" />
+          </InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+    </Switch>
   </Sequence>
 </Activity>

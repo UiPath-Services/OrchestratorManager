@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1340,854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1351.33333333333,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetDomain_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="23">
@@ -59,7 +59,7 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve the first Domain from /api/DirectoryService/GetDomains.&#xD;&#xA;This is used as an auxiliary workflow when a User is of type &quot;DirectoryUser&quot;, but its Domain is not defined (i.e., it is &quot;null&quot;), as it happens when using Automation Cloud as of August 2020.&#xD;&#xA;Multiple Domains are not supported because it is not possible to know to which a User belongs." DisplayName="Get Domain" sap:VirtualizedContainerService.HintSize="550,660.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve the first Domain from /api/DirectoryService/GetDomains.&#xA;This is used as an auxiliary workflow when a User is of type &quot;DirectoryUser&quot;, but its Domain is not defined (i.e., it is &quot;null&quot;) when querying Users endpoints, as it happens as of August 2020.&#xA;It is assumed that only a single domain is used in Automation Cloud." DisplayName="Get Domain" sap:VirtualizedContainerService.HintSize="550,660.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="njl:JArray" Name="Domains" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -72,24 +72,14 @@
     </sap:WorkflowViewStateService.ViewState>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="The workflow MakeGetRequest cannot be used because this endpoint does not support pagination." DisplayName="Invoke MakeHTTPRequest Workflow (Domains)" sap:VirtualizedContainerService.HintSize="508,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InOutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-          <Literal x:TypeArguments="x:String">get</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;OrchestratorURL&quot;)+&quot;/api/DirectoryService/GetDomains&quot;" />
-        </InArgument>
+        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[in_Config("OrchestratorURL")+"/api/DirectoryService/GetDomains"]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-          <Literal x:TypeArguments="x:Int32" Value="200" />
-        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
         <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-        <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Result" />
-        </OutArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
