@@ -4,11 +4,12 @@
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_FolderMigrationWorkbook" Type="InArgument(ui:WorkbookApplication)" />
     <x:Property Name="in_ClassicFolderQueuesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="io_MigrationExceptionsOccurred" Type="InOutArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1325,1961</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1331.33333333333,1522.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateAssetsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="23">
@@ -65,7 +66,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Queues to the specified Modern Folders." DisplayName="Migrate Queues to Different Folders" sap:VirtualizedContainerService.HintSize="839,1896" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Queues to the specified Modern Folders." DisplayName="Migrate Queues to Different Folders" sap:VirtualizedContainerService.HintSize="672.666666666667,1458" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="QueuesMigrationDetails" />
       <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
@@ -76,13 +77,13 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Queues)" ExistingWorkbook="[in_FolderMigrationWorkbook]" sap:VirtualizedContainerService.HintSize="797,168" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Queues)" ExistingWorkbook="[in_FolderMigrationWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
           </ActivityAction.Argument>
-          <ui:ExcelReadRange AddHeaders="True" DataTable="[QueuesMigrationDetails]" DisplayName="Read Range (Migrate Queues Details)" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[in_Config(&quot;Queues&quot;)]" UseFilter="True">
+          <ui:ExcelReadRange AddHeaders="True" DataTable="[QueuesMigrationDetails]" DisplayName="Read Range (Migrate Queues Details)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[in_Config(&quot;Queues&quot;)]" UseFilter="True">
             <ui:ExcelReadRange.Range>
               <InArgument x:TypeArguments="x:String">
                 <Literal x:TypeArguments="x:String" Value="" />
@@ -98,13 +99,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <ui:ForEachRow sap2010:Annotation.AnnotationText="Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- QueuesMigrationDetails(0) refers to Classic Folder name&#xA;- QueuesMigrationDetails(1) refers to Queue name&#xA;- QueuesMigrationDetails(2) refers to Queue migration policy&#xA;- QueuesMigrationDetails(3) refers to Modern Folder name&#xA;- QueuesMigrationDetails(4) refers to Result" CurrentIndex="[LoopIndex]" DataTable="[QueuesMigrationDetails]" DisplayName="For Each Queue" sap:VirtualizedContainerService.HintSize="797,1565" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow sap2010:Annotation.AnnotationText="Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- QueuesMigrationDetails(0) refers to Classic Folder name&#xA;- QueuesMigrationDetails(1) refers to Queue name&#xA;- QueuesMigrationDetails(2) refers to Queue migration policy&#xA;- QueuesMigrationDetails(3) refers to Modern Folder name&#xA;- QueuesMigrationDetails(4) refers to Result" CurrentIndex="[LoopIndex]" DataTable="[QueuesMigrationDetails]" DisplayName="For Each Queue" sap:VirtualizedContainerService.HintSize="630.666666666667,1128" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="QueueMigrationDetails" />
           </ActivityAction.Argument>
-          <If sap2010:Annotation.AnnotationText="Only process rows whose Result column is empty and Queue migration policy as well as Modern Folder name are specified." Condition="[String.IsNullOrWhiteSpace(QueueMigrationDetails(4).ToString) AndAlso Not String.IsNullOrWhiteSpace(QueueMigrationDetails(2).ToString) AndAlso Not String.IsNullOrWhiteSpace(QueueMigrationDetails(3).ToString)]" DisplayName="If Row Should Be Processed" sap:VirtualizedContainerService.HintSize="747,1315" sap2010:WorkflowViewState.IdRef="If_5">
+          <If sap2010:Annotation.AnnotationText="Only process rows whose Result column is empty and Queue migration policy as well as Modern Folder name are specified." Condition="[String.IsNullOrWhiteSpace(QueueMigrationDetails(4).ToString) AndAlso Not String.IsNullOrWhiteSpace(QueueMigrationDetails(2).ToString) AndAlso Not String.IsNullOrWhiteSpace(QueueMigrationDetails(3).ToString)]" DisplayName="If Row Should Be Processed" sap:VirtualizedContainerService.HintSize="580,863.333333333333" sap2010:WorkflowViewState.IdRef="If_5">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -113,7 +114,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <If.Then>
-              <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Queues to interfer with each other." DisplayName="Try Catch (Migrate Queue to Modern Folder)" sap:VirtualizedContainerService.HintSize="602,1136" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+              <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Queues to interfer with each other." DisplayName="Try Catch (Migrate Queue to Modern Folder)" sap:VirtualizedContainerService.HintSize="434,664" sap2010:WorkflowViewState.IdRef="TryCatch_2">
                 <TryCatch.Variables>
                   <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
                 </TryCatch.Variables>
@@ -125,7 +126,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <TryCatch.Try>
-                  <Sequence DisplayName="Try to Create Queue in Modern Folder" sap:VirtualizedContainerService.HintSize="564,878" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                  <Sequence DisplayName="Try to Create Queue in Modern Folder" sap:VirtualizedContainerService.HintSize="560.666666666667,666.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="x:Int64" Name="ClassicFolderID" />
                       <Variable x:TypeArguments="x:String" Name="ClassicFolderName" />
@@ -138,7 +139,7 @@
                         <x:Boolean x:Key="IsPinned">False</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Assign DisplayName="Assign ClassicFolderName" sap:VirtualizedContainerService.HintSize="522,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+                    <Assign DisplayName="Assign ClassicFolderName" sap:VirtualizedContainerService.HintSize="518.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_8">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:String">[ClassicFolderName]</OutArgument>
                       </Assign.To>
@@ -146,7 +147,7 @@
                         <InArgument x:TypeArguments="x:String">[QueueMigrationDetails(0).ToString]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <Assign DisplayName="Assign ModernFolderName" sap:VirtualizedContainerService.HintSize="522,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+                    <Assign DisplayName="Assign ModernFolderName" sap:VirtualizedContainerService.HintSize="518.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_9">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:String">[ModernFolderName]</OutArgument>
                       </Assign.To>
@@ -154,7 +155,7 @@
                         <InArgument x:TypeArguments="x:String">[QueueMigrationDetails(3).ToString]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <Sequence DisplayName="Validate Folders" sap:VirtualizedContainerService.HintSize="522,66" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                    <Sequence DisplayName="Validate Folders" sap:VirtualizedContainerService.HintSize="518.666666666667,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -194,10 +195,10 @@
                         </If.Then>
                       </If>
                     </Sequence>
-                    <If Condition="[in_ClassicFolderQueuesData.Rows.Find({ClassicFolderID, QueueMigrationDetails(1).ToString}) Is Nothing]" DisplayName="If Queue Exists in Classic Folder" sap:VirtualizedContainerService.HintSize="522,280" sap2010:WorkflowViewState.IdRef="If_4">
+                    <If Condition="[in_ClassicFolderQueuesData.Rows.Find({ClassicFolderID, QueueMigrationDetails(1).ToString}) Is Nothing]" DisplayName="If Queue Exists in Classic Folder" sap:VirtualizedContainerService.HintSize="518.666666666667,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_4">
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
@@ -205,7 +206,7 @@
                         <Throw DisplayName="Throw (Queue Not Found)" Exception="[New ArgumentException(in_Config(&quot;QueueNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
                       </If.Then>
                       <If.Else>
-                        <Assign sap2010:Annotation.AnnotationText="Get original Queue from Classic Folder to use its data when making the request to create a new one in the target Modern Folder." DisplayName="Assign ClassicFolderQueue" sap:VirtualizedContainerService.HintSize="262,132" sap2010:WorkflowViewState.IdRef="Assign_1">
+                        <Assign sap2010:Annotation.AnnotationText="Get original Queue from Classic Folder to use its data when making the request to create a new one in the target Modern Folder." DisplayName="Assign ClassicFolderQueue" sap:VirtualizedContainerService.HintSize="262,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_1">
                           <Assign.To>
                             <OutArgument x:TypeArguments="sd:DataRow">[ClassicFolderQueue]</OutArgument>
                           </Assign.To>
@@ -220,7 +221,7 @@
                         </Assign>
                       </If.Else>
                     </If>
-                    <Switch x:TypeArguments="x:String" DisplayName="Switch Queue Migration Policy" Expression="[QueueMigrationDetails(2).ToString.ToLowerInvariant.Replace(&quot; &quot;, String.Empty)]" sap:VirtualizedContainerService.HintSize="522,160" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                    <Switch x:TypeArguments="x:String" DisplayName="Switch Queue Migration Policy" Expression="[QueueMigrationDetails(2).ToString.ToLowerInvariant.Replace(&quot; &quot;, String.Empty)]" sap:VirtualizedContainerService.HintSize="518.666666666667,168.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
                       <Switch.Default>
                         <Throw DisplayName="Throw (Invalid Queue Migration Policy)" Exception="[New ArgumentException(in_Config(&quot;QueueMigrationPolicyInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
                       </Switch.Default>
@@ -230,30 +231,32 @@
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="migratequeuedefinitionandnewitems" DisplayName="Invoke MigrateQueuesToDifferentFolders_QueueDefinitionAndNewItems Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueuesToDifferentFolders_QueueDefinitionAndNewItems.xaml">
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="migratequeuedefinitionandnewitems" DisplayName="Invoke MigrateQueue Workflow (Queue Definition and Items)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueue.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
                           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                           <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderQueue">[ClassicFolderQueue]</InArgument>
                           <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", ModernFolderName)).CopyToDataTable]</InArgument>
                           <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", ClassicFolderName)).CopyToDataTable]</InArgument>
+                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_MigrateQueueItems">True</InArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
-                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="migratequeuedefinitionbutnotqueueitems" DisplayName="Invoke MigrateQueueDefinition Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueueDefinition.xaml">
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="migratequeuedefinitionbutnotqueueitems" DisplayName="Invoke MigrateQueue Workflow (Queue Definition Only)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueue.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
                           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                           <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderQueue">[ClassicFolderQueue]</InArgument>
-                          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", ClassicFolderName)).CopyToDataTable]</InArgument>
                           <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", ModernFolderName)).CopyToDataTable]</InArgument>
+                          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", ClassicFolderName)).CopyToDataTable]</InArgument>
+                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_MigrateQueueItems">False</InArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                     </Switch>
                   </Sequence>
                 </TryCatch.Try>
                 <TryCatch.Catches>
-                  <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="568,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                  <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,461.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_2">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                         <x:Boolean x:Key="IsPinned">False</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
@@ -261,13 +264,21 @@
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
                       </ActivityAction.Argument>
-                      <Sequence DisplayName="Failed to Create Queue in Modern Folder" sap:VirtualizedContainerService.HintSize="376,285" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                      <Sequence DisplayName="Failed to Create Queue in Modern Folder" sap:VirtualizedContainerService.HintSize="376,390.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <ui:LogMessage DisplayName="Log Message (Failed to Create Queue in Modern Folder)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Error" Message="[String.Format(in_Config(&quot;MigrateQueueFailure&quot;), QueuesMigrationDetails(1), Exception.Message, Exception.Source)]">
+                        <Assign DisplayName="Assign io_MigrationExceptionsOccurred" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Boolean">[io_MigrationExceptionsOccurred]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:LogMessage DisplayName="Log Message (Failed to Create Queue in Modern Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Error" Message="[String.Format(in_Config(&quot;MigrateQueueFailure&quot;), QueuesMigrationDetails(1), Exception.Message, Exception.Source)]">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -275,7 +286,7 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </ui:LogMessage>
-                        <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                        <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_5">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
                           </Assign.To>

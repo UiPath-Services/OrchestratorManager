@@ -7,10 +7,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>700,2294.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1331.33333333333,2594</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateEnvironmentsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="24">
+    <scg:List x:TypeArguments="x:String" Capacity="48">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -35,6 +35,7 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>System.Xml.Serialization</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -61,7 +62,7 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to different Modern Folders depending on the migration details specified in an auxiliary Excel workbook." DisplayName="Migrate Environments To Different Folders" sap:VirtualizedContainerService.HintSize="568,2230" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to different Modern Folders depending on the migration details specified in an auxiliary Excel workbook." DisplayName="Migrate Environments To Different Folders" sap:VirtualizedContainerService.HintSize="568,2529.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderProcessesData" />
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderAssetsData" />
@@ -69,6 +70,7 @@
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="FolderMigrationWorkbook" />
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderTriggersData" />
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderRobotsData" />
+      <Variable x:TypeArguments="x:Boolean" Default="False" Name="MigrationExceptionsOccured" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -124,21 +126,11 @@
       </ui:InvokeWorkflowFile>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-            <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InArgument>
-          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
-            <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="ClassicFolderRobotsData" />
-          </OutArgument>
-          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-            <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
-          </InArgument>
-          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-            <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-          </InArgument>
-          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-            <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData.Select(String.Format(&quot;Name = '{0}'&quot;, in_ClassicFolderName)).CopyToDataTable" />
-          </InArgument>
+          <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+          <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[ClassicFolderRobotsData]</OutArgument>
+          <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+          <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+          <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[in_FoldersData.Select(String.Format("Name = '{0}'", in_ClassicFolderName)).CopyToDataTable]</InArgument>
           <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
@@ -190,6 +182,7 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderProcessesData">[ClassicFolderProcessesData]</InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">[MigrationExceptionsOccured]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssetsToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="526,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateAssetsToDifferentFolders.xaml">
@@ -198,31 +191,65 @@
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">[MigrationExceptionsOccured]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueuesToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueuesToDifferentFolders.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueuesToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="526,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueuesToDifferentFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
         <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderQueuesData">[ClassicFolderQueuesData]</InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">[MigrationExceptionsOccured]</InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateTriggersToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateTriggersToDifferentFolders.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateTriggersToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="526,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateTriggersToDifferentFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderTriggersData">[ClassicFolderTriggersData]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">
+          <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="FolderMigrationWorkbook" />
+        </InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderTriggersData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="ClassicFolderTriggersData" />
+        </InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">
+          <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="MigrationExceptionsOccured" />
+        </InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobotsToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateRobotsToDifferentFolders.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobotsToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="526,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateRobotsToDifferentFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderRobotsData">[ClassicFolderRobotsData]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">
+          <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="FolderMigrationWorkbook" />
+        </InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderRobotsData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="ClassicFolderRobotsData" />
+        </InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">
+          <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="MigrationExceptionsOccured" />
+        </InOutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
+    <If sap2010:Annotation.AnnotationText="Exceptions during the migration of each entity are handled output to the Folder migration workbook, but it needs to be output to the Folder workbook as well." Condition="[MigrationExceptionsOccured]" DisplayName="If Migration Had Exceptions" sap:VirtualizedContainerService.HintSize="526,259.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Throw DisplayName="Throw (Migration Exceptions Occurred)" Exception="[New Exception(in_Config(&quot;MigrationExceptionsOccurred&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+      </If.Then>
+    </If>
   </Sequence>
 </Activity>

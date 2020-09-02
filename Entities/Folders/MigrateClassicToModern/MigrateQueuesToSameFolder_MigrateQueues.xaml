@@ -1,15 +1,16 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MigrateQueuesToSameFolder_MigrateQueueDefinitions" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateQueuesToSameFolder_MigrateQueue" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_FoldersData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_ClassicFolderName" Type="InArgument(x:String)" />
     <x:Property Name="in_ModernFolderName" Type="InArgument(x:String)" />
     <x:Property Name="io_ErrorMessages" Type="InOutArgument(scg:List(x:String))" />
+    <x:Property Name="in_MigrateQueueItems" Type="InArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1324,988.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1283.33333333333,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateQueuesToSameFolder_MigrateQueueDefinitions_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -60,7 +61,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Queue definitions from the specified Classic Folder to the Specified Modern Folder." DisplayName="Migrate Queues to Same Folder - Queue Definitions" sap:VirtualizedContainerService.HintSize="526.666666666667,924" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Queue and, optionally, items from the specified Classic Folder to the Specified Modern Folder." DisplayName="Migrate Queues to Same Folder - Migrate Queues" sap:VirtualizedContainerService.HintSize="531.333333333333,772" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderQueuesData" />
     </Sequence.Variables>
@@ -70,7 +71,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueuesData Workflow" sap:VirtualizedContainerService.HintSize="484.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueuesData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueuesData Workflow" sap:VirtualizedContainerService.HintSize="489.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueuesData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
@@ -80,33 +81,44 @@
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[ClassicFolderQueuesData]" DisplayName="For Each Queue in Classic Folder " sap:VirtualizedContainerService.HintSize="484.666666666667,674.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[ClassicFolderQueuesData]" DisplayName="For Each Queue in Classic Folder " sap:VirtualizedContainerService.HintSize="489.333333333333,508" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ClassicFolderQueue" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Queues to interfer with each other." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="434,522" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Queues to interfer with each other." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,355.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueueDefinition Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueueDefinition.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueue Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueue.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderQueue">[ClassicFolderQueue]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", in_ClassicFolderName)).CopyToDataTable]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", in_ModernFolderName)).CopyToDataTable]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderQueue">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="ClassicFolderQueue" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData.Select(String.Format(&quot;Name = '{0}'&quot;, in_ModernFolderName)).CopyToDataTable" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData.Select(String.Format(&quot;Name = '{0}'&quot;, in_ClassicFolderName)).CopyToDataTable" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_MigrateQueueItems">
+                    <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_MigrateQueueItems" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </TryCatch.Try>
             <TryCatch.Catches>
-              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,319.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
