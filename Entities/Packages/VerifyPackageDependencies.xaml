@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="VerifyPackageDependencies" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sic="clr-namespace:System.IO.Compression;assembly=System.IO.Compression.FileSystem" xmlns:str="clr-namespace:System.Text.RegularExpressions;assembly=System" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="VerifyPackageDependencies" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:str="clr-namespace:System.Text.RegularExpressions;assembly=System" xmlns:sxl="clr-namespace:System.Xml.Linq;assembly=System.Xml.Linq" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_DependenciesMinimumVersions" Type="InArgument(scg:Dictionary(x:String, x:String))" />
     <x:Property Name="in_PackageFilePath" Type="InArgument(x:String)" />
@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1320,2131</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1374,1778</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>VerifyPackageDependencies_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="24">
@@ -61,14 +61,13 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Verify whether the Package dependencies have the minimum specified versions." DisplayName="Verify Package Dependencies" sap:VirtualizedContainerService.HintSize="454,2066" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Verify whether the Package dependencies have the minimum specified versions." DisplayName="Verify Package Dependencies" sap:VirtualizedContainerService.HintSize="454,1713" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="NuspecFileName" />
       <Variable x:TypeArguments="x:String" Name="NuspecContents" />
       <Variable x:TypeArguments="sxl:XDocument" Name="NuspecXML" />
       <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="ErrorMessages" />
-      <Variable x:TypeArguments="x:String" Name="PackageName" />
-      <Variable x:TypeArguments="x:String" Name="ExtractedPackageFolder" />
+      <Variable x:TypeArguments="x:String" Name="ExtractedPackageFolderPath" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -76,46 +75,22 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign PackageName" sap:VirtualizedContainerService.HintSize="412,60" sap2010:WorkflowViewState.IdRef="Assign_5">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[PackageName]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[Path.GetFileNameWithoutExtension(in_PackageFilePath)]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <Assign DisplayName="Assign ExtractedPackageFolder" sap:VirtualizedContainerService.HintSize="412,60" sap2010:WorkflowViewState.IdRef="Assign_6">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[ExtractedPackageFolder]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}", Path.GetDirectoryName(in_PackageFilePath), PackageName)]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <Sequence DisplayName="Clean Extraction Temporary Folder" sap:VirtualizedContainerService.HintSize="412,66" sap2010:WorkflowViewState.IdRef="Sequence_2">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[Directory.Exists(ExtractedPackageFolder)]" DisplayName="Delete Extraction Temporary Folder Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_1">
-        <If.Then>
-          <ui:Delete ContinueOnError="True" DisplayName="Delete Extraction Temporary Folder (Preprocess)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[ExtractedPackageFolder]" />
-        </If.Then>
-      </If>
-      <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="484,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[ExtractedPackageFolder]" />
-    </Sequence>
-    <InvokeMethod DisplayName="Unzip Package File" sap:VirtualizedContainerService.HintSize="412,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="ExtractToDirectory" TargetType="sic:ZipFile">
-      <InArgument x:TypeArguments="x:String">[in_PackageFilePath]</InArgument>
-      <InArgument x:TypeArguments="x:String">[ExtractedPackageFolder]</InArgument>
-    </InvokeMethod>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExtractPackageFile Workflow" sap:VirtualizedContainerService.HintSize="412,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Packages\ExtractPackageFile.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_PackageFilePath">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_PackageFilePath" />
+        </InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ExtractedPackageFolderPath">
+          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ExtractedPackageFolderPath" />
+        </OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
     <Assign sap2010:Annotation.AnnotationText="A Package contains only one .nuspec file." DisplayName="Assign NuspecFileName" sap:VirtualizedContainerService.HintSize="412,91" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[NuspecFileName]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[Directory.GetFiles(ExtractedPackageFolder, "*.nuspec").First]</InArgument>
+        <InArgument x:TypeArguments="x:String">[Directory.GetFiles(ExtractedPackageFolderPath, "*.nuspec").First]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -178,7 +153,7 @@
                 </Sequence>
               </If.Then>
             </If>
-            <ui:Matches sap2010:Annotation.AnnotationText="Extracts string representation of version following the convention MAJOR.MINOR.PATCH.&#xD;&#xA;This is done to also support versions represented as 2.7.1-ce and 2.7.1-preview." sap:VirtualizedContainerService.HintSize="334,131" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[PackageDependencyElements.First().Attribute(&quot;version&quot;).Value]" IsBuilderTabModified="False" Pattern="\d+\.\d+\.\d+" RegexOption="IgnoreCase, Compiled" Result="[VersionStringRepresentation]">
+            <ui:Matches sap2010:Annotation.AnnotationText="Extracts string representation of version following the convention MAJOR.MINOR.PATCH.&#xA;This is done to also support versions represented as 2.7.1-ce and 2.7.1-preview." sap:VirtualizedContainerService.HintSize="334,131" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[PackageDependencyElements.First().Attribute(&quot;version&quot;).Value]" IsBuilderTabModified="False" Pattern="\d+\.\d+\.\d+" RegexOption="IgnoreCase, Compiled" Result="[VersionStringRepresentation]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -208,7 +183,7 @@
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <ui:Delete ContinueOnError="True" DisplayName="Delete Extraction Temporary Folder" sap:VirtualizedContainerService.HintSize="412,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[ExtractedPackageFolder]" />
+    <ui:Delete ContinueOnError="True" DisplayName="Delete Extraction Temporary Folder" sap:VirtualizedContainerService.HintSize="412,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[ExtractedPackageFolderPath]" />
     <If sap2010:Annotation.AnnotationText="Throw Exception with aggregated messages about versions of dependencies." Condition="[ErrorMessages.Count &gt; 0]" DisplayName="If There Are Error Messages" sap:VirtualizedContainerService.HintSize="412,108" sap2010:WorkflowViewState.IdRef="If_5">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
