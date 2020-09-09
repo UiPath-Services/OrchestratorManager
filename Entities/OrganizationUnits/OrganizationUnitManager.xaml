@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>789.333333333333,1789.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>789.333333333333,1689.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -184,7 +184,7 @@
       </Sequence>
       <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="717.333333333333,1171.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
-          <Variable x:TypeArguments="sd:DataTable" Name="OUDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="OUsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUsData" />
         </Sequence.Variables>
@@ -201,7 +201,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelReadRange AddHeaders="True" DataTable="[OUDetails]" DisplayName="Read Range (Organization Unit Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[OUsDetails]" DisplayName="Read Range (Organization Unit Create List)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" UseFilter="True">
                 <ui:ExcelReadRange.Range>
                   <InArgument x:TypeArguments="x:String">
                     <Literal x:TypeArguments="x:String" Value="" />
@@ -220,7 +220,7 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Organization Unit)" sap:VirtualizedContainerService.HintSize="675.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[OUDetails.Rows.Count]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[OUsDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Organization Units to share data among rows and reduce the number of requests." DisplayName="Invoke GetOrganizationUnitsData Workflow (Create Organization Unit)" sap:VirtualizedContainerService.HintSize="675.333333333333,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities/OrganizationUnits/GetOrganizationUnitsData.xaml">
@@ -228,15 +228,15 @@
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
               <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
             </InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">
-              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUsData" />
-            </OutArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
               <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
             </InArgument>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="OUsDetails.AsEnumerable().Select(Function(Row) Row(0).ToString).Distinct().ToArray" />
             </InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUsData">
+              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUsData" />
+            </OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -244,7 +244,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[OUDetails]" DisplayName="For Each Row (Create Organization Unit)" sap:VirtualizedContainerService.HintSize="675.333333333333,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
+        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[OUsDetails]" DisplayName="For Each Row (Create Organization Unit)" sap:VirtualizedContainerService.HintSize="675.333333333333,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
           <ui:ForEachRow.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
@@ -341,7 +341,7 @@
               <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
             </InArgument>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="OUsDetails.AsEnumerable().Select(Function(Row) Row(1).ToString).Distinct().ToArray" />
             </InArgument>
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>

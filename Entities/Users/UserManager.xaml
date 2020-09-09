@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>744.666666666667,2018</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>744.666666666667,1978</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="24">
@@ -272,7 +272,7 @@
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
               <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UsersDetails.AsEnumerable().Select(Function(Row) Row(0).ToString).Distinct().ToArray]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </Sequence>
@@ -460,9 +460,9 @@
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Users to share data among rows and reduce the number of requests." DisplayName="Invoke GetUsersData Workflow (Delete User)" sap:VirtualizedContainerService.HintSize="630.666666666667,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_33" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UsersDetails.AsEnumerable().Select(Function(Row) Row(1).ToString).Distinct().ToArray]</InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -574,10 +574,18 @@
           </ui:InvokeWorkflowFile>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsersData Workflow (Add/Remove User's Organization Unit)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_34" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+              </OutArgument>
+              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="UsersDetails.AsEnumerable().Select(Function(Row) Convert.ToInt64(Row(0))).Distinct().ToArray" />
+              </InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+              </InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </Sequence>
@@ -596,30 +604,14 @@
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveUserOrganizationUnits Workflow" sap:VirtualizedContainerService.HintSize="370,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities/Users/AddRemoveUserOrganizationUnits.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_UserID">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AddOUsNames">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(1).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveOUsNames">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(2).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
-                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">
-                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUsData" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UserID">[UserDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_AddOUsNames">[UserDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveOUsNames">[UserDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUsData">[OUsData]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
@@ -703,10 +695,18 @@
           </ui:InvokeWorkflowFile>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetUsersData Workflow (Add/Remove User's Roles)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_35" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+              </OutArgument>
+              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="UsersDetails.AsEnumerable().Select(Function(Row) Convert.ToInt64(Row(0))).Distinct().ToArray" />
+              </InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{}" />
+              </InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </Sequence>
@@ -725,30 +725,14 @@
                 <If.Then>
                   <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveUserRoles Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Entities/Users/AddRemoveUserRoles.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                        <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">
-                        <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="LoopIndex" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_UserID">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(0).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRolesNames">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(1).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRolesNames">
-                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserDetails(2).ToString" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
-                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
-                      </InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">
-                        <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RolesData" />
-                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32" x:Key="in_UserIndex">[LoopIndex]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_UserID">[UserDetails(0).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRolesNames">[UserDetails(1).ToString]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRolesNames">[UserDetails(2).ToString]</InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">[RolesData]</InArgument>
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
                 </If.Then>
