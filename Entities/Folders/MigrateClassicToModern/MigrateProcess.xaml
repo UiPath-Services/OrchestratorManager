@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>700,831.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1351.33333333333,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateProcess_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -59,6 +59,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Migrate a Process from the specified Classic Folder to the specified Modern Folder." DisplayName="Migrate Process" sap:VirtualizedContainerService.HintSize="398.666666666667,766.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -102,15 +103,28 @@
     <ui:Delete ContinueOnError="True" DisplayName="Delete (Delete Local Temporary Package File)" sap:VirtualizedContainerService.HintSize="356.666666666667,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[PackageFilePath]" />
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcessRequest Workflow" sap:VirtualizedContainerService.HintSize="356.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Processes\CreateProcessRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_ModernFolderData.Rows(0)("ID"))]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">[in_ClassicFolderProcess("ProcessName").ToString]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_PackageName">[in_ClassicFolderProcess("PackageName").ToString]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_PackageVersion">[in_ClassicFolderProcess("CurrentPackageVersion").ToString]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_InputArgumentsDefinition">[in_ClassicFolderProcess("InputArgumentsDefinition").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ModernFolderData.Rows(0)(&quot;ID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_PackageName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;PackageName&quot;).ToString" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_PackageVersion">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;CurrentPackageVersion&quot;).ToString" />
+        </InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_EnvironmentID" />
         <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName" />
-        <InArgument x:TypeArguments="x:Int64" x:Key="out_ProcessID" />
+        <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;ProcessName&quot;).ToString" />
+        </InArgument>
+        <OutArgument x:TypeArguments="x:Int64" x:Key="out_ProcessID" />
+        <InArgument x:TypeArguments="x:String" x:Key="in_InputArgumentsDefinition">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;InputArgumentsDefinition&quot;).ToString" />
+        </InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ProcessName" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
   </Sequence>
