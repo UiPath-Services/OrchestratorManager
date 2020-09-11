@@ -11,10 +11,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>686,2550</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1352,2543.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="26">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -40,10 +40,11 @@
       <x:String>Newtonsoft.Json</x:String>
       <x:String>System.Net</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -67,6 +68,7 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -74,7 +76,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Queue Items.&#xA;If no filters are specified, returns all Items from the specified Queue." DisplayName="Get Queue Items Data" sap:VirtualizedContainerService.HintSize="382.666666666667,2445.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Queue Items.&#xA;If no filters are specified, returns all Items from the specified Queue." DisplayName="Get Queue Items Data" sap:VirtualizedContainerService.HintSize="382.666666666667,2478.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Default="[New JObject()]" Name="ResultObject" />
@@ -107,7 +109,7 @@
         <InArgument x:TypeArguments="x:String">["?$filter=QueueDefinitionId eq " + in_QueueID.ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <If sap2010:Annotation.AnnotationText="Construct OData filter using specified IDs or References.&#xA;Since Rererences is used instead of Names, this workflow cannot make use of ConstructODataFilter.xaml." Condition="[in_FilterIDs.Length &lt;&gt; 0 OrElse in_FilterReferences.Length &lt;&gt; 0 OrElse in_FilterStatuses.Length &lt;&gt; 0]" DisplayName="If Filters Were Specified" sap:VirtualizedContainerService.HintSize="340.666666666667,164.666666666667" sap2010:WorkflowViewState.IdRef="If_3">
+    <If sap2010:Annotation.AnnotationText="Construct OData filter using specified IDs, References or Statuses.&#xA;Since Rererences and Statuses are used instead of Names, this workflow cannot make use of ConstructODataFilter.xaml." Condition="[in_FilterIDs.Length &gt; 0 OrElse in_FilterReferences.Length &gt; 0 OrElse in_FilterStatuses.Length &gt; 0]" DisplayName="If Filters Were Specified" sap:VirtualizedContainerService.HintSize="340.666666666667,198" sap2010:WorkflowViewState.IdRef="If_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -116,9 +118,11 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="349,854" sap2010:WorkflowViewState.IdRef="Sequence_16">
+        <Sequence DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="346,1261.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
           <Sequence.Variables>
-            <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="FilterConditions" />
+            <Variable x:TypeArguments="x:String" Name="ReferenceFilterCondition" />
+            <Variable x:TypeArguments="x:String" Name="IDFilterCondition" />
+            <Variable x:TypeArguments="x:String" Name="StatusFilterCondition" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -126,42 +130,108 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" DisplayName="For Each ID" sap:VirtualizedContainerService.HintSize="307,194" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[in_FilterIDs]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:Int64">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:Int64" Name="QueueItemID" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:String" Collection="[FilterConditions]" DisplayName="Add To Collection (Queue Item ID Filter)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[&quot;Id eq &quot; + QueueItemID.ToString]" />
-              </ActivityAction>
-            </ui:ForEach.Body>
-          </ui:ForEach>
-          <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Reference" sap:VirtualizedContainerService.HintSize="307,194" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[in_FilterReferences]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="QueueItemReference" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:String" Collection="[FilterConditions]" DisplayName="Add To Collection (Queue Item Reference Filter)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[String.Format(&quot;Reference eq '{0}'&quot;, QueueItemReference.ToString)]" />
-              </ActivityAction>
-            </ui:ForEach.Body>
-          </ui:ForEach>
-          <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Status" sap:VirtualizedContainerService.HintSize="307,194" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[in_FilterStatuses]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:String">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:String" Name="QueueItemStatus" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:String" Collection="[FilterConditions]" DisplayName="Add To Collection (Queue Item Status Filter)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_3" Item="[String.Format(&quot;Status eq '{0}'&quot;, QueueItemStatus.ToString)]" />
-              </ActivityAction>
-            </ui:ForEach.Body>
-          </ui:ForEach>
-          <Assign DisplayName="Assign ODataFilter (Additional Filters)" sap:VirtualizedContainerService.HintSize="307,60" sap2010:WorkflowViewState.IdRef="Assign_25">
+          <Sequence DisplayName="ID Filter Condition" sap:VirtualizedContainerService.HintSize="304,318" sap2010:WorkflowViewState.IdRef="Sequence_17">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="CommaSeparatedIDs" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign CommaSeparatedIDs" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_39">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[CommaSeparatedIDs]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterIDs)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap2010:Annotation.AnnotationText="Constructs ID filter using the following format:&#xA;Id in (1, 2, 3)" DisplayName="Assign IDFilterCondition" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_40">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[IDFilterCondition]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format("Id in ({0})", CommaSeparatedIDs)]</InArgument>
+              </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </Assign>
+          </Sequence>
+          <Sequence DisplayName="Reference Filter Condition" sap:VirtualizedContainerService.HintSize="304,334.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="CommaSeparatedReferences" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign CommaSeparatedReferences" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_41">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[CommaSeparatedReferences]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterReferences.Select(Function(Reference) String.Format("'{0}'", Reference)))]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap2010:Annotation.AnnotationText="Constructs Reference filter using the following format:&#xA;Reference in ('Reference1', 'Reference2', 'Reference3')" DisplayName="Assign ReferenceFilterCondition" sap:VirtualizedContainerService.HintSize="262,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_42">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[ReferenceFilterCondition]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format("Reference in ({0})", CommaSeparatedReferences)]</InArgument>
+              </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </Assign>
+          </Sequence>
+          <Sequence DisplayName="Status Filter Condition" sap:VirtualizedContainerService.HintSize="304,334.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="CommaSeparatedStatuses" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign CommaSeparatedStatuses" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_44">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[CommaSeparatedStatuses]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterReferences.Select(Function(Status) String.Format("'{0}'", Status)))]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap2010:Annotation.AnnotationText="Constructs Status filter using the following format:&#xA;Reference in ('Reference1', 'Reference2', 'Reference3')" DisplayName="Assign StatusFilterCondition" sap:VirtualizedContainerService.HintSize="262,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_45">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[StatusFilterCondition]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[String.Format("Status in ({0})", CommaSeparatedStatuses)]</InArgument>
+              </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </Assign>
+          </Sequence>
+          <Assign DisplayName="Assign ODataFilter (Additional Filters)" sap:VirtualizedContainerService.HintSize="304,62" sap2010:WorkflowViewState.IdRef="Assign_46">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[ODataFilter]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[ODataFilter + " and "+String.Join(" or ", FilterConditions)]</InArgument>
+              <InArgument x:TypeArguments="x:String">[String.Format("{0} and ({1})", ODataFilter, String.Join(" or ", {IDFilterCondition, ReferenceFilterCondition, StatusFilterCondition}))]</InArgument>
             </Assign.Value>
           </Assign>
         </Sequence>

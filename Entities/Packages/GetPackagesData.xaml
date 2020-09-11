@@ -7,10 +7,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>686,2037.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1352,2037.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="26">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -36,10 +36,11 @@
       <x:String>Newtonsoft.Json</x:String>
       <x:String>System.Net</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -63,6 +64,7 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -97,7 +99,7 @@
     </Assign>
     <Sequence sap2010:Annotation.AnnotationText="Construct OData filter using specified Names." DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="419.333333333333,114.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_13">
       <Sequence.Variables>
-        <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="FilterConditions" />
+        <Variable x:TypeArguments="x:String" Name="NameFilterCondition" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -106,23 +108,39 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Name" sap:VirtualizedContainerService.HintSize="570,239.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[in_FilterNames]">
-        <ui:ForEach.Body>
-          <ActivityAction x:TypeArguments="x:String">
-            <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="x:String" Name="Name" />
-            </ActivityAction.Argument>
-            <AddToCollection x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Packages do not have the &quot;Name&quot; attribute and use the &quot;Id&quot; attribute instead to represent their names." Collection="[FilterConditions]" DisplayName="Add To Collection (Name Filter)" sap:VirtualizedContainerService.HintSize="200,100.666666666667" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[String.Format(&quot;Id eq '{0}'&quot;, Name.ToString)]">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-            </AddToCollection>
-          </ActivityAction>
-        </ui:ForEach.Body>
-      </ui:ForEach>
-      <If Condition="[FilterConditions.Count &gt; 0]" DisplayName="If There Are Filter Conditions" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_1">
+      <Sequence DisplayName="Name Filter Condition" sap:VirtualizedContainerService.HintSize="570,384.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:String" Name="CommaSeparatedNames" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Assign DisplayName="Assign CommaSeparatedNames" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_18">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[CommaSeparatedNames]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterNames.Select(Function(Name) String.Format("'{0}'", Name)))]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap2010:Annotation.AnnotationText="Packages do not have the &quot;Name&quot; attribute and use the &quot;Id&quot; attribute instead to represent their names.&#xD;&#xA;&#xD;&#xA;Constructs Name filter using the following format:&#xA;Id in ('Name1', 'Name2', 'Name3')" DisplayName="Assign NameFilterCondition" sap:VirtualizedContainerService.HintSize="262,190.666666666667" sap2010:WorkflowViewState.IdRef="Assign_19">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[NameFilterCondition]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[String.Format("Id in ({0})", CommaSeparatedNames)]</InArgument>
+          </Assign.Value>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Assign>
+      </Sequence>
+      <If Condition="[in_FilterNames.Length &gt; 0]" DisplayName="If There Are Filter Conditions" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -135,7 +153,7 @@
               <OutArgument x:TypeArguments="x:String">[ODataFilter]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">["?$filter="+String.Join(" or ", FilterConditions)]</InArgument>
+              <InArgument x:TypeArguments="x:String">["?$filter="+NameFilterCondition]</InArgument>
             </Assign.Value>
           </Assign>
         </If.Then>
