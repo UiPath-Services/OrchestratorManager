@@ -10,7 +10,7 @@
     <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="io_QueuesData" Type="InOutArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1385.33333333333,875.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1352,875.333333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -53,7 +53,6 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -74,9 +73,6 @@
       </TryCatch.Variables>
       <TryCatch.Try>
         <Sequence DisplayName="Try to Delete Queue" sap:VirtualizedContainerService.HintSize="376,395.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_16">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="Result" />
-          </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -109,15 +105,9 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteQueueRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Queues\DeleteQueueRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_OUFolderID)" />
-              </InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_QueueID">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_QueueID)" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_OUFolderID)]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_QueueID">[Convert.ToInt64(in_QueueID)]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:RemoveDataRow RowIndex="{x:Null}" sap2010:Annotation.AnnotationText="Remove the deleted Queue from the cached local data." DataTable="[io_QueuesData]" DisplayName="Remove Data Row" sap:VirtualizedContainerService.HintSize="334,67.3333333333333" sap2010:WorkflowViewState.IdRef="RemoveDataRow_1" Row="[io_QueuesData.Rows.Find({in_OUFolderID, in_QueueName})]">
