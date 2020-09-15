@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MigrateRobot" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateRobot" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_ClassicFolderData" Type="InArgument(sd:DataTable)" />
@@ -7,12 +7,12 @@
     <x:Property Name="in_UsersData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_RolesData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_OverwriteExecutionSettings" Type="InArgument(x:Boolean)" />
-    <x:Property Name="in_DeleteClassicRobot" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_DeactivateClassicRobot" Type="InArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1351.33333333333,1308</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1332,1308</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateQueueDefinition_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -44,7 +44,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -65,6 +65,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -72,7 +73,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Robot from Classic Folder to Modern Folder.&#xA;&#xA;There must be an existing Orchestrator User with a provisioned Robot that uses the same username as the Robot being migrated. &#xA;&#xA;Optionally:&#xA;- The Orchestrator User's Robot's execution settings are overwritten by the execution settings of the Robot being migrated.&#xA;- The Classic Folder's Robot is deleted.&#xA;&#xA;The User receives the same Roles (at tenant level) that the Robot has in the Classic Folder.&#xA;If the the Role Assignment Model of the target Modern Folder is  using &quot;Custom Roles&quot;, these Roles are also added to the User at Folder level." DisplayName="Migrate Robot" sap:VirtualizedContainerService.HintSize="376,1243.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Robot from Classic Folder to Modern Folder.&#xA;&#xA;There must be an existing Orchestrator User with a provisioned Robot that uses the same username as the Robot being migrated. &#xA;&#xA;Optionally:&#xA;- The Orchestrator User's Robot's execution settings are overwritten by the execution settings of the Robot being migrated.&#xA;- The Classic Folder's Robot is deactivated.&#xA;&#xA;The User receives the same Roles (at tenant level) that the Robot has in the Classic Folder.&#xA;If the the Role Assignment Model of the target Modern Folder is  using &quot;Custom Roles&quot;, these Roles are also added to the User at Folder level." DisplayName="Migrate Robot" sap:VirtualizedContainerService.HintSize="376,1243.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataRow" Name="RobotCorrespondingUser" />
       <Variable x:TypeArguments="sd:DataRow" Name="ClassicFolderRobotUser" />
@@ -191,7 +192,7 @@
         </ui:InvokeWorkflowFile>
       </If.Then>
     </If>
-    <If Condition="[in_DeleteClassicRobot]" DisplayName="If Should Delete Robot in Classic Folder" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+    <If Condition="[in_DeactivateClassicRobot]" DisplayName="If Should Deactivate Robot in Classic Folder" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -199,16 +200,20 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Delete Robot)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ToggleRobotsRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Robots\ToggleRobotsRequest.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Method">delete</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots({1})", in_Config("OrchestratorURL"), in_ClassicFolderRobot("RobotID"))]</InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
-            <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(in_ClassicFolderData.Rows(0)("ID"))]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
-            <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-            <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Boolean" x:Key="in_Enabled">
+              <Literal x:TypeArguments="x:Boolean" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderData.Rows(0)(&quot;ID&quot;))" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_RobotsIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{Convert.ToInt64(in_ClassicFolderRobot(&quot;RobotID&quot;))}" />
+            </InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </If.Then>
@@ -321,24 +326,12 @@
     </ui:ForEach>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SetFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">
-          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ModernFolderData(0)(&quot;ID&quot;))" />
-        </InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_Roles">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:Int64, x:String)" ExpressionText="RobotCorrespondingUserRoles" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotCorrespondingUser(&quot;Type&quot;).ToString" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">
-          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(RobotCorrespondingUser(&quot;ID&quot;))" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Username">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="RobotCorrespondingUser(&quot;Username&quot;).ToString" />
-        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">[Convert.ToInt64(in_ModernFolderData(0)("ID"))]</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:Int64, x:String)" x:Key="in_Roles">[RobotCorrespondingUserRoles]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_UserType">[RobotCorrespondingUser("Type").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_UserID">[Convert.ToInt64(RobotCorrespondingUser("ID"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Username">[RobotCorrespondingUser("Username").ToString]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
   </Sequence>

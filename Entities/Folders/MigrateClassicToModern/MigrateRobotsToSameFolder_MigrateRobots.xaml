@@ -6,12 +6,12 @@
     <x:Property Name="in_ModernFolderName" Type="InArgument(x:String)" />
     <x:Property Name="io_ErrorMessages" Type="InOutArgument(scg:List(x:String))" />
     <x:Property Name="in_OverwriteExecutionSettings" Type="InArgument(x:Boolean)" />
-    <x:Property Name="in_DeleteClassicRobot" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_DeactivateClassicRobot" Type="InArgument(x:Boolean)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1324,1364</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1376,1197.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateQueuesToSameFolder_MigrateQueueDefinitions_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="22">
@@ -40,7 +40,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="38">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -60,9 +60,10 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Robots from the specified Classic Folder to the Specified Modern Folder and delete them from Classic Folder depending on the specified parameters." DisplayName="Migrate Robots to Same Folder - Migrate Robots" sap:VirtualizedContainerService.HintSize="526.666666666667,1299.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Robots from the specified Classic Folder to the Specified Modern Folder and delete them from Classic Folder depending on the specified parameters." DisplayName="Migrate Robots to Same Folder - Migrate Robots" sap:VirtualizedContainerService.HintSize="531.333333333333,1132.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderRobotsData" />
       <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
@@ -74,7 +75,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="484.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="489.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[ClassicFolderRobotsData]</OutArgument>
@@ -84,7 +85,7 @@
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Users is used when searching for Users corresponding to Robots to be migrated." DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="484.666666666667,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Users is used when searching for Users corresponding to Robots to be migrated." DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="489.333333333333,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
@@ -97,7 +98,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Roles is used when assigning a User to a Modern Folder with &quot;Custom Roles&quot; as Role Assignment Model." DisplayName="Invoke GetRolesData Workflow" sap:VirtualizedContainerService.HintSize="484.666666666667,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Roles is used when assigning a User to a Modern Folder with &quot;Custom Roles&quot; as Role Assignment Model." DisplayName="Invoke GetRolesData Workflow" sap:VirtualizedContainerService.HintSize="489.333333333333,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
@@ -110,13 +111,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[ClassicFolderRobotsData]" DisplayName="For Each Robot in Classic Folder " sap:VirtualizedContainerService.HintSize="484.666666666667,674.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[ClassicFolderRobotsData]" DisplayName="For Each Robot in Classic Folder " sap:VirtualizedContainerService.HintSize="489.333333333333,508" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ClassicFolderRobot" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Prevent the migration of different Robots to interfer with each other." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="434,522" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+          <TryCatch sap2010:Annotation.AnnotationText="Prevent the migration of different Robots to interfer with each other." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,355.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -125,22 +126,38 @@
             <TryCatch.Try>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobot Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateRobot.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", in_ClassicFolderName)).CopyToDataTable]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">[in_FoldersData.Select(String.Format("Name = '{0}'", in_ModernFolderName)).CopyToDataTable]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderRobot">[ClassicFolderRobot]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">[RolesData]</InArgument>
-                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_OverwriteExecutionSettings">[in_OverwriteExecutionSettings]</InArgument>
-                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_DeleteClassicRobot">[in_DeleteClassicRobot]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData.Select(String.Format(&quot;Name = '{0}'&quot;, in_ClassicFolderName)).CopyToDataTable" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ModernFolderData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData.Select(String.Format(&quot;Name = '{0}'&quot;, in_ModernFolderName)).CopyToDataTable" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderRobot">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="ClassicFolderRobot" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RolesData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_OverwriteExecutionSettings">
+                    <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_OverwriteExecutionSettings" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_DeactivateClassicRobot">
+                    <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_DeactivateClassicRobot" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </TryCatch.Try>
             <TryCatch.Catches>
-              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,319.333333333333" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
