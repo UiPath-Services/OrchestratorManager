@@ -22,7 +22,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>686,2518</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>764,2518</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetEnvironmentsData_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -76,6 +76,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Environments of the given OUs/Classic Folders.&#xA;If no filters are specified, returns data about all Environments.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Environments Data" sap:VirtualizedContainerService.HintSize="556,2453.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
@@ -112,9 +113,21 @@
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="514,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
+        </InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
+        </InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
+          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
+        </OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
+          <Literal x:TypeArguments="x:String">Name</Literal>
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="514,1758" sap2010:WorkflowViewState.IdRef="ForEachRow_1">

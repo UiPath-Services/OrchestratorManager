@@ -1,13 +1,19 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConstructODataFilter" this:ConstructODataFilter.in_FilterNames="[{}]" this:ConstructODataFilter.in_FilterIDs="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConstructODataFilter" this:ConstructODataFilter.in_FilterNames="[{}]" this:ConstructODataFilter.in_FilterIDs="[{}]" this:ConstructODataFilter.in_NameFilterField="Name" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
     <x:Property Name="out_ODataFilter" Type="OutArgument(x:String)" />
+    <x:Property Name="in_NameFilterField" Type="InArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1352,1150.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>836.666666666667,846</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="34">
+    <scg:List x:TypeArguments="x:String" Capacity="18">
       <x:String>System.Activities</x:String>
       <x:String>System</x:String>
       <x:String>System.Collections</x:String>
@@ -29,7 +35,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="30">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
@@ -48,10 +54,9 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Construct generic OData filters using specified names and IDs.&#xA;Some entities have other fields instead of Name (e.g., Organization Units have DisplayName) and this workflow cannot be used in such cases." DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="612,1086" sap2010:WorkflowViewState.IdRef="Sequence_3">
+  <Sequence sap2010:Annotation.AnnotationText="Construct OData filters using specified names and IDs.&#xA;&#xA;The way to construct the filter depends on the Orchestrator version:&#xA;- Orchestrator 2020.4 or older: Filter done using disjunction of multiple conditions&#xA;- Orchestrator 2020.10 or newer: Filter done using the IN operator&#xA;&#xA;The in_NameFilterField argument is used to specify the field used when filtering by name of entity.&#xA;Usually, its value is &quot;Name&quot;, but it can change, depending on the entity. &#xA;For example, Organization Units use the field DisplayName, and Folders use the field FullyQualifiedName." DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="846.666666666667,781.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="NameFilterCondition" />
-      <Variable x:TypeArguments="x:String" Name="IDFilterCondition" />
+      <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="FilterConditions" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -60,89 +65,52 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="ID Filter Condition" sap:VirtualizedContainerService.HintSize="570,318" sap2010:WorkflowViewState.IdRef="Sequence_4">
-      <Sequence.Variables>
-        <Variable x:TypeArguments="x:String" Name="CommaSeparatedIDs" />
-      </Sequence.Variables>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Assign DisplayName="Assign CommaSeparatedIDs" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_7">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[CommaSeparatedIDs]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterIDs)]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <Assign sap2010:Annotation.AnnotationText="Constructs ID filter using the following format:&#xD;&#xA;Id in (1, 2, 3)" DisplayName="Assign IDFilterCondition" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_8">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[IDFilterCondition]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[String.Format("Id in ({0})", CommaSeparatedIDs)]</InArgument>
-        </Assign.Value>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </Assign>
-    </Sequence>
-    <Sequence DisplayName="Name Filter Condition" sap:VirtualizedContainerService.HintSize="570,318" sap2010:WorkflowViewState.IdRef="Sequence_5">
-      <Sequence.Variables>
-        <Variable x:TypeArguments="x:String" Name="CommaSeparatedNames" />
-      </Sequence.Variables>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <Assign DisplayName="Assign CommaSeparatedNames" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[CommaSeparatedNames]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[String.Format(", ", in_FilterNames.Select(Function(Name) String.Format("'{0}'", Name)))]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <Assign sap2010:Annotation.AnnotationText="Constructs Name filter using the following format:&#xD;&#xA;Name in ('Name1', 'Name2', 'Name3')" DisplayName="Assign NameFilterCondition" sap:VirtualizedContainerService.HintSize="262,124" sap2010:WorkflowViewState.IdRef="Assign_6">
-        <Assign.To>
-          <OutArgument x:TypeArguments="x:String">[NameFilterCondition]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="x:String">[String.Format("Name in ({0})", CommaSeparatedNames)]</InArgument>
-        </Assign.Value>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </Assign>
-    </Sequence>
-    <If Condition="[in_FilterIDs.Length &gt; 0 OrElse in_FilterNames.Length &gt; 0]" DisplayName="If There Are Filter Conditions" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202010]" DisplayName="If Orchestrator Version Supports OData IN Operator" sap:VirtualizedContainerService.HintSize="804.666666666667,240.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
       <If.Then>
-        <Assign DisplayName="Assign out_ODataFilter" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202010OrNewer Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202010OrNewer.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">[in_NameFilterField]</InArgument>
+            <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_FilterConditions">[FilterConditions]</InOutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </If.Then>
+      <If.Else>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202004OrOlder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202004OrOlder.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+            <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_FilterConditions">[FilterConditions]</InOutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">[in_NameFilterField]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </If.Else>
+    </If>
+    <If Condition="[FilterConditions.Count &gt; 0]" DisplayName="If Any Conditions Were Created" sap:VirtualizedContainerService.HintSize="804.666666666667,246.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+      <If.Then>
+        <Assign DisplayName="Assign ODataFilter" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_12">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_ODataFilter]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">["?$filter="+String.Join(" or ", {IDFilterCondition, NameFilterCondition})]</InArgument>
+            <InArgument x:TypeArguments="x:String">["?$filter="+String.Join(" or ", FilterConditions)]</InArgument>
           </Assign.Value>
         </Assign>
       </If.Then>
       <If.Else>
-        <Assign DisplayName="Assign out_ODataFilter (Default)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+        <Assign sap2010:Annotation.AnnotationText="Initialize URL query parameters." DisplayName="Assign ODataFilter (Default)" sap:VirtualizedContainerService.HintSize="262,92.6666666666667" sap2010:WorkflowViewState.IdRef="Assign_13">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_ODataFilter]</OutArgument>
           </Assign.To>
           <Assign.Value>
             <InArgument x:TypeArguments="x:String">?</InArgument>
           </Assign.Value>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
         </Assign>
       </If.Else>
     </If>

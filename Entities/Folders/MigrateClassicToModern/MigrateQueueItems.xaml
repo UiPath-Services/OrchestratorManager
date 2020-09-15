@@ -1,10 +1,10 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MigrateQueueItems" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateQueueItems" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_ClassicFolderQueue" Type="InArgument(sd:DataRow)" />
     <x:Property Name="in_ModernFolderID" Type="InArgument(x:Int64)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1331.33333333333,2399.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1349,2386</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="48">
@@ -36,7 +36,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="46">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -60,9 +60,10 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
       <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Copy Queue items from one Queue to another." DisplayName="Migrate Queue Items" sap:VirtualizedContainerService.HintSize="526,2334.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
+  <Sequence sap2010:Annotation.AnnotationText="Copy Queue items from one Queue to another." DisplayName="Migrate Queue Items" sap:VirtualizedContainerService.HintSize="526,2321" sap2010:WorkflowViewState.IdRef="Sequence_7">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicQueueItemsData" />
       <Variable x:TypeArguments="x:Int32" Default="0" Name="BatchStart" />
@@ -73,19 +74,30 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueueItemsData Workflow" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueueItemsData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueueItemsData Workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueueItemsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueueItemsData">[ClassicQueueItemsData]</OutArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_QueueID">[Convert.ToInt64(in_ClassicFolderQueue("QueueID"))]</InArgument>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterReferences">[{}]</InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_ClassicFolderQueue("OUID"))]</InArgument>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterStatuses">[{"New"}]</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+        </InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_QueueItemsData">
+          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="ClassicQueueItemsData" />
+        </OutArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_QueueID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderQueue(&quot;QueueID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderQueue(&quot;OUID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterStatuses">
+          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{&quot;New&quot;}" />
+        </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <While DisplayName="While There Are Batches to Upload" sap:VirtualizedContainerService.HintSize="484,2085.33333333333" sap2010:WorkflowViewState.IdRef="While_1" Condition="[BatchStart &lt;  ClassicQueueItemsData.Rows.Count]">
-      <Sequence DisplayName="Migrate Queue Items Batch" sap:VirtualizedContainerService.HintSize="382.666666666667,1921.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_6">
+    <While DisplayName="While There Are Batches to Upload" sap:VirtualizedContainerService.HintSize="484,2071" sap2010:WorkflowViewState.IdRef="While_1" Condition="[BatchStart &lt;  ClassicQueueItemsData.Rows.Count]">
+      <Sequence DisplayName="Migrate Queue Items Batch" sap:VirtualizedContainerService.HintSize="383,1913" sap2010:WorkflowViewState.IdRef="Sequence_6">
         <Sequence.Variables>
           <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
           <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Default="[New List(Of Dictionary(Of String, Object))]" Name="RequestQueueItems" />
@@ -99,7 +111,7 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <Assign DisplayName="Assign Queue Name" sap:VirtualizedContainerService.HintSize="340.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+        <Assign DisplayName="Assign Queue Name" sap:VirtualizedContainerService.HintSize="341,60" sap2010:WorkflowViewState.IdRef="Assign_3">
           <Assign.To>
             <OutArgument x:TypeArguments="x:Object">[RequestBody("queueName")]</OutArgument>
           </Assign.To>
@@ -107,7 +119,7 @@
             <InArgument x:TypeArguments="x:Object">[in_ClassicFolderQueue("QueueName")]</InArgument>
           </Assign.Value>
         </Assign>
-        <Assign DisplayName="Assign Commit Type" sap:VirtualizedContainerService.HintSize="340.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+        <Assign DisplayName="Assign Commit Type" sap:VirtualizedContainerService.HintSize="341,60" sap2010:WorkflowViewState.IdRef="Assign_4">
           <Assign.To>
             <OutArgument x:TypeArguments="x:Object">[RequestBody("commitType")]</OutArgument>
           </Assign.To>
@@ -115,13 +127,13 @@
             <InArgument x:TypeArguments="x:Object">["ProcessAllIndependently"]</InArgument>
           </Assign.Value>
         </Assign>
-        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="340.666666666667,1020" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[ClassicQueueItemsData.Select().Skip(BatchStart).Take(Math.Min(BatchSize, ClassicQueueItemsData.Rows.Count - BatchStart))]">
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="341,1015" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[ClassicQueueItemsData.Select().Skip(BatchStart).Take(Math.Min(BatchSize, ClassicQueueItemsData.Rows.Count - BatchStart))]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ClassicQueueItem" />
               </ActivityAction.Argument>
-              <Sequence DisplayName="Initialize Queue Item Fields" sap:VirtualizedContainerService.HintSize="304,881.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <Sequence DisplayName="Initialize Queue Item Fields" sap:VirtualizedContainerService.HintSize="304,881" sap2010:WorkflowViewState.IdRef="Sequence_5">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestItemData" />
                 </Sequence.Variables>
@@ -130,7 +142,7 @@
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign DisplayName="Assign Item Queue Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+                <Assign DisplayName="Assign Item Queue Name" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Object">[RequestItemData("Name")]</OutArgument>
                   </Assign.To>
