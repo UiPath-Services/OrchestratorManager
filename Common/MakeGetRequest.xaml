@@ -5,7 +5,7 @@
     <x:Property Name="in_Endpoint" Type="InArgument(x:String)" />
     <x:Property Name="out_ResultObject" Type="OutArgument(njl:JObject)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1349,1971</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1349,1827</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="20">
@@ -61,7 +61,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Coordinate pagination of results for HTTP requests of type GET." DisplayName="Make Get Request" sap:VirtualizedContainerService.HintSize="526,1866" sap2010:WorkflowViewState.IdRef="Sequence_20">
+  <Sequence sap2010:Annotation.AnnotationText="Coordinate pagination of results for HTTP requests of type GET." DisplayName="Make Get Request" sap:VirtualizedContainerService.HintSize="526,1762" sap2010:WorkflowViewState.IdRef="Sequence_20">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int32" Name="RequestSkipSize" />
       <Variable x:TypeArguments="x:Int64" Name="TotalResultSize" />
@@ -105,8 +105,8 @@
         <InArgument x:TypeArguments="x:Int32">0</InArgument>
       </Assign.Value>
     </Assign>
-    <DoWhile DisplayName="Do While" sap:VirtualizedContainerService.HintSize="484,1343" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[TotalResultSize &gt; BatchResultSize]">
-      <Sequence DisplayName="Get Batch Result" sap:VirtualizedContainerService.HintSize="376,1181" sap2010:WorkflowViewState.IdRef="Sequence_19">
+    <DoWhile DisplayName="Do While" sap:VirtualizedContainerService.HintSize="484,1239" sap2010:WorkflowViewState.IdRef="DoWhile_1" Condition="[TotalResultSize &gt; BatchResultSize]">
+      <Sequence DisplayName="Get Batch Result" sap:VirtualizedContainerService.HintSize="376,1077" sap2010:WorkflowViewState.IdRef="Sequence_19">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:String" Name="BatchResult" />
           <Variable x:TypeArguments="njl:JObject" Name="BatchResultObject" />
@@ -116,7 +116,6 @@
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="334,61" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[String.Format(&quot;{0}&amp;$skip={1}&quot;, in_Endpoint, RequestSkipSize)]" />
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
@@ -125,7 +124,9 @@
             <InArgument x:TypeArguments="x:String" x:Key="in_Method">
               <Literal x:TypeArguments="x:String">get</Literal>
             </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}&amp;$skip={1}", in_Endpoint, RequestSkipSize)]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}$skip={1}&quot;, in_Endpoint, RequestSkipSize)" />
+            </InArgument>
             <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
             <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
               <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_OUFolderID" />
@@ -188,7 +189,7 @@
             <InArgument x:TypeArguments="x:Int32">[BatchResultSize + BatchResultObject.SelectToken("value").Children.Count()]</InArgument>
           </Assign.Value>
         </Assign>
-        <InvokeMethod sap2010:Annotation.AnnotationText="Merge batches into a single object." DisplayName="Invoke Method (Merge)" sap:VirtualizedContainerService.HintSize="334,168" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Merge">
+        <InvokeMethod sap2010:Annotation.AnnotationText="Merge batches into a single object." DisplayName="Invoke Method (Merge)" sap:VirtualizedContainerService.HintSize="334,165" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Merge">
           <InvokeMethod.TargetObject>
             <InArgument x:TypeArguments="njl:JObject">[out_ResultObject]</InArgument>
           </InvokeMethod.TargetObject>

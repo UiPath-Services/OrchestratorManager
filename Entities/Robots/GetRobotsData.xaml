@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1349,2704</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1349,2740</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="50">
@@ -71,7 +71,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Robots in the specified Organization Units/Folders.&#xA;If no filters are specified, returns data about all Robots.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Robots Data" sap:VirtualizedContainerService.HintSize="531,2639" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Robots in the specified Organization Units/Folders.&#xA;If no filters are specified, returns data about all Robots.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Robots Data" sap:VirtualizedContainerService.HintSize="531,2635" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
     </Sequence.Variables>
@@ -105,37 +105,27 @@
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="489,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-          <Literal x:TypeArguments="x:String">Name</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">Name</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="489,1962" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="489,1958" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUFolderNameAndID" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Catch errors when accessing a single OU/Folder so there is no impact when accessing others." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="439,1814" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+          <TryCatch sap2010:Annotation.AnnotationText="Catch errors when accessing a single OU/Folder so there is no impact when accessing others." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="439,1810" sap2010:WorkflowViewState.IdRef="TryCatch_1">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Try to Get Robots Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="382.666666666667,1544" sap2010:WorkflowViewState.IdRef="Sequence_13">
+              <Sequence DisplayName="Try to Get Robots Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="382,1540" sap2010:WorkflowViewState.IdRef="Sequence_13">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
                 </Sequence.Variables>
@@ -145,15 +135,23 @@
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Robots)" sap:VirtualizedContainerService.HintSize="340.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Robots)" sap:VirtualizedContainerService.HintSize="340,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
-                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                      <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                    </InArgument>
+                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+                      <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(OUFolderNameAndID(&quot;ID&quot;))" />
+                    </InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+                      <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Robots?{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
+                    </InArgument>
+                    <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
+                      <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
+                    </OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                 </ui:InvokeWorkflowFile>
-                <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Robot" sap:VirtualizedContainerService.HintSize="340.666666666667,1325.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
+                <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Robot" sap:VirtualizedContainerService.HintSize="340,1321" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
                   <ui:ForEach.Body>
                     <ActivityAction x:TypeArguments="njl:JObject">
                       <ActivityAction.Argument>

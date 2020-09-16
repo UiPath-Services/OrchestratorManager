@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1349,1860</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1349,1900</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="25">
@@ -99,29 +99,25 @@
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="454,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-          <Literal x:TypeArguments="x:String">Name</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">Name</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Machines)" sap:VirtualizedContainerService.HintSize="454,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID" />
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Machines{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Machines?{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
+        </InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
+          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
+        </OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Machine" sap:VirtualizedContainerService.HintSize="454,1136" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">

@@ -110,21 +110,11 @@
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Filter by Status instead of by Name." DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="340,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterStatuses" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-          <Literal x:TypeArguments="x:String">Status</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterStatuses]</InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">Status</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -134,10 +124,18 @@
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Queue Items)" sap:VirtualizedContainerService.HintSize="340,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common/MakeGetRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[in_OUFolderID]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/QueueItems{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_OUFolderID" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/QueueItems?{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
+        </InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
+          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
+        </OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="340,1562" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">

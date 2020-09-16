@@ -22,10 +22,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1349,3576</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1349,3573</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetEnvironmentsData_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="52">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -51,10 +51,12 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>Newtonsoft.Json</x:String>
       <x:String>System.Net</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>UiPath.Web.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="44">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -76,10 +78,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Processes of the given OU/Folders.&#xA;If no filters are specified, returns data about all Processes.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Processes Data" sap:VirtualizedContainerService.HintSize="735,3511" sap2010:WorkflowViewState.IdRef="Sequence_6">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Processes of the given OU/Folders.&#xA;If no filters are specified, returns data about all Processes.&#xA;&#xA;The flag out_AllOUFoldersAccessed is used to indicate that an OU/Folder could not be accessed due to not enough access rights." DisplayName="Get Processes Data" sap:VirtualizedContainerService.HintSize="735,3468" sap2010:WorkflowViewState.IdRef="Sequence_6">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
     </Sequence.Variables>
@@ -113,37 +115,27 @@
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="693,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-          <Literal x:TypeArguments="x:String">Name</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">[ODataFilter]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">Name</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="693,2849" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+    <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_OUFoldersData]" DisplayName="For Each OU/Folder" sap:VirtualizedContainerService.HintSize="693,2806" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
       <ui:ForEachRow.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OUFolderNameAndID" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Catch errors when accessing a single OU/Folder so there is no impact when accessing others." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="643,2701" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+          <TryCatch sap2010:Annotation.AnnotationText="Catch errors when accessing a single OU/Folder so there is no impact when accessing others." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="643,2658" sap2010:WorkflowViewState.IdRef="TryCatch_1">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Try to Get Processes Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="604.666666666667,2442" sap2010:WorkflowViewState.IdRef="Sequence_7">
+              <Sequence DisplayName="Try to Get Processes Data from Single OU/Folder" sap:VirtualizedContainerService.HintSize="604,2399" sap2010:WorkflowViewState.IdRef="Sequence_7">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
                 </Sequence.Variables>
@@ -153,11 +145,11 @@
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Processes are actually exposed by the Release endpoints.&#xA;The Processes endpoints refer to Packages." DisplayName="Invoke MakeGetRequest Workflow (Get Processes Data)" sap:VirtualizedContainerService.HintSize="562.666666666667,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Processes are actually exposed by the Release endpoints.&#xA;The Processes endpoints refer to Packages." DisplayName="Invoke MakeGetRequest Workflow (Get Processes Data)" sap:VirtualizedContainerService.HintSize="562,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
                     <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                     <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
-                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Releases{1}&amp;$expand=ReleaseVersions", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Releases?$expand=ReleaseVersions&amp;$orderby=Name&amp;{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
                     <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                   <sap:WorkflowViewStateService.ViewState>
@@ -166,13 +158,13 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:InvokeWorkflowFile>
-                <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Process" sap:VirtualizedContainerService.HintSize="562.666666666667,2161.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[ResultObject.SelectTokens(&quot;value&quot;).Children]">
+                <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved Process" sap:VirtualizedContainerService.HintSize="562,2123" sap2010:WorkflowViewState.IdRef="ForEach`1_9" Values="[ResultObject.SelectTokens(&quot;value&quot;).Children]">
                   <ui:ForEach.Body>
                     <ActivityAction x:TypeArguments="njl:JObject">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="njl:JObject" Name="Process" />
                       </ActivityAction.Argument>
-                      <Sequence DisplayName="Extract Process Data" sap:VirtualizedContainerService.HintSize="526,2022.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                      <Sequence DisplayName="Extract Process Data" sap:VirtualizedContainerService.HintSize="526,1989" sap2010:WorkflowViewState.IdRef="Sequence_12">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="sd:DataRow" Name="NewProcessRow" />
                           <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="PackageVersions" />
@@ -182,7 +174,7 @@
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <Assign DisplayName="Assign NewProcessRow (Initialization)" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+                        <Assign DisplayName="Assign NewProcessRow (Initialization)" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                           <Assign.To>
                             <OutArgument x:TypeArguments="sd:DataRow">[NewProcessRow]</OutArgument>
                           </Assign.To>
@@ -190,7 +182,7 @@
                             <InArgument x:TypeArguments="sd:DataRow">[out_ProcessesData.NewRow()]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+                        <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_3">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("OUID")]</OutArgument>
                           </Assign.To>
@@ -198,7 +190,7 @@
                             <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(OUFolderNameAndID("ID"))]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign OU/Folder Name" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+                        <Assign DisplayName="Assign OU/Folder Name" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("OUName")]</OutArgument>
                           </Assign.To>
@@ -206,7 +198,7 @@
                             <InArgument x:TypeArguments="x:Object">[OUFolderNameAndID("Name")]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign Process ID" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+                        <Assign DisplayName="Assign Process ID" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("ProcessID")]</OutArgument>
                           </Assign.To>
@@ -214,7 +206,7 @@
                             <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(Process("Id"))]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign Process Name" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+                        <Assign DisplayName="Assign Process Name" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_7">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("ProcessName")]</OutArgument>
                           </Assign.To>
@@ -222,7 +214,7 @@
                             <InArgument x:TypeArguments="x:Object">[Process("Name")]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign Process Key" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+                        <Assign DisplayName="Assign Process Key" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_9">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("ProcessKey")]</OutArgument>
                           </Assign.To>
@@ -230,7 +222,7 @@
                             <InArgument x:TypeArguments="x:Object">[Process("Key")]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign sap2010:Annotation.AnnotationText="Processes in the API actually represent Packages, and the ProcessKey field refers to the Package name." DisplayName="Assign Package Name" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_10">
+                        <Assign sap2010:Annotation.AnnotationText="Processes in the API actually represent Packages, and the ProcessKey field refers to the Package name." DisplayName="Assign Package Name" sap:VirtualizedContainerService.HintSize="484,117" sap2010:WorkflowViewState.IdRef="Assign_10">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("PackageName")]</OutArgument>
                           </Assign.To>
@@ -243,7 +235,7 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </Assign>
-                        <Assign sap2010:Annotation.AnnotationText="Processes in the API actually represent Packages, and the ProcessVersion field refers to the Package version." DisplayName="Assign Current Package Version" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_11">
+                        <Assign sap2010:Annotation.AnnotationText="Processes in the API actually represent Packages, and the ProcessVersion field refers to the Package version." DisplayName="Assign Current Package Version" sap:VirtualizedContainerService.HintSize="484,117" sap2010:WorkflowViewState.IdRef="Assign_11">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[NewProcessRow("CurrentPackageVersion")]</OutArgument>
                           </Assign.To>
@@ -256,7 +248,7 @@
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
                         </Assign>
-                        <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Package versions can be retrieved from the ReleaseVersions field." DisplayName="For Each Package Version" sap:VirtualizedContainerService.HintSize="484,244" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[Process.SelectTokens(&quot;ReleaseVersions&quot;).Children]">
+                        <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Package versions can be retrieved from the ReleaseVersions field." DisplayName="For Each Package Version" sap:VirtualizedContainerService.HintSize="484,236" sap2010:WorkflowViewState.IdRef="ForEach`1_10" Values="[Process.SelectTokens(&quot;ReleaseVersions&quot;).Children]">
                           <ui:ForEach.Body>
                             <ActivityAction x:TypeArguments="njl:JObject">
                               <ActivityAction.Argument>
