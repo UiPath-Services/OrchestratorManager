@@ -14,10 +14,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>718,2234.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>718,2289.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="50">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -43,10 +43,13 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="48">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -71,9 +74,10 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Assets." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="608,2130" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Assets." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="608,2184.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -98,7 +102,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation]" sap:VirtualizedContainerService.HintSize="566,1914.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation]" sap:VirtualizedContainerService.HintSize="566,1969.33333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_12">
           <sap:WorkflowViewStateService.ViewState>
@@ -121,8 +125,8 @@
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Get)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written asset data and write new data about assets." CreateNewFile="False" DisplayName="Excel Application Scope (Get Assets)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,1002" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_12" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Get Assets)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written data and write new data about Assets." CreateNewFile="False" DisplayName="Excel Application Scope (Get Assets)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,1002" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_12" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -160,7 +164,7 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:ExcelWriteCell>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow (Get Assets)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
                     <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                     <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[OUFoldersData]</OutArgument>
@@ -215,14 +219,14 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xA;Access failures are logged by GetAssetsData.xaml, but a message box is also displayed in this case." Condition="[Not AllOUFoldersAccessed]" DisplayName="If Successfully Accessed OU/Folders" sap:VirtualizedContainerService.HintSize="484,292.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xA;Access failures are logged by GetAssetsData.xaml, but a message box is also displayed in this case." Condition="[Not AllOUFoldersAccessed]" DisplayName="If Successfully Accessed OU/Folders (Get Assets)" sap:VirtualizedContainerService.HintSize="484,292.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <If.Then>
-            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
+            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders - Get Assets)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
           </If.Then>
         </If>
       </Sequence>
@@ -847,6 +851,124 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEachRow>
+      </Sequence>
+      <Sequence x:Key="getcredential" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get Credential operation only does a constant number of requests." DisplayName="Get Credential" sap:VirtualizedContainerService.HintSize="526,1638" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="AllOUFoldersAccessed" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (Get Credential)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_20" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetCredentialOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written data and write new data about credential Assets." CreateNewFile="False" DisplayName="Excel Application Scope (Get Credential Assets)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,1033.33333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_13" Visible="False">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,894" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="sd:DataTable" Name="PreviousAssets" />
+                  <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
+                  <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ExcelReadRange AddHeaders="True" DataTable="[PreviousAssets]" DisplayName="Read Range (Previously Listed Credential Assets)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_10" SheetName="[in_Config(&quot;GetCredentialOperationName&quot;)]">
+                  <ui:ExcelReadRange.Range>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelReadRange.Range>
+                </ui:ExcelReadRange>
+                <ui:ExcelWriteCell sap2010:Annotation.AnnotationText="Math.Max() prevents clearing the header of the table." Cell="[&quot;A2:Z&quot;+Math.Max(1+PreviousAssets.Rows.Count, 2).ToString]" DisplayName="Write Cell (Clear Previously Listed Credential Assets)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_Config(&quot;GetCredentialOperationName&quot;)]">
+                  <ui:ExcelWriteCell.Text>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelWriteCell.Text>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:ExcelWriteCell>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow (Get Credential Assets)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_37" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[OUFoldersData]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Make request after clearing sheet to prevent users from using old data." DisplayName="Invoke GetAssetsData Workflow (Get Credential Assets)" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_38" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[AssetsData]</OutArgument>
+                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                    <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed">[AllOUFoldersAccessed]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:InvokeWorkflowFile>
+                <ui:FilterDataTable sap2010:Annotation.AnnotationText="Remove RobotUserID and RobotUserName columns, since it is not possible to retrieve credentials Assets per Robot and credential Assets per User." DataTable="[AssetsData]" DisplayName="Filter Data Table (Get Credential Assets Data)" FilterRowsMode="Keep" sap:VirtualizedContainerService.HintSize="334,120.666666666667" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[AssetsData]" SelectColumnsMode="Remove">
+                  <ui:FilterDataTable.Filters>
+                    <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
+                      <ui:FilterOperationArgument BooleanOperator="And" Operator="EQ">
+                        <ui:FilterOperationArgument.Column>
+                          <InArgument x:TypeArguments="x:String">["Type"]</InArgument>
+                        </ui:FilterOperationArgument.Column>
+                        <ui:FilterOperationArgument.Operand>
+                          <InArgument x:TypeArguments="x:String">["Credential"]</InArgument>
+                        </ui:FilterOperationArgument.Operand>
+                      </ui:FilterOperationArgument>
+                    </scg:List>
+                  </ui:FilterDataTable.Filters>
+                  <ui:FilterDataTable.SelectColumns>
+                    <scg:List x:TypeArguments="InArgument" Capacity="4">
+                      <InArgument x:TypeArguments="x:String">["RobotUserID"]</InArgument>
+                      <InArgument x:TypeArguments="x:String">["RobotUserName"]</InArgument>
+                      <InArgument x:TypeArguments="x:String">["Type"]</InArgument>
+                    </scg:List>
+                  </ui:FilterDataTable.SelectColumns>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:FilterDataTable>
+                <ui:ExcelWriteRange AddHeaders="False" DataTable="[AssetsData]" DisplayName="Write Range (Credential Assets Details)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_2" SheetName="[in_Config(&quot;GetCredentialOperationName&quot;)]" StartingCell="A2" />
+              </Sequence>
+            </ActivityAction>
+          </ui:ExcelApplicationScope.Body>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:ExcelApplicationScope>
+        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xA;Access failures are logged by GetAssetsData.xaml, but a message box is also displayed in this case." Condition="[Not AllOUFoldersAccessed]" DisplayName="If Successfully Accessed OU/Folders  (Get Credential Assets)" sap:VirtualizedContainerService.HintSize="484,292.666666666667" sap2010:WorkflowViewState.IdRef="If_10">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders - Get Credential Assets)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_3" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
+          </If.Then>
+        </If>
       </Sequence>
     </Switch>
   </Sequence>

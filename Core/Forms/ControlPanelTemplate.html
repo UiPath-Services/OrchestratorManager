@@ -31,6 +31,7 @@
 				
 				<label for="operation"><span>_FormOperationLabel_</span><select id="operation" class="select-field">
 					<option id="getOption" value="get">_FormGetOption_</option>
+					<option id="getCredentialOption" value="getcredential">_FormGetCredentialOption_</option>
 					<option id="createOption" value="create">_FormCreateOption_</option>
 					<option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option>
 					<option id="editOption" value="edit">_FormEditOption_</option>
@@ -62,6 +63,7 @@
 						break;
 					case 201910:
 					case 202004:
+					case 202010:
 						document.getElementById('ouOption').outerHTML = '';
 						break;
 				}
@@ -108,7 +110,7 @@
 			// Select the appropriate set of operations based on the chosen entity
 			switch (selectedEntity) {
 				case 'asset':
-					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="getCredentialOption" value="getcredential">_FormGetCredentialOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 				case 'user':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRoleOption" value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
@@ -129,7 +131,7 @@
 				case 'queue':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadQueueItemsOption" value="downloadqueueitems">_FormDownloadQueueItemsOption_</option>';
 					// On-Premises Orchestrator 2018.4 does not support bulk upload of Queue items
-					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ != 201804) {
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ >= 201904) {
 						operationElement.innerHTML = operationElement.innerHTML + '<option id="uploadQueueItemsOption" value="uploadqueueitems">_FormUploadQueueItemsOption_</option>';		
 					}
 					break;
@@ -141,7 +143,11 @@
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 				case 'folder':
-					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="getFoldersUsersOption" value="getfoldersusers">_FormGetFoldersUsersOption_</option><option id="assignFolderUserOption" value="assignfolderuser">_FormAssignFolderUserOption_</option><option id="unassignFolderUserOption" value="unassignfolderuser">_FormUnassignFolderUserOption_</option><option id="addRemoveFolderUserRolesOption" value="addremovefolderuserroles">_FormAddRemoveFolderUserRolesOption_</option><option id="migrateOption" value="migrate">_FormMigrateOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="getFoldersUsersOption" value="getfoldersusers">_FormGetFoldersUsersOption_</option><option id="assignFolderUserOption" value="assignfolderuser">_FormAssignFolderUserOption_</option><option id="unassignFolderUserOption" value="unassignfolderuser">_FormUnassignFolderUserOption_</option><option id="addRemoveFolderUserRolesOption" value="addremovefolderuserroles">_FormAddRemoveFolderUserRolesOption_</option>';
+					// Migration of Classic to Modern Folders requires features of Orchestrator 2020.10 or newer
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ >= 202010) {
+						operationElement.innerHTML = operationElement.innerHTML + '<option id="migrateOption" value="migrate">_FormMigrateOption_</option>';		
+					}
 					break;
 			}
 		}
