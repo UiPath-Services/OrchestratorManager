@@ -5,7 +5,7 @@
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1349,2319</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1282,2305</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -51,7 +51,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Users.&#xA;If no filters are specified, returns data about all Users." DisplayName="Get Users Data" sap:VirtualizedContainerService.HintSize="382,2254" sap2010:WorkflowViewState.IdRef="Sequence_25">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Users.&#xA;If no filters are specified, returns data about all Users." DisplayName="Get Users Data" sap:VirtualizedContainerService.HintSize="382,2240" sap2010:WorkflowViewState.IdRef="Sequence_25">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
@@ -69,19 +69,6 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:BuildDataTable>
-    <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_UsersData.PrimaryKey" sap:VirtualizedContainerService.HintSize="340,132" sap2010:WorkflowViewState.IdRef="Assign_13">
-      <Assign.To>
-        <OutArgument x:TypeArguments="sd:DataColumn[]">[out_UsersData.PrimaryKey]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="sd:DataColumn[]">[{out_UsersData.Columns("Type"), out_UsersData.Columns("Username")}]</InArgument>
-      </Assign.Value>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="340,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
@@ -93,25 +80,19 @@
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Users)" sap:VirtualizedContainerService.HintSize="340,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID" />
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users?$expand=OrganizationUnits&amp;{1}&quot;, in_Config(&quot;OrchestratorURL&quot;), ODataFilter)" />
-        </InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-        </OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users?$expand=OrganizationUnits&amp;{1}", in_Config("OrchestratorURL"), ODataFilter)]</InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved User" sap:VirtualizedContainerService.HintSize="340,1508" sap2010:WorkflowViewState.IdRef="ForEach`1_12" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
+    <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved User" sap:VirtualizedContainerService.HintSize="340,1494" sap2010:WorkflowViewState.IdRef="ForEach`1_12" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="njl:JObject">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="njl:JObject" Name="User" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Extract User Data" sap:VirtualizedContainerService.HintSize="304,1374" sap2010:WorkflowViewState.IdRef="Sequence_30">
+          <Sequence DisplayName="Extract User Data" sap:VirtualizedContainerService.HintSize="304,1360" sap2010:WorkflowViewState.IdRef="Sequence_30">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewUserRow" />
             </Sequence.Variables>
@@ -168,7 +149,7 @@
                 <InArgument x:TypeArguments="x:Object">[User("Surname")]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Email" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_30">
+            <Assign DisplayName="Assign Email" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_30">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewUserRow("Email")]</OutArgument>
               </Assign.To>
@@ -176,7 +157,7 @@
                 <InArgument x:TypeArguments="x:Object">[User("EmailAddress")]</InArgument>
               </Assign.Value>
             </Assign>
-            <If Condition="[User(&quot;OrganizationUnits&quot;).Children.Count &gt; 0]" DisplayName="If User Belongs to OUs" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_13">
+            <If Condition="[User(&quot;OrganizationUnits&quot;).Children.Count &gt; 0]" DisplayName="If User Belongs to OUs" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_13">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -214,7 +195,7 @@
                 </Sequence>
               </If.Then>
             </If>
-            <If Condition="[User(&quot;RolesList&quot;).AsJEnumerable.Count &gt; 0]" DisplayName="If User Has Roles" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_14">
+            <If Condition="[User(&quot;RolesList&quot;).AsJEnumerable.Count &gt; 0]" DisplayName="If User Has Roles" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_14">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -232,7 +213,7 @@
                 </Assign>
               </If.Then>
             </If>
-            <If Condition="[Convert.ToBoolean(User(&quot;IsActive&quot;))]" DisplayName="If User Is Active" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_15">
+            <If Condition="[Convert.ToBoolean(User(&quot;IsActive&quot;))]" DisplayName="If User Is Active" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_15">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -260,7 +241,7 @@
                 </Assign>
               </If.Else>
             </If>
-            <If Condition="[User(&quot;RobotProvision&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;RobotProvision&quot;).ToString)]" DisplayName="If User Has Associated Attended Robot" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_18">
+            <If Condition="[User(&quot;RobotProvision&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;RobotProvision&quot;).ToString)]" DisplayName="If User Has Associated Attended Robot" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_18">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -301,7 +282,7 @@
                 </Sequence>
               </If.Then>
             </If>
-            <If Condition="[User(&quot;UnattendedRobot&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;UnattendedRobot&quot;).ToString)]" DisplayName="If User Has Associated Unattended Robot" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_19">
+            <If Condition="[User(&quot;UnattendedRobot&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;UnattendedRobot&quot;).ToString)]" DisplayName="If User Has Associated Unattended Robot" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_19">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -334,7 +315,7 @@
                 </Sequence>
               </If.Then>
             </If>
-            <If Condition="[User(&quot;Domain&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;Domain&quot;).ToString)]" DisplayName="If User Has Domain" sap:VirtualizedContainerService.HintSize="262,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_20">
+            <If Condition="[User(&quot;Domain&quot;) IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(User(&quot;Domain&quot;).ToString)]" DisplayName="If User Has Domain" sap:VirtualizedContainerService.HintSize="262,51" sap2010:WorkflowViewState.IdRef="If_20">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -363,5 +344,18 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
+    <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_UsersData.PrimaryKey" sap:VirtualizedContainerService.HintSize="340,132" sap2010:WorkflowViewState.IdRef="Assign_42">
+      <Assign.To>
+        <OutArgument x:TypeArguments="sd:DataColumn[]">[out_UsersData.PrimaryKey]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="sd:DataColumn[]">[{out_UsersData.Columns("Type"), out_UsersData.Columns("Username")}]</InArgument>
+      </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </Assign>
   </Sequence>
 </Activity>

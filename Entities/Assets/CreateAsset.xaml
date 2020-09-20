@@ -40,7 +40,7 @@
   <this:CreateAsset.in_AssetIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateAsset.in_AssetIndex>
-  <sap:VirtualizedContainerService.HintSize>1343.33333333333,1568.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1343.33333333333,2390.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -97,14 +97,14 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create Asset with specified name, type, description and value. &#xA;Support text, boolean and integer Assets; credential Assets are covered by CreateCredentialAsset.xaml.&#xA;IDs of successfully created assets are added to the Assets configuration file (Assets.xlsx).&#xA;&#xA;Per Robot Assets are not supported." DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="556.666666666667,1504" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create Asset with specified name, type, description and value. &#xA;Support text, boolean and integer Assets; credential Assets are covered by CreateCredentialAsset.xaml.&#xA;IDs of successfully created assets are added to the Assets configuration file (Assets.xlsx).&#xA;&#xA;Per Robot Assets are not supported." DisplayName="Create Asset" sap:VirtualizedContainerService.HintSize="714.666666666667,2326" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.666666666667,1300" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="672.666666666667,2138.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
@@ -115,7 +115,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Asset" sap:VirtualizedContainerService.HintSize="476,1062" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Try to Create Asset" sap:VirtualizedContainerService.HintSize="634,1900.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
             <Variable x:TypeArguments="x:Int64" Name="AssetID" />
@@ -126,10 +126,10 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="434,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="592,908" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
@@ -173,7 +173,7 @@
                 </If.Else>
               </If>
             </Sequence>
-            <If Condition="[io_AssetsData.Select(String.Format(&quot;OUID = {0} AND AssetName = '{1}'&quot;, OUFolderID, in_AssetName)).Length &gt; 0]" DisplayName="If Asset Name Is Already Used" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_21">
+            <If Condition="[io_AssetsData.AsEnumerable().Where(Function(Row) Row.Field(Of Int64)(0) = OUFolderID AndAlso Row.Field(Of String)(1) = in_AssetName).Count() &gt; 0]" DisplayName="If Asset Name Is Already Used" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_21">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -185,7 +185,7 @@
               </If.Then>
             </If>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="592,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[in_AssetName]</InArgument>
@@ -195,7 +195,7 @@
               <OutArgument x:TypeArguments="x:Int64" x:Key="out_AssetID">[AssetID]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Asset ID)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_6" Visible="False">
+          <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Asset ID)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="592,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_6" Visible="False">
             <ui:ExcelApplicationScope.Body>
               <ActivityAction x:TypeArguments="ui:WorkbookApplication">
                 <ActivityAction.Argument>
@@ -211,7 +211,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:ExcelApplicationScope>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="434,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_32">
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="592,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_32">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewAssetRow" />
             </Sequence.Variables>

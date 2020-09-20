@@ -81,12 +81,12 @@
         <Throw DisplayName="Throw (Asset Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
       </If.Then>
     </If>
-    <If Condition="[in_AssetsData.Select(String.Format(&quot;OUID = {0} AND AssetName = '{1}'&quot;, in_OUFolderID, in_AssetName)).Length = 0]" DisplayName="If No Asset Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_16">
+    <If Condition="[in_AssetsData.AsEnumerable.Where(Function(Row) Row(&quot;OUID&quot;).ToString = in_OUFolderID AndAlso Row(&quot;AssetName&quot;).ToString = in_AssetName).Count() = 0]" DisplayName="If No Asset Found With Specified Name" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_16">
       <If.Then>
         <Throw DisplayName="Throw (Asset Not Found)" Exception="[New ArgumentException(in_Config(&quot;AssetNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_11" />
       </If.Then>
     </If>
-    <If Condition="[in_AssetsData.Select(String.Format(&quot;OUID = {0} AND AssetName = '{1}'&quot;, in_OUFolderID, in_AssetName)).First()(&quot;AssetID&quot;).ToString &lt;&gt; in_AssetID]" DisplayName="If the Asset ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_15">
+    <If Condition="[in_AssetsData.AsEnumerable.Where(Function(Row) Row(&quot;OUID&quot;).ToString = in_OUFolderID AndAlso Row(&quot;AssetName&quot;).ToString = in_AssetName).First()(&quot;AssetID&quot;).ToString &lt;&gt; in_AssetID]" DisplayName="If the Asset ID Retrieved by the Name Matches the Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_15">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
