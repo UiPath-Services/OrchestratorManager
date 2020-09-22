@@ -14,7 +14,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1282,2666</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1282,3000</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -77,7 +77,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Assets.&#xA;&#xA;Due to names of columns in the Excel sheets varying depending on the language, use the column index to access it." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="560,2601" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Assets.&#xA;&#xA;Due to names of columns in the Excel sheets varying depending on the language, use the column index to access it." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="650,2935" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -87,7 +87,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Asset Manager)" sap:VirtualizedContainerService.HintSize="518,51" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_9" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;AssetConfigFilePath&quot;))]">
+    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Asset Manager)" sap:VirtualizedContainerService.HintSize="608,51" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_9" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;AssetConfigFilePath&quot;))]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -102,7 +102,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation]" sap:VirtualizedContainerService.HintSize="518,2346" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Asset Operation)" Expression="[in_AssetOperation]" sap:VirtualizedContainerService.HintSize="608,2695" sap2010:WorkflowViewState.IdRef="Switch`1_1">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_12">
           <sap:WorkflowViewStateService.ViewState>
@@ -283,12 +283,8 @@
         </Assign>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="526,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
-              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedAssetsDetails.Count()" />
-            </InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UnprocessedAssetsDetails.Count()]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
         <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows" sap:VirtualizedContainerService.HintSize="526,1024" sap2010:WorkflowViewState.IdRef="Sequence_14">
@@ -300,18 +296,10 @@
           </sap:WorkflowViewStateService.ViewState>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unique names of Folders (OUs) specified in the sheet." DisplayName="Invoke GetOUFolderData Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="484,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-                <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-              </InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedAssetsDetails.Select(Function(Row) Row(0).ToString).Distinct().Where(Function(Name) Not String.IsNullOrWhiteSpace(Name)).ToArray" />
-              </InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">
-                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-              </OutArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedAssetsDetails.Select(Function(Row) Row(0).ToString).Distinct().Where(Function(Name) Not String.IsNullOrWhiteSpace(Name)).ToArray]</InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -331,21 +319,11 @@
             <If.Then>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unique names of Robots specified in the sheet." DisplayName="Invoke GetRobotsData Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_41" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
-                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
-                  </OutArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;robot&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[RobotsData]</OutArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = "robot" AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray]</InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
                   <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
                 </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
@@ -360,18 +338,10 @@
             <If.Then>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unique usernames of User specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_42" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
-                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
-                  </OutArgument>
-                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;user&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = "user" AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -388,7 +358,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetDetails" />
               </ActivityAction.Argument>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities/Assets/CreateAsset.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities/Assets/CreateAsset.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
                   <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                   <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
@@ -397,6 +367,7 @@
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[AssetDetails(1).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[AssetDetails(4).ToString]</InArgument>
                   <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[AssetDetails(5).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">[String.Empty]</InArgument>
                   <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
                   <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">[AssetsData]</InOutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
@@ -415,16 +386,35 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow[]" Name="AssetPerRobotUserDetails" />
               </ActivityAction.Argument>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetPerRobotUser Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_40" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetPerRobotUser.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetPerRobotUser Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_40" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetPerRobotUser.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
-                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">[AssetsData]</InOutArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[RobotsData]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsDetails">[AssetsDetails]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetsPerRobotUserDetails">[AssetPerRobotUserDetails]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="AssetsData" />
+                  </InOutArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsDetails">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="AssetsDetails" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetsPerRobotUserDetails">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataRow[]" ExpressionText="AssetPerRobotUserDetails" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="AssetPerRobotUserDetails.First().Field(Of String)(4)" />
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
@@ -436,13 +426,15 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="createcredential" DisplayName="Create Credential" sap:VirtualizedContainerService.HintSize="478,2030" sap2010:WorkflowViewState.IdRef="Sequence_10">
+      <Sequence x:Key="createcredential" DisplayName="Create Credential" sap:VirtualizedContainerService.HintSize="568,2379" sap2010:WorkflowViewState.IdRef="Sequence_10">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
           <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
           <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedCredentialAssetsDetails" />
+          <Variable x:TypeArguments="sd:DataTable" Name="RobotsData" />
+          <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -450,8 +442,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Create Credential)" sap:VirtualizedContainerService.HintSize="436,91" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;CreateCredentialOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create Credential)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="436,168" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Create Credential)" sap:VirtualizedContainerService.HintSize="526,91" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;CreateCredentialOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create Credential)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="526,168" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -473,7 +465,7 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column and that specify a value for the Scope column." DisplayName="Assign UnprocessedAssetDetails (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="436,117" sap2010:WorkflowViewState.IdRef="Assign_5">
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column and that specify a value for the Scope column." DisplayName="Assign UnprocessedAssetDetails (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="526,117" sap2010:WorkflowViewState.IdRef="Assign_5">
           <Assign.To>
             <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedCredentialAssetsDetails]</OutArgument>
           </Assign.To>
@@ -486,37 +478,25 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </Assign>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="436,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="526,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
-              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedCredentialAssetsDetails.Count()" />
-            </InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UnprocessedCredentialAssetsDetails.Count()]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows" sap:VirtualizedContainerService.HintSize="436,379" sap2010:WorkflowViewState.IdRef="Sequence_15">
+        <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows" sap:VirtualizedContainerService.HintSize="526,1013" sap2010:WorkflowViewState.IdRef="Sequence_15">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders (OUs) specified in the sheet." DisplayName="Invoke GetOUFolderData Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="334,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders (OUs) specified in the sheet." DisplayName="Invoke GetOUFolderData Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="484,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-                <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
-              </InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedCredentialAssetsDetails.Select(Function(Row) Row.Field(Of String)(0)).Distinct().Where(Function(Name) Not String.IsNullOrWhiteSpace(Name)).ToArray" />
-              </InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">
-                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-              </OutArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedCredentialAssetsDetails.Select(Function(Row) Row.Field(Of String)(0)).Distinct().Where(Function(Name) Not String.IsNullOrWhiteSpace(Name)).ToArray]</InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -524,7 +504,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_30" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_30" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[AssetsData]</OutArgument>
@@ -532,42 +512,79 @@
               <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
+          <If Condition="[UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;robot&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Count() &gt; 0]" DisplayName="If Create Assets per Robot" sap:VirtualizedContainerService.HintSize="484,277" sap2010:WorkflowViewState.IdRef="If_13">
+            <If.Then>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unique names of Robots specified in the sheet." DisplayName="Invoke GetRobotsData Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_45" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;robot&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </If.Then>
+          </If>
+          <If Condition="[UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;user&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Count() &gt; 0]" DisplayName="If Create Assets per User" sap:VirtualizedContainerService.HintSize="484,277" sap2010:WorkflowViewState.IdRef="If_14">
+            <If.Then>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unique usernames of User specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_46" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(Of String)(2).ToLowerInvariant = &quot;user&quot; AndAlso Not String.IsNullOrWhiteSpace(Row.Field(Of String)(3))).Select(Function(Row) Row.Field(Of String)(3)).Distinct().ToArray" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </If.Then>
+          </If>
         </Sequence>
-        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unprocessed rows that define global credential Assets." DisplayName="For Each Global Credential Asset" sap:VirtualizedContainerService.HintSize="436,263" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(of String)(2).ToLowerInvariant = &quot;global&quot;)]">
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unprocessed rows that define global credential Assets." DisplayName="For Each Global Credential Asset" sap:VirtualizedContainerService.HintSize="526,263" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[UnprocessedCredentialAssetsDetails.Where(Function(Row) Row.Field(of String)(2).ToLowerInvariant = &quot;global&quot;)]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CredentialAssetDetails" />
               </ActivityAction.Argument>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateCredentialAsset Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_43" UnSafe="False" WorkflowFileName="Entities/Assets/CreateCredentialAsset.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_43" UnSafe="False" WorkflowFileName="Entities/Assets/CreateAsset.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">
-                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="AssetsDetails.Rows.IndexOf(CredentialAssetDetails)" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CredentialAssetDetails(0).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CredentialAssetDetails(1).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_CredentialUsername">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CredentialAssetDetails(4).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_CredentialPassword">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CredentialAssetDetails(5).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="AssetsData" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_AssetIndex">[AssetsDetails.Rows.IndexOf(CredentialAssetDetails)]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_OUFolderName">[CredentialAssetDetails(0).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[CredentialAssetDetails(1).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">Credential</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[CredentialAssetDetails(4).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">[CredentialAssetDetails(5).ToString]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">[AssetsData]</InOutArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
@@ -578,12 +595,43 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEach>
-        <ui:ForEach x:TypeArguments="sd:DataRow[]" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unprocessed rows that define credential Assets per Robot or per User.&#xA;&#xA;Group rows referring to different values of a single Asset per Robot or per User and make a single HTTP request to create it." DisplayName="For Each Credential Asset Per Robot/User" sap:VirtualizedContainerService.HintSize="436,296" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[UnprocessedCredentialAssetsDetails.Where(Function(Row) {&quot;user&quot;, &quot;robot&quot;}.Contains(Row.Field(Of String)(2).ToLowerInvariant)).GroupBy(Function(Row) New With {Key .Folder = Row.Field(Of String)(0), Key .Asset = Row.Field(Of String)(1)}).Select(Function(PerRobotUserRows) PerRobotUserRows.Select(Function(Row) Row).ToArray()).ToArray()]">
+        <ui:ForEach x:TypeArguments="sd:DataRow[]" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider only unprocessed rows that define credential Assets per Robot or per User.&#xA;&#xA;Group rows referring to different values of a single Asset per Robot or per User and make a single HTTP request to create it." DisplayName="For Each Credential Asset Per Robot/User" sap:VirtualizedContainerService.HintSize="526,308" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[UnprocessedCredentialAssetsDetails.Where(Function(Row) {&quot;user&quot;, &quot;robot&quot;}.Contains(Row.Field(Of String)(2).ToLowerInvariant)).GroupBy(Function(Row) New With {Key .Folder = Row.Field(Of String)(0), Key .Asset = Row.Field(Of String)(1)}).Select(Function(PerRobotUserRows) PerRobotUserRows.Select(Function(Row) Row).ToArray()).ToArray()]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow[]">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow[]" Name="CredentialAssetPerRobotUserDetails" />
               </ActivityAction.Argument>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetPerRobotUser Workflow (Create Credential Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_44" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetPerRobotUser.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="AssetsData" />
+                  </InOutArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RobotsData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsDetails">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="AssetsDetails" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetsPerRobotUserDetails">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataRow[]" ExpressionText="CredentialAssetPerRobotUserDetails" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">
+                    <Literal x:TypeArguments="x:String">Credential</Literal>
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
           </ui:ForEach.Body>
           <sap:WorkflowViewStateService.ViewState>
@@ -592,29 +640,6 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ForEach>
-        <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="436,257" sap2010:WorkflowViewState.IdRef="CommentOut_2">
-          <ui:CommentOut.Body>
-            <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,179" sap2010:WorkflowViewState.IdRef="Sequence_23">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetPerRobotUser Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_44" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetPerRobotUser.xaml">
-                <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
-                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_AssetsData">[AssetsData]</InOutArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[RobotsData]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsDetails">[AssetsDetails]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetsPerRobotUserDetails">[CredentialAssetPerRobotUserDetails]</InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
-                </ui:InvokeWorkflowFile.Arguments>
-              </ui:InvokeWorkflowFile>
-            </Sequence>
-          </ui:CommentOut.Body>
-        </ui:CommentOut>
       </Sequence>
       <Sequence x:Key="edit" DisplayName="Edit" sap:VirtualizedContainerService.HintSize="673,1511" sap2010:WorkflowViewState.IdRef="Sequence_7">
         <Sequence.Variables>
