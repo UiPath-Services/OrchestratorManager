@@ -1,16 +1,17 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="CreateAssetRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="CreateAssetRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_OUFolderID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_AssetName" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_AssetType" Type="InArgument(x:String)" />
-    <x:Property Name="in_AssetValue" Type="InArgument(x:String)" />
     <x:Property Name="out_AssetID" Type="OutArgument(x:Int64)" />
+    <x:Property Name="in_AssetPassword" Type="InArgument(x:String)" />
+    <x:Property Name="in_AssetValue" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>703.333333333333,1674.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1282,856</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateAssetRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="48">
@@ -42,7 +43,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -63,6 +64,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -70,7 +72,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Asset." DisplayName="Create Asset Request" sap:VirtualizedContainerService.HintSize="592,1610" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Asset." DisplayName="Create Asset Request" sap:VirtualizedContainerService.HintSize="376,422" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -81,14 +83,14 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="550,1251.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_OUFolderID = 0]" DisplayName="If OU/Folder ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="508,259.333333333333" sap2010:WorkflowViewState.IdRef="If_9">
+      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_OUFolderID = 0]" DisplayName="If OU/Folder ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="507,250" sap2010:WorkflowViewState.IdRef="If_9">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -100,7 +102,7 @@
           <Throw DisplayName="Throw (OU/Folder ID Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_10" />
         </If.Then>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_AssetName)]" DisplayName="If Asset Name Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
+      <If Condition="[String.IsNullOrWhiteSpace(in_AssetName)]" DisplayName="If Asset Name Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_3">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -111,7 +113,7 @@
           <Throw DisplayName="Throw (Asset Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
         </If.Then>
         <If.Else>
-          <Assign DisplayName="Assign Asset Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign DisplayName="Assign Asset Name" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
             </Assign.To>
@@ -121,7 +123,7 @@
           </Assign>
         </If.Else>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_AssetType)]" DisplayName="If Asset Type Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_5">
+      <If Condition="[String.IsNullOrWhiteSpace(in_AssetType)]" DisplayName="If Asset Type Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_5">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -132,7 +134,7 @@
           <Throw DisplayName="Throw (Asset Type Not Specified)" Exception="[New ArgumentException(in_Config(&quot;TypeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
         </If.Then>
         <If.Else>
-          <Assign DisplayName="Assign Asset Value Type" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign DisplayName="Assign Asset Value Type" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueType")]</OutArgument>
             </Assign.To>
@@ -142,7 +144,7 @@
           </Assign>
         </If.Else>
       </If>
-      <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="508,246" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+      <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[in_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="507,339" sap2010:WorkflowViewState.IdRef="Switch`1_1">
         <Switch.Default>
           <Throw DisplayName="Throw (Unsupported Type)" Exception="[New ArgumentException(in_Config(&quot;UnsupportedAssetType&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
         </Switch.Default>
@@ -153,7 +155,7 @@
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <Assign x:Key="text" DisplayName="Assign RequestBody(&quot;StringValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+        <Assign x:Key="text" DisplayName="Assign RequestBody(&quot;StringValue&quot;)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
           <Assign.To>
             <OutArgument x:TypeArguments="x:Object">[RequestBody("StringValue")]</OutArgument>
           </Assign.To>
@@ -161,12 +163,12 @@
             <InArgument x:TypeArguments="x:Object">[in_AssetValue]</InArgument>
           </Assign.Value>
         </Assign>
-        <If x:Key="bool" Condition="[String.IsNullOrWhiteSpace(in_AssetValue) OrElse Not Boolean.TryParse(in_AssetValue, Nothing)]" DisplayName="If Value Is a Valid Boolean" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_6">
+        <If x:Key="bool" Condition="[String.IsNullOrWhiteSpace(in_AssetValue) OrElse Not Boolean.TryParse(in_AssetValue, Nothing)]" DisplayName="If Value Is a Valid Boolean" sap:VirtualizedContainerService.HintSize="507,210" sap2010:WorkflowViewState.IdRef="If_6">
           <If.Then>
             <Throw DisplayName="Throw (Invalid Boolean Value)" Exception="[New ArgumentException(in_Config(&quot;InvalidAssetValue&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
           </If.Then>
           <If.Else>
-            <Assign DisplayName="Assign RequestBody(&quot;BoolValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+            <Assign DisplayName="Assign RequestBody(&quot;BoolValue&quot;)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_5">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[RequestBody("BoolValue")]</OutArgument>
               </Assign.To>
@@ -176,12 +178,12 @@
             </Assign>
           </If.Else>
         </If>
-        <If x:Key="integer" Condition="[String.IsNullOrWhiteSpace(in_AssetValue) OrElse Not Int32.TryParse(in_AssetValue, Nothing)]" DisplayName="If Value Is a Valid Integer" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_7">
+        <If x:Key="integer" Condition="[String.IsNullOrWhiteSpace(in_AssetValue) OrElse Not Int32.TryParse(in_AssetValue, Nothing)]" DisplayName="If Value Is a Valid Integer" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_7">
           <If.Then>
             <Throw DisplayName="Throw (Invalid Integer Value)" Exception="[New ArgumentException(in_Config(&quot;InvalidAssetValue&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_7" />
           </If.Then>
           <If.Else>
-            <Assign DisplayName="Assign RequestBody(&quot;IntValue&quot;)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+            <Assign DisplayName="Assign RequestBody(&quot;IntValue&quot;)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[RequestBody("IntValue")]</OutArgument>
               </Assign.To>
@@ -191,62 +193,32 @@
             </Assign>
           </If.Else>
         </If>
-        <Sequence x:Key="credential" sap2010:Annotation.AnnotationText="Credential Assets have two values, username and password, which are concatenated into one during retrieval. This step separates them into two separate variables.&#xA;Usernames or passwords including new line separators (\r\n for non-Unix platforms) are not supported." DisplayName="Credential Asset" sap:VirtualizedContainerService.HintSize="591.333333333333,684.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="s:String[]" Name="SplitCredentialAsset" />
-          </Sequence.Variables>
+        <Sequence x:Key="credential" sap2010:Annotation.AnnotationText="IN the case of credential Assets, the username is passed as the in_AssetValue argument, and the password is passed as in_AssetPassword." DisplayName="Credential Asset" sap:VirtualizedContainerService.HintSize="304,309" sap2010:WorkflowViewState.IdRef="Sequence_5">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign SplitCredentialAsset" sap:VirtualizedContainerService.HintSize="550,62" sap2010:WorkflowViewState.IdRef="Assign_9">
+          <Assign DisplayName="Assign Credential Username" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_10">
             <Assign.To>
-              <OutArgument x:TypeArguments="s:String[]">[SplitCredentialAsset]</OutArgument>
+              <OutArgument x:TypeArguments="x:Object">[RequestBody("CredentialUsername")]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="s:String[]">[in_AssetValue.Split({Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)]</InArgument>
+              <InArgument x:TypeArguments="x:Object">[in_AssetValue]</InArgument>
             </Assign.Value>
           </Assign>
-          <If sap2010:Annotation.AnnotationText="Check whether the initial value could be split into username and password." Condition="[SplitCredentialAsset.Length = 2]" DisplayName="If Credential Asset Was Correctly Parsed" sap:VirtualizedContainerService.HintSize="550,438.666666666667" sap2010:WorkflowViewState.IdRef="If_8">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <If.Then>
-              <Sequence DisplayName="Initialize Credential Fields" sap:VirtualizedContainerService.HintSize="304,254" sap2010:WorkflowViewState.IdRef="Sequence_6">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <Assign DisplayName="Assign Credential Username" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_10">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Object">[RequestBody("CredentialUsername")]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Object">[SplitCredentialAsset(0)]</InArgument>
-                  </Assign.Value>
-                </Assign>
-                <Assign DisplayName="Assign Credential Password" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_11">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Object">[RequestBody("CredentialPassword")]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Object">[SplitCredentialAsset(1)]</InArgument>
-                  </Assign.Value>
-                </Assign>
-              </Sequence>
-            </If.Then>
-            <If.Else>
-              <Throw DisplayName="Throw (Credential Asset Parsing Failure)" Exception="[New Exception(in_Config(&quot;CredentialAssetParsingFailure&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
-            </If.Else>
-          </If>
+          <Assign DisplayName="Assign Credential Password" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_11">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[RequestBody("CredentialPassword")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">[in_AssetPassword]</InArgument>
+            </Assign.Value>
+          </Assign>
         </Sequence>
       </Switch>
-      <Assign DisplayName="Assign Value Scope" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+      <Assign DisplayName="Assign Value Scope" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_7">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Object">[RequestBody("ValueScope")]</OutArgument>
         </Assign.To>
@@ -255,7 +227,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="550,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Asset)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
@@ -267,7 +239,7 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Sequence DisplayName="Extract and Output Asset ID" sap:VirtualizedContainerService.HintSize="550,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Extract and Output Asset ID" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <Sequence.Variables>
         <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
       </Sequence.Variables>
