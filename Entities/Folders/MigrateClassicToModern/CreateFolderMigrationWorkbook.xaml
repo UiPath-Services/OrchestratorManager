@@ -18,10 +18,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1282,2367.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1281.33333333333,2334</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateFolderMigrationWorkbook_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="23">
+    <scg:List x:TypeArguments="x:String" Capacity="46">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -45,10 +45,12 @@
       <x:String>System.Windows.Markup</x:String>
       <x:String>UiPath.Excel</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -69,9 +71,11 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create a workbook for migration of Folder based on a template and populate sheets with data about entities in that Folder, such as Environments, Assets and Queues." DisplayName="Create Folder Migration Workbook" sap:VirtualizedContainerService.HintSize="426,2302.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Create a workbook for migration of Folder based on a template and populate sheets with data about entities in that Folder, such as Environments, Assets and Queues." DisplayName="Create Folder Migration Workbook" sap:VirtualizedContainerService.HintSize="426,2269.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -113,34 +117,6 @@
         </sap:WorkflowViewStateService.ViewState>
       </ui:FilterDataTable>
       <ui:WriteRange AddHeaders="False" DataTable="[in_ProcessesData]" DisplayName="Write Range (Processes)" sap:VirtualizedContainerService.HintSize="334,114.666666666667" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="[in_Config(&quot;Processes&quot;)]" StartingCell="A2" WorkbookPath="[in_FolderMigrationWorkbookFilePath]" />
-    </Sequence>
-    <Sequence DisplayName="Populate Assets Sheet" sap:VirtualizedContainerService.HintSize="384,384" sap2010:WorkflowViewState.IdRef="Sequence_6">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <ui:FilterDataTable sap2010:Annotation.AnnotationText="Select only columns Folder Name (OUName) and Asset Name.&#xA;Remove Credential Assets since they cannot be migrated since the API does not expose passwords." DataTable="[in_AssetsData]" DisplayName="Filter Data Table (Assets)" FilterRowsMode="Remove" sap:VirtualizedContainerService.HintSize="334,137.333333333333" sap2010:WorkflowViewState.IdRef="FilterDataTable_2" OutputDataTable="[in_AssetsData]" SelectColumnsMode="Keep">
-        <ui:FilterDataTable.Filters>
-          <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
-            <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
-          </scg:List>
-        </ui:FilterDataTable.Filters>
-        <ui:FilterDataTable.SelectColumns>
-          <scg:List x:TypeArguments="InArgument" Capacity="4">
-            <InArgument x:TypeArguments="x:String">["OUName"]</InArgument>
-            <InArgument x:TypeArguments="x:String">["AssetName"]</InArgument>
-            <InArgument x:TypeArguments="x:String">["Type"]</InArgument>
-          </scg:List>
-        </ui:FilterDataTable.SelectColumns>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </ui:FilterDataTable>
-      <ui:WriteRange AddHeaders="False" DataTable="[in_AssetsData]" DisplayName="Write Range (Assets)" sap:VirtualizedContainerService.HintSize="334,114.666666666667" sap2010:WorkflowViewState.IdRef="WriteRange_2" SheetName="[in_Config(&quot;Assets&quot;)]" StartingCell="A2" WorkbookPath="[in_FolderMigrationWorkbookFilePath]" />
     </Sequence>
     <Sequence DisplayName="Populate Queues Sheet" sap:VirtualizedContainerService.HintSize="384,350.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
       <sap:WorkflowViewStateService.ViewState>
@@ -222,6 +198,35 @@
         </sap:WorkflowViewStateService.ViewState>
       </ui:FilterDataTable>
       <ui:WriteRange AddHeaders="False" DataTable="[in_RobotsData]" DisplayName="Write Range (Robots)" sap:VirtualizedContainerService.HintSize="334,114.666666666667" sap2010:WorkflowViewState.IdRef="WriteRange_6" SheetName="[in_Config(&quot;Robots&quot;)]" StartingCell="A2" WorkbookPath="[in_FolderMigrationWorkbookFilePath]" />
+    </Sequence>
+    <Sequence DisplayName="Populate Assets Sheet" sap:VirtualizedContainerService.HintSize="384,350.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ui:FilterDataTable sap2010:Annotation.AnnotationText="Select only columns Folder Name (OUName), Asset Name, Asset Type and Asset Scope." DataTable="[in_AssetsData]" DisplayName="Filter Data Table (Assets)" FilterRowsMode="Remove" sap:VirtualizedContainerService.HintSize="334,104" sap2010:WorkflowViewState.IdRef="FilterDataTable_8" OutputDataTable="[in_AssetsData]" SelectColumnsMode="Keep">
+        <ui:FilterDataTable.Filters>
+          <scg:List x:TypeArguments="ui:FilterOperationArgument" Capacity="4">
+            <ui:FilterOperationArgument Column="{x:Null}" Operand="{x:Null}" BooleanOperator="And" Operator="LT" />
+          </scg:List>
+        </ui:FilterDataTable.Filters>
+        <ui:FilterDataTable.SelectColumns>
+          <scg:List x:TypeArguments="InArgument" Capacity="4">
+            <InArgument x:TypeArguments="x:String">["OUName"]</InArgument>
+            <InArgument x:TypeArguments="x:String">["AssetName"]</InArgument>
+            <InArgument x:TypeArguments="x:String">["Type"]</InArgument>
+            <InArgument x:TypeArguments="x:String">["Scope"]</InArgument>
+          </scg:List>
+        </ui:FilterDataTable.SelectColumns>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:FilterDataTable>
+      <ui:WriteRange AddHeaders="False" DataTable="[in_AssetsData]" DisplayName="Write Range (Assets)" sap:VirtualizedContainerService.HintSize="334,114.666666666667" sap2010:WorkflowViewState.IdRef="WriteRange_7" SheetName="[in_Config(&quot;Assets&quot;)]" StartingCell="A2" WorkbookPath="[in_FolderMigrationWorkbookFilePath]" />
     </Sequence>
   </Sequence>
 </Activity>
