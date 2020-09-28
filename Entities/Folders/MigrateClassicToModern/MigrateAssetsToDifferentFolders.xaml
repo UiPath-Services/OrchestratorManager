@@ -5,14 +5,15 @@
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_FolderMigrationWorkbook" Type="InArgument(ui:WorkbookApplication)" />
     <x:Property Name="io_MigrationExceptionsOccurred" Type="InOutArgument(x:Boolean)" />
+    <x:Property Name="in_ClassicFolderRobotsData" Type="InArgument(sd:DataTable)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1281.33333333333,2022.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1322,2430.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateAssetsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="46">
+    <scg:List x:TypeArguments="x:String" Capacity="52">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -39,10 +40,12 @@
       <x:String>System.Activities.DynamicUpdate</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="38">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="21">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -65,10 +68,11 @@
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets to the specified Modern Folders." DisplayName="Migrate Assets to Different Folders" sap:VirtualizedContainerService.HintSize="739.333333333333,1958" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets to the specified Modern Folders.&#xA;&#xA;Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- AssetMigrationDetails(0) refers to Classic Folder name&#xA;- AssetMigrationDetails(1) refers to Asset name&#xA;- AssetMigrationDetails(2) refers to Asset scope&#xA;- AssetMigrationDetails(3) refers to Robot's name (in case of Asset per Robot)&#xA;- AssetMigrationDetails(4) refers to Asset type&#xA;- AssetMigrationDetails(5) refers to Modern Folder name&#xA;- AssetMigrationDetails(6) refers to Result" DisplayName="Migrate Assets to Different Folders" sap:VirtualizedContainerService.HintSize="517.333333333333,2366" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="AssetsMigrationDetails" />
       <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedAssetDetails" />
+      <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -76,7 +80,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Assets)" ExistingWorkbook="[in_FolderMigrationWorkbook]" sap:VirtualizedContainerService.HintSize="697.333333333333,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
+    <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Assets)" ExistingWorkbook="[in_FolderMigrationWorkbook]" sap:VirtualizedContainerService.HintSize="475.333333333333,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -98,12 +102,12 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column and that specify a value for the Modern Folder Name column." DisplayName="Assign UnprocessedAssetDetails" sap:VirtualizedContainerService.HintSize="697.333333333333,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_7">
+    <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column and that specify a value for the Modern Folder Name column." DisplayName="Assign UnprocessedAssetDetails" sap:VirtualizedContainerService.HintSize="475.333333333333,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_7">
       <Assign.To>
         <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedAssetDetails]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="sd:DataRow[]">[AssetsMigrationDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(5).ToString) AndAlso Not String.IsNullOrWhiteSpace(Row(4).ToString)).ToArray()]</InArgument>
+        <InArgument x:TypeArguments="sd:DataRow[]">[AssetsMigrationDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(6).ToString) AndAlso Not String.IsNullOrWhiteSpace(Row(5).ToString)).ToArray()]</InArgument>
       </Assign.Value>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -111,13 +115,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- AssetMigrationDetails(0) refers to Classic Folder name&#xA;- AssetMigrationDetails(1) refers to Asset name&#xA;- AssetMigrationDetails(2) refers to Asset type&#xD;&#xA;- AssetMigrationDetails(3) refers to Asset scope&#xA;- AssetMigrationDetails(4) refers to Modern Folder name&#xA;- AssetMigrationDetails(5) refers to Result" DisplayName="For Each Asset" sap:VirtualizedContainerService.HintSize="697.333333333333,1447.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[UnprocessedAssetDetails]">
+    <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Global Asset" sap:VirtualizedContainerService.HintSize="475.333333333333,922.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[UnprocessedAssetDetails.Where(Function(Row) Row(2).ToString.ToLowerInvariant = &quot;global&quot;)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="sd:DataRow">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetMigrationDetails" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets to interfer with each other." DisplayName="Try Catch (Migrate Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="660.666666666667,1180" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different global Assets to interfer with each other." DisplayName="Try Catch (Migrate Global Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="438.666666666667,784" sap2010:WorkflowViewState.IdRef="TryCatch_2">
             <TryCatch.Variables>
               <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
             </TryCatch.Variables>
@@ -129,7 +133,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence DisplayName="Try to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="622,911.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+              <Sequence DisplayName="Try to Create Global Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,515.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="x:Int64" Name="ModernFolderID" />
                   <Variable x:TypeArguments="x:Int64" Name="ClassicFolderID" />
@@ -141,7 +145,7 @@
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Sequence DisplayName="Validate Folders" sap:VirtualizedContainerService.HintSize="580,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <Sequence DisplayName="Validate Folders" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -169,7 +173,7 @@
                       </Assign>
                     </If.Else>
                   </If>
-                  <If Condition="[in_FoldersData.Rows.Find({AssetMigrationDetails(4).ToString}) Is Nothing]" DisplayName="If Specified Modern Folder Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
+                  <If Condition="[in_FoldersData.Rows.Find({AssetMigrationDetails(5).ToString}) Is Nothing]" DisplayName="If Specified Modern Folder Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -177,7 +181,7 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                     <If.Then>
-                      <Throw DisplayName="Throw (Modern Folder Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedFolderNotFound&quot;), AssetMigrationDetails(3).ToString))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                      <Throw DisplayName="Throw (Modern Folder Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedFolderNotFound&quot;), AssetMigrationDetails(5).ToString))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
                     </If.Then>
                     <If.Else>
                       <Assign DisplayName="Assign ModernFolderID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
@@ -185,16 +189,16 @@
                           <OutArgument x:TypeArguments="x:Int64">[ModernFolderID]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_FoldersData.Rows.Find({AssetMigrationDetails(4)})("ID"))]</InArgument>
+                          <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_FoldersData.Rows.Find({AssetMigrationDetails(5)})("ID"))]</InArgument>
                         </Assign.Value>
                       </Assign>
                     </If.Else>
                   </If>
                 </Sequence>
-                <If Condition="[in_ClassicFolderAssetsData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row(&quot;OUID&quot;)) = ClassicFolderID AndAlso Row(&quot;AssetName&quot;).ToString = AssetMigrationDetails(1).ToString).Count() = 0]" DisplayName="If Asset Exists in Classic Folder" sap:VirtualizedContainerService.HintSize="580,294.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+                <If Condition="[in_ClassicFolderAssetsData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row(&quot;OUID&quot;)) = ClassicFolderID AndAlso Row(&quot;AssetName&quot;).ToString = AssetMigrationDetails(1).ToString).Count() = 0]" DisplayName="If Global Asset Exists in Classic Folder" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_4">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
@@ -217,41 +221,22 @@
                     </Assign>
                   </If.Else>
                 </If>
-                <ui:LogMessage DisplayName="Log Message (Migrate Asset)" sap:VirtualizedContainerService.HintSize="580,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateAsset&quot;), ClassicFolderAsset(&quot;AssetName&quot;).ToString)]" />
-                <If Condition="[AssetMigrationDetails(3).ToString.ToLowerInvariant = &quot;global&quot;]" DisplayName="If Global Asset" sap:VirtualizedContainerService.HintSize="580,240.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
-                  <If.Then>
-                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                        </InArgument>
-                        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-                          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="ModernFolderID" />
-                        </InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">
-                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ClassicFolderAsset(&quot;AssetName&quot;).ToString" />
-                        </InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">
-                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ClassicFolderAsset(&quot;Type&quot;).ToString" />
-                        </InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">
-                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ClassicFolderAsset(&quot;Value&quot;).ToString" />
-                        </InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">
-                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ClassicFolderAsset(&quot;Password&quot;).ToString" />
-                        </InArgument>
-                        <OutArgument x:TypeArguments="x:Int64" x:Key="out_AssetID" />
-                      </ui:InvokeWorkflowFile.Arguments>
-                    </ui:InvokeWorkflowFile>
-                  </If.Then>
-                  <If.Else>
-                    <Throw Exception="[New Exception(&quot;Migration of Assets per Robot not implemented yet.&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
-                  </If.Else>
-                </If>
+                <ui:LogMessage DisplayName="Log Message (Migrate Global Asset)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateAsset&quot;), ClassicFolderAsset(&quot;AssetName&quot;).ToString)]" />
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow (Global Asset)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[ModernFolderID]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[ClassicFolderAsset("AssetName").ToString]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[ClassicFolderAsset("Type").ToString]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[ClassicFolderAsset("Value").ToString]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">[ClassicFolderAsset("Password").ToString]</InArgument>
+                    <OutArgument x:TypeArguments="x:Int64" x:Key="out_AssetID" />
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
               </Sequence>
             </TryCatch.Try>
             <TryCatch.Catches>
-              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="626.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -262,7 +247,7 @@
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Failed to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,390.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Sequence DisplayName="Failed to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,388" sap2010:WorkflowViewState.IdRef="Sequence_6">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -303,7 +288,120 @@
                     <ActivityAction.Argument>
                       <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                     </ActivityAction.Argument>
-                    <ui:ExcelWriteCell Cell="[&quot;F&quot;+(2+AssetsMigrationDetails.Rows.IndexOf(AssetMigrationDetails)).ToString]" DisplayName="Write Cell (Migrate Asset Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_Config(&quot;Assets&quot;)]" Text="[OperationResult]" />
+                    <ui:ExcelWriteCell Cell="[&quot;G&quot;+(2+AssetsMigrationDetails.Rows.IndexOf(AssetMigrationDetails)).ToString]" DisplayName="Write Cell (Migrate Asset Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_Config(&quot;Assets&quot;)]" Text="[OperationResult]" />
+                  </ActivityAction>
+                </ui:ExcelApplicationScope.Body>
+              </ui:ExcelApplicationScope>
+            </TryCatch.Finally>
+          </TryCatch>
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Users is used when searching for Users that will have values of Assets per Robot." DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="475.333333333333,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:InvokeWorkflowFile>
+    <ui:ForEach x:TypeArguments="sd:DataRow[]" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Assets per Robot, which are migrated to Modern Folder as Asset per User.&#xA;Group rows referring to different values of a single Asset per Robot and make a single HTTP request to create it." DisplayName="For Each Asset Per Robot" sap:VirtualizedContainerService.HintSize="475.333333333333,572.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[UnprocessedAssetDetails.Where(Function(Row) Row(2).ToString.ToLowerInvariant = &quot;robot&quot;).GroupBy(Function(Row) New With {Key.ClassicFolder = Row(0).ToString, Key.Asset = Row(1).ToString, Key.ModernFolder = Row(5).ToString}).Select(Function(PerRobotRows) PerRobotRows.Select(Function(Row) Row).ToArray()).ToArray()]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="sd:DataRow[]">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="sd:DataRow[]" Name="AssetPerRobotMigrationDetails" />
+          </ActivityAction.Argument>
+          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets per User to interfer with each other." DisplayName="Try Catch (Migrate Per Robot Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="438.666666666667,355.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+            <TryCatch.Variables>
+              <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
+            </TryCatch.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <TryCatch.Try>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssetsToDifferentFolders_MigrateAssetsPerRobot Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateAssetsToDifferentFolders_MigrateAssetsPerRobot.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetsPerRobotDetails">[AssetPerRobotMigrationDetails]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[in_ClassicFolderRobotsData]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderAssetsData">[in_ClassicFolderAssetsData]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </TryCatch.Try>
+            <TryCatch.Catches>
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ActivityAction x:TypeArguments="s:Exception">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Failed to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,388" sap2010:WorkflowViewState.IdRef="Sequence_12">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <Assign DisplayName="Assign io_MigrationExceptionsOccurred" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[io_MigrationExceptionsOccurred]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <ui:LogMessage DisplayName="Log Message (Failed to Create Asset in Modern Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Error" Message="[String.Format(in_Config(&quot;MigrateAssetFailure&quot;), AssetPerRobotMigrationDetails.First()(1).ToString, Exception.Message, Exception.Source)]">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                    </ui:LogMessage>
+                    <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_12">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[Exception.Message]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </ActivityAction>
+              </Catch>
+            </TryCatch.Catches>
+            <TryCatch.Finally>
+              <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Result)" ExistingWorkbook="[in_FolderMigrationWorkbook]" sap:VirtualizedContainerService.HintSize="434,330.666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
+                <ui:ExcelApplicationScope.Body>
+                  <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                    </ActivityAction.Argument>
+                    <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Asset per Robot Row (Output Result)" sap:VirtualizedContainerService.HintSize="370.666666666667,222" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[AssetPerRobotMigrationDetails]">
+                      <ui:ForEach.Body>
+                        <ActivityAction x:TypeArguments="sd:DataRow">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetPerRobotRow" />
+                          </ActivityAction.Argument>
+                          <ui:ExcelWriteCell Cell="[&quot;G&quot;+(2+AssetsMigrationDetails.Rows.IndexOf(AssetPerRobotRow)).ToString]" DisplayName="Write Cell (Migrate Asset Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;Assets&quot;)]" Text="[OperationResult]" />
+                        </ActivityAction>
+                      </ui:ForEach.Body>
+                    </ui:ForEach>
                   </ActivityAction>
                 </ui:ExcelApplicationScope.Body>
               </ui:ExcelApplicationScope>
