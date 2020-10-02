@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1372,856</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1330,1030.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateEnvironmentRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -67,6 +67,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -74,7 +75,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Environment." DisplayName="Create Environment Request" sap:VirtualizedContainerService.HintSize="376,422" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Environment." DisplayName="Create Environment Request" sap:VirtualizedContainerService.HintSize="592,966" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Result" />
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
@@ -85,14 +86,14 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="550,607.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_OUFolderID = 0]" DisplayName="If OU/Folder ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="484,250" sap2010:WorkflowViewState.IdRef="If_5">
+      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_OUFolderID = 0]" DisplayName="If OU/Folder ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="508,259.333333333333" sap2010:WorkflowViewState.IdRef="If_5">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -104,7 +105,7 @@
           <Throw DisplayName="Throw (OU/Folder ID Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
         </If.Then>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_3">
+      <If Condition="[String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -114,9 +115,19 @@
         <If.Then>
           <Throw DisplayName="Throw (Environment Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;EnvironmentNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
         </If.Then>
+        <If.Else>
+          <Assign DisplayName="Assign Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">[in_EnvironmentName]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Else>
       </If>
     </Sequence>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Environment)" sap:VirtualizedContainerService.HintSize="550,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
@@ -128,7 +139,7 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Sequence DisplayName="Extract and Output Environment ID" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Extract and Output Environment ID" sap:VirtualizedContainerService.HintSize="550,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <Sequence.Variables>
         <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
       </Sequence.Variables>
@@ -138,8 +149,8 @@
           <x:Boolean x:Key="IsPinned">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Environment)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
-      <Assign DisplayName="Assign out_EnvironmentID" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Environment)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
+      <Assign DisplayName="Assign out_EnvironmentID" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_3">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Int64">[out_EnvironmentID]</OutArgument>
         </Assign.To>
