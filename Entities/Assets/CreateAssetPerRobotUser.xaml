@@ -21,7 +21,7 @@
   <this:CreateAssetPerRobotUser.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
   </this:CreateAssetPerRobotUser.in_OpenedWorkbook>
-  <sap:VirtualizedContainerService.HintSize>1316,5175.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1322,5414.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -80,14 +80,14 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create Asset per Robot/User with specified data.&#xA;&#xA;IDs of successfully created assets are added to the Assets workbook file (Assets.xlsx)." DisplayName="Create Asset per Robot or per User" sap:VirtualizedContainerService.HintSize="1022.66666666667,5110.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create Asset per Robot/User with specified data.&#xA;&#xA;IDs of successfully created assets are added to the Assets workbook file (Assets.xlsx)." DisplayName="Create Asset per Robot or per User" sap:VirtualizedContainerService.HintSize="1022.66666666667,5350" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="980.666666666667,4956.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="980.666666666667,5196" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
         <Variable x:TypeArguments="x:String" Name="OperationIDColumn" />
@@ -101,7 +101,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Asset per Robot/User" sap:VirtualizedContainerService.HintSize="942,4718.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Try to Create Asset per Robot/User" sap:VirtualizedContainerService.HintSize="942,4958" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
             <Variable x:TypeArguments="x:Int64" Name="AssetID" />
@@ -125,7 +125,7 @@
               <OutArgument x:TypeArguments="x:String" x:Key="out_OperationResultColumn">[OperationResultColumn]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="900,3418.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="900,3658" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="OUFolderName" />
             </Sequence.Variables>
@@ -242,7 +242,7 @@
                 </If.Else>
               </If>
             </Sequence>
-            <If Condition="[io_AssetsData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row(0)) = OUFolderID AndAlso Row.Field(Of String)(1) = AssetName).Count() &gt; 0]" DisplayName="If Asset Name Is Already Used" sap:VirtualizedContainerService.HintSize="858,214" sap2010:WorkflowViewState.IdRef="If_21">
+            <If Condition="[io_AssetsData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row(&quot;OUID&quot;)) = OUFolderID AndAlso Row(&quot;AssetName&quot;).ToString = AssetName).Count() &gt; 0]" DisplayName="If Asset Name Is Already Used" sap:VirtualizedContainerService.HintSize="858,214" sap2010:WorkflowViewState.IdRef="If_21">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -253,13 +253,13 @@
                 <Throw DisplayName="Throw (Asset Name Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;AssetNameAlreadyUsed&quot;), AssetName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_15" />
               </If.Then>
             </If>
-            <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="This step cannot be replaced by the workflow ConstructAssetPerRobotUserValuesStructure.xaml because the structures of AssetsDetails (originated from the workbook sheet) and AssetsData (originated from the GetAssetsData.xaml workflow) are different in terms of number and names of columns." DisplayName="For Each Robot/User" sap:VirtualizedContainerService.HintSize="858,1553.33333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[in_AssetsPerRobotUserDetails]">
+            <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="This step cannot be replaced by the workflow ConstructAssetPerRobotUserValuesStructure.xaml because the structures of AssetsDetails (originated from the workbook sheet) and AssetsData (originated from the GetAssetsData.xaml workflow) are different in terms of number and names of columns." DisplayName="For Each Robot/User" sap:VirtualizedContainerService.HintSize="858,1792.66666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[in_AssetsPerRobotUserDetails]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="sd:DataRow">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetPerRobotUserDetails" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="538.666666666667,1336" sap2010:WorkflowViewState.IdRef="Sequence_34">
+                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="632,1592" sap2010:WorkflowViewState.IdRef="Sequence_34">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="SingleRobotUserValues" />
                       <Variable x:TypeArguments="x:String" Name="RobotUserRawValue" />
@@ -269,7 +269,7 @@
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Assign DisplayName="Assign Robot/User Asset Value" sap:VirtualizedContainerService.HintSize="496.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_38">
+                    <Assign DisplayName="Assign Robot/User Asset Value" sap:VirtualizedContainerService.HintSize="590,62" sap2010:WorkflowViewState.IdRef="Assign_38">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:String">[RobotUserRawValue]</OutArgument>
                       </Assign.To>
@@ -277,7 +277,7 @@
                         <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails(5).ToString]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <Assign DisplayName="Assign Robot/User Asset Type" sap:VirtualizedContainerService.HintSize="496.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_40">
+                    <Assign DisplayName="Assign Robot/User Asset Type" sap:VirtualizedContainerService.HintSize="590,62" sap2010:WorkflowViewState.IdRef="Assign_40">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("ValueType")]</OutArgument>
                       </Assign.To>
@@ -285,12 +285,12 @@
                         <InArgument x:TypeArguments="x:Object">[AssetType]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <Switch x:TypeArguments="x:String" DisplayName="Switch Scope" Expression="[AssetScope.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,192" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+                    <Switch x:TypeArguments="x:String" DisplayName="Switch Scope" Expression="[AssetScope.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="590,192" sap2010:WorkflowViewState.IdRef="Switch`1_2">
                       <Switch.Default>
                         <Throw DisplayName="Throw (Asset Scope Not Supported)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_21" />
                       </Switch.Default>
                       <Throw x:Key="" DisplayName="Throw (Asset Scope Not Specified)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_22" />
-                      <Sequence x:Key="robot" DisplayName="Initialize Robot Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="400,479.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                      <Sequence x:Key="robot" DisplayName="Initialize Robot Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="400,544" sap2010:WorkflowViewState.IdRef="Sequence_38">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="x:String" Name="RobotName" />
                           <Variable x:TypeArguments="scg:List(x:Int64)" Name="RobotsIDs" />
@@ -339,7 +339,7 @@
                           </sap:WorkflowViewStateService.ViewState>
                         </Assign>
                       </Sequence>
-                      <Sequence x:Key="user" DisplayName="Initialize User Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="550,601.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_39">
+                      <Sequence x:Key="user" DisplayName="Initialize User Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="550,690" sap2010:WorkflowViewState.IdRef="Sequence_39">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="x:String" Name="UserUsername" />
                           <Variable x:TypeArguments="sd:DataRow[]" Name="UsersWithSpecifiedUsername" />
@@ -395,7 +395,7 @@
                         </If>
                       </Sequence>
                     </Switch>
-                    <Switch x:TypeArguments="x:String" DisplayName="Switch Type" Expression="[AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,746" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+                    <Switch x:TypeArguments="x:String" DisplayName="Switch Type" Expression="[AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="590,1002" sap2010:WorkflowViewState.IdRef="Switch`1_1">
                       <Switch.Default>
                         <Throw DisplayName="Throw (Unsupported Type)" Exception="[New ArgumentException(in_Config(&quot;UnsupportedAssetType&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_20" />
                       </Switch.Default>
@@ -443,24 +443,40 @@
                           </Assign>
                         </If.Else>
                       </If>
-                      <Sequence x:Key="credential" DisplayName="Credential Asset Username and Password" sap:VirtualizedContainerService.HintSize="376,484.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                      <Sequence x:Key="credential" DisplayName="Credential Asset Username and Password" sap:VirtualizedContainerService.HintSize="550,740.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_40">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="x:String" Name="Password" />
+                          <Variable x:TypeArguments="x:String" Name="Username" />
                         </Sequence.Variables>
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <Assign DisplayName="Assign Username Value" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_50">
+                        <Assign DisplayName="Assign Username" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_56">
                           <Assign.To>
-                            <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("CredentialUsername")]</OutArgument>
+                            <OutArgument x:TypeArguments="x:String">[Username]</OutArgument>
                           </Assign.To>
                           <Assign.Value>
                             <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails(4).ToString]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign Password" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_51">
+                        <If Condition="[String.IsNullOrWhiteSpace(Username)]" DisplayName="If Username Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_28">
+                          <If.Then>
+                            <Throw DisplayName="Throw (Username not Specified)" Exception="[New ArgumentException(in_Config(&quot;UsernameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_24" />
+                          </If.Then>
+                          <If.Else>
+                            <Assign DisplayName="Assign Username Value" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_50">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("CredentialUsername")]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:Object">[Username]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                          </If.Else>
+                        </If>
+                        <Assign DisplayName="Assign Password" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_51">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:String">[Password]</OutArgument>
                           </Assign.To>
@@ -468,17 +484,13 @@
                             <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails(5).ToString]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke VerifyCredentialAssetPassword Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Common\VerifyCredentialAssetPassword.xaml">
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke VerifyCredentialAssetPassword Workflow" sap:VirtualizedContainerService.HintSize="508,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Common\VerifyCredentialAssetPassword.xaml">
                           <ui:InvokeWorkflowFile.Arguments>
-                            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                            </InArgument>
-                            <InOutArgument x:TypeArguments="x:String" x:Key="io_Password">
-                              <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Password" />
-                            </InOutArgument>
+                            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                            <InOutArgument x:TypeArguments="x:String" x:Key="io_Password">[Password]</InOutArgument>
                           </ui:InvokeWorkflowFile.Arguments>
                         </ui:InvokeWorkflowFile>
-                        <Assign DisplayName="Assign Password Value" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_55">
+                        <Assign DisplayName="Assign Password Value" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_55">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("CredentialPassword")]</OutArgument>
                           </Assign.To>
@@ -488,7 +500,7 @@
                         </Assign>
                       </Sequence>
                     </Switch>
-                    <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[RobotUsersValues]" DisplayName="Add To Collection (Per Robot/User Values)" sap:VirtualizedContainerService.HintSize="496.666666666667,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[SingleRobotUserValues]" />
+                    <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[RobotUsersValues]" DisplayName="Add To Collection (Per Robot/User Values)" sap:VirtualizedContainerService.HintSize="590,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[SingleRobotUserValues]" />
                   </Sequence>
                 </ActivityAction>
               </ui:ForEach.Body>
