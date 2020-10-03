@@ -18,11 +18,11 @@
   <this:CreateQueue.in_QueueIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateQueue.in_QueueIndex>
-  <sap:VirtualizedContainerService.HintSize>1287.33333333333,1218</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>708.666666666667,1201.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="16">
+    <scg:List x:TypeArguments="x:String" Capacity="19">
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System</x:String>
@@ -39,10 +39,13 @@
       <x:String>System.IO</x:String>
       <x:String>System.Net</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -61,6 +64,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -69,22 +73,23 @@
       <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create Queue with specified parameters.&#xA;IDs of successfully created Queues are added to the Queues configuration file (Queues.xlsx)." DisplayName="Create Queue" sap:VirtualizedContainerService.HintSize="556.666666666667,1153.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create Queue with specified parameters.&#xA;IDs of successfully created Queues are added to the Queues configuration file (Queues.xlsx)." DisplayName="Create Queue" sap:VirtualizedContainerService.HintSize="556.666666666667,1136.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.666666666667,1016" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.666666666667,999.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Queue" sap:VirtualizedContainerService.HintSize="476,778" sap2010:WorkflowViewState.IdRef="Sequence_18">
+        <Sequence DisplayName="Try to Create Queue" sap:VirtualizedContainerService.HintSize="476,761.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
             <Variable x:TypeArguments="x:Int64" Name="QueueID" />
+            <Variable x:TypeArguments="x:Int32" Name="MaxNumberOfRetries" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -98,7 +103,7 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="550,562" sap2010:WorkflowViewState.IdRef="Sequence_26">
+            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="654,562" sap2010:WorkflowViewState.IdRef="Sequence_26">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -138,7 +143,7 @@
                 </If.Else>
               </If>
             </Sequence>
-            <If Condition="[io_QueuesData.Rows.Find({OUFolderID, in_Name}) IsNot Nothing]" DisplayName="If Queue Name is Already Used" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_14">
+            <If Condition="[io_QueuesData.Rows.Find({OUFolderID, in_Name}) IsNot Nothing]" DisplayName="If Queue Name is Already Used" sap:VirtualizedContainerService.HintSize="654,214" sap2010:WorkflowViewState.IdRef="If_14">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -149,17 +154,52 @@
                 <Throw DisplayName="Throw (Queue Name Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;QueueNameAlreadyUsed&quot;), in_Name))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_10" />
               </If.Then>
             </If>
+            <If Condition="[in_AutoRetry.ToLowerInvariant = &quot;yes&quot;]" DisplayName="If Auto Retry Is Enabled" sap:VirtualizedContainerService.HintSize="654,370" sap2010:WorkflowViewState.IdRef="If_16">
+              <If.Then>
+                <If Condition="[Not String.IsNullOrWhiteSpace(in_MaxNumberOfRetries) AndAlso Int32.TryParse(in_MaxNumberOfRetries, Nothing)]" DisplayName="If Max Number of Retries Is a Valid Integer" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_17">
+                  <If.Then>
+                    <Assign DisplayName="Assign MaxNumberOfRetries" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_18">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Int32">[MaxNumberOfRetries]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Int32">[Convert.ToInt32(in_MaxNumberOfRetries)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Then>
+                  <If.Else>
+                    <Throw DisplayName="Throw (Max Number of Retries Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;MaxNumberOfRetriesInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_12" />
+                  </If.Else>
+                </If>
+              </If.Then>
+            </If>
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateQueueRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities\Queues\CreateQueueRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Description">[in_Description]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_UniqueReference">[in_UniqueReference]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_AutoRetry">[in_AutoRetry]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
-              <OutArgument x:TypeArguments="x:Int64" x:Key="out_QueueID">[QueueID]</OutArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_MaxNumberOfRetries">[Convert.ToInt32(in_MaxNumberOfRetries)]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Description">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Description" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UniqueReference">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UniqueReference" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_AutoRetry">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AutoRetry" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="OUFolderID" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Int64" x:Key="out_QueueID">
+                <mva:VisualBasicReference x:TypeArguments="x:Int64" ExpressionText="QueueID" />
+              </OutArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="in_MaxNumberOfRetries">
+                <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="MaxNumberOfRetries" />
+              </InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_SpecificDataJsonSchema" />
               <InArgument x:TypeArguments="x:String" x:Key="in_OutputDataJsonSchema" />
               <InArgument x:TypeArguments="x:String" x:Key="in_AnalyticsDataJsonSchema" />
@@ -184,7 +224,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </ui:ExcelApplicationScope>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="434,214.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_27">
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="434,198" sap2010:WorkflowViewState.IdRef="Sequence_27">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewQueueRow" />
             </Sequence.Variables>
@@ -219,7 +259,7 @@
                 <InArgument x:TypeArguments="x:Object">[in_Name]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewQueueRow]" DataTable="[io_QueuesData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewQueueRow]" DataTable="[io_QueuesData]" DisplayName=" Add Data Row (New Queue)" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
           </Sequence>
         </Sequence>
       </TryCatch.Try>
