@@ -6,10 +6,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1281.33333333333,1788</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1347.33333333333,1942</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="56">
+    <scg:List x:TypeArguments="x:String" Capacity="32">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -39,10 +39,13 @@
       <x:String>Newtonsoft.Json.Converters</x:String>
       <x:String>System.Web</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="25">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -67,7 +70,6 @@
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -75,7 +77,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Folders.&#xD;&#xA;&#xD;&#xA;Due to names of columns varying depending on the language, indices are used to access them instead." DisplayName="Folder Unit Manager" sap:VirtualizedContainerService.HintSize="558,1723.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Folders.&#xA;&#xA;Due to names of columns varying depending on the language, indices are used to access them instead." DisplayName="Folder Unit Manager" sap:VirtualizedContainerService.HintSize="608,1877.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -85,7 +87,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Folder Manager)" sap:VirtualizedContainerService.HintSize="516,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_7" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;FolderConfigFilePath&quot;))]">
+    <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Folder Manager)" sap:VirtualizedContainerService.HintSize="566,52.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_7" Workbook="[OpenWorkbook]" WorkbookPath="[String.Format(&quot;{0}\{1}&quot;, in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;FolderConfigFilePath&quot;))]">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
@@ -100,7 +102,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Folder Operation)" Expression="[in_FolderOperation]" sap:VirtualizedContainerService.HintSize="516,1460" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Folder Operation)" Expression="[in_FolderOperation]" sap:VirtualizedContainerService.HintSize="566,1630.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
           <sap:WorkflowViewStateService.ViewState>
@@ -184,11 +186,11 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="671.333333333333,1147.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="526,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
+          <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedFoldersDetails" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -196,8 +198,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Create)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;CreateOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Create)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;CreateOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Create Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -219,77 +221,97 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[FoldersDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests.&#xA;&#xA;Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,165.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(1).ToString).Distinct().ToArray]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedEnvironmentsDetails (Create Folder)" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(5).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
+          </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
+        </Assign>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
+              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count()" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[FoldersDetails]" DisplayName="For Each Row (Create Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
-          <ui:ForEachRow.Body>
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Create Folder)" sap:VirtualizedContainerService.HintSize="484,319.333333333333" sap2010:WorkflowViewState.IdRef="If_10">
+          <If.Then>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests.&#xA;&#xA;Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="334,165.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                  <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                  <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(1).ToString)).Select(Function(Row) Row(1).ToString).Distinct().ToArray()" />
+                </InArgument>
+                <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                  <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                </OutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:InvokeWorkflowFile>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Create Folder)" sap:VirtualizedContainerService.HintSize="484,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[UnprocessedFoldersDetails]">
+          <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
               </ActivityAction.Argument>
-              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(FolderDetails(5).ToString)]" DisplayName="If Unprocessed Create Folder" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_4">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolder Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Folders\CreateFolder.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Type">[FolderDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Name">[FolderDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RoleAssignmentModel">[FolderDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_ParentFolderFullyQualifiedName">[FolderDetails(3).ToString]</InArgument>
-                      <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_FoldersData">[FoldersData]</InOutArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Create Folder)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolder Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Folders\CreateFolder.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Type">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_RoleAssignmentModel">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(2).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ParentFolderFullyQualifiedName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(3).ToString" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_FoldersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
-          </ui:ForEachRow.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
+          </ui:ForEach.Body>
+        </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="671.333333333333,1144.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="526,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
+          <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedFoldersDetails" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -297,8 +319,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Delete)" sap:VirtualizedContainerService.HintSize="630.666666666667,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;DeleteOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="630.666666666667,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Delete)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;DeleteOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Delete Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -320,77 +342,187 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Delete Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[FoldersDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests.&#xA;&#xA;Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Delete Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,165.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(1).ToString).Distinct().ToArray]</InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedEnvironmentsDetails (Delete Folder)" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(2).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
+          </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
+        </Assign>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Delete Folder)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
+              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count()" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[FoldersDetails]" DisplayName="For Each Row (Delete Folder)" sap:VirtualizedContainerService.HintSize="630.666666666667,438.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
-          <ui:ForEachRow.Body>
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Delete Folder)" sap:VirtualizedContainerService.HintSize="484,319.333333333333" sap2010:WorkflowViewState.IdRef="If_11">
+          <If.Then>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests.&#xA;&#xA;Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Delete Folder)" sap:VirtualizedContainerService.HintSize="334,165.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                  <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                  <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(1).ToString)).Select(Function(Row) Row(1).ToString).Distinct().ToArray()" />
+                </InArgument>
+                <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                  <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                </OutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:InvokeWorkflowFile>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Delete Folder)" sap:VirtualizedContainerService.HintSize="484,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[UnprocessedFoldersDetails]">
+          <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
               </ActivityAction.Argument>
-              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(FolderDetails(2).ToString)]" DisplayName="If Unprocessed Delete Folder" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_3">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteFolder Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Folders\DeleteFolder.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="io_FoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </ActivityAction>
+          </ui:ForEach.Body>
+        </ui:ForEach>
+      </Sequence>
+      <Sequence x:Key="getfoldersusers" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get Folders' Users" sap:VirtualizedContainerService.HintSize="526,1492" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="AllOUFoldersAccessed" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:LogMessage DisplayName="Log Message (Get Folders' Users)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_18" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetFoldersUsersOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written Folder data and write new data about Folders' Users." CreateNewFile="False" DisplayName="Excel Application Scope (Get Folders' Users)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,887.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_13" Visible="False">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,733.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="sd:DataTable" Name="PreviousFoldersUsers" />
+                  <Variable x:TypeArguments="sd:DataTable" Name="FoldersUsersData" />
+                  <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
+                </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DeleteFolder Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Folders\DeleteFolder.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderID">[FolderDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FullyQualifiedFolderName">[FolderDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="io_FoldersData">[FoldersData]</InArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Delete Folder)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
+                <ui:ExcelReadRange AddHeaders="True" DataTable="[PreviousFoldersUsers]" DisplayName="Read Range (Previously Listed Folders' Users)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelReadRange_11" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]">
+                  <ui:ExcelReadRange.Range>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelReadRange.Range>
+                </ui:ExcelReadRange>
+                <ui:ExcelWriteCell sap2010:Annotation.AnnotationText="Math.Max() prevents clearing the header of the table." Cell="[&quot;A2:Z&quot;+Math.Max(1+PreviousFoldersUsers.Rows.Count, 2).ToString]" DisplayName="Write Cell (Clear Previously Listed Folders' Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]">
+                  <ui:ExcelWriteCell.Text>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelWriteCell.Text>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:ExcelWriteCell>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_43" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[FoldersData]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Make request after clearing sheet to prevent users from using old data." DisplayName="Invoke GetFoldersUsersData Workflow (Get Folders' Users)" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_42" UnSafe="False" WorkflowFileName="Entities\Folders\GetFoldersUsersData.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                    <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterUserNames">[{}]</InArgument>
+                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FolderUsersData">[FoldersUsersData]</OutArgument>
+                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
+                    <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterUserIDs">[{}]</InArgument>
+                    <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllFoldersAccessed">[AllOUFoldersAccessed]</OutArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:InvokeWorkflowFile>
+                <ui:ExcelWriteRange AddHeaders="False" DataTable="[FoldersUsersData]" DisplayName="Write Range (Folders' Users Details)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_2" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]" StartingCell="A2" />
+              </Sequence>
             </ActivityAction>
-          </ui:ForEachRow.Body>
+          </ui:ExcelApplicationScope.Body>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
+        </ui:ExcelApplicationScope>
+        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xA;Access failures are logged by GetAssetsData.xaml, but a message box is also displayed in this case." Condition="[Not AllOUFoldersAccessed]" DisplayName="If Successfully Accessed OU/Folders" sap:VirtualizedContainerService.HintSize="484,292.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders)" sap:VirtualizedContainerService.HintSize="334,58.6666666666667" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
+          </If.Then>
+        </If>
       </Sequence>
-      <Sequence x:Key="assignfolderuser" DisplayName="Assign Folder User" sap:VirtualizedContainerService.HintSize="671.333333333333,1523.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_14">
+      <Sequence x:Key="assignfolderuser" DisplayName="Assign Folder User" sap:VirtualizedContainerService.HintSize="564,1682.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
           <Variable x:TypeArguments="sd:DataTable" Name="RolesData" />
           <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
+          <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedFoldersDetails" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -398,8 +530,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Assign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AssignFolderUserOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Assign Folder User)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="629.333333333333,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Assign Folder User)" sap:VirtualizedContainerService.HintSize="522,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AssignFolderUserOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Assign Folder User)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="522,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_10" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -421,109 +553,141 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Assign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_24" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[FoldersDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="629.333333333333,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedEnvironmentsDetails (Assign Folder User)" sap:VirtualizedContainerService.HintSize="522,124" sap2010:WorkflowViewState.IdRef="Assign_4">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(4).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
+          </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRolesData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_28" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RolesData">[RolesData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(2).ToString).Distinct().ToArray]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(0).ToString).Distinct().ToArray]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[FoldersDetails]" DisplayName="For Each Row (Assign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,425.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_10">
-          <ui:ForEachRow.Body>
-            <ActivityAction x:TypeArguments="sd:DataRow">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
-              </ActivityAction.Argument>
-              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(FolderDetails(4).ToString)]" DisplayName="If Unprocessed Assign Folder User" sap:VirtualizedContainerService.HintSize="580,286" sap2010:WorkflowViewState.IdRef="If_6">
+        </Assign>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Assign Folder User)" sap:VirtualizedContainerService.HintSize="522,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_24" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
+              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count()" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Assign Folder User)" sap:VirtualizedContainerService.HintSize="522,692.666666666667" sap2010:WorkflowViewState.IdRef="If_12">
+          <If.Then>
+            <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="376,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_15">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_25" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(0).ToString)).Select(Function(Row) Row(0).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="Entities\Folders\AssignFolderUser.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">[FolderDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_UserType">[FolderDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">[FolderDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RolesNames">[FolderDetails(3).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">[RolesData]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Assign Folder User)" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRolesData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_28" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RolesData">[RolesData]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(2).ToString)).Select(Function(Row) Row(2).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="522,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[UnprocessedFoldersDetails]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="sd:DataRow">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
+              </ActivityAction.Argument>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="Entities\Folders\AssignFolderUser.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Username">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(2).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_RolesNames">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(3).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RolesData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
-          </ui:ForEachRow.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
+          </ui:ForEach.Body>
+        </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="unassignfolderuser" DisplayName="Unassign Folder User" sap:VirtualizedContainerService.HintSize="671.333333333333,1396" sap2010:WorkflowViewState.IdRef="Sequence_17">
+      <Sequence x:Key="unassignfolderuser" DisplayName="Unassign Folder User" sap:VirtualizedContainerService.HintSize="564,1556" sap2010:WorkflowViewState.IdRef="Sequence_17">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
           <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
+          <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedFoldersDetails" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -531,8 +695,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;UnassignFolderUserOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Unassign Folder User)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="629.333333333333,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_11" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="522,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;UnassignFolderUserOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Unassign Folder User)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="522,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_11" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -554,100 +718,128 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_30" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[FoldersDetails.Rows.Count]</InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-        <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="629.333333333333,412" sap2010:WorkflowViewState.IdRef="Sequence_16">
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedEnvironmentsDetails (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="522,124" sap2010:WorkflowViewState.IdRef="Assign_5">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(3).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
+          </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_32" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(2).ToString).Distinct().ToArray]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_33" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(0).ToString).Distinct().ToArray]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[FoldersDetails]" DisplayName="For Each Row (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="629.333333333333,390" sap2010:WorkflowViewState.IdRef="ForEachRow_11">
-          <ui:ForEachRow.Body>
-            <ActivityAction x:TypeArguments="sd:DataRow">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
-              </ActivityAction.Argument>
-              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(FolderDetails(3).ToString)]" DisplayName="If Unprocessed Unassign Folder User" sap:VirtualizedContainerService.HintSize="589.333333333333,286" sap2010:WorkflowViewState.IdRef="If_7">
+        </Assign>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="522,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_50" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
+              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count()" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Unassign Folder User)" sap:VirtualizedContainerService.HintSize="522,566" sap2010:WorkflowViewState.IdRef="If_13">
+          <If.Then>
+            <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="376,412" sap2010:WorkflowViewState.IdRef="Sequence_16">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_33" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(0).ToString)).Select(Function(Row) Row(0).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UnassignFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_35" UnSafe="False" WorkflowFileName="Entities\Folders\UnassignFolderUser.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">[FolderDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_UserType">[FolderDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">[FolderDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Unassign Folder User)" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Unassign Folder Users)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_32" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(2).ToString)).Select(Function(Row) Row(2).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="522,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[UnprocessedFoldersDetails]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="sd:DataRow">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
+              </ActivityAction.Argument>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke UnassignFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_35" UnSafe="False" WorkflowFileName="Entities\Folders\UnassignFolderUser.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Username">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(2).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
-          </ui:ForEachRow.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
+          </ui:ForEach.Body>
+        </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="addremovefolderuserroles" DisplayName="Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="684,1523.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
+      <Sequence x:Key="addremovefolderuserroles" DisplayName="Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="564,1682.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
-          <Variable x:TypeArguments="x:Int32" Name="LoopIndex" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
           <Variable x:TypeArguments="sd:DataTable" Name="RolesData" />
           <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
+          <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedFoldersDetails" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -655,8 +847,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="642,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_16" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AddRemoveFolderUserRolesOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove Folder User's Roles)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="642,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_12" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="522,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_16" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;AddRemoveFolderUserRolesOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Add/Remove Folder User's Roles)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="522,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_12" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -678,105 +870,135 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="642,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_36" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedEnvironmentsDetails (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="522,124" sap2010:WorkflowViewState.IdRef="Assign_6">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(5).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
+          </Assign.Value>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Assign>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="522,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_51" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[FoldersDetails.Rows.Count]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="642,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRolesData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_37" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RolesData">[RolesData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-          </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_38" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(2).ToString).Distinct().ToArray]</InArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_39" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-            <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[FoldersDetails.AsEnumerable().Select(Function(Row) Row(0).ToString).Distinct().ToArray]</InArgument>
-              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-            </ui:InvokeWorkflowFile.Arguments>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:InvokeWorkflowFile>
-        </Sequence>
-        <ui:ForEachRow CurrentIndex="[LoopIndex]" DataTable="[FoldersDetails]" DisplayName="For Each Row (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="642.666666666667,387.333333333333" sap2010:WorkflowViewState.IdRef="ForEachRow_12">
-          <ui:ForEachRow.Body>
-            <ActivityAction x:TypeArguments="sd:DataRow">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
-              </ActivityAction.Argument>
-              <If sap2010:Annotation.AnnotationText="Confirm whether the Result column is empty. Due to names of columns varying depending on the language, use the index to access it." Condition="[String.IsNullOrWhiteSpace(FolderDetails(5).ToString)]" DisplayName="If Unprocessed Add/Remove Folder User's Roles" sap:VirtualizedContainerService.HintSize="592.666666666667,286" sap2010:WorkflowViewState.IdRef="If_8">
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="522,692.666666666667" sap2010:WorkflowViewState.IdRef="If_14">
+          <If.Then>
+            <Sequence sap2010:Annotation.AnnotationText="Get current data beforehand for confirmation purposes and to reduce the number of requests." DisplayName="Get Data for Shared Use Among Rows (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="376,538.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_18">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_39" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(0).ToString)).Select(Function(Row) Row(0).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveFolderUserRoles Workflow" sap:VirtualizedContainerService.HintSize="347,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_41" UnSafe="False" WorkflowFileName="Entities\Folders\AddRemoveFolderUserRoles.xaml">
-                    <ui:InvokeWorkflowFile.Arguments>
-                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
-                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                      <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[LoopIndex]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">[FolderDetails(0).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_UserType">[FolderDetails(1).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_Username">[FolderDetails(2).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_AddRolesNames">[FolderDetails(3).ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRolesNames">[FolderDetails(4).ToString]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">[RolesData]</InArgument>
-                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
-                    </ui:InvokeWorkflowFile.Arguments>
-                  </ui:InvokeWorkflowFile>
-                </If.Then>
-                <If.Else>
-                  <ui:LogMessage DisplayName="Log Message (Processed Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="LogMessage_17" Level="Warn" Message="[in_Config(&quot;ProcessedEntity&quot;)]">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                  </ui:LogMessage>
-                </If.Else>
-              </If>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRolesData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_37" UnSafe="False" WorkflowFileName="Entities\Roles\GetRolesData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RolesData">[RolesData]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Consider only usernames specified in the sheet." DisplayName="Invoke GetUsersData Workflow (Add/Remove Folder User's Roles)" sap:VirtualizedContainerService.HintSize="334,117.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_38" UnSafe="False" WorkflowFileName="Entities/Users/GetUsersData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                    <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(2).ToString)).Select(Function(Row) Row(2).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Assign Folder Users)" sap:VirtualizedContainerService.HintSize="522,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[UnprocessedFoldersDetails]">
+          <ui:ForEach.Body>
+            <ActivityAction x:TypeArguments="sd:DataRow">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="FolderDetails" />
+              </ActivityAction.Argument>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveFolderUserRoles Workflow" sap:VirtualizedContainerService.HintSize="350,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_41" UnSafe="False" WorkflowFileName="Entities\Folders\AddRemoveFolderUserRoles.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_FolderName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Username">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(2).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AddRolesNames">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(3).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_RemoveRolesNames">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(4).ToString" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="UsersData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RolesData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="RolesData" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
-          </ui:ForEachRow.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ForEachRow>
+          </ui:ForEach.Body>
+        </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="migrate" DisplayName="Migrate" sap:VirtualizedContainerService.HintSize="476,1105.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_13">
+      <Sequence x:Key="migrate" DisplayName="Migrate" sap:VirtualizedContainerService.HintSize="526,1276" sap2010:WorkflowViewState.IdRef="Sequence_13">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
@@ -788,8 +1010,8 @@
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Migrate Folder)" sap:VirtualizedContainerService.HintSize="434,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;MigrateClassicToModernOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="434,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_9" Visible="False">
+        <ui:LogMessage DisplayName="Log Message (Migrate Folder)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;MigrateClassicToModernOperationName&quot;))]" />
+        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Migrate Folder)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,167.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_9" Visible="False">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -811,12 +1033,12 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
-        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column." DisplayName="Assign UnprocessedFoldersDetails (Migrate Folder)" sap:VirtualizedContainerService.HintSize="434,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedFoldersDetails (Migrate Folder)" sap:VirtualizedContainerService.HintSize="484,124" sap2010:WorkflowViewState.IdRef="Assign_7">
           <Assign.To>
             <OutArgument x:TypeArguments="sd:DataRow[]">[UnprocessedFoldersDetails]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(8).ToString)).ToArray()]</InArgument>
+            <InArgument x:TypeArguments="sd:DataRow[]">[FoldersDetails.AsEnumerable().Where(Function(Row) String.IsNullOrWhiteSpace(Row(8).ToString) AndAlso Row.ItemArray.Any(Function(RowField) Not String.IsNullOrWhiteSpace(RowField.ToString))).ToArray()]</InArgument>
           </Assign.Value>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -824,30 +1046,34 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
         </Assign>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Migrate Folder)" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmNumerousRequests Workflow (Migrate Folder)" sap:VirtualizedContainerService.HintSize="484,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_57" UnSafe="False" WorkflowFileName="Common/ConfirmNumerousRequests.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
               <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
             </InArgument>
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">
-              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count" />
+              <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="UnprocessedFoldersDetails.Count()" />
             </InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests." DisplayName="Invoke GetFoldersData Workflow (Migrate Folder)" sap:VirtualizedContainerService.HintSize="434,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames" />
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:InvokeWorkflowFile>
-        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Folder" sap:VirtualizedContainerService.HintSize="434,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[UnprocessedFoldersDetails]">
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Migrate Folder)" sap:VirtualizedContainerService.HintSize="484,286" sap2010:WorkflowViewState.IdRef="If_15">
+          <If.Then>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests." DisplayName="Invoke GetFoldersData Workflow (Migrate Folder)" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
+                <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames" />
+                <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:InvokeWorkflowFile>
+          </If.Then>
+        </If>
+        <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" DisplayName="For Each Row (Migrate Folder)" sap:VirtualizedContainerService.HintSize="484,225.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[UnprocessedFoldersDetails]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="sd:DataRow">
               <ActivityAction.Argument>
@@ -855,141 +1081,23 @@
               </ActivityAction.Argument>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateFolder Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateFolder.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">
-                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="FoldersDetails.Rows.IndexOf(FolderDetails)" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(0).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(1).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_ProcessMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(3).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(2).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(4).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_QueueMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(5).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_TriggerMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(6).ToString" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_RobotMigrationPolicy">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="FolderDetails(7).ToString" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_FolderIndex">[FoldersDetails.Rows.IndexOf(FolderDetails)]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[FolderDetails(0).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentMigrationPolicy">[FolderDetails(1).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ProcessMigrationPolicy">[FolderDetails(3).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[FolderDetails(2).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_AssetMigrationPolicy">[FolderDetails(4).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_QueueMigrationPolicy">[FolderDetails(5).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_TriggerMigrationPolicy">[FolderDetails(6).ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_RobotMigrationPolicy">[FolderDetails(7).ToString]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
           </ui:ForEach.Body>
         </ui:ForEach>
-      </Sequence>
-      <Sequence x:Key="getfoldersusers" sap2010:Annotation.AnnotationText="It is not necessary to check for numerous requests since the Get operation only does a constant number of requests." DisplayName="Get Folders' Users" sap:VirtualizedContainerService.HintSize="526,1474.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_21">
-        <Sequence.Variables>
-          <Variable x:TypeArguments="x:Boolean" Name="AllOUFoldersAccessed" />
-        </Sequence.Variables>
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <ui:LogMessage DisplayName="Log Message (Get Folders' Users)" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_18" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormFolderOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;GetFoldersUsersOperationName&quot;))]" />
-        <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" sap2010:Annotation.AnnotationText="Clear previously written Folder data and write new data about Folders' Users." CreateNewFile="False" DisplayName="Excel Application Scope (Get Folders' Users)" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="484,882.666666666667" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_13" Visible="False">
-          <ui:ExcelApplicationScope.Body>
-            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,732" sap2010:WorkflowViewState.IdRef="Sequence_20">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="sd:DataTable" Name="PreviousFoldersUsers" />
-                  <Variable x:TypeArguments="sd:DataTable" Name="FoldersUsersData" />
-                  <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
-                </Sequence.Variables>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:ExcelReadRange AddHeaders="True" DataTable="[PreviousFoldersUsers]" DisplayName="Read Range (Previously Listed Folders' Users)" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="ExcelReadRange_11" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]">
-                  <ui:ExcelReadRange.Range>
-                    <InArgument x:TypeArguments="x:String">
-                      <Literal x:TypeArguments="x:String" Value="" />
-                    </InArgument>
-                  </ui:ExcelReadRange.Range>
-                </ui:ExcelReadRange>
-                <ui:ExcelWriteCell sap2010:Annotation.AnnotationText="Math.Max() prevents clearing the header of the table." Cell="[&quot;A2:Z&quot;+Math.Max(1+PreviousFoldersUsers.Rows.Count, 2).ToString]" DisplayName="Write Cell (Clear Previously Listed Folders' Users)" sap:VirtualizedContainerService.HintSize="334,118" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]">
-                  <ui:ExcelWriteCell.Text>
-                    <InArgument x:TypeArguments="x:String">
-                      <Literal x:TypeArguments="x:String" Value="" />
-                    </InArgument>
-                  </ui:ExcelWriteCell.Text>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:ExcelWriteCell>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke PromptUserForOUFolders Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_43" UnSafe="False" WorkflowFileName="Common/PromptUserForOUFolders.xaml">
-                  <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_SelectedOUFolders">[FoldersData]</OutArgument>
-                  </ui:InvokeWorkflowFile.Arguments>
-                </ui:InvokeWorkflowFile>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Make request after clearing sheet to prevent users from using old data." DisplayName="Invoke GetFoldersUsersData Workflow (Get Folders' Users)" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_42" UnSafe="False" WorkflowFileName="Entities\Folders\GetFoldersUsersData.xaml">
-                  <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                    <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterUserNames">[{}]</InArgument>
-                    <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FolderUsersData">[FoldersUsersData]</OutArgument>
-                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[FoldersData]</InArgument>
-                    <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterUserIDs">[{}]</InArgument>
-                    <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllFoldersAccessed">[AllOUFoldersAccessed]</OutArgument>
-                  </ui:InvokeWorkflowFile.Arguments>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </ui:InvokeWorkflowFile>
-                <ui:ExcelWriteRange AddHeaders="False" DataTable="[FoldersUsersData]" DisplayName="Write Range (Folders' Users Details)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_2" SheetName="[in_Config(&quot;GetFoldersUsersOperationName&quot;)]" StartingCell="A2" />
-              </Sequence>
-            </ActivityAction>
-          </ui:ExcelApplicationScope.Body>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </ui:ExcelApplicationScope>
-        <If sap2010:Annotation.AnnotationText="Even if a user is able to see all OUs/Folders, they might not be a member of some OUs/Folders and thus not be able to access restricted resources.&#xA;Access failures are logged by GetAssetsData.xaml, but a message box is also displayed in this case." Condition="[Not AllOUFoldersAccessed]" DisplayName="If Successfully Accessed OU/Folders" sap:VirtualizedContainerService.HintSize="484,280" sap2010:WorkflowViewState.IdRef="If_9">
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-          <If.Then>
-            <ui:MessageBox ChosenButton="{x:Null}" Caption="[in_Config(&quot;WarningMessageBoxTitle&quot;)]" DisplayName="Message Box (Could not Access All OU/Folders)" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="MessageBox_2" Text="[in_Config(&quot;FailedToAccessOUFolder&quot;)]" />
-          </If.Then>
-        </If>
       </Sequence>
     </Switch>
   </Sequence>
