@@ -12,10 +12,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1332,1308</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1260,1666</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateQueueDefinition_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="50">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -41,6 +41,7 @@
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
       <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -73,7 +74,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Robot from Classic Folder to Modern Folder.&#xA;&#xA;There must be an existing Orchestrator User with a provisioned Robot that uses the same username as the Robot being migrated. &#xA;&#xA;Optionally:&#xA;- The Orchestrator User's Robot's execution settings are overwritten by the execution settings of the Robot being migrated.&#xA;- The Classic Folder's Robot is deactivated.&#xA;&#xA;The User receives the same Roles (at tenant level) that the Robot has in the Classic Folder.&#xA;If the the Role Assignment Model of the target Modern Folder is  using &quot;Custom Roles&quot;, these Roles are also added to the User at Folder level." DisplayName="Migrate Robot" sap:VirtualizedContainerService.HintSize="376,1243.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Robot from Classic Folder to Modern Folder.&#xA;&#xA;There must be an existing Orchestrator User with a provisioned Robot that uses the same username as the Robot being migrated. &#xA;&#xA;Optionally:&#xA;- The Orchestrator User's Robot's execution settings are overwritten by the execution settings of the Robot being migrated.&#xA;- The Classic Folder's Robot is deactivated.&#xA;&#xA;The User receives the same Roles (at tenant level) that the Robot has in the Classic Folder.&#xA;If the the Role Assignment Model of the target Modern Folder is  using &quot;Custom Roles&quot;, these Roles are also added to the User at Folder level." DisplayName="Migrate Robot" sap:VirtualizedContainerService.HintSize="454,1601" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataRow" Name="RobotCorrespondingUser" />
       <Variable x:TypeArguments="sd:DataRow" Name="ClassicFolderRobotUser" />
@@ -85,8 +86,33 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message (Migrate Robot)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateRobot&quot;), in_ClassicFolderRobot(&quot;RobotName&quot;).ToString)]" />
-    <Sequence DisplayName="Get Orchestrator User Corresponding to Classic Folder Robot" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <ui:LogMessage DisplayName="Log Message (Migrate Robot)" sap:VirtualizedContainerService.HintSize="412,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateRobot&quot;), in_ClassicFolderRobot(&quot;RobotName&quot;).ToString)]" />
+    <If Condition="[in_DeactivateClassicRobot]" DisplayName="If Should Deactivate Robot in Classic Folder" sap:VirtualizedContainerService.HintSize="412,51" sap2010:WorkflowViewState.IdRef="If_9">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <If Condition="[in_Config(&quot;OrchestratorType&quot;).ToString.ToLowerInvariant = &quot;cloud&quot; OrElse Convert.ToInt32(in_Config(&quot;OnPremisesOrchestratorVersion&quot;).ToString)  &gt;= 202010]" DisplayName="If Orchestrator Version Supports Deactivation of Robots" sap:VirtualizedContainerService.HintSize="579,235" sap2010:WorkflowViewState.IdRef="If_10">
+          <If.Then>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ToggleRobotsRequest Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Robots\ToggleRobotsRequest.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                <InArgument x:TypeArguments="x:Boolean" x:Key="in_Enabled">False</InArgument>
+                <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_ClassicFolderData.Rows(0)("ID"))]</InArgument>
+                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_RobotsIDs">[{Convert.ToInt64(in_ClassicFolderRobot("RobotID"))}]</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+          </If.Then>
+          <If.Else>
+            <Throw DisplayName="Throw (Orchestrator does not Support Deactivation of Robots)" Exception="[New Exception(in_Config(&quot;DeactivateRobotsNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+          </If.Else>
+        </If>
+      </If.Then>
+    </If>
+    <Sequence DisplayName="Get Orchestrator User Corresponding to Classic Folder Robot" sap:VirtualizedContainerService.HintSize="412,66" sap2010:WorkflowViewState.IdRef="Sequence_5">
       <Sequence.Variables>
         <Variable x:TypeArguments="sd:DataRow[]" Name="RobotCorrespondingUsers" />
       </Sequence.Variables>
@@ -96,7 +122,7 @@
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign sap2010:Annotation.AnnotationText="Retrieve Users with associated Robots that have the same UserName as the Robot being migrated." DisplayName="Assign RobotCorrespondingUsers" sap:VirtualizedContainerService.HintSize="508,124" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign sap2010:Annotation.AnnotationText="Retrieve Users with associated Robots that have the same UserName as the Robot being migrated." DisplayName="Assign RobotCorrespondingUsers" sap:VirtualizedContainerService.HintSize="507,117" sap2010:WorkflowViewState.IdRef="Assign_3">
         <Assign.To>
           <OutArgument x:TypeArguments="sd:DataRow[]">[RobotCorrespondingUsers]</OutArgument>
         </Assign.To>
@@ -109,7 +135,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </Assign>
-      <If sap2010:Annotation.AnnotationText="Check whether there is any User with Robots that have the same UserName as the Robot being migrated." Condition="[RobotCorrespondingUsers.Count() = 0]" DisplayName="If a User's Robot with same UserName Exists" sap:VirtualizedContainerService.HintSize="508,340" sap2010:WorkflowViewState.IdRef="If_2">
+      <If sap2010:Annotation.AnnotationText="Check whether there is any User with Robots that have the same UserName as the Robot being migrated." Condition="[RobotCorrespondingUsers.Count() = 0]" DisplayName="If a User's Robot with same UserName Exists" sap:VirtualizedContainerService.HintSize="507,322" sap2010:WorkflowViewState.IdRef="If_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -119,7 +145,7 @@
           <Throw DisplayName="Throw (Robot Corresponding User not Found)" Exception="[New Exception(String.Format(in_Config(&quot;RobotCorrespondingUserNotFound&quot;),  in_ClassicFolderRobot(&quot;Username&quot;)))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
         </If.Then>
         <If.Else>
-          <Assign sap2010:Annotation.AnnotationText="It is not possible for different Users to use the same UserName, so RobotCorrespondingUsers should have a single row." DisplayName="Assign RobotCorrespondingUser" sap:VirtualizedContainerService.HintSize="262,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign sap2010:Annotation.AnnotationText="It is not possible for different Users to use the same UserName, so RobotCorrespondingUsers should have a single row." DisplayName="Assign RobotCorrespondingUser" sap:VirtualizedContainerService.HintSize="262,132" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="sd:DataRow">[RobotCorrespondingUser]</OutArgument>
             </Assign.To>
@@ -135,7 +161,7 @@
         </If.Else>
       </If>
     </Sequence>
-    <Sequence DisplayName="Get Classic Folder Robot's User" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_15">
+    <Sequence DisplayName="Get Classic Folder Robot's User" sap:VirtualizedContainerService.HintSize="412,66" sap2010:WorkflowViewState.IdRef="Sequence_15">
       <Sequence.Variables>
         <Variable x:TypeArguments="sd:DataRow[]" Name="ClassicFolderRobotUsers" />
       </Sequence.Variables>
@@ -145,7 +171,7 @@
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign DisplayName="Assign ClassicFolderRobotUsers" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_15">
+      <Assign DisplayName="Assign ClassicFolderRobotUsers" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_15">
         <Assign.To>
           <OutArgument x:TypeArguments="sd:DataRow[]">[ClassicFolderRobotUsers]</OutArgument>
         </Assign.To>
@@ -153,12 +179,12 @@
           <InArgument x:TypeArguments="sd:DataRow[]">[in_UsersData.Select(String.Format("Type = 'Robot' and UserName = '{0}'", in_ClassicFolderRobot("RobotName")))]</InArgument>
         </Assign.Value>
       </Assign>
-      <If Condition="[ClassicFolderRobotUsers.Count() = 0]" DisplayName="If Classic Folder Robot's User Exists" sap:VirtualizedContainerService.HintSize="508,294.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
+      <If Condition="[ClassicFolderRobotUsers.Count() = 0]" DisplayName="If Classic Folder Robot's User Exists" sap:VirtualizedContainerService.HintSize="507,280" sap2010:WorkflowViewState.IdRef="If_7">
         <If.Then>
           <Throw DisplayName="Throw (Robot's User not Found)" Exception="[New Exception(String.Format(in_Config(&quot;NamedUserNotFound&quot;),  in_ClassicFolderRobot(&quot;RobotName&quot;)))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
         </If.Then>
         <If.Else>
-          <Assign sap2010:Annotation.AnnotationText="It is not possible for different Users to use the same UserName, so ClassicFolderRobotUsers should have a single row." DisplayName="Assign ClassicFolderRobotUser" sap:VirtualizedContainerService.HintSize="262,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_16">
+          <Assign sap2010:Annotation.AnnotationText="It is not possible for different Users to use the same UserName, so ClassicFolderRobotUsers should have a single row." DisplayName="Assign ClassicFolderRobotUser" sap:VirtualizedContainerService.HintSize="262,132" sap2010:WorkflowViewState.IdRef="Assign_16">
             <Assign.To>
               <OutArgument x:TypeArguments="sd:DataRow">[ClassicFolderRobotUser]</OutArgument>
             </Assign.To>
@@ -174,7 +200,7 @@
         </If.Else>
       </If>
     </Sequence>
-    <If Condition="[in_OverwriteExecutionSettings]" DisplayName="If Should Overwrite Execution Settings " sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_8">
+    <If Condition="[in_OverwriteExecutionSettings]" DisplayName="If Should Overwrite Execution Settings " sap:VirtualizedContainerService.HintSize="412,51" sap2010:WorkflowViewState.IdRef="If_8">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -182,7 +208,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobot_OverwriteExecutionSettings Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateRobot_OverwriteExecutionSettings.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobot_OverwriteExecutionSettings Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateRobot_OverwriteExecutionSettings.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
             <InArgument x:TypeArguments="x:Int64" x:Key="in_ClassicFolderRobotID">[Convert.ToInt64(in_ClassicFolderRobot("RobotID"))]</InArgument>
@@ -192,7 +218,7 @@
         </ui:InvokeWorkflowFile>
       </If.Then>
     </If>
-    <If Condition="[in_DeactivateClassicRobot]" DisplayName="If Should Deactivate Robot in Classic Folder" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+    <If Condition="[in_ModernFolderData.Rows(0)(&quot;RoleAssignmentModel&quot;).ToString.ToLowerInvariant.Replace(&quot; &quot;, String.Empty) = &quot;customroles&quot;]" DisplayName="If Modern Folder Has Custom Roles" sap:VirtualizedContainerService.HintSize="412,51" sap2010:WorkflowViewState.IdRef="If_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -200,39 +226,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ToggleRobotsRequest Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Robots\ToggleRobotsRequest.xaml">
-          <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Boolean" x:Key="in_Enabled">
-              <Literal x:TypeArguments="x:Boolean" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
-              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ClassicFolderData.Rows(0)(&quot;ID&quot;))" />
-            </InArgument>
-            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_RobotsIDs">
-              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{Convert.ToInt64(in_ClassicFolderRobot(&quot;RobotID&quot;))}" />
-            </InArgument>
-          </ui:InvokeWorkflowFile.Arguments>
-        </ui:InvokeWorkflowFile>
-      </If.Then>
-    </If>
-    <If Condition="[in_ModernFolderData.Rows(0)(&quot;RoleAssignmentModel&quot;).ToString.ToLowerInvariant.Replace(&quot; &quot;, String.Empty) = &quot;customroles&quot;]" DisplayName="If Modern Folder Has Custom Roles" sap:VirtualizedContainerService.HintSize="334,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_3">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-      <If.Then>
-        <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Get IDs of Roles assigned to the Classic Folder's Robot's User." DisplayName="For Each Role (Folder Level)" sap:VirtualizedContainerService.HintSize="340.666666666667,440" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ClassicFolderRobotUser(&quot;Roles&quot;).ToString.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Role) Role.Trim)]">
+        <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Get IDs of Roles assigned to the Classic Folder's Robot's User." DisplayName="For Each Role (Folder Level)" sap:VirtualizedContainerService.HintSize="340,428" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[ClassicFolderRobotUser(&quot;Roles&quot;).ToString.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Role) Role.Trim)]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="x:String">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="x:String" Name="RoleName" />
               </ActivityAction.Argument>
-              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_4">
+              <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_4">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="x:Int64" Name="RoleID" />
                 </Sequence.Variables>
@@ -241,7 +241,7 @@
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign DisplayName="Assign RoleID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+                <Assign DisplayName="Assign RoleID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:Int64">[RoleID]</OutArgument>
                   </Assign.To>
@@ -249,7 +249,7 @@
                     <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_RolesData.Rows.Find({RoleName})("ID"))]</InArgument>
                   </Assign.Value>
                 </Assign>
-                <Assign DisplayName="Assign User Roles in Modern Folder" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+                <Assign DisplayName="Assign User Roles in Modern Folder" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[RobotCorrespondingUserRoles(RoleID)]</OutArgument>
                   </Assign.To>
@@ -270,13 +270,13 @@
         </ui:ForEach>
       </If.Then>
     </If>
-    <ui:ForEach x:TypeArguments="scg:KeyValuePair(x:Int64, x:String)" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add Roles to User at tenant level." DisplayName="For Each Role (Tenant Level)" sap:VirtualizedContainerService.HintSize="334,98" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[RobotCorrespondingUserRoles]">
+    <ui:ForEach x:TypeArguments="scg:KeyValuePair(x:Int64, x:String)" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add Roles to User at tenant level." DisplayName="For Each Role (Tenant Level)" sap:VirtualizedContainerService.HintSize="412,544" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[RobotCorrespondingUserRoles]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="scg:KeyValuePair(x:Int64, x:String)">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="scg:KeyValuePair(x:Int64, x:String)" Name="RoleIDName" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Add Roles" sap:VirtualizedContainerService.HintSize="376,382.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <Sequence DisplayName="Add Roles" sap:VirtualizedContainerService.HintSize="376,379" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <Sequence.Variables>
               <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
             </Sequence.Variables>
@@ -285,7 +285,7 @@
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Assign Role" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_17">
+            <Assign DisplayName="Assign Role" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_17">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[RequestBody("role")]</OutArgument>
               </Assign.To>
@@ -293,7 +293,7 @@
                 <InArgument x:TypeArguments="x:Object">[RoleIDName.Value]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Toggle Role (Add)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_18">
+            <Assign DisplayName="Assign Toggle Role (Add)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_18">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[RequestBody("toggle")]</OutArgument>
               </Assign.To>
@@ -301,7 +301,7 @@
                 <InArgument x:TypeArguments="x:Object">[True]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Toggle Role)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Toggle Role)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
               <ui:InvokeWorkflowFile.Arguments>
                 <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
                 <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
@@ -319,12 +319,12 @@
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SetFolderUser Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke SetFolderUser Workflow" sap:VirtualizedContainerService.HintSize="412,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Entities/Folders/SetFolderUser.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderID">[Convert.ToInt64(in_ModernFolderData(0)("ID"))]</InArgument>

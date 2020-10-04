@@ -14,7 +14,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1316,2515.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1182,2769.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateAssetsToDifferentFolders_MigrateAssetsPerRobot_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -47,7 +47,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="38">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -67,9 +67,10 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Create an Asset per User based on data of an Asset per User.&#xA;&#xA;Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- in_AssetsPerRobotDetails(0) refers to Classic Folder name&#xA;- in_AssetsPerRobotDetails(1) refers to Asset name&#xA;- in_AssetsPerRobotDetails(2) refers to Asset scope&#xA;- in_AssetsPerRobotDetails(3) refers to Robot's name (in case of Asset per Robot)&#xA;- in_AssetsPerRobotDetails(4) refers to Asset type&#xA;- in_AssetsPerRobotDetails(5) refers to Modern Folder name&#xA;- in_AssetsPerRobotDetails(6) refers to Result" DisplayName="Migrate Assets To Different Folders - Migrate Assets Per Robot" sap:VirtualizedContainerService.HintSize="706,2450.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Create an Asset per User based on data of an Asset per User.&#xA;&#xA;Indexes are used instead of column names due to localization of the Excel sheet:&#xA;- in_AssetsPerRobotDetails(0) refers to Classic Folder name&#xA;- in_AssetsPerRobotDetails(1) refers to Asset name&#xA;- in_AssetsPerRobotDetails(2) refers to Asset scope&#xA;- in_AssetsPerRobotDetails(3) refers to Robot's name (in case of Asset per Robot)&#xA;- in_AssetsPerRobotDetails(4) refers to Asset type&#xA;- in_AssetsPerRobotDetails(5) refers to Modern Folder name&#xA;- in_AssetsPerRobotDetails(6) refers to Result" DisplayName="Migrate Assets To Different Folders - Migrate Assets Per Robot" sap:VirtualizedContainerService.HintSize="706,2704.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:Int64" Name="AssetID" />
       <Variable x:TypeArguments="x:Int64" Name="ModernFolderID" />
@@ -86,6 +87,11 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <If Condition="[in_Config(&quot;OrchestratorType&quot;).ToString.ToLowerInvariant = &quot;onpremises&quot; OrElse Convert.ToInt32(in_Config(&quot;OnPremisesOrchestratorVersion&quot;).ToString)  &lt; 202010]" DisplayName="If Orchestrator Version Supports Assets Per User" sap:VirtualizedContainerService.HintSize="664,214" sap2010:WorkflowViewState.IdRef="If_7">
+      <If.Then>
+        <Throw DisplayName="Throw (Orchestrator does not Support Assets per User)" Exception="[New Exception(in_Config(&quot;AssetsPerUserNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_7" />
+      </If.Then>
+    </If>
     <Sequence sap2010:Annotation.AnnotationText="Since this workflow receives as argument grouped rows that have the same OU/Folder name, same Asset name and same Asset scope, it is not necessary to verify if all rows have the same value for these fields." DisplayName="Confirm Data Common to Multiple Robots/Users" sap:VirtualizedContainerService.HintSize="664,1926.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">

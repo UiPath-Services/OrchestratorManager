@@ -1,11 +1,11 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="MigrateRobot_OverwriteExecutionSettings" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateRobot_OverwriteExecutionSettings" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="in_ClassicFolderRobotID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_RobotCorrespondingUserID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_ClassicFolderID" Type="InArgument(x:Int64)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1338,4813</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1269,3983</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -61,7 +61,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Overwrite the Robot corresponding User's execution settings." DisplayName="Overwrite User's Robot's Execution Settings" sap:VirtualizedContainerService.HintSize="568,4748" sap2010:WorkflowViewState.IdRef="Sequence_8">
+  <Sequence sap2010:Annotation.AnnotationText="Overwrite the Robot corresponding User's execution settings." DisplayName="Overwrite User's Robot's Execution Settings" sap:VirtualizedContainerService.HintSize="568,3878" sap2010:WorkflowViewState.IdRef="Sequence_8">
     <Sequence.Variables>
       <Variable x:TypeArguments="njl:JObject" Name="UserCompleteData" />
       <Variable x:TypeArguments="njl:JToken" Name="RobotExecutionSettings" />
@@ -85,26 +85,14 @@
       </sap:WorkflowViewStateService.ViewState>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Get Robot)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-            <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InOutArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-            <Literal x:TypeArguments="x:String">get</Literal>
-          </InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Robots({1})&quot;, in_Config(&quot;OrchestratorURL&quot;), in_ClassicFolderRobotID)" />
-          </InArgument>
+          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Robots({1})", in_Config("OrchestratorURL"), in_ClassicFolderRobotID)]</InArgument>
           <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
-          <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
-            <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_ClassicFolderID" />
-          </InArgument>
-          <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-            <Literal x:TypeArguments="x:Int32" Value="200" />
-          </InArgument>
+          <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[in_ClassicFolderID]</InArgument>
+          <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
           <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-          <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="GetRobotResult" />
-          </OutArgument>
+          <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[GetRobotResult]</OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
       <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Get Robot)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[GetRobotResultObject]" JsonString="[GetRobotResult]" />
@@ -129,24 +117,14 @@
       </sap:WorkflowViewStateService.ViewState>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Get Robot Corresponding User)" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-            <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-          </InOutArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-            <Literal x:TypeArguments="x:String">get</Literal>
-          </InArgument>
-          <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-            <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users({1})?$expand=OrganizationUnits&quot;, in_Config(&quot;OrchestratorURL&quot;), in_RobotCorrespondingUserID)" />
-          </InArgument>
+          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
+          <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users({1})?$expand=OrganizationUnits", in_Config("OrchestratorURL"), in_RobotCorrespondingUserID)]</InArgument>
           <InArgument x:TypeArguments="x:String" x:Key="in_Body" />
           <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-          <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-            <Literal x:TypeArguments="x:Int32" Value="200" />
-          </InArgument>
+          <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
           <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-          <OutArgument x:TypeArguments="x:String" x:Key="out_Result">
-            <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="GetUserResult" />
-          </OutArgument>
+          <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[GetUserResult]</OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
       <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Get User)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_3" JsonObject="[UserCompleteData]" JsonString="[GetUserResult]" />
@@ -179,7 +157,7 @@
         </If.Then>
       </If>
     </Sequence>
-    <Sequence sap2010:Annotation.AnnotationText="Remove fields that are present on the result of GET /odata/User(ID), but that should not be in PUT /odata/User(ID) to avoid unwanted replacement of data, such as passwords.&#xD;&#xA;&#xD;&#xA;Fields are removed to mirror the request made by Orchestrator's web interface when editing a User as of August 2020." DisplayName="Remove Request Body Fields" sap:VirtualizedContainerService.HintSize="526,2967" sap2010:WorkflowViewState.IdRef="Sequence_18">
+    <Sequence sap2010:Annotation.AnnotationText="Remove fields that are present on the result of GET /odata/User(ID), but that should not be in PUT /odata/User(ID) to avoid unwanted replacement of data, such as passwords.&#xA;&#xA;Fields are removed to mirror the request made by Orchestrator's web interface when editing a User as of August 2020." DisplayName="Remove Request Body Fields" sap:VirtualizedContainerService.HintSize="526,2097" sap2010:WorkflowViewState.IdRef="Sequence_18">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -192,34 +170,9 @@
           <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("@odata.context")]</InArgument>
         </InvokeMethod.TargetObject>
       </InvokeMethod>
-      <InvokeMethod DisplayName="Invoke Method (Remove EmailAddress Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Remove">
-        <InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("EmailAddress")]</InArgument>
-        </InvokeMethod.TargetObject>
-      </InvokeMethod>
       <InvokeMethod DisplayName="Invoke Method (Remove Password Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Remove">
         <InvokeMethod.TargetObject>
           <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("Password")]</InArgument>
-        </InvokeMethod.TargetObject>
-      </InvokeMethod>
-      <InvokeMethod DisplayName="Invoke Method (Remove LoginProviders Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Remove">
-        <InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("LoginProviders")]</InArgument>
-        </InvokeMethod.TargetObject>
-      </InvokeMethod>
-      <InvokeMethod DisplayName="Invoke Method (Remove ProvisionType Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="Remove">
-        <InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("ProvisionType")]</InArgument>
-        </InvokeMethod.TargetObject>
-      </InvokeMethod>
-      <InvokeMethod DisplayName="Invoke Method (Remove Key Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Remove">
-        <InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("Key")]</InArgument>
-        </InvokeMethod.TargetObject>
-      </InvokeMethod>
-      <InvokeMethod DisplayName="Invoke Method (Remove TenantKey Field)" sap:VirtualizedContainerService.HintSize="484,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_15" MethodName="Remove">
-        <InvokeMethod.TargetObject>
-          <InArgument x:TypeArguments="njl:JProperty">[UserCompleteData.Property("TenantKey")]</InArgument>
         </InvokeMethod.TargetObject>
       </InvokeMethod>
       <If Condition="[Not String.IsNullOrWhiteSpace(UserCompleteData(&quot;RobotProvision&quot;).ToString) AndAlso UserCompleteData(&quot;RobotProvision&quot;)(&quot;RobotId&quot;) IsNot Nothing]" DisplayName="If RobotProvision/RobotId Is Specified" sap:VirtualizedContainerService.HintSize="484,282" sap2010:WorkflowViewState.IdRef="If_7">
@@ -270,22 +223,12 @@
     </Sequence>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="As of August 2020, execution settings cannot be update via the endpoint PATCH /odata/Users, so a PUT request is done." DisplayName="Invoke MakeHTTPRequest Workflow (Update Robot Corresponding User)" sap:VirtualizedContainerService.HintSize="526,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InOutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-          <Literal x:TypeArguments="x:String">put</Literal>
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users({1})&quot;, in_Config(&quot;OrchestratorURL&quot;), in_RobotCorrespondingUserID)" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Body">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserCompleteData.ToString" />
-        </InArgument>
+        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Method">put</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users({1})", in_Config("OrchestratorURL"), in_RobotCorrespondingUserID)]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Body">[UserCompleteData.ToString]</InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-          <Literal x:TypeArguments="x:Int32" Value="200" />
-        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">200</InArgument>
         <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
       </ui:InvokeWorkflowFile.Arguments>
