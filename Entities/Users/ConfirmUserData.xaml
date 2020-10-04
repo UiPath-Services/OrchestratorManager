@@ -5,7 +5,7 @@
     <x:Property Name="in_Username" Type="InArgument(x:String)" />
     <x:Property Name="in_UsersData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>701.333333333333,1610</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>707.333333333333,1610</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="19">
@@ -31,7 +31,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="15">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="30">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
@@ -47,6 +47,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Confirm whether the specified ID refers to a User whose username matches the specified username." DisplayName="Check User Arguments" sap:VirtualizedContainerService.HintSize="526,1545.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
@@ -88,7 +89,7 @@
         <OutArgument x:TypeArguments="sd:DataRow[]">[SelectedUsers]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="sd:DataRow[]">[in_UsersData.Select("ID = " + in_ID.ToString)]</InArgument>
+        <InArgument x:TypeArguments="sd:DataRow[]">[in_UsersData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row("ID")) = in_ID).ToArray()]</InArgument>
       </Assign.Value>
     </Assign>
     <If Condition="[SelectedUsers.Count() = 0]" DisplayName="If No User Found with Specified ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">
@@ -96,7 +97,7 @@
         <Throw DisplayName="Throw (User Not Found)" Exception="[New ArgumentException(in_Config(&quot;UserNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
       </If.Then>
     </If>
-    <If Condition="[Convert.ToInt64(SelectedUsers.First()(&quot;ID&quot;)) &lt;&gt; in_ID]" DisplayName="If the Specified Username Matches the Username Retrieved by the ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_10">
+    <If Condition="[SelectedUsers.First()(&quot;Username&quot;).ToString &lt;&gt; in_Username]" DisplayName="If the Specified Username Matches the Username Retrieved by the ID" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_10">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
