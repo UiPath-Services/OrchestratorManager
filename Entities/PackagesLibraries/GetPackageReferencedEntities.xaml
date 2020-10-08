@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1287.33333333333,854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1329.33333333333,1712</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DownloadQueueItems_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="28">
@@ -74,14 +74,14 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Get entities referenced by the specified Package version.&#xA;Entities are output to a separate workbook whose path is returned by this operation." DisplayName="Get Package Referenced Entities" sap:VirtualizedContainerService.HintSize="514.666666666667,570.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Get entities referenced by the specified Package version.&#xA;Entities are output to a separate workbook whose path is returned by this operation." DisplayName="Get Package Referenced Entities" sap:VirtualizedContainerService.HintSize="556.666666666667,1647.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="472.666666666667,433.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.666666666667,1510" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
@@ -99,12 +99,12 @@
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <ui:LogMessage DisplayName="Log Message (Searching Package Entities)" sap:VirtualizedContainerService.HintSize="434,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[String.Format(in_Config(&quot;SearchingPackageEntities&quot;), in_Name+&quot;-&quot;+in_Version)]" />
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmPackageData Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities\Packages\ConfirmPackageData.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmPackageLibraryData Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/ConfirmPackageLibraryData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_Version]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
-              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesData">[in_PackagesData]</InArgument>
+              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesLibrariesData">[in_PackagesData]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <If Condition="[Not Directory.Exists(String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;)))]" DisplayName="If Package Download Folder Exists" sap:VirtualizedContainerService.HintSize="434,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_1">
@@ -118,22 +118,35 @@
               <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;))]" />
             </If.Then>
           </If>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities\Packages\DownloadPackageRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageLibraryRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/DownloadPackageLibraryRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath" xml:space="preserve">[String.Format("{0}\{1}",  in_Config("EntitiesWorkbooksFolderPath"), in_Config("PackageDownloadFolderPath"))]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_Version]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
-              <OutArgument x:TypeArguments="x:String" x:Key="out_PackageFilePath">[PackageFilePath]</OutArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;))" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Version">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Version" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Entity">
+                <Literal x:TypeArguments="x:String">Package</Literal>
+              </InArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_PackageLibraryFilePath">
+                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="PackageFilePath" />
+              </OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExtractPackageFile Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\Packages\ExtractPackageFile.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ExtractPackageFile Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/ExtractPackageFile.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:String" x:Key="in_PackageFilePath">[PackageFilePath]</InArgument>
               <OutArgument x:TypeArguments="x:String" x:Key="out_ExtractedPackageFolderPath">[ExtractedPackageFolderPath]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPackageEntities Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities\Packages\GetPackageReferencedEntities\GetPackageEntities.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPackageEntities Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/GetPackageReferencedEntities/GetPackageEntities.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:String" x:Key="in_ExtractedPackageFolderPath">[ExtractedPackageFolderPath]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_ReferencedEntities">[ReferencedEntities]</OutArgument>
@@ -142,7 +155,7 @@
           </ui:InvokeWorkflowFile>
           <ui:Delete ContinueOnError="True" DisplayName="Delete Extraction Temporary Folder" sap:VirtualizedContainerService.HintSize="434,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[ExtractedPackageFolderPath]" />
           <ui:Delete ContinueOnError="True" DisplayName="Delete Local Temporary Package File" sap:VirtualizedContainerService.HintSize="434,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[PackageFilePath]" />
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OutputReferencedEntities Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Entities\Packages\GetPackageReferencedEntities\OutputReferencedEntities.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OutputReferencedEntities Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/GetPackageReferencedEntities/OutputReferencedEntities.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
