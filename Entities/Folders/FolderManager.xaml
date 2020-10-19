@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>672,1975.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1363.33333333333,1942</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -78,7 +78,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Folders.&#xA;&#xA;Due to names of columns varying depending on the language, indices are used to access them instead." DisplayName="Folder Unit Manager" sap:VirtualizedContainerService.HintSize="608,1910.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Folders.&#xA;&#xA;Due to names of columns varying depending on the language, indices are used to access them instead." DisplayName="Folder Unit Manager" sap:VirtualizedContainerService.HintSize="608,1877.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
     </Sequence.Variables>
@@ -103,7 +103,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch (Folder Operation)" Expression="[in_FolderOperation]" sap:VirtualizedContainerService.HintSize="566,1664" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch (Folder Operation)" Expression="[in_FolderOperation]" sap:VirtualizedContainerService.HintSize="566,1630.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
       <Switch.Default>
         <Sequence DisplayName="Unsupported Operation" sap:VirtualizedContainerService.HintSize="376,285.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_11">
           <sap:WorkflowViewStateService.ViewState>
@@ -187,7 +187,7 @@
           </sap:WorkflowViewStateService.ViewState>
         </ui:ExcelApplicationScope>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="526,1309.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="526,1276" sap2010:WorkflowViewState.IdRef="Sequence_9">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="FoldersData" />
@@ -241,14 +241,20 @@
             <InArgument x:TypeArguments="x:Int32" x:Key="in_PlannedNumberOfRequests">[UnprocessedFoldersDetails.Count()]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
-        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Create Folder)" sap:VirtualizedContainerService.HintSize="484,319.333333333333" sap2010:WorkflowViewState.IdRef="If_10">
+        <If Condition="[UnprocessedFoldersDetails.Count() &gt; 0]" DisplayName="If There are Rows to Process (Create Folder)" sap:VirtualizedContainerService.HintSize="484,286" sap2010:WorkflowViewState.IdRef="If_10">
           <If.Then>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests.&#xA;&#xA;Consider only Folders specified in the sheet." DisplayName="Invoke GetFoldersData Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="334,165.333333333333" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get current data about Folders to share data among rows and reduce the number of requests." DisplayName="Invoke GetFoldersData Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities/Folders/GetFoldersData.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
-                <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedFoldersDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(1).ToString)).Select(Function(Row) Row(1).ToString).Distinct().ToArray()]</InArgument>
-                <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">[FoldersData]</OutArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+                  <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="{}{}" />
+                </InArgument>
+                <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames" />
+                <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_FoldersData">
+                  <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="FoldersData" />
+                </OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">

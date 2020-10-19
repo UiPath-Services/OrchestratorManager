@@ -29,8 +29,10 @@
     </x:Property>
     <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="io_AssetsData" Type="InOutArgument(sd:DataTable)" />
+    <x:Property Name="in_AssetPassword" Type="InArgument(x:String)" />
+    <x:Property Name="in_IsCredential" Type="InArgument(x:Boolean)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1316,854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>724.666666666667,3967.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -52,6 +54,11 @@
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
       <x:String>System.Net</x:String>
       <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -75,6 +82,7 @@
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -83,20 +91,22 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Edit an Asset's name and value according to the values passed as arguments.&#xA;Support text, boolean and integer Assets; credential Assets are covered by EditCredentialAsset.xaml." DisplayName="Edit Asset" sap:VirtualizedContainerService.HintSize="514.666666666667,610.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Edit an Asset's name and value according to the values passed as arguments.&#xA;Support text, boolean and integer Assets; credential Assets are covered by EditCredentialAsset.xaml." DisplayName="Edit Asset" sap:VirtualizedContainerService.HintSize="734.666666666667,3902.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="472.666666666667,456.666666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="692.666666666667,3765.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
         <Variable x:TypeArguments="sd:DataRow" Default="[io_AssetsData.NewRow()]" Name="CurrentAsset" />
+        <Variable x:TypeArguments="x:String" Name="OperationSheet" />
+        <Variable x:TypeArguments="x:String" Name="OperationResultColumn" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Edit Asset" sap:VirtualizedContainerService.HintSize="654,2691.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_19">
+        <Sequence DisplayName="Try to Edit Asset" sap:VirtualizedContainerService.HintSize="654,3504" sap2010:WorkflowViewState.IdRef="Sequence_19">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
             <Variable x:TypeArguments="x:String" Name="AssetType" />
@@ -106,7 +116,23 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence sap2010:Annotation.AnnotationText="It is assumed that empty arguments indicate that the current value should be kept. &#xA;Updating fields with blank values is not currently supported.&#xA;&#xA;Orchestrator currently does not allow editing assets with PATCH requests, so it is also necessary to retrieve the current asset fields to include them in the PUT request if new values are not specified by the user.&#xA;&#xA;Local Asset data is used to confirm whether an Asset to be edited exists based on its ID." DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="612,2250" sap2010:WorkflowViewState.IdRef="Sequence_17">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EditAsset_DetermineSheetsNames Workflow" sap:VirtualizedContainerService.HintSize="612,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Entities\Assets\EditAsset_DetermineSheetsNames.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_OperationSheet">
+                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="OperationSheet" />
+              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_OperationResultColumn">
+                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="OperationResultColumn" />
+              </OutArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsCredential">
+                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_IsCredential" />
+              </InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <Sequence sap2010:Annotation.AnnotationText="It is assumed that empty arguments indicate that the current value should be kept. &#xA;Updating fields with blank values is not currently supported.&#xA;&#xA;Orchestrator currently does not allow editing assets with PATCH requests, so it is also necessary to retrieve the current asset fields to include them in the PUT request if new values are not specified by the user.&#xA;&#xA;Local Asset data is used to confirm whether an Asset to be edited exists based on its ID." DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="612,2936" sap2010:WorkflowViewState.IdRef="Sequence_17">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -154,7 +180,10 @@
                 </If.Else>
               </If>
             </Sequence>
-            <Sequence sap2010:Annotation.AnnotationText="Get current values to be used as default." DisplayName="Get Asset's Current Data" sap:VirtualizedContainerService.HintSize="570,744.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
+            <Sequence sap2010:Annotation.AnnotationText="Get current values to be used as default." DisplayName="Get Asset's Current Data" sap:VirtualizedContainerService.HintSize="570,1212.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="sd:DataRow[]" Name="CurrentAssetRows" />
+              </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -162,7 +191,15 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[io_AssetsData.Rows.Find({OUFolderID, Convert.ToInt64(in_AssetID)}) Is Nothing]" DisplayName="If Asset Specified by ID Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_34">
+              <Assign DisplayName="Assign CurrentAssetRows" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_46">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="sd:DataRow[]">[CurrentAssetRows]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="sd:DataRow[]">[io_AssetsData.AsEnumerable().Where(Function(Row) Row("OUFolderName").ToString = in_OUFolderName AndAlso Row("AssetID").ToString = in_AssetID).ToArray()]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <If Condition="[CurrentAssetRows.Count() = 0]" DisplayName="If Asset Specified by ID Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_34">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -173,12 +210,22 @@
                   <Throw DisplayName="Throw (Asset Not Found)" Exception="[New ArgumentException(in_Config(&quot;AssetNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_21" />
                 </If.Then>
               </If>
-              <Assign DisplayName="Assign CurrentAsset" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_46">
+              <If sap2010:Annotation.AnnotationText="Consider two cases:&#xD;&#xA;1 - Assets per Robot/User with global default value, so there can be multiple rows representing the Asset and the first one, the default value, might have &quot;global&quot; as Scope&#xD;&#xA;2 - Assets per Robot/User without global default value, but with a single row representing a single per Robot/User value" Condition="[CurrentAssetRows.Count() &gt; 1 OrElse CurrentAssetRows.First()(&quot;Scope&quot;).ToString.ToLowerInvariant &lt;&gt; &quot;global&quot;]" DisplayName="If Asset per Robot or Asset per User" sap:VirtualizedContainerService.HintSize="484,326" sap2010:WorkflowViewState.IdRef="If_37">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <If.Then>
+                  <Throw DisplayName="Throw (Edit Asset per User/Robot not Supported)" Exception="[New ArgumentException(in_Config(&quot;EditAssetPerRobotUserNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_24" />
+                </If.Then>
+              </If>
+              <Assign DisplayName="Assign CurrentAsset" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_55">
                 <Assign.To>
                   <OutArgument x:TypeArguments="sd:DataRow">[CurrentAsset]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="sd:DataRow">[io_AssetsData.Rows.Find({OUFolderID, Convert.ToInt64(in_AssetID)})]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow">[CurrentAssetRows.First()]</InArgument>
                 </Assign.Value>
               </Assign>
               <InvokeMethod sap2010:Annotation.AnnotationText="Allow temporary edit operations to the local data without immediately commiting them.&#xA;If the edit request to the API is successful, the local changes are commited. If the request fails, the local changes are discarded." DisplayName="Invoke Method (BeginEdit)" sap:VirtualizedContainerService.HintSize="484,266" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="BeginEdit">
@@ -233,9 +280,9 @@
                 </Assign>
               </If.Else>
             </If>
-            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[CurrentAsset(&quot;Type&quot;).ToString.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="570,222.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
+            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Add specific value fields based on the asset type." DisplayName="Switch (Specific Body Fields)" Expression="[CurrentAsset(&quot;Type&quot;).ToString.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="570,440.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
               <Switch.Default>
-                <ui:LogMessage DisplayName="Log Message (Type not Supported)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Error" Message="[in_Config(&quot;UnsupportedAssetType&quot;)]" />
+                <ui:LogMessage DisplayName="Log Message (Type not Supported)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Error" Message="[in_Config(&quot;UnsupportedAssetType&quot;)]" />
               </Switch.Default>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -244,7 +291,7 @@
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If x:Key="text" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If String Value Is Specified" sap:VirtualizedContainerService.HintSize="570,214" sap2010:WorkflowViewState.IdRef="If_25">
+              <If x:Key="text" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If String Value Is Specified" sap:VirtualizedContainerService.HintSize="570,216" sap2010:WorkflowViewState.IdRef="If_25">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -272,7 +319,7 @@
                   </Assign>
                 </If.Else>
               </If>
-              <If x:Key="bool" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If Boolean Value Is Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_27">
+              <If x:Key="bool" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If Boolean Value Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_27">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -313,7 +360,7 @@
                   </If>
                 </If.Else>
               </If>
-              <If x:Key="integer" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If Integer Value Is Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_28">
+              <If x:Key="integer" Condition="[String.IsNullOrWhiteSpace(in_AssetValue)]" DisplayName="If Integer Value Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_28">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -354,16 +401,52 @@
                   </If>
                 </If.Else>
               </If>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" x:Key="credential" sap2010:Annotation.AnnotationText="CurrentAsset is passed as a In/Out argument to update the local cached data, but it is not necessary for the request itself." DisplayName="Invoke VerifyEditCredentialAsset Workflow" sap:VirtualizedContainerService.HintSize="334,148.666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities/Assets/VerifyEditCredentialAsset.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InOutArgument x:TypeArguments="sd:DataRow" x:Key="io_CurrentAsset">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataRow" ExpressionText="CurrentAsset" />
+                  </InOutArgument>
+                  <InOutArgument x:TypeArguments="x:String" x:Key="io_Username">
+                    <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="in_AssetValue" />
+                  </InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Password">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AssetPassword" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
             </Switch>
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke EditAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="612,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Entities\Assets\EditAssetRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[in_AssetName]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">[in_AssetValue]</InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_AssetID">[Convert.ToInt64(in_AssetID)]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">[AssetType]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AssetName" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_AssetValue">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AssetValue" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_AssetID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_AssetID)" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_AssetType">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="AssetType" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="OUFolderID" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AssetPassword" />
+              </InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <InvokeMethod sap2010:Annotation.AnnotationText="Commit changes to the row after the update request is successful." DisplayName="Invoke Method (EndEdit)" sap:VirtualizedContainerService.HintSize="612,182.666666666667" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="EndEdit">
@@ -379,7 +462,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="438.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="658.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -390,7 +473,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s1:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Edit Asset" sap:VirtualizedContainerService.HintSize="376,502.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <Sequence DisplayName="Failed to Edit Asset" sap:VirtualizedContainerService.HintSize="376,511.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_20">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -426,7 +509,7 @@
             </Sequence>
           </ActivityAction>
         </Catch>
-        <Catch x:TypeArguments="s1:FormatException" sap:VirtualizedContainerService.HintSize="438.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+        <Catch x:TypeArguments="s1:FormatException" sap:VirtualizedContainerService.HintSize="658.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -437,7 +520,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s1:FormatException" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Edit Asset (Invalid ID Format)" sap:VirtualizedContainerService.HintSize="376,509.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_22">
+            <Sequence DisplayName="Failed to Edit Asset (Invalid ID Format)" sap:VirtualizedContainerService.HintSize="376,511.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_22">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -480,7 +563,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[&quot;E&quot;+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[in_Config(&quot;EditOperationName&quot;)]" Text="[OperationResult]">
+              <ui:ExcelWriteCell Cell="[OperationResultColumn+(2+in_AssetIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="[OperationSheet]" Text="[OperationResult]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>

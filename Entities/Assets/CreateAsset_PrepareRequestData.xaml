@@ -1,0 +1,816 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="CreateAsset_PrepareRequestData" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_AssetGroupedRows" Type="InArgument(sd:DataRow[])" />
+    <x:Property Name="in_OUFoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_RobotsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_UsersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="out_OUFolderID" Type="OutArgument(x:Int64)" />
+    <x:Property Name="out_AssetName" Type="OutArgument(x:String)" />
+    <x:Property Name="out_AssetScope" Type="OutArgument(x:String)" />
+    <x:Property Name="out_RobotUsersValues" Type="OutArgument(scg:List(scg:Dictionary(x:String, x:Object)))" />
+    <x:Property Name="out_AssetGlobalValue" Type="OutArgument(x:String)" />
+    <x:Property Name="out_AssetGlobalPassword" Type="OutArgument(x:String)" />
+    <x:Property Name="in_AssetsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="out_AssetType" Type="OutArgument(x:String)" />
+    <x:Property Name="out_HasDefaultValue" Type="OutArgument(x:Boolean)" />
+  </x:Members>
+  <sap:VirtualizedContainerService.HintSize>1352,2996</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="32">
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Prepare for Create Asset request by checking and formatting input data." DisplayName="Create Asset - Prepare Request Data" sap:VirtualizedContainerService.HintSize="650,2931" sap2010:WorkflowViewState.IdRef="Sequence_17">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Sequence DisplayName="Initialize Asset Fields" sap:VirtualizedContainerService.HintSize="608,66" sap2010:WorkflowViewState.IdRef="Sequence_60">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign out_OUFolderID (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_93">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Int64">[out_OUFolderID]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Int64">0</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_AssetName (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_94">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_AssetName]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_AssetScope (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_95">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_AssetScope]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_AssetType (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_96">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_AssetType]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_AssetGlobalValue (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_97">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_AssetGlobalValue]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_AssetGlobalPassword (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_98">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_AssetGlobalPassword]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_RobotUsersValues (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_92">
+        <Assign.To>
+          <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[out_RobotUsersValues]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[New List(Of Dictionary(Of String, Object))]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign out_HasDefaultValue" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_100">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Boolean">[out_HasDefaultValue]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+        </Assign.Value>
+      </Assign>
+    </Sequence>
+    <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="608,66" sap2010:WorkflowViewState.IdRef="Sequence_31">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="OUFolderName" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign sap2010:Annotation.AnnotationText="Since the grouping of rows is done based on OU/Folder name and Asset name, it is guaranteed that all the rows in the group have the same OU/Folder name." DisplayName="Assign OUFolderName" sap:VirtualizedContainerService.HintSize="507,132" sap2010:WorkflowViewState.IdRef="Assign_29">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[OUFolderName]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[in_AssetGroupedRows.First()("OUFolderName").ToString]</InArgument>
+        </Assign.Value>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </Assign>
+      <If Condition="[String.IsNullOrWhiteSpace(OUFolderName)]" DisplayName="If OU/Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_19">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_13" />
+        </If.Then>
+      </If>
+      <If Condition="[in_OUFoldersData.Rows.Find({OUFolderName}) Is Nothing]" DisplayName="If Found OU/Folder with Specified Name" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_20">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_14" />
+        </If.Then>
+        <If.Else>
+          <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_24">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Int64">[out_OUFolderID]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUFoldersData.Rows.Find(OUFolderName)("ID"))]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Else>
+      </If>
+    </Sequence>
+    <If Condition="[String.IsNullOrWhiteSpace(in_AssetGroupedRows.First()(&quot;AssetName&quot;).ToString)]" DisplayName="If Asset Name is Specified" sap:VirtualizedContainerService.HintSize="608,51" sap2010:WorkflowViewState.IdRef="If_46">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Throw DisplayName="Throw (Asset Name not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_39" />
+      </If.Then>
+      <If.Else>
+        <Assign sap2010:Annotation.AnnotationText="Since the grouping of rows is done based on OU/Folder name and Asset name, it is guaranteed that all the rows in the group have the same Asset name." DisplayName="Assign AssetName" sap:VirtualizedContainerService.HintSize="262,132" sap2010:WorkflowViewState.IdRef="Assign_28">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[out_AssetName]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_AssetGroupedRows.First()("AssetName").ToString]</InArgument>
+          </Assign.Value>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Assign>
+      </If.Else>
+    </If>
+    <If Condition="[in_AssetsData.AsEnumerable().Where(Function(Row) Convert.ToInt64(Row(&quot;OUFolderID&quot;)) = out_OUFolderID AndAlso Row(&quot;AssetName&quot;).ToString = out_AssetName).Count() &gt; 0]" DisplayName="If Asset Name Is Already Used" sap:VirtualizedContainerService.HintSize="608,51" sap2010:WorkflowViewState.IdRef="If_21">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Throw DisplayName="Throw (Asset Name Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;AssetNameAlreadyUsed&quot;), out_AssetName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_15" />
+      </If.Then>
+    </If>
+    <Sequence DisplayName="Get Scope" sap:VirtualizedContainerService.HintSize="608,2096" sap2010:WorkflowViewState.IdRef="Sequence_59">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="s:String[]" Name="DistinctScopesInRows" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign DistinctScopesInRows" sap:VirtualizedContainerService.HintSize="566,60" sap2010:WorkflowViewState.IdRef="Assign_88">
+        <Assign.To>
+          <OutArgument x:TypeArguments="s:String[]">[DistinctScopesInRows]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="s:String[]">[in_AssetGroupedRows.Select(Function(Row) Row("Scope").ToString).Distinct().ToArray()]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <If Condition="[DistinctScopesInRows.Contains(String.Empty)]" DisplayName="If Scope Is Not Specified for a Row" sap:VirtualizedContainerService.HintSize="566,208" sap2010:WorkflowViewState.IdRef="If_54">
+        <If.Then>
+          <Throw DisplayName="Throw (Scope not Specified)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_47" />
+        </If.Then>
+      </If>
+      <Switch x:TypeArguments="x:Int32" DisplayName="Switch Number of Distinct Scopes" Expression="[DistinctScopesInRows.Length]" sap:VirtualizedContainerService.HintSize="566,1408" sap2010:WorkflowViewState.IdRef="Switch`1_10">
+        <Switch.Default>
+          <Throw DisplayName="Throw (Scope not Supported)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_45" />
+        </Switch.Default>
+        <Throw x:Key="0" DisplayName="Throw (Scope not Specified)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_40" />
+        <Assign x:Key="1" DisplayName="Assign AssetScope" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_89">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[out_AssetScope]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[DistinctScopesInRows.First()]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Sequence x:Key="2" DisplayName="Asset per Robot or per User with Global Default Value" sap:VirtualizedContainerService.HintSize="526,1180" sap2010:WorkflowViewState.IdRef="Sequence_58">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If Condition="[DistinctScopesInRows.All(Function(RowScope) RowScope.ToLowerInvariant = &quot;robot&quot; OrElse RowScope.ToLowerInvariant = &quot;user&quot;)]" DisplayName="If per Robot and per User Values are Defined for the Same Asset" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_47">
+            <If.Then>
+              <Throw DisplayName="Throw (Per Robot and per User Values Defined)" Exception="[New ArgumentException(in_Config(&quot;PerRobotAndPerUserValuesDefined&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_41" />
+            </If.Then>
+          </If>
+          <If Condition="[DistinctScopesInRows.All(Function(RowScope) RowScope.ToLowerInvariant = &quot;global&quot; OrElse RowScope.ToLowerInvariant = &quot;robot&quot;)]" DisplayName="If Asset per Robot with Global Default Value" sap:VirtualizedContainerService.HintSize="484,400" sap2010:WorkflowViewState.IdRef="If_48">
+            <If.Then>
+              <Sequence DisplayName="Asset per Robot with Default Value" sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_61">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign AssetScope (Asset per Robot with Default Value)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_90">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[out_AssetScope]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">Robot</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign DisplayName="Assign out_HasDefaultValue (Asset per Robot with Default Value)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_101">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Boolean">[out_HasDefaultValue]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Then>
+          </If>
+          <If Condition="[DistinctScopesInRows.All(Function(RowScope) RowScope.ToLowerInvariant = &quot;global&quot; OrElse RowScope.ToLowerInvariant = &quot;user&quot;)]" DisplayName="If Asset per User with Global Default Value" sap:VirtualizedContainerService.HintSize="484,400" sap2010:WorkflowViewState.IdRef="If_49">
+            <If.Then>
+              <Sequence DisplayName="Asset per User with Default Value" sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_62">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign DisplayName="Assign AssetScope (Asset per User with Default Value)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_91">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[out_AssetScope]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">User</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign DisplayName="Assign out_HasDefaultValue (Asset per User with Default Value)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_102">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Boolean">[out_HasDefaultValue]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </If.Then>
+          </If>
+        </Sequence>
+      </Switch>
+      <If Condition="[Not {&quot;global&quot;, &quot;robot&quot;, &quot;user&quot;}.Contains(out_AssetScope.ToLowerInvariant)]" DisplayName="If Scope Is Valid" sap:VirtualizedContainerService.HintSize="566,208" sap2010:WorkflowViewState.IdRef="If_50">
+        <If.Then>
+          <Throw DisplayName="Throw (Invalid Scope)" Exception="[New ArgumentException(in_Config(&quot;InvalidAssetScope&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_42" />
+        </If.Then>
+      </If>
+    </Sequence>
+    <Sequence DisplayName="Get Asset Type" sap:VirtualizedContainerService.HintSize="608,66" sap2010:WorkflowViewState.IdRef="Sequence_39">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If sap2010:Annotation.AnnotationText="The sheet Create Credential does not have a column to specify its type, so check whether that column exists in the grouped rows." Condition="[in_AssetGroupedRows.First().Table.Columns.Contains(&quot;Type&quot;)]" DisplayName="If Type Is Specified" sap:VirtualizedContainerService.HintSize="846,562" sap2010:WorkflowViewState.IdRef="If_27">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Sequence sap2010:Annotation.AnnotationText="Get type from grouped rows." DisplayName="Non-credential Asset" sap:VirtualizedContainerService.HintSize="539,383" sap2010:WorkflowViewState.IdRef="Sequence_38">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="s:String[]" Name="DistinctTypesInRows" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign DistinctTypesInRows" sap:VirtualizedContainerService.HintSize="497,60" sap2010:WorkflowViewState.IdRef="Assign_39">
+              <Assign.To>
+                <OutArgument x:TypeArguments="s:String[]">[DistinctTypesInRows]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="s:String[]">[in_AssetGroupedRows.Select(Function(Row) Row("Type").ToString).Where(Function(Scope) Not String.IsNullOrWhiteSpace(out_AssetScope)).Distinct().ToArray()]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Switch x:TypeArguments="x:Int32" DisplayName="Switch Number of Distinct Types" Expression="[DistinctTypesInRows.Length]" sap:VirtualizedContainerService.HintSize="497,160" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+              <Switch.Default>
+                <Throw DisplayName="Throw (Multiple Types)" Exception="[New ArgumentException(in_Config(&quot;DifferentAssetPerRobotUserTypes&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_20" />
+              </Switch.Default>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Throw x:Key="0" DisplayName="Throw (Type not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetTypeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_19" />
+              <Assign x:Key="1" DisplayName="Assign AssetType (Non-credential Asset)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_40">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[out_AssetType]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DistinctTypesInRows.First()]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Switch>
+          </Sequence>
+        </If.Then>
+        <If.Else>
+          <Assign sap2010:Annotation.AnnotationText="The Create Credential sheet does not specify a type because it can only be &quot;Credential&quot;." DisplayName="Assign AssetType (Credential Asset)" sap:VirtualizedContainerService.HintSize="262,117" sap2010:WorkflowViewState.IdRef="Assign_99">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[out_AssetType]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">Credential</InArgument>
+            </Assign.Value>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </Assign>
+        </If.Else>
+      </If>
+      <If Condition="[Not {&quot;integer&quot;, &quot;text&quot;, &quot;integer&quot;, &quot;credential&quot;}.Contains(out_AssetType.ToLowerInvariant)]" DisplayName="If Asset Type is Valid" sap:VirtualizedContainerService.HintSize="846,208" sap2010:WorkflowViewState.IdRef="If_28">
+        <If.Then>
+          <Throw DisplayName="Throw (Unsupported Asset Type)" Exception="[New ArgumentException(in_Config(&quot;UnsupportedAssetType&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_21" />
+        </If.Then>
+      </If>
+    </Sequence>
+    <Sequence DisplayName="Get Global Value" sap:VirtualizedContainerService.HintSize="608,66" sap2010:WorkflowViewState.IdRef="Sequence_36">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="sd:DataRow[]" Name="GlobalScopeRows" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign GlobalScopeRows" sap:VirtualizedContainerService.HintSize="651,60" sap2010:WorkflowViewState.IdRef="Assign_30">
+        <Assign.To>
+          <OutArgument x:TypeArguments="sd:DataRow[]">[GlobalScopeRows]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="sd:DataRow[]">[in_AssetGroupedRows.Where(Function(Row) Row("Scope").ToString.ToLowerInvariant = "global").ToArray()]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Switch x:TypeArguments="x:Int32" DisplayName="Switch Number of Global Values for Asset" Expression="[GlobalScopeRows.Length]" sap:VirtualizedContainerService.HintSize="651,606" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+        <Switch.Default>
+          <Throw DisplayName="Throw (Multiple Global Values)" Exception="[New ArgumentException(in_Config(&quot;MultipleGlobalAssetValues&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_17" />
+        </Switch.Default>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:Comment x:Key="0" DisplayName="Comment (Global Value not Specified)" sap:VirtualizedContainerService.HintSize="334,55" sap2010:WorkflowViewState.IdRef="Comment_1" Text="// Global value not specified" />
+        <If x:Key="1" Condition="[out_AssetType.ToLowerInvariant = &quot;credential&quot;]" DisplayName="If Credential Asset (Global Value Specified)" sap:VirtualizedContainerService.HintSize="611,400" sap2010:WorkflowViewState.IdRef="If_25">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <If.Then>
+            <Sequence DisplayName="Credential Asset Userame and Password" sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_35">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign DisplayName="Assign AssetGlobalValue (Credential Asset)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_34">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[out_AssetGlobalValue]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[GlobalScopeRows.First()("Value").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Assign AssetGlobalPassword" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_35">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[out_AssetGlobalPassword]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[GlobalScopeRows.First()("Password").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </If.Then>
+          <If.Else>
+            <Assign DisplayName="Assign AssetGlobalValue (Non-credential Asset)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_36">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[out_AssetGlobalValue]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[GlobalScopeRows.First()("Value").ToString]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </If.Else>
+        </If>
+      </Switch>
+    </Sequence>
+    <Sequence DisplayName="Get Per Robot or Per User Values" sap:VirtualizedContainerService.HintSize="608,66" sap2010:WorkflowViewState.IdRef="Sequence_53">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="sd:DataRow[]" Name="AssetPerRobotUserGroupedRows" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign AssetPerRobotUserGroupedRows" sap:VirtualizedContainerService.HintSize="667,60" sap2010:WorkflowViewState.IdRef="Assign_65">
+        <Assign.To>
+          <OutArgument x:TypeArguments="sd:DataRow[]">[AssetPerRobotUserGroupedRows]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="sd:DataRow[]">[in_AssetGroupedRows.Where(Function(Row) Row("Scope").ToString.ToLowerInvariant &lt;&gt; "global").ToArray()]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Format values per Robot or per User.&#xA;&#xA;This step cannot be replaced by the workflow ConstructAssetPerRobotUserValuesStructure.xaml because the structures of AssetsDetails (originated from the workbook sheet) and AssetsData (originated from the GetAssetsData.xaml workflow) are different in terms of number and names of columns." DisplayName="For Each Robot/User" sap:VirtualizedContainerService.HintSize="667,2683" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[AssetPerRobotUserGroupedRows]">
+        <ui:ForEach.Body>
+          <ActivityAction x:TypeArguments="sd:DataRow">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="AssetPerRobotUserDetails" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="631,2462" sap2010:WorkflowViewState.IdRef="Sequence_52">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="SingleRobotUserValues" />
+                <Variable x:TypeArguments="x:String" Name="RobotUserRawValue" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign DisplayName="Assign Robot/User Asset Value" sap:VirtualizedContainerService.HintSize="589,60" sap2010:WorkflowViewState.IdRef="Assign_66">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[RobotUserRawValue]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails("Value").ToString]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Assign Robot/User Asset Type" sap:VirtualizedContainerService.HintSize="589,60" sap2010:WorkflowViewState.IdRef="Assign_67">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("ValueType")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">[out_AssetType]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Switch x:TypeArguments="x:String" DisplayName="Switch Scope" Expression="[out_AssetScope.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="589,1160" sap2010:WorkflowViewState.IdRef="Switch`1_7">
+                <Switch.Default>
+                  <Throw DisplayName="Throw (Asset Scope Not Supported)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_33" />
+                </Switch.Default>
+                <Throw x:Key="" DisplayName="Throw (Asset Scope Not Specified)" Exception="[New ArgumentException(in_Config(&quot;ScopeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_31" />
+                <Sequence x:Key="robot" DisplayName="Initialize Robot Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="549,932" sap2010:WorkflowViewState.IdRef="Sequence_49">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="RobotName" />
+                    <Variable x:TypeArguments="scg:List(x:Int64)" Name="RobotsIDs" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign RobotName" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_68">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[RobotName]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails("RobotUserName").ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <If Condition="[String.IsNullOrWhiteSpace(RobotName)]" DisplayName="If Robot Name Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_55">
+                    <If.Then>
+                      <Throw DisplayName="Throw (Robot Name not Specified)" Exception="[New ArgumentException(in_Config(&quot;RobotNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_48" />
+                    </If.Then>
+                  </If>
+                  <If Condition="[in_AssetGroupedRows.Where(Function(Row) Row(&quot;RobotUserName&quot;).ToString = RobotName).Count &gt; 1]" DisplayName="If Multiple Values Are Defined for Same Robot" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_51">
+                    <If.Then>
+                      <Throw DisplayName="Throw (Multiple Values for One Robot)" Exception="[New ArgumentException(in_Config(&quot;MultipleValuesForOneRobot&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_43" />
+                    </If.Then>
+                    <If.Else>
+                      <Assign DisplayName="Assign Robot Name Field" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_69">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("RobotName")]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Object">[RobotName]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Else>
+                  </If>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow" sap:VirtualizedContainerService.HintSize="507,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsIDsBasedOnNames.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">[RobotsIDs]</OutArgument>
+                      <InArgument x:TypeArguments="s:String[]" x:Key="in_RobotsNames">[{RobotName}]</InArgument>
+                      <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[in_RobotsData]</InArgument>
+                      <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[out_OUFolderID]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <Assign sap2010:Annotation.AnnotationText="Since a single Robot name is passed to have its ID retrieved, it is guaranteed that RobotsIDs has a single ID." DisplayName="Assign RobotID" sap:VirtualizedContainerService.HintSize="507,117" sap2010:WorkflowViewState.IdRef="Assign_70">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("RobotId")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[RobotsIDs.First()]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                </Sequence>
+                <Sequence x:Key="user" DisplayName="Initialize User Fields (ID and Name)" sap:VirtualizedContainerService.HintSize="549,1068" sap2010:WorkflowViewState.IdRef="Sequence_50">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="UserUsername" />
+                    <Variable x:TypeArguments="sd:DataRow[]" Name="UsersWithSpecifiedUsername" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign UserUsername" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_71">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[UserUsername]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails("RobotUserName").ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <If Condition="[String.IsNullOrWhiteSpace(UserUsername)]" DisplayName="If User's Username Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_56">
+                    <If.Then>
+                      <Throw DisplayName="Throw (Username not Specified)" Exception="[New ArgumentException(in_Config(&quot;UsernameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_49" />
+                    </If.Then>
+                  </If>
+                  <If Condition="[in_AssetGroupedRows.Where(Function(Row) Row(&quot;RobotUserName&quot;).ToString = UserUsername).Count &gt; 1]" DisplayName="If Multiple Values Are Defined for User" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_52">
+                    <If.Then>
+                      <Throw DisplayName="Throw (Multiple Values for One User)" Exception="[New ArgumentException(in_Config(&quot;MultipleValuesForOneUser&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_44" />
+                    </If.Then>
+                    <If.Else>
+                      <Assign DisplayName="Assign UserName" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_72">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("UserName")]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Object">[UserUsername]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Else>
+                  </If>
+                  <Assign sap2010:Annotation.AnnotationText="Search for Users with the specified username. &#xA;Only considers Users of type User and DirectoryUser." DisplayName="Assign UsersWithSpecifiedUsername" sap:VirtualizedContainerService.HintSize="507,132" sap2010:WorkflowViewState.IdRef="Assign_73">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="sd:DataRow[]">[UsersWithSpecifiedUsername]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="sd:DataRow[]">[in_UsersData.AsEnumerable().Where(Function(UserRow) {"User", "DirectoryUser"}.Contains(UserRow("Type").ToString) AndAlso UserRow("Username").ToString = UserUsername).ToArray()]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <If Condition="[UsersWithSpecifiedUsername.Count() = 1]" DisplayName="If User Exists" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_39">
+                    <If.Then>
+                      <Assign DisplayName="Assign UserID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_74">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("UserId")]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(UsersWithSpecifiedUsername.First()("ID"))]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Then>
+                    <If.Else>
+                      <Throw DisplayName="Throw (Invalid User Name)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedUserNotFound&quot;), UserUsername))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_32" />
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </Switch>
+              <Switch x:TypeArguments="x:String" DisplayName="Switch Type" Expression="[out_AssetType.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="589,908" sap2010:WorkflowViewState.IdRef="Switch`1_8">
+                <Switch.Default>
+                  <Throw DisplayName="Throw (Unsupported Type)" Exception="[New ArgumentException(in_Config(&quot;UnsupportedAssetType&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_37" />
+                </Switch.Default>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <Assign x:Key="text" DisplayName="Assign Text Value" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_75">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("StringValue")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[RobotUserRawValue]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <If x:Key="bool" Condition="[String.IsNullOrWhiteSpace(RobotUserRawValue) OrElse Not Boolean.TryParse(RobotUserRawValue, Nothing)]" DisplayName="If Value Is a Valid Boolean" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_40">
+                  <If.Then>
+                    <Throw DisplayName="Throw (Invalid Boolean Value)" Exception="[New ArgumentException(in_Config(&quot;InvalidAssetValue&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_34" />
+                  </If.Then>
+                  <If.Else>
+                    <Assign DisplayName="Assign Bool Value" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_76">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("BoolValue")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[Convert.ToBoolean(RobotUserRawValue)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Else>
+                </If>
+                <If x:Key="integer" Condition="[String.IsNullOrWhiteSpace(RobotUserRawValue) OrElse Not Int32.TryParse(RobotUserRawValue, Nothing)]" DisplayName="If Value Is a Valid Integer" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_41">
+                  <If.Then>
+                    <Throw DisplayName="Throw (Invalid Integer Value)" Exception="[New ArgumentException(in_Config(&quot;InvalidAssetValue&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_35" />
+                  </If.Then>
+                  <If.Else>
+                    <Assign DisplayName="Assign Integer Value" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_77">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("IntValue")]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Object">[Convert.ToInt32(RobotUserRawValue)]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </If.Else>
+                </If>
+                <Sequence x:Key="credential" DisplayName="Credential Asset Username and Password" sap:VirtualizedContainerService.HintSize="549,658" sap2010:WorkflowViewState.IdRef="Sequence_51">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="Password" />
+                    <Variable x:TypeArguments="x:String" Name="Username" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <If sap2010:Annotation.AnnotationText="In the case of credential Assets, the Value column specify the credential's username." Condition="[String.IsNullOrWhiteSpace(RobotUserRawValue)]" DisplayName="If Username Is Specified" sap:VirtualizedContainerService.HintSize="507,239" sap2010:WorkflowViewState.IdRef="If_42">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <Throw DisplayName="Throw (Username not Specified)" Exception="[New ArgumentException(in_Config(&quot;UsernameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_36" />
+                    </If.Then>
+                    <If.Else>
+                      <Assign DisplayName="Assign Username Value" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_79">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("CredentialUsername")]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="x:Object">[RobotUserRawValue]</InArgument>
+                        </Assign.Value>
+                      </Assign>
+                    </If.Else>
+                  </If>
+                  <Assign DisplayName="Assign Password" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_80">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[Password]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[AssetPerRobotUserDetails("Password").ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke VerifyCredentialAssetPassword Workflow" sap:VirtualizedContainerService.HintSize="507,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities/Assets/VerifyCredentialAssetPassword.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                      <InOutArgument x:TypeArguments="x:String" x:Key="io_Password">[Password]</InOutArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <Assign DisplayName="Assign Password Value" sap:VirtualizedContainerService.HintSize="507,60" sap2010:WorkflowViewState.IdRef="Assign_81">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[SingleRobotUserValues("CredentialPassword")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[Password]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </Switch>
+              <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[out_RobotUsersValues]" DisplayName="Add To Collection (Per Robot/User Values)" sap:VirtualizedContainerService.HintSize="589,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[SingleRobotUserValues]" />
+            </Sequence>
+          </ActivityAction>
+        </ui:ForEach.Body>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:ForEach>
+    </Sequence>
+  </Sequence>
+</Activity>

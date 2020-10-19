@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1363.33333333333,2404.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>723.333333333333,2404.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachine_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="58">
@@ -330,9 +330,18 @@
               </ui:InvokeWorkflowFile>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetPackagesLibrariesData Workflow (Create Process)" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_48" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/GetPackagesLibrariesData.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[UnprocessedProcessesDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(2).ToString)).Select(Function(Row) Row(2).ToString).Distinct().ToArray()]</InArgument>
-                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_PackagesData">[PackagesData]</OutArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="UnprocessedProcessesDetails.Where(Function(Row) Not String.IsNullOrWhiteSpace(Row(2).ToString)).Select(Function(Row) Row(2).ToString).Distinct().ToArray()" />
+                  </InArgument>
+                  <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_PackagesLibrariesData">
+                    <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="PackagesData" />
+                  </OutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Entity">
+                    <Literal x:TypeArguments="x:String">Package</Literal>
+                  </InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </Sequence>
@@ -364,7 +373,7 @@
           </ui:ForEach.Body>
         </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="564,1516" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="delete" DisplayName="Delete " sap:VirtualizedContainerService.HintSize="564,1556" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="ProcessesData" />
