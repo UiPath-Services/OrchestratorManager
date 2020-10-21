@@ -7,7 +7,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1260,2416</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1268,1810</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateEnvironmentsToDifferentFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="48">
@@ -60,9 +60,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to different Modern Folders depending on the migration details specified in an auxiliary Excel workbook." DisplayName="Migrate Environments To Different Folders" sap:VirtualizedContainerService.HintSize="526,2351" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to different Modern Folders depending on the migration details specified in an auxiliary Excel workbook." DisplayName="Migrate Environments To Different Folders" sap:VirtualizedContainerService.HintSize="526,1745" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderProcessesData" />
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderAssetsData" />
@@ -78,14 +79,15 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence sap2010:Annotation.AnnotationText="Preemptively get data about entities to be migrated for shared use among workflows." DisplayName="Get Entities Data" sap:VirtualizedContainerService.HintSize="484,729" sap2010:WorkflowViewState.IdRef="Sequence_6">
+    <Sequence sap2010:Annotation.AnnotationText="Preemptively get data about entities to be migrated for shared use among workflows." DisplayName="Get Entities Data" sap:VirtualizedContainerService.HintSize="484,123" sap2010:WorkflowViewState.IdRef="Sequence_6">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
+      <ui:LogMessage DisplayName="Log Message (Get Processes)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;GettingEntity&quot;), in_Config(&quot;Processes&quot;))]" />
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetProcessesData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" UnSafe="False" WorkflowFileName="Entities\Processes\GetProcessesData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
@@ -96,6 +98,7 @@
           <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
+      <ui:LogMessage DisplayName="Log Message (Get Assets)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[String.Format(in_Config(&quot;GettingEntity&quot;), in_Config(&quot;Assets&quot;))]" />
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
@@ -104,6 +107,7 @@
           <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
+      <ui:LogMessage DisplayName="Log Message (Get Queues)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Trace" Message="[String.Format(in_Config(&quot;GettingEntity&quot;), in_Config(&quot;Queues&quot;))]" />
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetQueuesData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\Queues\GetQueuesData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
@@ -114,6 +118,7 @@
           <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
+      <ui:LogMessage DisplayName="Log Message (Get Triggers)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Trace" Message="[String.Format(in_Config(&quot;GettingEntity&quot;), in_Config(&quot;Triggers&quot;))]" />
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetTriggersData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Triggers\GetTriggersData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
@@ -124,6 +129,7 @@
           <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_TriggersData">[ClassicFolderTriggersData]</OutArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
+      <ui:LogMessage DisplayName="Log Message (Get Robots)" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Trace" Message="[String.Format(in_Config(&quot;GettingEntity&quot;), in_Config(&quot;Robots&quot;))]" />
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
@@ -187,12 +193,24 @@
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssetsToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateAssetsToDifferentFolders.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderAssetsData">[ClassicFolderAssetsData]</InArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">[FolderMigrationWorkbook]</InArgument>
-        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">[MigrationExceptionsOccured]</InOutArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderRobotsData">[ClassicFolderRobotsData]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderAssetsData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="ClassicFolderAssetsData" />
+        </InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_FolderMigrationWorkbook">
+          <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="FolderMigrationWorkbook" />
+        </InArgument>
+        <InOutArgument x:TypeArguments="x:Boolean" x:Key="io_MigrationExceptionsOccurred">
+          <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="MigrationExceptionsOccured" />
+        </InOutArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderRobotsData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="ClassicFolderRobotsData" />
+        </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueuesToDifferentFolders Workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateQueuesToDifferentFolders.xaml">
