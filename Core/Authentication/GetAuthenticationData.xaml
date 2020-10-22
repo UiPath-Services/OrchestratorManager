@@ -4,7 +4,7 @@
     <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_AuthenticationData" Type="OutArgument(njl:JObject)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>716,1055.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1299,937</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="32">
@@ -28,10 +28,12 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>Newtonsoft.Json</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="16">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
@@ -48,9 +50,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve authentication data from user." DisplayName="Get Authentication Data" sap:VirtualizedContainerService.HintSize="726,890.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve authentication data from user." DisplayName="Get Authentication Data" sap:VirtualizedContainerService.HintSize="725,872" sap2010:WorkflowViewState.IdRef="Sequence_3">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="AuthenticationPanelOutput" />
     </Sequence.Variables>
@@ -60,15 +63,15 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AuthenticationPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="684,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Forms/AuthenticationPanelBuilder.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AuthenticationPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="683,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Forms/AuthenticationPanelBuilder.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:CustomInput DisplayName="Custom Input" Height="[io_Config(&quot;FormsHeight&quot;)+220]" sap:VirtualizedContainerService.HintSize="684,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[AuthenticationPanelOutput]" URI="[io_Config(&quot;AuthenticationPanelPath&quot;)]" Width="[io_Config(&quot;FormsWidth&quot;)+100]" />
-    <If Condition="[String.IsNullOrWhiteSpace(AuthenticationPanelOutput) OrElse AuthenticationPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="684,512" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:CustomInput DisplayName="Custom Input" sap:VirtualizedContainerService.HintSize="683,82" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[AuthenticationPanelOutput]" URI="[io_Config(&quot;AuthenticationPanelPath&quot;)]" />
+    <If Condition="[String.IsNullOrWhiteSpace(AuthenticationPanelOutput) OrElse AuthenticationPanelOutput.Contains(&quot;&quot;&quot;shouldStop&quot;&quot;:true&quot;)]" DisplayName="If User Closed Custom Input Window" sap:VirtualizedContainerService.HintSize="683,500" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <Assign DisplayName="Assign out_ShouldStop (True)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+        <Assign DisplayName="Assign out_ShouldStop (True)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
           <Assign.To>
             <OutArgument x:TypeArguments="x:Boolean">[out_ShouldStop]</OutArgument>
           </Assign.To>
@@ -78,7 +81,7 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="376,358" sap2010:WorkflowViewState.IdRef="Sequence_4">
+        <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="376,352" sap2010:WorkflowViewState.IdRef="Sequence_4">
           <Sequence.Variables>
             <Variable x:TypeArguments="njl:JObject" Name="AuthenticationPanelOutputJSON" />
           </Sequence.Variables>
@@ -88,8 +91,8 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_2" JsonObject="[AuthenticationPanelOutputJSON]" JsonString="[AuthenticationPanelOutput]" />
-          <Assign DisplayName="Assign out_AuthenticationData" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_11">
+          <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_2" JsonObject="[AuthenticationPanelOutputJSON]" JsonString="[AuthenticationPanelOutput]" />
+          <Assign DisplayName="Assign out_AuthenticationData" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_11">
             <Assign.To>
               <OutArgument x:TypeArguments="njl:JObject">[out_AuthenticationData]</OutArgument>
             </Assign.To>
@@ -97,7 +100,7 @@
               <InArgument x:TypeArguments="njl:JObject">[AuthenticationPanelOutputJSON]</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="Assign out_ShouldStop (False)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+          <Assign DisplayName="Assign out_ShouldStop (False)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_5">
             <Assign.To>
               <OutArgument x:TypeArguments="x:Boolean">[out_ShouldStop]</OutArgument>
             </Assign.To>

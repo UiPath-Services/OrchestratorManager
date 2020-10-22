@@ -12,10 +12,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>704.666666666667,1006</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1299,1118</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetVariableReferenceValue_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="25">
+    <scg:List x:TypeArguments="x:String" Capacity="50">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -41,6 +41,8 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -67,16 +69,16 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="If an activity uses a variable as value to AssetName or QueueName property, &#xA;&#xA;If a Package is based on REFramework or a similar framework that uses a configuration file (Config.xlsx) to store names of Queues and Assets, workflows use references to such configuration files to get names of entities (e.g., Config(&quot;OrchestratorQueueName&quot;)).&#xA;&#xA;This workflow looks for these references in order to get the actual name of the entity.&#xA;If no names are found, simply return the name of the variable without enclosing square brackets." DisplayName="Get Variable Reference Value" sap:VirtualizedContainerService.HintSize="480.666666666667,941.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="If an activity uses a variable as value to AssetName or QueueName property, &#xA;&#xA;If a Package is based on REFramework or a similar framework that uses a configuration file (Config.xlsx) to store names of Queues and Assets, workflows use references to such configuration files to get names of entities (e.g., Config(&quot;OrchestratorQueueName&quot;)).&#xA;&#xA;This workflow looks for these references in order to get the actual name of the entity.&#xA;If no names are found, simply return the name of the variable without enclosing square brackets." DisplayName="Get Variable Reference Value" sap:VirtualizedContainerService.HintSize="671,1053" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,654" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="629,829" sap2010:WorkflowViewState.IdRef="TryCatch_2">
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Get Variable's Value From Config.xlsx" sap:VirtualizedContainerService.HintSize="242,416" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Try to Get Variable's Value From Config.xlsx" sap:VirtualizedContainerService.HintSize="591,602" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="ConfigFileParameterName" />
           </Sequence.Variables>
@@ -85,21 +87,21 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence sap2010:Annotation.AnnotationText="Get name of parameter in Config object.&#xA;For example, if activity uses in_Config(&quot;APIToken&quot;).ToString as AssetName property, extracts the name APIToken to look for its actual name in Config.xlsx." DisplayName="Get Config File Parameter Name" sap:VirtualizedContainerService.HintSize="200,231.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <Sequence sap2010:Annotation.AnnotationText="Get name of parameter in Config object.&#xA;For example, if activity uses in_Config(&quot;APIToken&quot;).ToString as AssetName property, extracts the name APIToken to look for its actual name in Config.xlsx." DisplayName="Get Config File Parameter Name" sap:VirtualizedContainerService.HintSize="549,419" sap2010:WorkflowViewState.IdRef="Sequence_4">
             <Sequence.Variables>
               <Variable x:TypeArguments="scg:IEnumerable(str:Match)" Name="ReferencedEntityMatches" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:Matches sap:VirtualizedContainerService.HintSize="508,58.6666666666667" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[io_ReferencedEntityName]" IsBuilderTabModified="False" Pattern="[&quot;(?&lt;=Config\(&quot;&quot;)(.*)(?=&quot;&quot;\))&quot;]" RegexOption="IgnoreCase, Compiled" Result="[ReferencedEntityMatches]" />
-            <If Condition="[ReferencedEntityMatches.Count() = 1]" DisplayName="If Matched Pattern" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_2">
+            <ui:Matches sap:VirtualizedContainerService.HintSize="507,22" sap2010:WorkflowViewState.IdRef="Matches_1" Input="[io_ReferencedEntityName]" Pattern="[&quot;(?&lt;=Config\(&quot;&quot;)(.*)(?=&quot;&quot;\))&quot;]" RegexOption="IgnoreCase, Compiled" Result="[ReferencedEntityMatches]" />
+            <If Condition="[ReferencedEntityMatches.Count() = 1]" DisplayName="If Matched Pattern" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_2">
               <If.Then>
-                <Assign DisplayName="Assign ConfigFileParameterName" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+                <Assign DisplayName="Assign ConfigFileParameterName" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[ConfigFileParameterName]</OutArgument>
                   </Assign.To>
@@ -113,7 +115,7 @@
               </If.Else>
             </If>
           </Sequence>
-          <Switch x:TypeArguments="x:String" DisplayName="Switch Entity Type" Expression="[in_EntityType]" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+          <Switch x:TypeArguments="x:String" DisplayName="Switch Entity Type" Expression="[in_EntityType]" sap:VirtualizedContainerService.HintSize="549,51" sap2010:WorkflowViewState.IdRef="Switch`1_1">
             <Switch.Default>
               <Throw DisplayName="Throw (Unsupported Entity)" Exception="[New Exception(in_Config(&quot;UnsupportedEntity&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
             </Switch.Default>
@@ -187,7 +189,7 @@
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="595,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
