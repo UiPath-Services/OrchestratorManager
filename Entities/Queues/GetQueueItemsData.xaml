@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1186,2743</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1374,2593</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -75,7 +75,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Queue Items.&#xA;If no filters are specified, returns all Items from the specified Queue." DisplayName="Get Queue Items Data" sap:VirtualizedContainerService.HintSize="611,2638" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Queue Items.&#xA;If no filters are specified, returns all Items from the specified Queue." DisplayName="Get Queue Items Data" sap:VirtualizedContainerService.HintSize="611,2528" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Default="[New JObject()]" Name="ResultObject" />
@@ -99,14 +99,6 @@
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </Assign>
-    <Assign DisplayName="Assign ODataFilter (Queue Definition Filter Only)" sap:VirtualizedContainerService.HintSize="569,60" sap2010:WorkflowViewState.IdRef="Assign_26">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[ODataFilter]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">["?$filter=QueueDefinitionId eq " + in_QueueID.ToString]</InArgument>
-      </Assign.Value>
     </Assign>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Filter by Status instead of by Name." DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="569,118" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter.xaml">
       <ui:InvokeWorkflowFile.Arguments>
@@ -157,13 +149,13 @@
         <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="569,1558" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
+    <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Queue Item" sap:VirtualizedContainerService.HintSize="569,1548" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="njl:JObject">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="njl:JObject" Name="QueueItem" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Extract Queue Item Data" sap:VirtualizedContainerService.HintSize="304,1424" sap2010:WorkflowViewState.IdRef="Sequence_11">
+          <Sequence DisplayName="Extract Queue Item Data" sap:VirtualizedContainerService.HintSize="304,1414" sap2010:WorkflowViewState.IdRef="Sequence_11">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewQueueItemRow" />
             </Sequence.Variables>
@@ -237,7 +229,7 @@
                 <InArgument x:TypeArguments="x:Object">[QueueItem("Priority").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Specific Content" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_33">
+            <Assign DisplayName="Assign Specific Content" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_33">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewQueueItemRow("SpecificContent")]</OutArgument>
               </Assign.To>
@@ -245,7 +237,7 @@
                 <InArgument x:TypeArguments="x:String">[QueueItem("SpecificContent").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Defer Date" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_35">
+            <Assign DisplayName="Assign Defer Date" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_35">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewQueueItemRow("DeferDate")]</OutArgument>
               </Assign.To>
@@ -253,7 +245,7 @@
                 <InArgument x:TypeArguments="x:Object">[QueueItem("DeferDate").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Due Date" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_36">
+            <Assign DisplayName="Assign Due Date" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_36">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewQueueItemRow("DueDate")]</OutArgument>
               </Assign.To>
@@ -261,7 +253,7 @@
                 <InArgument x:TypeArguments="x:Object">[QueueItem("DueDate").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Risk SLA Date" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_37">
+            <Assign DisplayName="Assign Risk SLA Date" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_37">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewQueueItemRow("RiskSLADate")]</OutArgument>
               </Assign.To>
@@ -269,7 +261,7 @@
                 <InArgument x:TypeArguments="x:Object">[QueueItem("RiskSlaDate").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Progress" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_38">
+            <Assign DisplayName="Assign Progress" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_38">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewQueueItemRow("Progress")]</OutArgument>
               </Assign.To>
