@@ -11,7 +11,7 @@
     <x:Property Name="in_EnvironmentsData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_RobotsData" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,813.333333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1279.33333333333,854</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -36,7 +36,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="36">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -55,6 +55,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -62,44 +63,45 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Add or remove the specified Robots to the specified Environment." DisplayName="Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="480.666666666667,648.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Add/remove the specified Robots to/from the specified Environment." DisplayName="Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="514.666666666667,556" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,526" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="472.666666666667,433.333333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="376,288" sap2010:WorkflowViewState.IdRef="Sequence_16">
+        <Sequence DisplayName="Try to Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="421.333333333333,288" sap2010:WorkflowViewState.IdRef="Sequence_16">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="EnvironmentID" />
-            <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
+            <Variable x:TypeArguments="scg:List(x:Int64)" Name="AddRobotsIDs" />
+            <Variable x:TypeArguments="scg:List(x:Int64)" Name="RemoveRobotsIDs" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_27">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_27">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_38">
+            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_38">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_42">
+              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_42">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -110,7 +112,7 @@
                   <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_28" />
                 </If.Then>
               </If>
-              <If Condition="[in_OUFoldersData.Rows.Find({in_OUFolderName}) Is Nothing]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_43">
+              <If Condition="[in_OUFoldersData.Rows.Find({in_OUFolderName}) Is Nothing]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_43">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -121,7 +123,7 @@
                   <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_29" />
                 </If.Then>
                 <If.Else>
-                  <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_29">
+                  <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_29">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[OUFolderID]</OutArgument>
                     </Assign.To>
@@ -132,14 +134,14 @@
                 </If.Else>
               </If>
             </Sequence>
-            <Sequence DisplayName="Get Environment ID" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_26">
+            <Sequence DisplayName="Get Environment ID" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_26">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="508,214" sap2010:WorkflowViewState.IdRef="If_24">
+              <If Condition="[String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_24">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -150,12 +152,12 @@
                   <Throw DisplayName="Throw (Environment Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;EnvironmentNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_19" />
                 </If.Then>
               </If>
-              <If Condition="[in_EnvironmentsData.Rows.Find({OUFolderID, in_EnvironmentName}) Is Nothing]" DisplayName="If No Environment Is Found with Specified Name" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_25">
+              <If Condition="[in_EnvironmentsData.Rows.Find({OUFolderID, in_EnvironmentName}) Is Nothing]" DisplayName="If No Environment Is Found with Specified Name" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_25">
                 <If.Then>
                   <Throw DisplayName="Throw (Environment Not Found)" Exception="[New ArgumentException(in_Config(&quot;EnvironmentNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_20" />
                 </If.Then>
                 <If.Else>
-                  <Assign DisplayName="Assign EnvironmentID" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_10">
+                  <Assign DisplayName="Assign EnvironmentID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_10">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[EnvironmentID]</OutArgument>
                     </Assign.To>
@@ -166,10 +168,8 @@
                 </If.Else>
               </If>
             </Sequence>
-            <Sequence DisplayName="Get Robots IDs" sap:VirtualizedContainerService.HintSize="200,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_35">
+            <Sequence DisplayName="Get Robots IDs" sap:VirtualizedContainerService.HintSize="200,66" sap2010:WorkflowViewState.IdRef="Sequence_35">
               <Sequence.Variables>
-                <Variable x:TypeArguments="scg:List(x:Int64)" Name="AddRobotsIDs" />
-                <Variable x:TypeArguments="scg:List(x:Int64)" Name="RemoveRobotsIDs" />
                 <Variable x:TypeArguments="s1:String[]" Name="AddRobotsNames" />
                 <Variable x:TypeArguments="s1:String[]" Name="RemoveRobotsNames" />
               </Sequence.Variables>
@@ -179,7 +179,7 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <Assign DisplayName="Assign AddRobotsNames" sap:VirtualizedContainerService.HintSize="354,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+              <Assign DisplayName="Assign AddRobotsNames" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_27">
                 <Assign.To>
                   <OutArgument x:TypeArguments="s1:String[]">[AddRobotsNames]</OutArgument>
                 </Assign.To>
@@ -187,7 +187,7 @@
                   <InArgument x:TypeArguments="s1:String[]">[in_AddRobotsNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
                 </Assign.Value>
               </Assign>
-              <Assign DisplayName="Assign RemoveRobotsNames" sap:VirtualizedContainerService.HintSize="354,62" sap2010:WorkflowViewState.IdRef="Assign_28">
+              <Assign DisplayName="Assign RemoveRobotsNames" sap:VirtualizedContainerService.HintSize="484,60" sap2010:WorkflowViewState.IdRef="Assign_28">
                 <Assign.To>
                   <OutArgument x:TypeArguments="s1:String[]">[RemoveRobotsNames]</OutArgument>
                 </Assign.To>
@@ -195,7 +195,7 @@
                   <InArgument x:TypeArguments="s1:String[]">[in_RemoveRobotsNames.Split({",", ", "}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Name) Name.Trim).ToArray]</InArgument>
                 </Assign.Value>
               </Assign>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Add)" sap:VirtualizedContainerService.HintSize="354,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Add)" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
                   <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                   <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">[AddRobotsIDs]</OutArgument>
@@ -204,7 +204,7 @@
                   <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
-              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Remove)" sap:VirtualizedContainerService.HintSize="354,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsIDsBasedOnNames Workflow (Robots To Remove)" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities/Robots/GetRobotsIDsBasedOnNames.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
                   <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                   <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="out_RobotsIDs">[RemoveRobotsIDs]</OutArgument>
@@ -213,7 +213,7 @@
                   <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
-              <If Condition="[RemoveRobotsIDs.Intersect(AddRobotsIDs).Count &gt; 0]" DisplayName="If Any Robot Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="354,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_41">
+              <If Condition="[RemoveRobotsIDs.Intersect(AddRobotsIDs).Count &gt; 0]" DisplayName="If Any Robot Is Both Added and Removed" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_41">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -224,52 +224,21 @@
                   <Throw DisplayName="Throw (Robot Added And Removed)" Exception="[New ArgumentException(in_Config(&quot;RobotAddedAndRemoved&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_27" />
                 </If.Then>
               </If>
-              <Assign DisplayName="Add Robots IDs" sap:VirtualizedContainerService.HintSize="354,62" sap2010:WorkflowViewState.IdRef="Assign_25">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:Object">[RequestBody("addedRobotIds")]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:Object">[AddRobotsIDs]</InArgument>
-                </Assign.Value>
-              </Assign>
-              <Assign DisplayName="Remove Robots IDs" sap:VirtualizedContainerService.HintSize="354,62" sap2010:WorkflowViewState.IdRef="Assign_26">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:Object">[RequestBody("removedRobotIds")]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:Object">[RemoveRobotsIDs]</InArgument>
-                </Assign.Value>
-              </Assign>
             </Sequence>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Set Robots To Environment)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AddRemoveEnvironmentRobotsRequest Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities\Environments\AddRemoveEnvironmentRobotsRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-                <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">
-                <Literal x:TypeArguments="x:String">post</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Environments({1})/UiPath.Server.Configuration.OData.SetRobots&quot;, in_Config(&quot;OrchestratorURL&quot;), EnvironmentID)" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="OUFolderID" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
-                <Literal x:TypeArguments="x:Int32" Value="204" />
-              </InArgument>
-              <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
+              <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="in_AddRobotsIDs">[AddRobotsIDs]</InArgument>
+              <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="in_RemoveRobotsIDs">[RemoveRobotsIDs]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_EnvironmentID">[EnvironmentID]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="438.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -280,7 +249,7 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s1:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
+            <Sequence DisplayName="Failed to Add/Remove Environment's Robots" sap:VirtualizedContainerService.HintSize="376,286.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_17">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -294,7 +263,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:LogMessage>
-              <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
                 </Assign.To>
@@ -313,7 +282,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[in_Config(&quot;AddRemoveEnvironmentRobotsResultColumn&quot;)+(2+in_EnvironmentIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;AddRemoveEnvironmentRobotsOperationName&quot;)]" Text="[OperationResult]">
+              <ui:ExcelWriteCell Cell="[&quot;E&quot;+(2+in_EnvironmentIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;AddRemoveEnvironmentRobotsOperationName&quot;)]" Text="[OperationResult]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>

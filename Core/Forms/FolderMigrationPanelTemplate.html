@@ -1,0 +1,57 @@
+<!-- saved from url=(0016)http://localhost -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>_FormTitle_</title>
+		<link rel="stylesheet" type="text/css" href="FormStyle.css">
+	</head>
+
+	<body>
+		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
+
+		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
+		<div class="form-style">
+			<div class="form-style-heading">_FormTitle_</div>
+			<form id="controlPanelForm" action="" method="post">
+				<p id="formInstructions"><span>_FormFolderMigrationMessage_</span></p>
+
+				<div class="buttons">
+					<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
+					<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
+				</div>
+			</form>
+		</div>	
+
+		<script type="text/javascript">
+		/**
+		 * @param {HTMLElement} elem
+		 * @returns {boolean}
+		 */
+		function submitValues(elem) {
+			'use strict';
+
+			/** @type {{shouldStop: boolean, entity: string, operation: string}} */
+			var	jsonObject = {};
+			/** @type {string} */
+			var formData;
+
+			// Should stop after performing operation
+			if (elem.id === 'cancelButton') {
+				jsonObject.shouldStop = true;
+			} else {
+				jsonObject.shouldStop = false;
+			}
+
+			// Get JSON representation of dictionary
+			formData = JSON.stringify(jsonObject);
+
+			// noinspection JSDeprecatedSymbols,JSUnresolvedFunction
+			window.external.setResult(formData);
+			return true;
+		}
+		</script>
+	</body>
+</html>

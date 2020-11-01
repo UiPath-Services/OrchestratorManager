@@ -1,0 +1,210 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="MigrateEnvironmentsToSameFolder" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_ModernFolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_ClassicFolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_AssetMigrationPolicy" Type="InArgument(x:String)" />
+    <x:Property Name="in_QueueMigrationPolicy" Type="InArgument(x:String)" />
+    <x:Property Name="in_FoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ProcessMigrationPolicy" Type="InArgument(x:String)" />
+    <x:Property Name="in_RobotMigrationPolicy" Type="InArgument(x:String)" />
+    <x:Property Name="in_TriggerMigrationPolicy" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1340,1094.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>MigrateEnvironmentsToSameFolder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="25">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>UiPath.Excel</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <sap:WorkflowViewStateService.ViewState>
+    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+      <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
+    </scg:Dictionary>
+  </sap:WorkflowViewStateService.ViewState>
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Classic Folder entities to a single Modern Folder." DisplayName="Migrate Environments to Same Folder" sap:VirtualizedContainerService.HintSize="421.333333333333,1030" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="ErrorMessages" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Sequence DisplayName="Validate Modern Folder" sap:VirtualizedContainerService.HintSize="379.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If Condition="[String.IsNullOrWhiteSpace(in_ModernFolderName)]" DisplayName="If Modern Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_9">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Throw DisplayName="Throw (Modern Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;ModernFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_12" />
+        </If.Then>
+      </If>
+      <If Condition="[in_FoldersData.Rows.Find({in_ModernFolderName}) Is Nothing]" DisplayName="If Specified Modern Folder Exists" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_10">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Throw DisplayName="Throw (Modern Folder Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedFolderNotFound&quot;), in_ModernFolderName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_13" />
+        </If.Then>
+      </If>
+    </Sequence>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateProcessesToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_20" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateProcessesToSameFolder.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ProcessMigrationPolicy">[in_ProcessMigrationPolicy]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssetsToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateAssetsToSameFolder.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="x:String" x:Key="in_AssetMigrationPolicy">[in_AssetMigrationPolicy]</InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateQueuesToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="Entities/Folders/MigrateClassicToModern/MigrateQueuesToSameFolder.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_QueueMigrationPolicy">[in_QueueMigrationPolicy]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateTriggersToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateTriggersToSameFolder.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">[in_FoldersData]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">[in_ClassicFolderName]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">[in_ModernFolderName]</InArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">[ErrorMessages]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_TriggerMigrationPolicy">[in_TriggerMigrationPolicy]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateRobotsToSameFolder Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_23" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateRobotsToSameFolder.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_FoldersData">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_FoldersData" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClassicFolderName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderName" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ModernFolderName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ModernFolderName" />
+        </InArgument>
+        <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_ErrorMessages">
+          <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="ErrorMessages" />
+        </InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_RobotMigrationPolicy">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_RobotMigrationPolicy" />
+        </InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <If sap2010:Annotation.AnnotationText="Due to the potentially large number of messages during migration, they are output to a separate log file instead of added to the migration workbook." Condition="[ErrorMessages.Count &gt; 0]" DisplayName="If There Are Error Messages" sap:VirtualizedContainerService.HintSize="379.333333333333,164.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <Sequence DisplayName="Output Error Messages to File" sap:VirtualizedContainerService.HintSize="376,390.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_19">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="ErrorMessagesFileName" />
+          </Sequence.Variables>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign DisplayName="Assign ErrorMessagesFileName" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[ErrorMessagesFileName]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}\{2}-FolderMigrationErrors-{3:yyyyMMddHHmmss}.log", in_Config("EntitiesWorkbooksFolderPath"), in_Config("LogsFolderName"), in_ClassicFolderName, Now)]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:WriteTextFile DisplayName="Write Text File" FileName="[ErrorMessagesFileName]" sap:VirtualizedContainerService.HintSize="334,134.666666666667" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[String.Join(Environment.NewLine, ErrorMessages)]" />
+          <Throw DisplayName="Throw (Error Messages Output to File)" Exception="[New Exception(String.Format(in_Config(&quot;ErrorMessagesOutputToFile&quot;), ErrorMessagesFileName))]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_14" />
+        </Sequence>
+      </If.Then>
+    </If>
+  </Sequence>
+</Activity>

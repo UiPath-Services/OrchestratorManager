@@ -27,10 +27,13 @@
 					<option id="folderOption" value="folder" _FormFolderSelected_>_FormFolderOption_</option>
 					<option id="queueOption" value="queue" _FormQueueSelected_>_FormQueueOption_</option>
 					<option id="packageOption" value="package" _FormPackageSelected_>_FormPackageOption_</option>
+					<option id="libraryOption" value="library" _FormLibrarySelected_>_FormLibraryOption_</option>
+					<option id="triggerOption" value="trigger" _FormTriggerSelected_>_FormTriggerOption_</option>
 				</select></label>
 				
 				<label for="operation"><span>_FormOperationLabel_</span><select id="operation" class="select-field">
 					<option id="getOption" value="get">_FormGetOption_</option>
+					<option id="getCredentialOption" value="getcredential">_FormGetCredentialOption_</option>
 					<option id="createOption" value="create">_FormCreateOption_</option>
 					<option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option>
 					<option id="editOption" value="edit">_FormEditOption_</option>
@@ -62,6 +65,7 @@
 						break;
 					case 201910:
 					case 202004:
+					case 202010:
 						document.getElementById('ouOption').outerHTML = '';
 						break;
 				}
@@ -108,7 +112,7 @@
 			// Select the appropriate set of operations based on the chosen entity
 			switch (selectedEntity) {
 				case 'asset':
-					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="getCredentialOption" value="getcredential">_FormGetCredentialOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="createCredentialOption" value="createcredential">_FormCreateCredentialOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="editCredentialOption" value="editcredential">_FormEditCredentialOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
 					break;
 				case 'user':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRoleOption" value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
@@ -129,17 +133,27 @@
 				case 'queue':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadQueueItemsOption" value="downloadqueueitems">_FormDownloadQueueItemsOption_</option>';
 					// On-Premises Orchestrator 2018.4 does not support bulk upload of Queue items
-					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ != 201804) {
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ >= 201904) {
 						operationElement.innerHTML = operationElement.innerHTML + '<option id="uploadQueueItemsOption" value="uploadqueueitems">_FormUploadQueueItemsOption_</option>';		
 					}
 					break;
 				case 'package':
-					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadPackageOption" value="downloadpackage">_FormDownloadPackageOption_</option><option id="uploadPackageOption" value="uploadpackage">_FormUploadPackageOption_</option>';
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadPackageLibraryOption" value="downloadpackagelibrary">_FormDownloadPackageLibraryOption_</option><option id="uploadPackageLibraryOption" value="uploadpackagelibrary">_FormUploadPackageLibraryOption_</option><option id="getPackageReferencedEntitiesOption" value="getpackagereferencedentities">_FormGetPackageReferencedEntitiesOption_</option>';
 					break;
+				case 'library':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="downloadPackageLibraryOption" value="downloadpackagelibrary">_FormDownloadPackageLibraryOption_</option><option id="uploadPackageLibraryOption" value="uploadpackagelibrary">_FormUploadPackageLibraryOption_</option>';
+					break;	
 				case 'machine':
+				case 'trigger':
 				case 'ou':
-				case 'folder':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option>';
+					break;
+				case 'folder':
+					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="getFoldersUsersOption" value="getfoldersusers">_FormGetFoldersUsersOption_</option><option id="assignFolderUserOption" value="assignfolderuser">_FormAssignFolderUserOption_</option><option id="unassignFolderUserOption" value="unassignfolderuser">_FormUnassignFolderUserOption_</option><option id="addRemoveFolderUserRolesOption" value="addremovefolderuserroles">_FormAddRemoveFolderUserRolesOption_</option>';
+					// By default, the migration entities from Classic to Modern Folders requires Orchestrator 2020.10 or newer
+					if ('_FormOrchestratorType_' === 'cloud' || _FormOrchestratorVersion_ >= 202010 || (_FormOrchestratorVersion_ === 202004 && _Enable202004FolderMigration_)) {
+						operationElement.innerHTML = operationElement.innerHTML + '<option id="migrateOption" value="migrate">_FormMigrateOption_</option>';		
+					}
 					break;
 			}
 		}

@@ -1,0 +1,133 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="InitializeFolderMigrationWorkbook" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_ClassicFolderName" Type="InArgument(x:String)" />
+    <x:Property Name="in_ClassicFolderAssetsData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ClassicFolderQueuesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="out_FolderMigrationWorkbook" Type="OutArgument(ui:WorkbookApplication)" />
+    <x:Property Name="in_ClassicFolderProcessesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ClassicFolderTriggersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_ClassicFolderRobotsData" Type="InArgument(sd:DataTable)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>710,842.666666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>InitializeFolderMigrationWorkbook_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="44">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Create Classic Folder migration workbook if it does not exist and populate it with related entities' data." DisplayName="Initialize Folder Migration Workbook" sap:VirtualizedContainerService.HintSize="567.333333333333,778" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="FolderMigrationTemplateFilePath" />
+      <Variable x:TypeArguments="x:String" Name="FolderMigrationWorkbookFilePath" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Assign DisplayName="Assign FolderMigrationTemplateFilePath" sap:VirtualizedContainerService.HintSize="525.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[FolderMigrationTemplateFilePath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}\{2}", in_Config("WorkbooksTemplatesPath"), in_Config("Language"), in_Config("FolderMigrationTemplateFilePath"))]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Assign FolderMigrationWorkbookFilePath" sap:VirtualizedContainerService.HintSize="525.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[FolderMigrationWorkbookFilePath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[String.Format("{0}\{1}-{2}", in_Config("EntitiesWorkbooksFolderPath"), in_ClassicFolderName, Path.GetFileName(FolderMigrationTemplateFilePath))]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[Not File.Exists(FolderMigrationWorkbookFilePath)]" DisplayName="If Folder Migration Workbook Exists in Specified Folder" sap:VirtualizedContainerService.HintSize="525.333333333333,240.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <If.Then>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolderMigrationWorkbook Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\CreateFolderMigrationWorkbook.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_FolderMigrationTemplateFilePath">[FolderMigrationTemplateFilePath]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_FolderMigrationWorkbookFilePath">[FolderMigrationWorkbookFilePath]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsData">[in_ClassicFolderAssetsData]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_QueuesData">[in_ClassicFolderQueuesData]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ProcessesData">[in_ClassicFolderProcessesData]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_TriggersData">[in_ClassicFolderTriggersData]</InArgument>
+            <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[in_ClassicFolderRobotsData]</InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </If.Then>
+    </If>
+    <ui:ExcelApplicationScope Password="{x:Null}" sap2010:Annotation.AnnotationText="Open workbook for user input." CreateNewFile="False" DisplayName="Excel Application Scope (Folder Migration Workbook)" sap:VirtualizedContainerService.HintSize="525.333333333333,156" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[out_FolderMigrationWorkbook]" WorkbookPath="[FolderMigrationWorkbookFilePath]">
+      <ui:ExcelApplicationScope.Body>
+        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+          </ActivityAction.Argument>
+        </ActivityAction>
+      </ui:ExcelApplicationScope.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ExcelApplicationScope>
+  </Sequence>
+</Activity>

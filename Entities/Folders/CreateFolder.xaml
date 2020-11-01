@@ -15,11 +15,11 @@
   <this:CreateFolder.in_FolderIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateFolder.in_FolderIndex>
-  <sap:VirtualizedContainerService.HintSize>470.666666666667,1208.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>861.333333333333,2377.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="16">
+    <scg:List x:TypeArguments="x:String" Capacity="32">
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System</x:String>
@@ -36,10 +36,13 @@
       <x:String>System.IO</x:String>
       <x:String>System.Net</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="36">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -58,6 +61,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -66,162 +70,37 @@
       <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create a Folder with the specified name.&#xA;IDs of successfully created Folders are added to the Folders configuration file (Folders.xlsx)." DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="480.666666666667,1044" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create a Folder with the specified name.&#xA;IDs of successfully created Folders are added to the Folders configuration file (Folders.xlsx)." DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="871.333333333333,2312.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="438.666666666667,890" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="829.333333333333,2175.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Folder" sap:VirtualizedContainerService.HintSize="376,652" sap2010:WorkflowViewState.IdRef="Sequence_18">
+        <Sequence DisplayName="Try to Create Folder" sap:VirtualizedContainerService.HintSize="790.666666666667,1937.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="Result" />
-            <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
-            <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
+            <Variable x:TypeArguments="x:Int64" Name="ParentFolderID" />
+            <Variable x:TypeArguments="x:String" Name="FullyQualifiedName" />
+            <Variable x:TypeArguments="x:Int64" Name="FolderID" />
           </Sequence.Variables>
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_26">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="x:String" Name="FullyQualifiedName" />
-            </Sequence.Variables>
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="748.666666666667,944.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="742.666666666667,214" sap2010:WorkflowViewState.IdRef="If_8">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <If.Then>
-                <Throw DisplayName="Throw (Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;NameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
-              </If.Then>
-            </If>
-            <If Condition="[String.IsNullOrWhiteSpace(in_Type)]" DisplayName="If Type Is Specified" sap:VirtualizedContainerService.HintSize="742.666666666667,322.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <If.Then>
-                <Throw DisplayName="Throw (Type Not Specified)" Exception="[New ArgumentException(in_Config(&quot;TypeNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
-              </If.Then>
-              <If.Else>
-                <Switch x:TypeArguments="x:String" DisplayName="Switch Type" Expression="[in_Type.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="496.666666666667,168.666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
-                  <Switch.Default>
-                    <Throw DisplayName="Throw (Invalid Type)" Exception="[New ArgumentException(in_Config(&quot;TypeNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
-                  </Switch.Default>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                  <Assign x:Key="modern" DisplayName="Assign Type (Modern Folder - Automatic Provision)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("ProvisionType")]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Object">["Automatic"]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign x:Key="classic" DisplayName="Assign Type (Classic Folder - Manual Provision)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("ProvisionType")]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Object">["Manual"]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                </Switch>
-              </If.Else>
-            </If>
-            <If Condition="[RequestBody(&quot;ProvisionType&quot;).ToString = &quot;Automatic&quot;]" DisplayName="If Modern Folder" sap:VirtualizedContainerService.HintSize="742.666666666667,391.333333333333" sap2010:WorkflowViewState.IdRef="If_11">
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-              <If.Then>
-                <Sequence DisplayName="Assign Modern Folder Role Assignment Model" sap:VirtualizedContainerService.HintSize="242,237.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_25">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                  <If Condition="[String.IsNullOrWhiteSpace(in_RoleAssignmentModel)]" DisplayName="If Role Assignment Model Is Specified" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_12">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <If.Then>
-                      <Throw DisplayName="Throw (No Role Assignment Model Specified)" Exception="[New ArgumentException(in_Config(&quot;RoleAssignmentModelNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
-                    </If.Then>
-                  </If>
-                  <Switch x:TypeArguments="x:String" DisplayName="Switch Role Assignment Model" Expression="[in_RoleAssignmentModel.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="200,52.6666666666667" sap2010:WorkflowViewState.IdRef="Switch`1_2">
-                    <Switch.Default>
-                      <Throw DisplayName="Throw (Invalid Role Assignment Model)" Exception="[New ArgumentException(in_Config(&quot;RoleAssignmentModelNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
-                    </Switch.Default>
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <Assign x:Key="custom roles" DisplayName="Assign Role Assignment Model (Modern Folder - Custom Roles)" sap:VirtualizedContainerService.HintSize="262,61.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_11">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:Object">[RequestBody("PermissionModel")]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:Object">["FineGrained"]</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                    <Assign x:Key="inherit from tenant" DisplayName="Assign Role Assignment Model (Modern Folder - Inherit From Tenant)" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_12">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:Object">[RequestBody("PermissionModel")]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:Object">["InheritFromTenant"]</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                  </Switch>
-                </Sequence>
-              </If.Then>
-              <If.Else>
-                <Assign sap2010:Annotation.AnnotationText="Classic Folders can only have &quot;Inherit from Tenant&quot; as value for Role Assignment Model (Permission Model field), but it must be specified in the request." DisplayName="Assign Role Assignment Model (Classic Folder - Inherit From Tenant)" sap:VirtualizedContainerService.HintSize="262,157.333333333333" sap2010:WorkflowViewState.IdRef="Assign_14">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Object">[RequestBody("PermissionModel")]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Object">["InheritFromTenant"]</InArgument>
-                  </Assign.Value>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </Assign>
-              </If.Else>
-            </If>
-            <If Condition="[RequestBody(&quot;ProvisionType&quot;).ToString.ToLowerInvariant = &quot;automatic&quot; AndAlso Not String.IsNullOrWhiteSpace(in_ParentFolderFullyQualifiedName)]" DisplayName="If Parent Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="742.666666666667,598.666666666667" sap2010:WorkflowViewState.IdRef="If_10">
+            <If Condition="[in_Type.ToLowerInvariant = &quot;modern&quot; AndAlso Not String.IsNullOrWhiteSpace(in_ParentFolderFullyQualifiedName)]" DisplayName="If Parent Folder Name Is Specified" sap:VirtualizedContainerService.HintSize="706.666666666667,598.666666666667" sap2010:WorkflowViewState.IdRef="If_10">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -249,10 +128,10 @@
                   </ui:InvokeWorkflowFile>
                   <Assign sap2010:Annotation.AnnotationText="Since only one Folder Name is passed for retrieval, the FoldersIDs list is guaranteed to have a single ID." DisplayName="Assign Folder ID" sap:VirtualizedContainerService.HintSize="356.666666666667,124" sap2010:WorkflowViewState.IdRef="Assign_9">
                     <Assign.To>
-                      <OutArgument x:TypeArguments="x:Object">[RequestBody("ParentId")]</OutArgument>
+                      <OutArgument x:TypeArguments="x:Int64">[ParentFolderID]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(FoldersIDs(0))]</InArgument>
+                      <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(FoldersIDs(0))]</InArgument>
                     </Assign.Value>
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -281,7 +160,7 @@
                 </Assign>
               </If.Else>
             </If>
-            <If Condition="[io_FoldersData.Rows.Find({FullyQualifiedName}) Is Nothing]" DisplayName="If Folder Name Is Already Used" sap:VirtualizedContainerService.HintSize="742.666666666667,311.333333333333" sap2010:WorkflowViewState.IdRef="If_14">
+            <If Condition="[io_FoldersData.Rows.Find({FullyQualifiedName}) IsNot Nothing]" DisplayName="If Folder Name Is Already Used" sap:VirtualizedContainerService.HintSize="706.666666666667,214" sap2010:WorkflowViewState.IdRef="If_14">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -289,69 +168,55 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Assign sap2010:Annotation.AnnotationText="It is only necessary to specify DisplayName, since the Folder's FullyQualifiedName is automatically initialized by Orchestrator if it is not passed as a parameter." DisplayName="Assign DisplayName" sap:VirtualizedContainerService.HintSize="262,157.333333333333" sap2010:WorkflowViewState.IdRef="Assign_20">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:Object">[RequestBody("DisplayName")]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:Object">[in_Name]</InArgument>
-                  </Assign.Value>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                </Assign>
+                <Throw DisplayName="Throw (Name Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;FolderNameAlreadyUsed&quot;), in_Name))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
               </If.Then>
-              <If.Else>
-                <Throw DisplayName="Throw (Name Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NameAlreadyUsed&quot;), in_Name))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
-              </If.Else>
             </If>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Folder)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateFolderRequest workflow" sap:VirtualizedContainerService.HintSize="748.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities\Folders\CreateFolderRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[in_Config("OrchestratorURL") + "/odata/Folders"]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID" />
-              <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">201</InArgument>
-              <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
-              <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Type">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Type" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_RoleAssignmentModel">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_RoleAssignmentModel" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_ParentFolderID">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="ParentFolderID" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Int64" x:Key="out_FolderID">
+                <mva:VisualBasicReference x:TypeArguments="x:Int64" ExpressionText="FolderID" />
+              </OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <Sequence DisplayName="Extract and Output Folder Data" sap:VirtualizedContainerService.HintSize="334,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_22">
+          <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Folder Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="748.666666666667,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
+            <ui:ExcelApplicationScope.Body>
+              <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                </ActivityAction.Argument>
+                <ui:ExcelWriteCell Cell="[&quot;E&quot;+(2+in_FolderIndex).ToString]" DisplayName="Write Cell (Folder ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_6" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[FolderID.ToString]" />
+              </ActivityAction>
+            </ui:ExcelApplicationScope.Body>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create Folder)" sap:VirtualizedContainerService.HintSize="434,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_7" JsonObject="[ResultObject]" JsonString="[Result]" />
-            <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Folder Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
-              <ui:ExcelApplicationScope.Body>
-                <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-                  <ActivityAction.Argument>
-                    <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-                  </ActivityAction.Argument>
-                  <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateFolderIDColumn&quot;)+(2+in_FolderIndex).ToString]" DisplayName="Write Cell (Folder ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_6" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[ResultObject(&quot;Id&quot;).ToString]" />
-                </ActivityAction>
-              </ui:ExcelApplicationScope.Body>
-              <sap:WorkflowViewStateService.ViewState>
-                <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                </scg:Dictionary>
-              </sap:WorkflowViewStateService.ViewState>
-            </ui:ExcelApplicationScope>
-          </Sequence>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="304,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_28">
+          </ui:ExcelApplicationScope>
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="748.666666666667,498.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_28">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewFolderRow" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
@@ -369,7 +234,7 @@
                 <OutArgument x:TypeArguments="x:Object">[NewFolderRow("ID")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:Object">[Convert.ToInt64(ResultObject("Id"))]</InArgument>
+                <InArgument x:TypeArguments="x:Object">[FolderID]</InArgument>
               </Assign.Value>
             </Assign>
             <Assign DisplayName="Assign Cached Fully Qualified Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_18">
@@ -377,15 +242,15 @@
                 <OutArgument x:TypeArguments="x:Object">[NewFolderRow("Name")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:Object">[ResultObject("FullyQualifiedName")]</InArgument>
+                <InArgument x:TypeArguments="x:Object">[FullyQualifiedName]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewFolderRow]" DataTable="[io_FoldersData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
+            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewFolderRow]" DataTable="[io_FoldersData]" DisplayName="Add Data Row (New Folder)" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
           </Sequence>
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="404.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s1:Exception" sap:VirtualizedContainerService.HintSize="795.333333333333,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -402,7 +267,7 @@
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[Exception.Message]">
+              <ui:LogMessage DisplayName="Log Message (Failed to Create Folder)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[String.Format(&quot;{0}: {1}&quot;, Exception.Source, Exception.Message)]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -429,7 +294,7 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[in_Config(&quot;CreateFolderResultColumn&quot;)+(2+in_FolderIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[OperationResult]" />
+              <ui:ExcelWriteCell Cell="[&quot;F&quot;+(2+in_FolderIndex).ToString]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[OperationResult]" />
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
