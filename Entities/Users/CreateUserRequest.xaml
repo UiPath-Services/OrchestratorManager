@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="CreateUserRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="CreateUserRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_OUsIDsDisplayNames" Type="InArgument(scg:List(scg:Dictionary(x:String, x:Object)))" />
     <x:Property Name="in_Roles" Type="InArgument(scg:List(x:String))" />
@@ -9,14 +9,30 @@
     <x:Property Name="in_Surname" Type="InArgument(x:String)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_UserID" Type="OutArgument(x:Int64)" />
+    <x:Property Name="in_DomainUserNameAR" Type="InArgument(x:String)" />
+    <x:Property Name="in_DomainUserNameUR" Type="InArgument(x:String)" />
+    <x:Property Name="in_PasswordUR" Type="InArgument(x:String)" />
+    <x:Property Name="in_MayHavePersonalWorkspace" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_IsExternalLicensed" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_LimitConcurrentExecution" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_LicenseType" Type="InArgument(x:String)" />
   </x:Members>
+  <this:CreateUserRequest.in_DomainUserNameAR>
+    <InArgument x:TypeArguments="x:String" />
+  </this:CreateUserRequest.in_DomainUserNameAR>
+  <this:CreateUserRequest.in_DomainUserNameUR>
+    <InArgument x:TypeArguments="x:String" />
+  </this:CreateUserRequest.in_DomainUserNameUR>
+  <this:CreateUserRequest.in_PasswordUR>
+    <InArgument x:TypeArguments="x:String" />
+  </this:CreateUserRequest.in_PasswordUR>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>707.333333333333,2088.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1582,3604</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="30">
+    <scg:List x:TypeArguments="x:String" Capacity="64">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -47,10 +63,15 @@
       <x:String>System.Collections.Specialized</x:String>
       <x:String>UiPath.Web.Activities</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="48">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -74,6 +95,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -81,7 +103,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="592,2024" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="780,3539.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -92,7 +114,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="550,1665.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="738,2994" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Boolean" Name="ValidEmail" />
       </Sequence.Variables>
@@ -102,7 +124,7 @@
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[String.IsNullOrWhiteSpace(in_UserName)]" DisplayName="If UserName Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_1">
+      <If Condition="[String.IsNullOrWhiteSpace(in_UserName)]" DisplayName="If UserName Is Specified" sap:VirtualizedContainerService.HintSize="696,216" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -123,71 +145,66 @@
           </Assign>
         </If.Else>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Name Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_2">
+      <Assign DisplayName="Assign Name" sap:VirtualizedContainerService.HintSize="696,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Object">[in_Name]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign Surname" sap:VirtualizedContainerService.HintSize="696,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Object">[RequestBody("Surname")]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Object">[in_Surname]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <If Condition="[Not String.IsNullOrWhiteSpace(in_Email)]" DisplayName="If Email Is Specified" sap:VirtualizedContainerService.HintSize="696,560.666666666667" sap2010:WorkflowViewState.IdRef="If_10">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <x:Boolean x:Key="IsPinned">False</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Throw DisplayName="Throw (Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;NameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+          <Sequence DisplayName="Validate Email" sap:VirtualizedContainerService.HintSize="550,406.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_6">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Boolean" Name="ValidEmail" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:IsMatch BuilderPattern="((?&gt;[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+\x20*|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;\x20*)*(?&lt;angle&gt;&lt;))?((?!\.)(?&gt;\.?[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+)+|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;)@(((?!-)[a-zA-Z\d\-]+(?&lt;!-)\.)+[a-zA-Z]{2,}|\[(((?(?&lt;!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)&gt;)" DisplayName="Is Match (Email Pattern)" sap:VirtualizedContainerService.HintSize="508,58.6666666666667" sap2010:WorkflowViewState.IdRef="IsMatch_2" Input="[in_Email]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;EMAIL&quot;,&quot;OperationName&quot;:&quot;Email&quot;,&quot;OperationValue&quot;:&quot;((?&gt;[a-zA-Z\\d!#$%&amp;'*+\\-\\\/=?^_`{|}~]+\\x20*|\&quot;((?=[\\x01-\\x7f])[^\&quot;\\\\]|\\\\[\\x01-\\x7f])*\&quot;\\x20*)*(?&lt;angle&gt;&lt;))?((?!\\.)(?&gt;\\.?[a-zA-Z\\d!#$%&amp;'*+\\-\\\/=?^_`{|}~]+)+|\&quot;((?=[\\x01-\\x7f])[^\&quot;\\\\]|\\\\[\\x01-\\x7f])*\&quot;)@(((?!-)[a-zA-Z\\d\\-]+(?&lt;!-)\\.)+[a-zA-Z]{2,}|\\[(((?(?&lt;!\\[)\\.)(25[0-5]|2[0-4]\\d|[01]?\\d?\\d)){4}|[a-zA-Z\\d\\-]*[a-zA-Z\\d]:((?=[\\x01-\\x7f])[^\\\\\\[\\]]|\\\\[\\x01-\\x7f])+)\\])(?(angle)&gt;)&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="((?&gt;[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+\x20*|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;\x20*)*(?&lt;angle&gt;&lt;))?((?!\.)(?&gt;\.?[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+)+|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;)@(((?!-)[a-zA-Z\d\-]+(?&lt;!-)\.)+[a-zA-Z]{2,}|\[(((?(?&lt;!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)&gt;)" RegexOption="IgnoreCase" Result="[ValidEmail]" />
+            <If Condition="[ValidEmail]" DisplayName="If Email Is Valid" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_9">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Assign DisplayName="Assign New Email" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_17">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("EmailAddress")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[in_Email]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Then>
+              <If.Else>
+                <Throw DisplayName="Throw (Email Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;EmailInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+              </If.Else>
+            </If>
+          </Sequence>
         </If.Then>
-        <If.Else>
-          <Assign DisplayName="Assign Name" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Object">[RequestBody("Name")]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Object">[in_Name]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </If.Else>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_Surname)]" DisplayName="If Surname Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <If.Then>
-          <Throw DisplayName="Throw (Surname Not Specified)" Exception="[New ArgumentException(in_Config(&quot;SurnameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
-        </If.Then>
-        <If.Else>
-          <Assign DisplayName="Assign Surname" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Object">[RequestBody("Surname")]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Object">[in_Surname]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </If.Else>
-      </If>
-      <ui:IsMatch BuilderPattern="((?&gt;[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+\x20*|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;\x20*)*(?&lt;angle&gt;&lt;))?((?!\.)(?&gt;\.?[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+)+|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;)@(((?!-)[a-zA-Z\d\-]+(?&lt;!-)\.)+[a-zA-Z]{2,}|\[(((?(?&lt;!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)&gt;)" DisplayName="Is Match (Email Pattern)" sap:VirtualizedContainerService.HintSize="508,58.6666666666667" sap2010:WorkflowViewState.IdRef="IsMatch_1" Input="[in_Email]" IsBuilderTabModified="True" Model="[{&quot;Index&quot;:0,&quot;OperationID&quot;:&quot;EMAIL&quot;,&quot;OperationName&quot;:&quot;Email&quot;,&quot;OperationValue&quot;:&quot;((?&gt;[a-zA-Z\\d!#$%&amp;'*+\\-\\\/=?^_`{|}~]+\\x20*|\&quot;((?=[\\x01-\\x7f])[^\&quot;\\\\]|\\\\[\\x01-\\x7f])*\&quot;\\x20*)*(?&lt;angle&gt;&lt;))?((?!\\.)(?&gt;\\.?[a-zA-Z\\d!#$%&amp;'*+\\-\\\/=?^_`{|}~]+)+|\&quot;((?=[\\x01-\\x7f])[^\&quot;\\\\]|\\\\[\\x01-\\x7f])*\&quot;)@(((?!-)[a-zA-Z\\d\\-]+(?&lt;!-)\\.)+[a-zA-Z]{2,}|\\[(((?(?&lt;!\\[)\\.)(25[0-5]|2[0-4]\\d|[01]?\\d?\\d)){4}|[a-zA-Z\\d\\-]*[a-zA-Z\\d]:((?=[\\x01-\\x7f])[^\\\\\\[\\]]|\\\\[\\x01-\\x7f])+)\\])(?(angle)&gt;)&quot;,&quot;QuantifierFirstValue&quot;:&quot;1&quot;,&quot;QuantifierID&quot;:&quot;EXT&quot;,&quot;QuantifierName&quot;:&quot;Exactly&quot;,&quot;QuantifierSecondValue&quot;:null}]" Pattern="((?&gt;[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+\x20*|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;\x20*)*(?&lt;angle&gt;&lt;))?((?!\.)(?&gt;\.?[a-zA-Z\d!#$%&amp;'*+\-\/=?^_`{|}~]+)+|&quot;((?=[\x01-\x7f])[^&quot;\\]|\\[\x01-\x7f])*&quot;)@(((?!-)[a-zA-Z\d\-]+(?&lt;!-)\.)+[a-zA-Z]{2,}|\[(((?(?&lt;!\[)\.)(25[0-5]|2[0-4]\d|[01]?\d?\d)){4}|[a-zA-Z\d\-]*[a-zA-Z\d]:((?=[\x01-\x7f])[^\\\[\]]|\\[\x01-\x7f])+)\])(?(angle)&gt;)" RegexOption="IgnoreCase" Result="[ValidEmail]" />
-      <If Condition="[ValidEmail]" DisplayName="If Email Is Valid" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <If.Then>
-          <Assign DisplayName="Assign Email" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Object">[RequestBody("EmailAddress")]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Object">[in_Email]</InArgument>
-            </Assign.Value>
-          </Assign>
-        </If.Then>
-        <If.Else>
-          <Throw DisplayName="Throw (Email Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;EmailInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
-        </If.Else>
-      </If>
-      <Assign DisplayName="Assign Password" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+      <Assign DisplayName="Assign Password" sap:VirtualizedContainerService.HintSize="696,62" sap2010:WorkflowViewState.IdRef="Assign_5">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Object">[RequestBody("Password")]</OutArgument>
         </Assign.To>
@@ -195,7 +212,7 @@
           <InArgument x:TypeArguments="x:Object">[in_Password]</InArgument>
         </Assign.Value>
       </Assign>
-      <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="508,246.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
+      <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="696,246.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -214,7 +231,105 @@
           </Assign>
         </If.Then>
       </If>
-      <Assign DisplayName="Assign Roles" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201904]" DisplayName="If On-Premises Version is &gt;= 2019.4" sap:VirtualizedContainerService.HintSize="696,1350.66666666667" sap2010:WorkflowViewState.IdRef="If_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <If.Then>
+          <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="526,1166" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameAR)]" DisplayName="If DomainUserNameAR is specified" sap:VirtualizedContainerService.HintSize="484,416.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
+              <If.Then>
+                <Sequence sap:VirtualizedContainerService.HintSize="304,262.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign RobotProvision" sap:VirtualizedContainerService.HintSize="262,65.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_10">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[RequestBody("RobotProvision")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object" xml:space="preserve">[New With {
+  .UserName = in_DomainUserNameAR
+}]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Assign LicenseType" sap:VirtualizedContainerService.HintSize="262,65.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_12">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[RequestBody("LicenseType")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String" xml:space="preserve">[If(String.IsNullOrWhiteSpace(in_LicenseType),
+  "Development",
+  in_LicenseType
+)]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </If.Then>
+            </If>
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameUR)]" DisplayName="If DomainUserNameUR is specified" sap:VirtualizedContainerService.HintSize="484,413.333333333333" sap2010:WorkflowViewState.IdRef="If_12">
+              <If.Then>
+                <Sequence sap:VirtualizedContainerService.HintSize="304,259.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign UnattendedRobot" sap:VirtualizedContainerService.HintSize="262,65.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_13">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[RequestBody("UnattendedRobot")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object" xml:space="preserve">[New With {
+  .UserName = in_DomainUserNameUR,
+  .CredentialStoreId = 1,
+  .Password = in_PasswordUR,
+  .LimitConcurrentExecution = in_LimitConcurrentExecution
+}]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Assign MayHaveUnattendedSession" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_14">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[RequestBody("MayHaveUnattendedSession")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[True]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </If.Then>
+            </If>
+            <Assign DisplayName="Assign MayHavePersonalWorkspace" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_15">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[RequestBody("MayHavePersonalWorkspace")]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">[in_MayHavePersonalWorkSpace]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Assign IsExternalLicensed" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_16">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[RequestBody("IsExternalLicensed")]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">[in_IsExternalLicensed]</InArgument>
+              </Assign.Value>
+            </Assign>
+          </Sequence>
+        </If.Then>
+      </If>
+      <Assign DisplayName="Assign Roles" sap:VirtualizedContainerService.HintSize="696,62" sap2010:WorkflowViewState.IdRef="Assign_7">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Object">[RequestBody("RolesList")]</OutArgument>
         </Assign.To>
@@ -223,7 +338,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create User)" sap:VirtualizedContainerService.HintSize="550,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create User)" sap:VirtualizedContainerService.HintSize="738,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
@@ -235,18 +350,18 @@
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result">[Result]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Sequence DisplayName="Extract and Output User ID" sap:VirtualizedContainerService.HintSize="550,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Extract and Output User ID" sap:VirtualizedContainerService.HintSize="738,256" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <Sequence.Variables>
         <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create User)" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
-      <Assign DisplayName="Assign out_User" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+      <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON (Create User)" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[ResultObject]" JsonString="[Result]" />
+      <Assign DisplayName="Assign out_User" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_8">
         <Assign.To>
           <OutArgument x:TypeArguments="x:Int64">[out_UserID]</OutArgument>
         </Assign.To>
