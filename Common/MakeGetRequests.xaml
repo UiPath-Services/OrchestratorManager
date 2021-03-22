@@ -1,0 +1,184 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="MakeGetRequests" this:MakeGetRequests.in_FilterIDs="[{}]" this:MakeGetRequests.in_FilterNames="[{}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
+    <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
+    <x:Property Name="in_NameFilterField" Type="InArgument(x:String)" />
+    <x:Property Name="out_ResultObject" Type="OutArgument(njl:JObject)" />
+    <x:Property sap2010:Annotation.AnnotationText="Should be without the last &quot;&amp;&quot; for &quot;$filter=&quot;. &quot;&amp;&quot; will be added in this workflow." Name="in_Endpoint" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,1187.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>MakeGetRequests_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="46">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Dynamic</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Collections.Specialized</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="GET Requests fail if URL becomes more than 2000 characters.&#xD;&#xA;This workflow addresses the issue by dividing a long filter into separate filers and sending multiple GET requests." DisplayName="MakeGetRequests" sap:VirtualizedContainerService.HintSize="526,1110.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:List(x:Int64)" Name="FilterIDs">
+        <Variable.Default>
+          <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="in_FilterIDs.ToList" />
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="scg:List(x:String)" Name="FilterNames">
+        <Variable.Default>
+          <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="in_FilterNames.ToList" />
+        </Variable.Default>
+      </Variable>
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Assign sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="njl:JObject">[out_ResultObject]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="njl:JObject">[New JObject]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <DoWhile DisplayName="Do While all FilterIDs and FilterNames are not used" sap:VirtualizedContainerService.HintSize="484,854.666666666667" sap2010:WorkflowViewState.IdRef="DoWhile_1">
+      <DoWhile.Condition>
+        <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="FilterIDs.Count &gt; 0 OrElse FilterNames.Count &gt; 0" />
+      </DoWhile.Condition>
+      <Sequence DisplayName="Send GET Request using filters not exceeding URL limit" sap:VirtualizedContainerService.HintSize="376,686.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="scg:List(x:String)" Name="NextFilterNames" />
+          <Variable x:TypeArguments="njl:JObject" Name="CurrentResultObject" />
+          <Variable x:TypeArguments="scg:List(x:Int64)" Name="NextFilterIDs" />
+          <Variable x:TypeArguments="x:String" Name="ODataFilter" />
+        </Sequence.Variables>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <ui:InvokeCode ContinueOnError="{x:Null}" Code="Const LENGTH_LIMIT As Int32 = 1800 ' Rather arbitrary limit to accomodate changing endpoint lengths&#xD;&#xA;Dim useShorterFilter As Boolean = in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202010&#xD;&#xA;Dim ID_OVERHEAD As Int32 = If(useShorterFilter, &quot;,&quot;.Length, &quot;Id eq  or &quot;.Length)&#xD;&#xA;Dim NAME_OVERHEAD As Int32 = If(useShorterFilter, &quot;.&quot;.Length, in_NameFilterField.Length + &quot; eq  or &quot;.Length)&#xD;&#xA;&#xD;&#xA;Dim Length As Int32 = 0&#xD;&#xA;NextFilterIDs = New List(Of Long)&#xD;&#xA;NextFilterNames = New List(Of String)&#xD;&#xA;&#xD;&#xA;While Length &lt; LENGTH_LIMIT AndAlso FilterIDs.Count &gt; 0&#xD;&#xA;&#x9;Dim Item As Long = FilterIDs.Last&#xD;&#xA;&#x9;FilterIDs.RemoveAt(FilterIDs.Count - 1)&#xD;&#xA;&#x9;NextFilterIDs.Add(Item)&#xD;&#xA;&#x9;Length += ID_OVERHEAD + Item.ToString.Length&#xD;&#xA;End While&#xD;&#xA;&#xD;&#xA;While Length &lt; LENGTH_LIMIT AndAlso FilterNames.Count &gt; 0&#xD;&#xA;&#x9;Dim Item As String = FilterNames.Last&#xD;&#xA;&#x9;FilterNames.RemoveAt(FilterNames.Count - 1)&#xD;&#xA;&#x9;NextFilterNames.Add(Item)&#xD;&#xA;&#x9;Length += NAME_OVERHEAD + Item.ToString.Length&#xD;&#xA;End While" DisplayName="Get NextFilterIDs and NextFilterNames" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+          <ui:InvokeCode.Arguments>
+            <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="FilterIDs" />
+            </InArgument>
+            <InArgument x:TypeArguments="scg:List(x:String)" x:Key="FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="FilterNames" />
+            </InArgument>
+            <OutArgument x:TypeArguments="scg:List(x:Int64)" x:Key="NextFilterIDs">
+              <mva:VisualBasicReference x:TypeArguments="scg:List(x:Int64)" ExpressionText="NextFilterIDs" />
+            </OutArgument>
+            <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="NextFilterNames">
+              <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="NextFilterNames" />
+            </OutArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_NameFilterField" />
+            </InArgument>
+          </ui:InvokeCode.Arguments>
+        </ui:InvokeCode>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="NextFilterNames.ToArray" />
+            </InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
+              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="NextFilterIDs.ToArray" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_ODataFilter">
+              <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="ODataFilter" />
+            </OutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_NameFilterField" />
+            </InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequest Workflow (Get Users)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\MakeGetRequest.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID" />
+            <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}&amp;{1}&quot;, in_Endpoint, ODataFilter)" />
+            </InArgument>
+            <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
+              <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="CurrentResultObject" />
+            </OutArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+        <InvokeMethod DisplayName="Merge CurrentResultObject into out_ResultObject" sap:VirtualizedContainerService.HintSize="334,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Merge">
+          <InvokeMethod.TargetObject>
+            <InArgument x:TypeArguments="njl:JObject">[out_ResultObject]</InArgument>
+          </InvokeMethod.TargetObject>
+          <InArgument x:TypeArguments="njl:JObject">
+            <mva:VisualBasicValue x:TypeArguments="njl:JObject" ExpressionText="CurrentResultObject" />
+          </InArgument>
+        </InvokeMethod>
+      </Sequence>
+    </DoWhile>
+  </Sequence>
+</Activity>
