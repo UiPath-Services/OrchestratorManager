@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="CreateUserRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="CreateUserRequest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_OUsIDsDisplayNames" Type="InArgument(scg:List(scg:Dictionary(x:String, x:Object)))" />
     <x:Property Name="in_Roles" Type="InArgument(scg:List(x:String))" />
@@ -16,6 +16,7 @@
     <x:Property Name="in_IsExternalLicensed" Type="InArgument(x:Boolean)" />
     <x:Property Name="in_LimitConcurrentExecution" Type="InArgument(x:Boolean)" />
     <x:Property Name="in_LicenseType" Type="InArgument(x:String)" />
+    <x:Property Name="in_UserDetails" Type="InArgument(sd:DataRow)" />
   </x:Members>
   <this:CreateUserRequest.in_DomainUserNameAR>
     <InArgument x:TypeArguments="x:String" />
@@ -29,10 +30,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1582,3604</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,3709.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="64">
+    <scg:List x:TypeArguments="x:String" Capacity="35">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -71,7 +72,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="48">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="24">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -103,7 +104,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="780,3539.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="780,3644.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -114,7 +115,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="738,2994" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="738,3099.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Boolean" Name="ValidEmail" />
       </Sequence.Variables>
@@ -231,7 +232,7 @@
           </Assign>
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201904]" DisplayName="If On-Premises Version is &gt;= 2019.4" sap:VirtualizedContainerService.HintSize="696,1350.66666666667" sap2010:WorkflowViewState.IdRef="If_8">
+      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201904]" DisplayName="If On-Premises Version is &gt;= 2019.4" sap:VirtualizedContainerService.HintSize="696,1456" sap2010:WorkflowViewState.IdRef="If_8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -240,12 +241,32 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="526,1166" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="526,1271.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Object" Name="ExecutionSettings" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
+            <Assign sap:VirtualizedContainerService.HintSize="484,65.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_18">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[ExecutionSettings]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object" xml:space="preserve">[New With {
+	.AutoDownloadProcess = in_UserDetails("AutoDownloadProcess").ToString =  "True",
+	.FontSmoothing = in_UserDetails("FontSmoothing").ToString =  "True",
+	.LoginToConsole = in_UserDetails("LoginToConsole").ToString =  "True",
+	.StudioNotifyServer = in_UserDetails("StudioNotifyServer").ToString =  "True",
+	.TracingLevel = in_UserDetails("TracingLevel").ToString,
+	.ResolutionDepth = in_UserDetails("ResolutionDepth").ToString,
+	.ResolutionHeight = in_UserDetails("ResolutionHeight").ToString,
+	.ResolutionWidth = in_UserDetails("ResolutionWidth").ToString
+}]</InArgument>
+              </Assign.Value>
+            </Assign>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameAR)]" DisplayName="If DomainUserNameAR is specified" sap:VirtualizedContainerService.HintSize="484,416.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
               <If.Then>
                 <Sequence sap:VirtualizedContainerService.HintSize="304,262.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_7">
@@ -260,7 +281,8 @@
                     </Assign.To>
                     <Assign.Value>
                       <InArgument x:TypeArguments="x:Object" xml:space="preserve">[New With {
-  .UserName = in_DomainUserNameAR
+  .UserName = in_DomainUserNameAR,
+  .ExecutionSettings = ExecutionSettings
 }]</InArgument>
                     </Assign.Value>
                   </Assign>
@@ -295,7 +317,8 @@
   .UserName = in_DomainUserNameUR,
   .CredentialStoreId = 1,
   .Password = in_PasswordUR,
-  .LimitConcurrentExecution = in_LimitConcurrentExecution
+  .LimitConcurrentExecution = in_LimitConcurrentExecution,
+  .ExecutionSettings = ExecutionSettings
 }]</InArgument>
                     </Assign.Value>
                   </Assign>
