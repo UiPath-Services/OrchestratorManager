@@ -3,11 +3,11 @@
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_SelectedOUFolders" Type="OutArgument(sd:DataTable)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1352,1968.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1420,2214.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="20">
+    <scg:List x:TypeArguments="x:String" Capacity="40">
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Collections.Generic</x:String>
@@ -28,10 +28,14 @@
       <x:String>System.ComponentModel</x:String>
       <x:String>System.Collections.Specialized</x:String>
       <x:String>UiPath.Web.Activities</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="17">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="34">
       <AssemblyReference>UiPath.System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>System.Core</AssemblyReference>
@@ -46,12 +50,13 @@
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>PresentationFramework</AssemblyReference>
       <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Prompt user to choose the desired Organization Units/Folders to be used in the operation." DisplayName="Prompt User For Organization Units/Folders" sap:VirtualizedContainerService.HintSize="714,1904" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Prompt user to choose the desired Organization Units/Folders to be used in the operation." DisplayName="Prompt User For Organization Units/Folders" sap:VirtualizedContainerService.HintSize="1064,2150" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
       <Variable x:TypeArguments="x:String" Name="OUFolderPanelOutput" />
@@ -62,7 +67,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow" sap:VirtualizedContainerService.HintSize="672,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetOUFolderData Workflow" sap:VirtualizedContainerService.HintSize="1022,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common/GetOUFolderData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
@@ -70,103 +75,124 @@
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_OUFoldersData">[OUFoldersData]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OUFoldersPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="672,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Core/Forms/OUFoldersPanelBuilder.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:CustomInput DisplayName="Custom Input" Height="[in_Config(&quot;FormsHeight&quot;)-100]" sap:VirtualizedContainerService.HintSize="672,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[OUFolderPanelOutput]" URI="[in_Config(&quot;OUFoldersPanelPath&quot;)]" Width="[in_Config(&quot;FormsWidth&quot;)-100]" />
-    <Assign sap2010:Annotation.AnnotationText="Returns an empty DataTable if the user closes the panel or if no OU/Folders are selected." DisplayName="Assign out_SelectedOUs (Initialization)" sap:VirtualizedContainerService.HintSize="672,124" sap2010:WorkflowViewState.IdRef="Assign_13">
-      <Assign.To>
-        <OutArgument x:TypeArguments="sd:DataTable">[out_SelectedOUFolders]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="sd:DataTable">[New DataTable()]</InArgument>
-      </Assign.Value>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </Assign>
-    <If Condition="[Not String.IsNullOrWhiteSpace(OUFolderPanelOutput)]" DisplayName="If User Submitted Panel" sap:VirtualizedContainerService.HintSize="672,1234.66666666667" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[OUFoldersData.Rows.Count = 1 AndAlso OUFoldersData.Rows(0)(&quot;Name&quot;).Equals(&quot;N/A&quot;)]" DisplayName="If OU is disabled" sap:VirtualizedContainerService.HintSize="1022,1900.66666666667" sap2010:WorkflowViewState.IdRef="If_3">
       <If.Then>
-        <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="526,1080.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="njl:JObject" Name="OUFolderPanelOutputJSON" />
-            <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="OUFolderIDFilters" />
-            <Variable x:TypeArguments="x:String" Name="CommaSeparatedIDs" />
-          </Sequence.Variables>
+        <Assign DisplayName="Assign out_SelectedOUs" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_16">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sd:DataTable">[out_SelectedOUFolders]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sd:DataTable">[OUFoldersData]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="Prompt User" sap:VirtualizedContainerService.HintSize="714,1746.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[OUFolderPanelOutputJSON]" JsonString="[OUFolderPanelOutput]" />
-          <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Prepare conditions to be used in filter of Organization Units/Folders." DisplayName="For Each OU/Folder ID" sap:VirtualizedContainerService.HintSize="484,244" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[OUFolderPanelOutputJSON(&quot;ous&quot;).ToObject(Of List(Of Int64))]">
-            <ui:ForEach.Body>
-              <ActivityAction x:TypeArguments="x:Int64">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="x:Int64" Name="ID" />
-                </ActivityAction.Argument>
-                <AddToCollection x:TypeArguments="x:String" Collection="[OUFolderIDFilters]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[String.Format(&quot;'{0}'&quot;, ID.ToString)]" />
-              </ActivityAction>
-            </ui:ForEach.Body>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OUFoldersPanelBuilder Workflow" sap:VirtualizedContainerService.HintSize="672,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Core/Forms/OUFoldersPanelBuilder.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <ui:CustomInput DisplayName="Custom Input" Height="[in_Config(&quot;FormsHeight&quot;)-100]" sap:VirtualizedContainerService.HintSize="672,89.3333333333333" sap2010:WorkflowViewState.IdRef="CustomInput_1" Result="[OUFolderPanelOutput]" URI="[in_Config(&quot;OUFoldersPanelPath&quot;)]" Width="[in_Config(&quot;FormsWidth&quot;)-100]" />
+          <Assign sap2010:Annotation.AnnotationText="Returns an empty DataTable if the user closes the panel or if no OU/Folders are selected." DisplayName="Assign out_SelectedOUs (Initialization)" sap:VirtualizedContainerService.HintSize="672,124" sap2010:WorkflowViewState.IdRef="Assign_13">
+            <Assign.To>
+              <OutArgument x:TypeArguments="sd:DataTable">[out_SelectedOUFolders]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="sd:DataTable">[New DataTable()]</InArgument>
+            </Assign.Value>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-          </ui:ForEach>
-          <Assign DisplayName="Assign CommaSeparatedIDs" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_15">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[CommaSeparatedIDs]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[String.Join(", ", OUFolderIDFilters)]</InArgument>
-            </Assign.Value>
           </Assign>
-          <If Condition="[OUFolderIDFilters.Count &gt; 0]" DisplayName="If Any OU/Folder Was Selected" sap:VirtualizedContainerService.HintSize="484,500.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+          <If Condition="[Not String.IsNullOrWhiteSpace(OUFolderPanelOutput)]" DisplayName="If User Submitted Panel" sap:VirtualizedContainerService.HintSize="672,1234.66666666667" sap2010:WorkflowViewState.IdRef="If_1">
             <If.Then>
-              <Sequence DisplayName="Return Selected OUs/Folders" sap:VirtualizedContainerService.HintSize="304,346.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+              <Sequence DisplayName="Extract Custom Input Data" sap:VirtualizedContainerService.HintSize="526,1080.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="njl:JObject" Name="OUFolderPanelOutputJSON" />
+                  <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="OUFolderIDFilters" />
+                  <Variable x:TypeArguments="x:String" Name="CommaSeparatedIDs" />
+                </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <Assign sap2010:Annotation.AnnotationText="Filter Organization Units based on the ones selected by the user." DisplayName="Assign out_SelectedOUs" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="sd:DataTable">[out_SelectedOUFolders]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="sd:DataTable">[OUFoldersData.Select(String.Format("ID in ({0})", CommaSeparatedIDs)).CopyToDataTable]</InArgument>
-                  </Assign.Value>
+                <ui:DeserializeJson x:TypeArguments="njl:JObject" DisplayName="Deserialize JSON" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="DeserializeJson`1_1" JsonObject="[OUFolderPanelOutputJSON]" JsonString="[OUFolderPanelOutput]" />
+                <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Prepare conditions to be used in filter of Organization Units/Folders." DisplayName="For Each OU/Folder ID" sap:VirtualizedContainerService.HintSize="484,244" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[OUFolderPanelOutputJSON(&quot;ous&quot;).ToObject(Of List(Of Int64))]">
+                  <ui:ForEach.Body>
+                    <ActivityAction x:TypeArguments="x:Int64">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:Int64" Name="ID" />
+                      </ActivityAction.Argument>
+                      <AddToCollection x:TypeArguments="x:String" Collection="[OUFolderIDFilters]" DisplayName="Add To Collection" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[String.Format(&quot;'{0}'&quot;, ID.ToString)]" />
+                    </ActivityAction>
+                  </ui:ForEach.Body>
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                </Assign>
-                <Assign sap2010:Annotation.AnnotationText="Reassign the primary key after changing the original DataTable." DisplayName="Assign out_SelectedOUFolders.PrimaryKey" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_14">
+                </ui:ForEach>
+                <Assign DisplayName="Assign CommaSeparatedIDs" sap:VirtualizedContainerService.HintSize="484,62" sap2010:WorkflowViewState.IdRef="Assign_15">
                   <Assign.To>
-                    <OutArgument x:TypeArguments="sd:DataColumn[]">[out_SelectedOUFolders.PrimaryKey]</OutArgument>
+                    <OutArgument x:TypeArguments="x:String">[CommaSeparatedIDs]</OutArgument>
                   </Assign.To>
                   <Assign.Value>
-                    <InArgument x:TypeArguments="sd:DataColumn[]">[{out_SelectedOUFolders.Columns("Name")}]</InArgument>
+                    <InArgument x:TypeArguments="x:String">[String.Join(", ", OUFolderIDFilters)]</InArgument>
                   </Assign.Value>
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
                 </Assign>
+                <If Condition="[OUFolderIDFilters.Count &gt; 0]" DisplayName="If Any OU/Folder Was Selected" sap:VirtualizedContainerService.HintSize="484,500.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If.Then>
+                    <Sequence DisplayName="Return Selected OUs/Folders" sap:VirtualizedContainerService.HintSize="304,346.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <Assign sap2010:Annotation.AnnotationText="Filter Organization Units based on the ones selected by the user." DisplayName="Assign out_SelectedOUs" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_8">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="sd:DataTable">[out_SelectedOUFolders]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="sd:DataTable">[OUFoldersData.Select(String.Format("ID in ({0})", CommaSeparatedIDs)).CopyToDataTable]</InArgument>
+                        </Assign.Value>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Assign>
+                      <Assign sap2010:Annotation.AnnotationText="Reassign the primary key after changing the original DataTable." DisplayName="Assign out_SelectedOUFolders.PrimaryKey" sap:VirtualizedContainerService.HintSize="262,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_14">
+                        <Assign.To>
+                          <OutArgument x:TypeArguments="sd:DataColumn[]">[out_SelectedOUFolders.PrimaryKey]</OutArgument>
+                        </Assign.To>
+                        <Assign.Value>
+                          <InArgument x:TypeArguments="sd:DataColumn[]">[{out_SelectedOUFolders.Columns("Name")}]</InArgument>
+                        </Assign.Value>
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </Assign>
+                    </Sequence>
+                  </If.Then>
+                </If>
               </Sequence>
             </If.Then>
           </If>
         </Sequence>
-      </If.Then>
+      </If.Else>
     </If>
   </Sequence>
 </Activity>
