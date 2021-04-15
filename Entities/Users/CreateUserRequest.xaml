@@ -30,7 +30,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1420,3808</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,3808</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="35">
@@ -233,7 +233,7 @@
           </Assign>
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201904]" DisplayName="If On-Premises Version is &gt;= 2019.4" sap:VirtualizedContainerService.HintSize="696,1554.66666666667" sap2010:WorkflowViewState.IdRef="If_8">
+      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201904]" DisplayName="If Cloud Version or On-Premises Version is &gt;= 2019.4" sap:VirtualizedContainerService.HintSize="696,1554.66666666667" sap2010:WorkflowViewState.IdRef="If_8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -244,25 +244,17 @@
         <If.Then>
           <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="526,1370" sap2010:WorkflowViewState.IdRef="Sequence_5">
             <Sequence.Variables>
-              <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Name="ExecutionSettings">
-                <Variable.Default>
-                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="New Dictionary(Of String, Object)" />
-                </Variable.Default>
-              </Variable>
+              <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="ExecutionSettings" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim booleanKeys() As String = {&quot;AutoDownloadProcess&quot;, &quot;FontSmoothing&quot;, &quot;LoginToConsole&quot;, &quot;StudioNotifyServer&quot;}&#xD;&#xA;Dim stringKeys() As String = {&quot;TracingLevel&quot;, &quot;ResolutionDepth&quot;, &quot;ResolutionHeight&quot;, &quot;ResolutionWidth&quot;}&#xD;&#xA;&#xD;&#xA;For Each key As String In booleanKeys&#xD;&#xA;&#x9;Dim val As String = in_UserDetails(key).ToString&#xD;&#xA;&#x9;If Not val.IsNullOrEmpty&#xD;&#xA;&#x9;&#x9;io_ExecutionSettings.Add(key, val = &quot;True&quot;)&#xD;&#xA;&#x9;End If&#xD;&#xA;Next&#xD;&#xA;&#xD;&#xA;For Each key As String In stringKeys&#xD;&#xA;&#x9;Dim val As String = in_UserDetails(key).ToString&#xD;&#xA;&#x9;If Not val.IsNullOrEmpty&#xD;&#xA;&#x9;&#x9;io_ExecutionSettings.Add(key, val)&#xD;&#xA;&#x9;End If&#xD;&#xA;Next&#xD;&#xA;" DisplayName="Fill values in ExecutionSettings" sap:VirtualizedContainerService.HintSize="484,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+            <ui:InvokeCode ContinueOnError="{x:Null}" Code="Dim booleanKeys() As String = {&quot;AutoDownloadProcess&quot;, &quot;FontSmoothing&quot;, &quot;LoginToConsole&quot;, &quot;StudioNotifyServer&quot;}&#xA;Dim stringKeys() As String = {&quot;TracingLevel&quot;, &quot;ResolutionDepth&quot;, &quot;ResolutionHeight&quot;, &quot;ResolutionWidth&quot;}&#xA;&#xA;For Each key As String In booleanKeys&#xA;&#x9;Dim val As String = in_UserDetails(key).ToString&#xA;&#x9;If Not val.IsNullOrEmpty&#xA;&#x9;&#x9;io_ExecutionSettings.Add(key, val = &quot;True&quot;)&#xA;&#x9;End If&#xA;Next&#xA;&#xA;For Each key As String In stringKeys&#xA;&#x9;Dim val As String = in_UserDetails(key).ToString&#xA;&#x9;If Not val.IsNullOrEmpty&#xA;&#x9;&#x9;io_ExecutionSettings.Add(key, val)&#xA;&#x9;End If&#xA;Next&#xA;" DisplayName="Fill values in ExecutionSettings" sap:VirtualizedContainerService.HintSize="484,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
               <ui:InvokeCode.Arguments>
-                <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_ExecutionSettings">
-                  <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="ExecutionSettings" />
-                </InOutArgument>
-                <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">
-                  <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="in_UserDetails" />
-                </InArgument>
+                <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_ExecutionSettings">[ExecutionSettings]</InOutArgument>
+                <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">[in_UserDetails]</InArgument>
               </ui:InvokeCode.Arguments>
             </ui:InvokeCode>
             <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameAR) OrElse Not String.IsNullOrWhiteSpace(in_LicenseType)]" DisplayName="If DomainUserNameAR is specified" sap:VirtualizedContainerService.HintSize="484,416.666666666667" sap2010:WorkflowViewState.IdRef="If_11">
