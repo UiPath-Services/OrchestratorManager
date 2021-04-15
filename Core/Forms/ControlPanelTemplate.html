@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="FormStyle.css">
 	</head>
 
-	<body onload="hideUserOption(); updateOperations()">
+	<body onload="hideUserOption(); updateOperations(); selectOperationSelectedBefore(); updateOpenWorkbookButtonText()">
 		<img class="logo" src="UiPathLogo.svg" alt="UiPath Logo">
 
 		<!-- Based on form from https://www.sanwebe.com/2014/08/css-html-forms-designs -->
@@ -42,13 +42,44 @@
 				</select></label>
 
 				<div class="buttons">
-				<input type="submit" value="_FormSubmitButton_" id="submitButton" onclick="submitValues(this)" />
-				<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
+					<input type="submit" value="_FormOpenWorkbookButton_" id="openWorkbookButton" onclick="submitValues(this)" />
+				</div>
+
+				<div class="buttons">
+					<input type="submit" value="_FormExecuteButton_" id="submitButton" onclick="submitValues(this)" />
+					<input type="submit" value="_FormCancelButton_" id="cancelButton" onclick="submitValues(this)" />
 				</div>
 			</form>
 		</div>	
 
 		<script type="text/javascript">
+		/**
+		 * @param {HTMLCollection} collection
+		 * @param {string} value
+		 * @returns {HTMLElement}
+		 */
+		function findElementByValue(collection, value) {
+			'use strict';
+			for (var i = 0; i < collection.length; ++i) {
+				if (collection[i].value === value) {
+					return collection[i];
+				}
+			}
+		}
+
+		function selectOperationSelectedBefore() {
+			'use strict';
+			/** @type {string} */
+			var selectedOptionValue = '_FormSelectedOperation_';
+			if (selectedOptionValue[0] !== '_') {
+				/** @type {HTMLCollection} */
+				var operationOptions = document.getElementById('operation').children;
+				/** @type {HTMLElement} */
+				var selectedOption = findElementByValue(operationOptions, selectedOptionValue);
+				selectedOption.setAttribute('selected', 'selected');
+			}
+		}
+
 		function hideUserOption() {
 			'use strict';
 			// Hide options according to Orchestrator type and version
@@ -80,19 +111,14 @@
 		function submitValues(elem) {
 			'use strict';
 
-			/** @type {{shouldStop: boolean, entity: string, operation: string}} */
+			/** @type {{action: string, entity: string, operation: string}} */
 			var	jsonObject = {};
 			/** @type {string} */
 			var formData;
 
-			// Should stop after performing operation
-			if (elem.id === 'cancelButton') {
-				jsonObject.shouldStop = true;
-			} else {
-				jsonObject.shouldStop = false;
-				jsonObject.entity = document.getElementById('entity').value;
-				jsonObject.operation = document.getElementById('operation').value;
-			}
+			jsonObject.action = elem.id.replace('Button', '');
+			jsonObject.entity = document.getElementById('entity').value;
+			jsonObject.operation = document.getElementById('operation').value;
 
 			// Get JSON representation of dictionary
 			formData = JSON.stringify(jsonObject);
@@ -100,6 +126,19 @@
 			// noinspection JSDeprecatedSymbols,JSUnresolvedFunction
 			window.external.setResult(formData);
 			return true;
+		}
+
+		function updateOpenWorkbookButtonText() {
+			'use strict';
+
+			/** @type {HTMLElement} */
+			var entity = document.getElementById('entity');
+			/** @type {HTMLElement} */
+			var selectedEntityOption = findElementByValue(entity.children, entity.value);
+			/** @type {HTMLElement} */
+			var openWorkbookButton = document.getElementById('openWorkbookButton');
+
+			openWorkbookButton.value = openWorkbookButton.value.replace(/\(.*\)/, "(" + selectedEntityOption.textContent + ")");
 		}
 
 		function updateOperations() {
@@ -118,7 +157,7 @@
 				case 'user':
 					operationElement.innerHTML = '<option id="getOption" value="get">_FormGetOption_</option><option id="createOption" value="create">_FormCreateOption_</option><option id="editOption" value="edit">_FormEditOption_</option><option id="deleteOption" value="delete">_FormDeleteOption_</option><option id="addRemoveRoleOption" value="addremoverole">_FormAddRemoveUserRolesOption_</option>';
 					// From Orchestrator 2019.10, Organization Units have been renamed to Folders
-					if ('_FormOrchestratorType_' === 'onpremises' || _FormOrchestratorVersion_ < 201910) {
+					if ('_FormOrchestratorType_' === 'onpremises' && _FormOrchestratorVersion_ < 201910) {
 						operationElement.innerHTML = operationElement.innerHTML + '<option id="addRemoveOUOption" value="addremoveou">_FormAddRemoveUserOrganizationUnitsOption_</option>';
 					}
 					break;
