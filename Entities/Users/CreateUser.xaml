@@ -128,7 +128,7 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If sap2010:Annotation.AnnotationText="Only create Users of type User. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[io_UsersData.Rows.Find({&quot;User&quot;, in_UserName}) IsNot Nothing]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="520.666666666667,276" sap2010:WorkflowViewState.IdRef="If_19">
+            <If sap2010:Annotation.AnnotationText="Only create Users of type User. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[io_UsersData.Select(String.Format(&quot;Type = 'User' AND Username = '{0}'&quot;, in_UserName)).Length &gt; 0]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="520.666666666667,276" sap2010:WorkflowViewState.IdRef="If_19">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -230,57 +230,23 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateUserRequest Workflow" sap:VirtualizedContainerService.HintSize="562.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Users\CreateUserRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_OUsIDsDisplayNames">
-                <mva:VisualBasicValue x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" ExpressionText="OUsIDsDisplayNames" />
-              </InArgument>
-              <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_Roles">
-                <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="Roles" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_UserName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserName" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Password">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Password" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Email">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Email" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Surname">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Surname" />
-              </InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <OutArgument x:TypeArguments="x:Int64" x:Key="out_UserID">
-                <mva:VisualBasicReference x:TypeArguments="x:Int64" ExpressionText="UserID" />
-              </OutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameAR">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DomainUserNameAR" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameUR">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DomainUserNameUR" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_PasswordUR">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_PasswordUR" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_MayHavePersonalWorkspace">
-                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_MayHavePersonalWorkspace" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsExternalLicensed">
-                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_IsExternalLicensed" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_LimitConcurrentExecution">
-                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_LimitConcurrentExecution" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_LicenseType">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_LicenseType" />
-              </InArgument>
-              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">
-                <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="in_UserDetails" />
-              </InArgument>
+              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_OUsIDsDisplayNames">[OUsIDsDisplayNames]</InArgument>
+              <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_Roles">[Roles]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UserName">[in_UserName]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Password">[in_Password]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Email">[in_Email]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Surname">[in_Surname]</InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <OutArgument x:TypeArguments="x:Int64" x:Key="out_UserID">[UserID]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameAR">[in_DomainUserNameAR]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameUR">[in_DomainUserNameUR]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_PasswordUR">[in_PasswordUR]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_MayHavePersonalWorkspace">[in_MayHavePersonalWorkspace]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsExternalLicensed">[in_IsExternalLicensed]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_LimitConcurrentExecution">[in_LimitConcurrentExecution]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_LicenseType">[in_LicenseType]</InArgument>
+              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">[in_UserDetails]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output User ID)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="562.666666666667,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_5" Visible="False">

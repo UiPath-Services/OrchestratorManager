@@ -5,7 +5,7 @@
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1454.66666666667,2226</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,2045.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -26,6 +26,7 @@
       <x:String>System.Activities.DynamicUpdate</x:String>
       <x:String>System.Linq</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -44,7 +45,6 @@
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -53,7 +53,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Users.&#xA;If no filters are specified, returns data about all Users." DisplayName="Get Users Data" sap:VirtualizedContainerService.HintSize="382.666666666667,2161.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_25">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Users.&#xA;If no filters are specified, returns data about all Users." DisplayName="Get Users Data" sap:VirtualizedContainerService.HintSize="382.666666666667,1980.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_25">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
@@ -73,24 +73,12 @@
     </ui:BuildDataTable>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeGetRequests Workflow (Get Users)" sap:VirtualizedContainerService.HintSize="340.666666666667,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\MakeGetRequests.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-          <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-          <Literal x:TypeArguments="x:String">UserName</Literal>
-        </InArgument>
-        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">
-          <mva:VisualBasicReference x:TypeArguments="njl:JObject" ExpressionText="ResultObject" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/Users?$orderby=UserName&amp;$expand=OrganizationUnits&quot;, in_Config(&quot;OrchestratorURL&quot;))" />
-        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">UserName</InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="out_ResultObject">[ResultObject]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Users?$orderby=UserName&amp;$expand=OrganizationUnits", in_Config("OrchestratorURL"))]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
     <ui:ForEach x:TypeArguments="njl:JObject" CurrentIndex="{x:Null}" DisplayName="For Each Retrieved User" sap:VirtualizedContainerService.HintSize="340.666666666667,1522.66666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_12" Values="[ResultObject.SelectToken(&quot;value&quot;).Children]">
@@ -351,18 +339,5 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:ForEach>
-    <Assign sap2010:Annotation.AnnotationText="Assigning a primary key yields better performance by allowing the use of the Find method when querying the datatable." DisplayName="Assign out_UsersData.PrimaryKey" sap:VirtualizedContainerService.HintSize="340.666666666667,140.666666666667" sap2010:WorkflowViewState.IdRef="Assign_42">
-      <Assign.To>
-        <OutArgument x:TypeArguments="sd:DataColumn[]">[out_UsersData.PrimaryKey]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="sd:DataColumn[]">[{out_UsersData.Columns("Type"), out_UsersData.Columns("Username")}]</InArgument>
-      </Assign.Value>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </Assign>
   </Sequence>
 </Activity>
