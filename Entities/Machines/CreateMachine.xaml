@@ -41,6 +41,7 @@
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Linq</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -63,6 +64,7 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -136,24 +138,12 @@
           </Sequence>
           <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateMachineRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities\Machines\CreateMachineRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Type">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Type" />
-              </InArgument>
-              <OutArgument x:TypeArguments="x:Int64" x:Key="out_MachineID">
-                <mva:VisualBasicReference x:TypeArguments="x:Int64" ExpressionText="MachineID" />
-              </OutArgument>
-              <InOutArgument x:TypeArguments="x:String" x:Key="io_Key">
-                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="MachineKey" />
-              </InOutArgument>
-              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_MachineDetails">
-                <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="in_MachineDetails" />
-              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Type">[in_Type]</InArgument>
+              <OutArgument x:TypeArguments="x:Int64" x:Key="out_MachineID">[MachineID]</OutArgument>
+              <InOutArgument x:TypeArguments="x:String" x:Key="io_Key">[MachineKey]</InOutArgument>
+              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_MachineDetails">[in_MachineDetails]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
           <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Machine Data)" ExistingWorkbook="[in_OpenedWorkbook]" sap:VirtualizedContainerService.HintSize="434,414" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" Visible="False">
@@ -162,14 +152,56 @@
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                 </ActivityAction.Argument>
-                <Sequence DisplayName="Write Machine Data" sap:VirtualizedContainerService.HintSize="376,305.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                <Sequence DisplayName="Write Machine Data" sap:VirtualizedContainerService.HintSize="390,305.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:ExcelWriteCell Cell="[String.Format(&quot;{0}{1}&quot;, Chr(Asc(&quot;A&quot;) + Array.IndexOf(in_ColumnNames, &quot;Key&quot;)), 2+in_MachineIndex)]" DisplayName="Write Cell (Machine Key)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_7" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[MachineKey]" />
-                  <ui:ExcelWriteCell Cell="[String.Format(&quot;{0}{1}&quot;, Chr(Asc(&quot;A&quot;) + Array.IndexOf(in_ColumnNames, &quot;ID&quot;)), 2+in_MachineIndex)]" DisplayName="Write Cell (Machine ID)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_6" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[MachineID.ToString]" />
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow" sap:VirtualizedContainerService.HintSize="348,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
+                        <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_MachineIndex" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
+                        <Literal x:TypeArguments="x:String">Key</Literal>
+                      </InArgument>
+                      <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+                        <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Value">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="MachineKey" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
+                      </InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow" sap:VirtualizedContainerService.HintSize="348,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
+                        <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_MachineIndex" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
+                        <Literal x:TypeArguments="x:String">ID</Literal>
+                      </InArgument>
+                      <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+                        <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="in_Value">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="MachineID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                        <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
+                      </InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
                 </Sequence>
               </ActivityAction>
             </ui:ExcelApplicationScope.Body>
@@ -264,7 +296,28 @@
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
               </ActivityAction.Argument>
-              <ui:ExcelWriteCell Cell="[String.Format(&quot;{0}{1}&quot;, Chr(Asc(&quot;A&quot;) + Array.IndexOf(in_ColumnNames, &quot;Result&quot;)), 2+in_MachineIndex)]" DisplayName="Write Cell (Result)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_5" SheetName="[in_Config(&quot;CreateOperationName&quot;)]" Text="[OperationResult]" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow" sap:VirtualizedContainerService.HintSize="348,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
+                    <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_MachineIndex" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
+                    <Literal x:TypeArguments="x:String">Result</Literal>
+                  </InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Value">
+                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="OperationResult" />
+                  </InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
