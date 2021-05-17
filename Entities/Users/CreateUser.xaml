@@ -29,7 +29,7 @@
   <this:CreateUser.in_UserIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateUser.in_UserIndex>
-  <sap:VirtualizedContainerService.HintSize>1454.66666666667,2967.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,3028.66666666667</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -88,7 +88,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create user with specified data.&#xA;IDs of successfully created users are added to the users configuration file (Users.xlsx)." DisplayName="Create User" sap:VirtualizedContainerService.HintSize="685.333333333333,2902.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create user with specified data.&#xA;IDs of successfully created users are added to the users configuration file (Users.xlsx)." DisplayName="Create User" sap:VirtualizedContainerService.HintSize="685.333333333333,2964" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="ABCDEFGHIJKLMNOPQRSTUVWXYZ" Name="ALPHABET" />
     </Sequence.Variables>
@@ -98,7 +98,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="643.333333333333,2765.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="643.333333333333,2826.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
@@ -109,7 +109,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create User" sap:VirtualizedContainerService.HintSize="604.666666666667,2527.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Try to Create User" sap:VirtualizedContainerService.HintSize="604.666666666667,2588.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Default="[New List(Of Dictionary(Of String, Object))]" Name="OUsIDsDisplayNames" />
             <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="Roles" />
@@ -121,14 +121,14 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="562.666666666667,1534.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_39">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="562.666666666667,1596" sap2010:WorkflowViewState.IdRef="Sequence_39">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If sap2010:Annotation.AnnotationText="Only create Users of type User. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[io_UsersData.Select(String.Format(&quot;Type = 'User' AND Username = '{0}'&quot;, in_UserName)).Length &gt; 0]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="520.666666666667,276" sap2010:WorkflowViewState.IdRef="If_19">
+            <If sap2010:Annotation.AnnotationText="Only create Users of type User. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[io_UsersData.Rows.Find({&quot;User&quot;, in_UserName}) IsNot Nothing]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="520.666666666667,306.666666666667" sap2010:WorkflowViewState.IdRef="If_19">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -140,7 +140,7 @@
                 <Throw DisplayName="Throw (Username Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;UsernameAlreadyUsed&quot;), in_Name))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
               </If.Then>
             </If>
-            <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="520.666666666667,734" sap2010:WorkflowViewState.IdRef="If_18">
+            <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="520.666666666667,764.666666666667" sap2010:WorkflowViewState.IdRef="If_18">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
