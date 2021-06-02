@@ -13,7 +13,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1454.66666666667,3352</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1454.66666666667,3714</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>EditUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="46">
@@ -45,6 +45,7 @@
       <x:String>System.Reflection</x:String>
       <x:String>System.Runtime.InteropServices</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -82,7 +83,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to edit a User." DisplayName="Edit User Request" sap:VirtualizedContainerService.HintSize="670.666666666667,3287.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to edit a User." DisplayName="Edit User Request" sap:VirtualizedContainerService.HintSize="670.666666666667,3649.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
     </Sequence.Variables>
@@ -277,6 +278,18 @@
         </If.Then>
       </If>
     </Sequence>
+    <If Condition="[in_UserDto.SelectToken(&quot;UnattendedRobot.Password&quot;) IsNot Nothing AndAlso in_UserDto.SelectToken(&quot;UnattendedRobot.Password&quot;).ToString = &quot;••••••••••••••••••••&quot;]" DisplayName="If Returned Unattended Robot's Password Needs To Be Cleared" sap:VirtualizedContainerService.HintSize="628.666666666667,322" sap2010:WorkflowViewState.IdRef="If_9">
+      <If.Then>
+        <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="237.333333333333,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Remove">
+          <InvokeMethod.TargetObject>
+            <InArgument x:TypeArguments="njl:JObject">[CType(in_UserDto("UnattendedRobot"), JObject)]</InArgument>
+          </InvokeMethod.TargetObject>
+          <InArgument x:TypeArguments="x:String">
+            <Literal x:TypeArguments="x:String">Password</Literal>
+          </InArgument>
+        </InvokeMethod>
+      </If.Then>
+    </If>
     <InvokeMethod DisplayName="Merge RequestBody into in_UserDto" sap:VirtualizedContainerService.HintSize="628.666666666667,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Merge">
       <InvokeMethod.TargetObject>
         <InArgument x:TypeArguments="njl:JObject">[in_UserDto]</InArgument>
