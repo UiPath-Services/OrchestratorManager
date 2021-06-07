@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1454.66666666667,1740.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1000,1888</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateMachineRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -72,9 +72,10 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Machine." DisplayName="Create Machine Request" sap:VirtualizedContainerService.HintSize="592,1676" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Machine." DisplayName="Create Machine Request" sap:VirtualizedContainerService.HintSize="592,1823.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -85,14 +86,14 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="550,1290" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="550,1464.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Machine Name Is Specified" sap:VirtualizedContainerService.HintSize="508,226" sap2010:WorkflowViewState.IdRef="If_1">
+      <If Condition="[String.IsNullOrWhiteSpace(in_Name)]" DisplayName="If Machine Name Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -113,7 +114,7 @@
           </Assign>
         </If.Else>
       </If>
-      <If Condition="[String.IsNullOrWhiteSpace(in_Type)]" DisplayName="If Type Is Specified" sap:VirtualizedContainerService.HintSize="508,226" sap2010:WorkflowViewState.IdRef="If_2">
+      <If Condition="[String.IsNullOrWhiteSpace(in_Type)]" DisplayName="If Type Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -134,7 +135,19 @@
           </Assign>
         </If.Else>
       </If>
-      <If Condition="[Not String.IsNullOrWhiteSpace(io_Key)]" DisplayName="If Key Is Specified" sap:VirtualizedContainerService.HintSize="508,246.666666666667" sap2010:WorkflowViewState.IdRef="If_3">
+      <If Condition="[Not String.IsNullOrWhiteSpace(in_MachineDetails(&quot;Description&quot;).ToString)]" DisplayName="If Descripion Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_5">
+        <If.Then>
+          <Assign DisplayName="Assign Description" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Object">[RequestBody("Description")]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Object">[in_MachineDetails("Description").ToString]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </If.Then>
+      </If>
+      <If Condition="[Not String.IsNullOrWhiteSpace(io_Key)]" DisplayName="If Key Is Specified" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_3">
         <If.Then>
           <Assign DisplayName="Assign Machine Key" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_5">
             <Assign.To>
@@ -146,7 +159,7 @@
           </Assign>
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="License Runtimes are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202004]" DisplayName="If Cloud Version or On-Premises Version is &gt;= 2020.04" sap:VirtualizedContainerService.HintSize="508,379.333333333333" sap2010:WorkflowViewState.IdRef="If_4">
+      <If sap2010:Annotation.AnnotationText="License Runtimes are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202004]" DisplayName="If Cloud Version or On-Premises Version is &gt;= 2020.04" sap:VirtualizedContainerService.HintSize="508,348.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -155,7 +168,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <ui:InvokeCode ContinueOnError="{x:Null}" Code=" Dim keys As String() = {&quot;UnattendedSlots&quot;, &quot;NonProductionSlots&quot;, &quot;TestAutomationSlots&quot;}&#xD;&#xA; For Each key As String In keys&#xD;&#xA;&#x9; Dim val As String = in_MachineDetails(key).ToString&#xD;&#xA;&#x9; io_RequestBody(key) = If(String.IsNullOrWhiteSpace(val), 0, Integer.Parse(val))&#xD;&#xA;Next&#xD;&#xA;" DisplayName="Invoke code (Assign Runtimes)" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
+          <ui:InvokeCode ContinueOnError="{x:Null}" Code=" Dim keys As String() = {&quot;UnattendedSlots&quot;, &quot;NonProductionSlots&quot;, &quot;TestAutomationSlots&quot;}&#xA; For Each key As String In keys&#xA;&#x9; Dim val As String = in_MachineDetails(key).ToString&#xA;&#x9; io_RequestBody(key) = If(String.IsNullOrWhiteSpace(val), 0, Integer.Parse(val))&#xA;Next&#xA;" DisplayName="Invoke code (Assign Runtimes)" sap:VirtualizedContainerService.HintSize="334,164" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
             <ui:InvokeCode.Arguments>
               <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="io_RequestBody">[RequestBody]</InOutArgument>
               <InArgument x:TypeArguments="sd:DataRow" x:Key="in_MachineDetails">[in_MachineDetails]</InArgument>
@@ -164,7 +177,7 @@
         </If.Then>
       </If>
     </Sequence>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Machine)" sap:VirtualizedContainerService.HintSize="550,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Create Machine)" sap:VirtualizedContainerService.HintSize="550,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
