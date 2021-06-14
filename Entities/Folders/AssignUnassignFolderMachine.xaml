@@ -1,0 +1,285 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="AssignUnassignFolderMachine" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_ColumnNames" Type="InArgument(s:String[])" />
+    <x:Property Name="in_FoldersData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_MachinesData" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="in_FolderMachineDetails" Type="InArgument(sd:DataRow)" />
+    <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="in_OpenWorkbook" Type="InArgument(ui:WorkbookApplication)" />
+    <x:Property Name="in_FolderMachineIndex" Type="InArgument(x:Int32)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1640,2158.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>AssignUnassignFolderMachine_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="52">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Reflection</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="42">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Assign/Unassign Folder Machine" sap:VirtualizedContainerService.HintSize="672.666666666667,1994" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="OperationResult">
+        <Variable.Default>
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;OperationDefaultResult&quot;)" />
+        </Variable.Default>
+      </Variable>
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="630.666666666667,1902" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <Sequence DisplayName="Do Request" sap:VirtualizedContainerService.HintSize="592,1664" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:Int64" Name="MachineId" />
+            <Variable x:TypeArguments="x:Int64" Name="FolderId" />
+            <Variable x:TypeArguments="scg:List(x:Int64)" Name="AddedMachineIds">
+              <Variable.Default>
+                <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="New List(Of Int64)" />
+              </Variable.Default>
+            </Variable>
+            <Variable x:TypeArguments="scg:List(x:Int64)" Name="RemovedMachineIds">
+              <Variable.Default>
+                <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="New List(Of Int64)" />
+              </Variable.Default>
+            </Variable>
+          </Sequence.Variables>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="Get Folder ID" sap:VirtualizedContainerService.HintSize="550,410" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataRow" Name="FolderData" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign FolderData" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="sd:DataRow">[FolderData]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="sd:DataRow">[in_FoldersData.Rows.Find({in_FolderMachineDetails("FolderName").ToString})]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <If Condition="[FolderData IsNot Nothing]" DisplayName="If Specified Folder Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Then>
+                <Assign DisplayName="Assign FolderId" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int64">[FolderId]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(FolderData("ID"))]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Then>
+              <If.Else>
+                <Throw Exception="[New Exception(String.Format(in_Config(&quot;NamedFolderNotFound&quot;), in_FolderMachineDetails(&quot;FolderName&quot;).ToString))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+              </If.Else>
+            </If>
+          </Sequence>
+          <Sequence DisplayName="Get Machine ID" sap:VirtualizedContainerService.HintSize="550,410" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataRow" Name="MachineData" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign DisplayName="Assign MachineData" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="sd:DataRow">[MachineData]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="sd:DataRow">[in_MachinesData.Rows.Find({in_FolderMachineDetails("MachineName").ToString})]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <If Condition="[MachineData IsNot Nothing]" DisplayName="If Specified Machine Exists" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Then>
+                <Assign DisplayName="Assign MachineId" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int64">[MachineId]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(MachineData("ID"))]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Then>
+              <If.Else>
+                <Throw Exception="[New Exception(String.Format(in_Config(&quot;NamedMachineNotFound&quot;), in_FolderMachineDetails(&quot;MachineName&quot;).ToString))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              </If.Else>
+            </If>
+          </Sequence>
+          <If Condition="[String.IsNullOrWhiteSpace(in_FolderMachineDetails(&quot;Assign&quot;).ToString)]" DisplayName="If Assign Not Specified" sap:VirtualizedContainerService.HintSize="550,214" sap2010:WorkflowViewState.IdRef="If_4">
+            <If.Then>
+              <Throw Exception="[New Exception(in_Config(&quot;AssignRequired&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+            </If.Then>
+          </If>
+          <If Condition="[Convert.ToBoolean(in_FolderMachineDetails(&quot;Assign&quot;))]" DisplayName="If Assign" sap:VirtualizedContainerService.HintSize="550,291.333333333333" sap2010:WorkflowViewState.IdRef="If_3">
+            <If.Then>
+              <InvokeMethod DisplayName="Invoke Method (Add MachineId)" sap:VirtualizedContainerService.HintSize="237.333333333333,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Add">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:List(x:Int64)">[AddedMachineIds]</InArgument>
+                </InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="x:Int64">
+                  <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="MachineId" />
+                </InArgument>
+              </InvokeMethod>
+            </If.Then>
+            <If.Else>
+              <InvokeMethod DisplayName="Invoke Method (Add MachineId)" sap:VirtualizedContainerService.HintSize="237.333333333333,137.333333333333" sap2010:WorkflowViewState.IdRef="InvokeMethod_2" MethodName="Add">
+                <InvokeMethod.TargetObject>
+                  <InArgument x:TypeArguments="scg:List(x:Int64)">[RemovedMachineIds]</InArgument>
+                </InvokeMethod.TargetObject>
+                <InArgument x:TypeArguments="x:Int64">[MachineId]</InArgument>
+              </InvokeMethod>
+            </If.Else>
+          </If>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignUnassignFolderMachineRequest Workflow" sap:VirtualizedContainerService.HintSize="550,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Folders\AssignUnassignFolderMachineRequest.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="in_AddedMachineIds">
+                <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="AddedMachineIds" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:List(x:Int64)" x:Key="in_RemovedMachineIds">
+                <mva:VisualBasicValue x:TypeArguments="scg:List(x:Int64)" ExpressionText="RemovedMachineIds" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_FolderId">
+                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="FolderId" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="596.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Failed" sap:VirtualizedContainerService.HintSize="376,288.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[Exception.Message]">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:LogMessage>
+              <Assign DisplayName="Assign OperationResult" sap:VirtualizedContainerService.HintSize="334,62" sap2010:WorkflowViewState.IdRef="Assign_5">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[OperationResult]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[Exception.Message]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+      <TryCatch.Finally>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow (Result)" sap:VirtualizedContainerService.HintSize="348,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;AssignUnassignFolderMachineOperationName&quot;)" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
+              <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_FolderMachineIndex" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
+              <Literal x:TypeArguments="x:String">Result</Literal>
+            </InArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Value">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="OperationResult" />
+            </InArgument>
+            <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
+              <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenWorkbook" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </TryCatch.Finally>
+    </TryCatch>
+  </Sequence>
+</Activity>
