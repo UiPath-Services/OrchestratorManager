@@ -8,10 +8,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>516,1502.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>812.666666666667,1606</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ConstructODataFilter_Orchestrator202004OrNewer_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -34,10 +34,12 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Web</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -57,10 +59,11 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Web</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Construct OData filter conditions for Orchestrator versions 2020.10 or newer.&#xA;Since there is support for the IN operator in such Orchestrator versions, the filter is done using this operator." DisplayName="Construct OData Filter - Orchestrator 2020.10 or Newer" sap:VirtualizedContainerService.HintSize="526,1438" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct OData filter conditions for Orchestrator versions 2020.10 or newer.&#xA;Since there is support for the IN operator in such Orchestrator versions, the filter is done using this operator." DisplayName="Construct OData Filter - Orchestrator 2020.10 or Newer" sap:VirtualizedContainerService.HintSize="526,1441.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -109,7 +112,7 @@
         </Sequence>
       </If.Then>
     </If>
-    <If sap2010:Annotation.AnnotationText="Construct OData filter using the specified Names." Condition="[in_FilterNames.Length &gt; 0]" DisplayName="If Name Filters Were Specified" sap:VirtualizedContainerService.HintSize="484,781.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+    <If sap2010:Annotation.AnnotationText="Construct OData filter using the specified Names." Condition="[in_FilterNames.Length &gt; 0]" DisplayName="If Name Filters Were Specified" sap:VirtualizedContainerService.HintSize="484,784.666666666667" sap2010:WorkflowViewState.IdRef="If_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -118,7 +121,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence DisplayName="Name Filter Condition" sap:VirtualizedContainerService.HintSize="304,596.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <Sequence DisplayName="Name Filter Condition" sap:VirtualizedContainerService.HintSize="304,600" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="CommaSeparatedNames" />
             <Variable x:TypeArguments="s:String[]" Name="SingleQuotationEnclosedNames" />
@@ -129,12 +132,15 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign SingleQuotationEnclosedNames" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign DisplayName="Assign SingleQuotationEnclosedNames" sap:VirtualizedContainerService.HintSize="262,65.3333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="s:String[]">[SingleQuotationEnclosedNames]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="s:String[]">[in_FilterNames.Select(Function(Name) String.Format("'{0}'", Name)).ToArray()]</InArgument>
+              <InArgument x:TypeArguments="s:String[]" xml:space="preserve">[in_FilterNames.Select(Function(Name) String.Format(
+	"'{0}'",
+	System.Text.RegularExpressions.Regex.Replace(Name, "('|\\)", "$1$1")
+)).ToArray()]</InArgument>
             </Assign.Value>
           </Assign>
           <Assign DisplayName="Assign CommaSeparatedNames" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_3">

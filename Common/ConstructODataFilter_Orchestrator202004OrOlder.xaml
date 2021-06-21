@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>801.333333333333,1194</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>812.666666666667,1294</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ConstructODataFilter_Orchestrator202004OrOlder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -34,6 +34,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -87,7 +88,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" DisplayName="For Each ID" sap:VirtualizedContainerService.HintSize="304,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_FilterIDs]">
+        <ui:ForEach x:TypeArguments="x:Int64" CurrentIndex="{x:Null}" DisplayName="For Each ID" sap:VirtualizedContainerService.HintSize="304.666666666667,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_FilterIDs]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="x:Int64">
               <ActivityAction.Argument>
@@ -108,13 +109,13 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Name" sap:VirtualizedContainerService.HintSize="304,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[in_FilterNames]">
+        <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Name" sap:VirtualizedContainerService.HintSize="304.666666666667,198.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[in_FilterNames]">
           <ui:ForEach.Body>
             <ActivityAction x:TypeArguments="x:String">
               <ActivityAction.Argument>
                 <DelegateInArgument x:TypeArguments="x:String" Name="Name" />
               </ActivityAction.Argument>
-              <AddToCollection x:TypeArguments="x:String" Collection="[io_FilterConditions]" DisplayName="Add To Collection (Name Filter)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[String.Format(&quot;{0} eq '{1}'&quot;, in_NameFilterField, Name.ToString)]" />
+              <AddToCollection x:TypeArguments="x:String" Collection="[io_FilterConditions]" DisplayName="Add To Collection (Name Filter)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[String.Format(&quot;{0} eq '{1}'&quot;, in_NameFilterField, System.Text.RegularExpressions.Regex.Replace(Name, &quot;('|\\)&quot;, &quot;$1$1&quot;))]" />
             </ActivityAction>
           </ui:ForEach.Body>
         </ui:ForEach>
