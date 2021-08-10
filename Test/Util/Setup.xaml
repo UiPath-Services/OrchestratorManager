@@ -1,0 +1,201 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Setup" this:Setup.in_ConfigFilePath="Config.xlsx" this:Setup.orchestratorType="cloud" this:Setup.cloudTenantName="psjapan" this:Setup.workbooksFolderPath="Test/Workbooks/Temp" this:Setup.useSavedCredential="True" this:Setup.accountName="psjapan" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Two-letter ISO 639 code of the language to be used on Orchestrator Manager's interface. If this argument is not specified, the language is selected based on the system’s locale settings. " Name="in_Language" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Path to the Excel workbook that contains the configuration parameters to be used by Orchestrator Manager." Name="in_ConfigFilePath" Type="InArgument(x:String)" />
+    <x:Property Name="orchestratorType" Type="InArgument(x:String)" />
+    <x:Property Name="orchestratorVersion" Type="InArgument(x:String)" />
+    <x:Property Name="username" Type="InArgument(x:String)" />
+    <x:Property Name="password" Type="InArgument(x:String)" />
+    <x:Property Name="orchestratorURL" Type="InArgument(x:String)" />
+    <x:Property Name="onPremisesTenantName" Type="InArgument(x:String)" />
+    <x:Property Name="userKey" Type="InArgument(x:String)" />
+    <x:Property Name="clientID" Type="InArgument(x:String)" />
+    <x:Property Name="cloudTenantName" Type="InArgument(x:String)" />
+    <x:Property Name="workbooksFolderPath" Type="InArgument(x:String)" />
+    <x:Property Name="useSavedCredential" Type="InArgument(x:Boolean)" />
+    <x:Property Name="saveCredential" Type="InArgument(x:Boolean)" />
+    <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
+    <x:Property Name="accountName" Type="InArgument(x:String)" />
+    <x:Property Name="out_FolderID" Type="OutArgument(x:Int64)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1471,1516</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Setup_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="62">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Dynamic</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Collections.Specialized</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="25">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Setup" sap:VirtualizedContainerService.HintSize="476,1351" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Default="Test/Workbooks" Name="TestEntitiesWorkbooksFolderPath" />
+      <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
+      <Variable x:TypeArguments="s:String[]" Default="[{&quot;Type&quot;, &quot;Name&quot;, &quot;RoleAssignmentModel&quot;, &quot;ParentName&quot;, &quot;CreatePackageFeed&quot;, &quot;ID&quot;, &quot;Result&quot;}]" Name="CreateFolderColumnNames" />
+      <Variable x:TypeArguments="sd:DataTable" Name="CreateFolderDT" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke InitializeConfigurations" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core\InitializeConfigurations.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">[io_Config]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Language">[in_Language]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">Config.xlsx</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_TranslationFilePath">Translation.xlsx</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <Sequence DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="434,283" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="njl:JObject" Name="AuthenticationData" />
+        <Variable x:TypeArguments="x:Boolean" Name="AuthenticationSuccessful" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign DisplayName="Assign AuthenticationData" sap:VirtualizedContainerService.HintSize="369,64" sap2010:WorkflowViewState.IdRef="Assign_2">
+        <Assign.To>
+          <OutArgument x:TypeArguments="njl:JObject">[AuthenticationData]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="njl:JObject" xml:space="preserve">[JObject.FromObject(New With {
+	orchestratorType,
+	orchestratorVersion,
+	username,
+	password,
+	orchestratorURL,
+	onPremisesTenantName,
+	userKey,
+	clientID,
+	accountName,
+	cloudTenantName,
+	workbooksFolderPath,
+	useSavedCredential,
+	saveCredential
+})]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate_mock" sap:VirtualizedContainerService.HintSize="369,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Mocks/Core/Authentication/Authenticate_mock.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+          <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AuthenticationSuccessful">[AuthenticationSuccessful]</OutArgument>
+          <InArgument x:TypeArguments="njl:JObject" x:Key="in_AuthenticationData">[AuthenticationData]</InArgument>
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+    </Sequence>
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Entity Workbook" sap:VirtualizedContainerService.HintSize="434,291" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(&quot;Test/Workbooks/EN&quot;, &quot;*.xlsx&quot;)]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:String">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:String" Name="WorkbookPath" />
+          </ActivityAction.Argument>
+          <ui:CopyFile ContinueOnError="{x:Null}" Destination="[String.Format(&quot;{0}/{1}&quot;, io_Config(&quot;EntitiesWorkbooksFolderPath&quot;), Path.GetFileName(WorkbookPath))]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[WorkbookPath]" />
+        </ActivityAction>
+      </ui:ForEach.Body>
+    </ui:ForEach>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FolderManager_mock (Create Test Folder)" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Mocks\Entities\Folders\FolderManager_mock.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_FolderOperation">create</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope (Open Folder Workbook)" sap:VirtualizedContainerService.HintSize="434,124" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[OpenWorkbook]" WorkbookPath="[workbooksFolderPath + &quot;/Folders.xlsx&quot;]">
+      <ui:ExcelApplicationScope.Body>
+        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+          </ActivityAction.Argument>
+        </ActivityAction>
+      </ui:ExcelApplicationScope.Body>
+    </ui:ExcelApplicationScope>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignColumnNames workflow" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\AssignColumnNames.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+          <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+        </InArgument>
+        <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="CreateFolderColumnNames" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;CreateOperationName&quot;)" />
+        </InArgument>
+        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">
+          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="CreateFolderDT" />
+        </OutArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <Assign sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int64">[out_FolderID]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(CreateFolderDT.Rows(0)("ID"))]</InArgument>
+      </Assign.Value>
+    </Assign>
+  </Sequence>
+</Activity>
