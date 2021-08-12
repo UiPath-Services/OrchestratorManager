@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Test" this:Test.Orchestrator_Version="cloud" this:Test.Cloud_Account_Name="psjapan" this:Test.Tenant_Name="psjapan" this:Test.Test_Workbook_Folder="Test/Workbooks/EN" this:Test.Orchestrator_Type="cloud" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Test" this:Test.Orchestrator_Version="cloud" this:Test.Cloud_Account_Name="psjapan" this:Test.Tenant_Name="psjapan" this:Test.Test_Workbook_Folder="Test/Workbooks/EN" this:Test.Orchestrator_Type="cloud" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sns="clr-namespace:System.Net.Security;assembly=System" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="Orchestrator_Version" Type="InArgument(x:String)" />
     <x:Property Name="On_premises_Orchestrator_URL" Type="InArgument(x:String)" />
@@ -15,7 +15,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1447,801</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1582,801</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Test_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -41,6 +41,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -70,38 +71,38 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Test" sap:VirtualizedContainerService.HintSize="376,179" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Test" sap:VirtualizedContainerService.HintSize="526,558" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="Test/Workbooks/Temp" Name="WorkbooksFolderPath" />
+      <Variable x:TypeArguments="x:Boolean" Default="True" Name="DisableServerCertificateValidation" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssetTest workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Test\AssetTest.xaml">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="484,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[String.Format(&quot;Orchestrator Type: {0}, Version: {1}&quot;, Orchestrator_Type, Orchestrator_Version)]" />
+    <If Condition="[DisableServerCertificateValidation]" DisplayName="If DisableServerCertificateValidation" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="sns:RemoteCertificateValidationCallback">[System.Net.ServicePointManager.ServerCertificateValidationCallback]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="sns:RemoteCertificateValidationCallback">[Function() True]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+    </If>
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssetTest workflow" sap:VirtualizedContainerService.HintSize="484,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Test\AssetTest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:String" x:Key="in_WorkbooksFolderPath">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="WorkbooksFolderPath" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="Orchestrator_Version">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Orchestrator_Version" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="On_premises_Orchestrator_URL">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="On_premises_Orchestrator_URL" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="Cloud_Account_Name">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Cloud_Account_Name" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="Tenant_Name">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Tenant_Name" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="Test_Workbook_Folder">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Test_Workbook_Folder" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="Orchestrator_Type">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Orchestrator_Type" />
-        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_WorkbooksFolderPath">[WorkbooksFolderPath]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Orchestrator_Version">[Orchestrator_Version]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="On_premises_Orchestrator_URL">[On_premises_Orchestrator_URL]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Cloud_Account_Name">[Cloud_Account_Name]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Tenant_Name">[Tenant_Name]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Test_Workbook_Folder">[Test_Workbook_Folder]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="Orchestrator_Type">[Orchestrator_Type]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
   </Sequence>

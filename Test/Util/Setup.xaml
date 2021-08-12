@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Setup" this:Setup.in_ConfigFilePath="Config.xlsx" this:Setup.orchestratorType="cloud" this:Setup.cloudTenantName="psjapan" this:Setup.workbooksFolderPath="Test/Workbooks/Temp" this:Setup.useSavedCredential="True" this:Setup.accountName="psjapan" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Setup" this:Setup.in_ConfigFilePath="Config.xlsx" this:Setup.orchestratorType="cloud" this:Setup.cloudTenantName="psjapan" this:Setup.workbooksFolderPath="Test/Workbooks/Temp" this:Setup.useSavedCredential="True" this:Setup.accountName="psjapan" this:Setup.IsFolderLevel="True" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property sap2010:Annotation.AnnotationText="Two-letter ISO 639 code of the language to be used on Orchestrator Manager's interface. If this argument is not specified, the language is selected based on the system’s locale settings. " Name="in_Language" Type="InArgument(x:String)" />
     <x:Property sap2010:Annotation.AnnotationText="Path to the Excel workbook that contains the configuration parameters to be used by Orchestrator Manager." Name="in_ConfigFilePath" Type="InArgument(x:String)" />
@@ -14,14 +14,16 @@
     <x:Property Name="workbooksFolderPath" Type="InArgument(x:String)" />
     <x:Property Name="useSavedCredential" Type="InArgument(x:Boolean)" />
     <x:Property Name="saveCredential" Type="InArgument(x:Boolean)" />
-    <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="accountName" Type="InArgument(x:String)" />
     <x:Property Name="out_FolderID" Type="OutArgument(x:Int64)" />
+    <x:Property Name="OpenWorkbooks" Type="InOutArgument(scg:List(ui:WorkbookApplication))" />
+    <x:Property Name="IsFolderLevel" Type="InArgument(x:Boolean)" />
+    <x:Property Name="Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1471,1516</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1582,2790</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>Setup_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="62">
@@ -57,6 +59,9 @@
       <x:String>UiPath.Excel</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -83,12 +88,12 @@
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Setup" sap:VirtualizedContainerService.HintSize="476,1351" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Setup" sap:VirtualizedContainerService.HintSize="850,2625" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="Test/Workbooks" Name="TestEntitiesWorkbooksFolderPath" />
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="OpenWorkbook" />
@@ -100,15 +105,15 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke InitializeConfigurations" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core\InitializeConfigurations.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke InitializeConfigurations" sap:VirtualizedContainerService.HintSize="808,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core\InitializeConfigurations.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">[io_Config]</OutArgument>
+        <OutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="out_Config">[Config]</OutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Language">[in_Language]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_ConfigFilePath">Config.xlsx</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_TranslationFilePath">Translation.xlsx</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <Sequence DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="434,283" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Authenticate" sap:VirtualizedContainerService.HintSize="808,283" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <Sequence.Variables>
         <Variable x:TypeArguments="njl:JObject" Name="AuthenticationData" />
         <Variable x:TypeArguments="x:Boolean" Name="AuthenticationSuccessful" />
@@ -142,60 +147,131 @@
       </Assign>
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate_mock" sap:VirtualizedContainerService.HintSize="369,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Mocks/Core/Authentication/Authenticate_mock.xaml">
         <ui:InvokeWorkflowFile.Arguments>
-          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[Config]</InOutArgument>
           <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AuthenticationSuccessful">[AuthenticationSuccessful]</OutArgument>
           <InArgument x:TypeArguments="njl:JObject" x:Key="in_AuthenticationData">[AuthenticationData]</InArgument>
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
     </Sequence>
-    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Entity Workbook" sap:VirtualizedContainerService.HintSize="434,291" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(&quot;Test/Workbooks/EN&quot;, &quot;*.xlsx&quot;)]">
+    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Entity Workbook" sap:VirtualizedContainerService.HintSize="808,291" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[Directory.GetFiles(&quot;Test/Workbooks/EN&quot;, &quot;*.xlsx&quot;)]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="x:String">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="x:String" Name="WorkbookPath" />
           </ActivityAction.Argument>
-          <ui:CopyFile ContinueOnError="{x:Null}" Destination="[String.Format(&quot;{0}/{1}&quot;, io_Config(&quot;EntitiesWorkbooksFolderPath&quot;), Path.GetFileName(WorkbookPath))]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[WorkbookPath]" />
+          <ui:CopyFile ContinueOnError="{x:Null}" Destination="[String.Format(&quot;{0}/{1}&quot;, Config(&quot;EntitiesWorkbooksFolderPath&quot;), Path.GetFileName(WorkbookPath))]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[WorkbookPath]" />
         </ActivityAction>
       </ui:ForEach.Body>
     </ui:ForEach>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FolderManager_mock (Create Test Folder)" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Mocks\Entities\Folders\FolderManager_mock.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[io_Config]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_FolderOperation">create</InArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope (Open Folder Workbook)" sap:VirtualizedContainerService.HintSize="434,124" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[OpenWorkbook]" WorkbookPath="[workbooksFolderPath + &quot;/Folders.xlsx&quot;]">
-      <ui:ExcelApplicationScope.Body>
-        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-          </ActivityAction.Argument>
-        </ActivityAction>
-      </ui:ExcelApplicationScope.Body>
-    </ui:ExcelApplicationScope>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignColumnNames workflow" sap:VirtualizedContainerService.HintSize="434,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\AssignColumnNames.xaml">
-      <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-          <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-        </InArgument>
-        <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-          <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="CreateFolderColumnNames" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;CreateOperationName&quot;)" />
-        </InArgument>
-        <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">
-          <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="CreateFolderDT" />
-        </OutArgument>
-      </ui:InvokeWorkflowFile.Arguments>
-    </ui:InvokeWorkflowFile>
-    <Assign sap:VirtualizedContainerService.HintSize="434,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:Int64">[out_FolderID]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(CreateFolderDT.Rows(0)("ID"))]</InArgument>
-      </Assign.Value>
-    </Assign>
+    <If Condition="[IsFolderLevel]" DisplayName="If Folder Level Entities, Create Test Folder" sap:VirtualizedContainerService.HintSize="808,1752" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence DisplayName="Create Test Folder" sap:VirtualizedContainerService.HintSize="663,1604" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Open Folder Workbook)" sap:VirtualizedContainerService.HintSize="621,168" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Workbook="[OpenWorkbook]" WorkbookPath="[workbooksFolderPath + &quot;/Folders.xlsx&quot;]">
+            <ui:ExcelApplicationScope.Body>
+              <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                </ActivityAction.Argument>
+                <ui:ExcelReadRange AddHeaders="True" DataTable="[CreateFolderDT]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,59" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[Config(&quot;CreateOperationName&quot;)]">
+                  <ui:ExcelReadRange.Range>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelReadRange.Range>
+                </ui:ExcelReadRange>
+              </ActivityAction>
+            </ui:ExcelApplicationScope.Body>
+          </ui:ExcelApplicationScope>
+          <If Condition="[Config(&quot;OrchestratorType&quot;).ToLowerInvariant = &quot;onpremises&quot; AndAlso Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt;= 201910]" sap:VirtualizedContainerService.HintSize="621,776" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence sap:VirtualizedContainerService.HintSize="476,628" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[CreateFolderDT]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="434,300" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+                  <ui:ForEachRow.Body>
+                    <ActivityAction x:TypeArguments="sd:DataRow">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="sd:DataRow" Name="Row" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="304,152" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Assign sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:Object">[Row("Type")]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:Object">["Classic"]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEachRow.Body>
+                </ui:ForEachRow>
+                <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope" ExistingWorkbook="[OpenWorkbook]" sap:VirtualizedContainerService.HintSize="434,196" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2">
+                  <ui:ExcelApplicationScope.Body>
+                    <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                      </ActivityAction.Argument>
+                      <ui:ExcelWriteRange AddHeaders="False" DataTable="[CreateFolderDT]" DisplayName="Write Range" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_1" SheetName="[Config(&quot;CreateOperationName&quot;)]" StartingCell="A2" />
+                    </ActivityAction>
+                  </ui:ExcelApplicationScope.Body>
+                </ui:ExcelApplicationScope>
+              </Sequence>
+            </If.Then>
+          </If>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke FolderManager_mock (Create Test Folder)" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="Mocks\Entities\Folders\FolderManager_mock.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_FolderOperation">create</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <InvokeMethod DisplayName="Invoke Method" sap:VirtualizedContainerService.HintSize="621,134" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Add">
+            <InvokeMethod.TargetObject>
+              <InArgument x:TypeArguments="scg:List(ui:WorkbookApplication)">[OpenWorkbooks]</InArgument>
+            </InvokeMethod.TargetObject>
+            <InArgument x:TypeArguments="ui:WorkbookApplication">
+              <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+            </InArgument>
+          </InvokeMethod>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignColumnNames workflow" sap:VirtualizedContainerService.HintSize="621,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Common\AssignColumnNames.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
+                <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
+              </InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
+                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="CreateFolderColumnNames" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Config(&quot;CreateOperationName&quot;)" />
+              </InArgument>
+              <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">
+                <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="CreateFolderDT" />
+              </OutArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <Assign sap:VirtualizedContainerService.HintSize="621,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Int64">[out_FolderID]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(CreateFolderDT.Rows(0)("ID"))]</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </If.Then>
+    </If>
   </Sequence>
 </Activity>
