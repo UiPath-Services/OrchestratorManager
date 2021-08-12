@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1329.33333333333,854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1450,964</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateProcess_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="42">
@@ -59,10 +59,11 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate a Process from the specified Classic Folder to the specified Modern Folder." DisplayName="Migrate Process" sap:VirtualizedContainerService.HintSize="421.333333333333,766.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate a Process from the specified Classic Folder to the specified Modern Folder." DisplayName="Migrate Process" sap:VirtualizedContainerService.HintSize="421,759" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="PackageFilePath" />
     </Sequence.Variables>
@@ -72,8 +73,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message (Migrate Process)" sap:VirtualizedContainerService.HintSize="379.333333333333,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateProcess&quot;), in_ClassicFolderProcess(&quot;ProcessName&quot;).ToString)]" />
-    <If Condition="[Not Directory.Exists(String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;)))]" DisplayName="If Package Download Folder Exists" sap:VirtualizedContainerService.HintSize="379.333333333333,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:LogMessage DisplayName="Log Message (Migrate Process)" sap:VirtualizedContainerService.HintSize="379,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateProcess&quot;), in_ClassicFolderProcess(&quot;ProcessName&quot;).ToString)]" />
+    <If Condition="[Not Directory.Exists(String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;)))]" DisplayName="If Package Download Folder Exists" sap:VirtualizedContainerService.HintSize="379,51" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -84,48 +85,48 @@
         <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Folder" sap:VirtualizedContainerService.HintSize="334,85.3333333333333" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;))]" />
       </If.Then>
     </If>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageLibraryRequest Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/DownloadPackageLibraryRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageLibraryRequest Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/DownloadPackageLibraryRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}\{1}&quot;,  in_Config(&quot;EntitiesWorkbooksFolderPath&quot;), in_Config(&quot;PackageDownloadFolderPath&quot;))" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Version">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;CurrentPackageVersion&quot;).ToString" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Name">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;PackageName&quot;).ToString" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Entity">
-          <Literal x:TypeArguments="x:String">Package</Literal>
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_PackageLibraryFilePath">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="PackageFilePath" />
-        </OutArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath" xml:space="preserve">[String.Format("{0}\{1}",  in_Config("EntitiesWorkbooksFolderPath"), in_Config("PackageDownloadFolderPath"))]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_ClassicFolderProcess("CurrentPackageVersion").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_ClassicFolderProcess("PackageName").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Entity">Package</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_PackageLibraryFilePath">[PackageFilePath]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke VerifyPackageDependencies Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/VerifyPackageDependencies.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke VerifyPackageDependencies Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/VerifyPackageDependencies.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="in_DependenciesMinimumVersions">[Newtonsoft.Json.JsonConvert.DeserializeObject(Of Dictionary(Of String, String))(in_Config("PackagesMinimumDependenciesVersions"))]</InArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_PackageFilePath">[PackageFilePath]</InArgument>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:Delete ContinueOnError="True" DisplayName="Delete (Delete Local Temporary Package File)" sap:VirtualizedContainerService.HintSize="379.333333333333,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[PackageFilePath]" />
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcessRequest Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Processes\CreateProcessRequest.xaml">
+    <ui:Delete ContinueOnError="True" DisplayName="Delete (Delete Local Temporary Package File)" sap:VirtualizedContainerService.HintSize="379,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[PackageFilePath]" />
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcessRequest Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Processes\CreateProcessRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[Convert.ToInt64(in_ModernFolderData.Rows(0)("ID"))]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_PackageName">[in_ClassicFolderProcess("PackageName").ToString]</InArgument>
-        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_PackageVersion">[in_ClassicFolderProcess("CurrentPackageVersion").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_ModernFolderData.Rows(0)(&quot;ID&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_PackageName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;PackageName&quot;).ToString" />
+        </InArgument>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+          <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_PackageVersion">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;CurrentPackageVersion&quot;).ToString" />
+        </InArgument>
         <InArgument x:TypeArguments="x:Int64" x:Key="in_EnvironmentID" />
         <InArgument x:TypeArguments="x:String" x:Key="in_EnvironmentName" />
-        <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">[in_ClassicFolderProcess("ProcessName").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ProcessName">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_ClassicFolderProcess(&quot;ProcessName&quot;).ToString" />
+        </InArgument>
         <OutArgument x:TypeArguments="x:Int64" x:Key="out_ProcessID" />
-        <InArgument x:TypeArguments="x:String" x:Key="in_InputArgumentsDefinition">[in_ClassicFolderProcess("InputArgumentsDefinition").ToString]</InArgument>
         <OutArgument x:TypeArguments="x:String" x:Key="out_ProcessName" />
+        <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ProcessDetails">
+          <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="in_ClassicFolderProcess" />
+        </InArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
   </Sequence>

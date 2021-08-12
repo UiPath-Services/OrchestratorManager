@@ -8,7 +8,7 @@
     <x:Property Name="in_ModernFolderName" Type="InArgument(x:String)" />
     <x:Property Name="in_ClassicFolderID" Type="InArgument(x:Int64)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>1299,1885</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1450,1962</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="26">
@@ -41,7 +41,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="23">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="22">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -64,10 +64,9 @@
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Merge a Classic Folder's Asset data with data about a Modern Folder, such as Modern Folder name and User's Username (in the case of Assets per Robot being migrated)." DisplayName="Migrate Assets - Merge Classic Folder's Asset Data with Modern Folder's Data (Name and Username)" sap:VirtualizedContainerService.HintSize="726,1820" sap2010:WorkflowViewState.IdRef="Sequence_20">
+  <Sequence sap2010:Annotation.AnnotationText="Merge a Classic Folder's Asset data with data about a Modern Folder, such as Modern Folder name and User's Username (in the case of Assets per Robot being migrated)." DisplayName="Migrate Assets - Merge Classic Folder's Asset Data with Modern Folder's Data (Name and Username)" sap:VirtualizedContainerService.HintSize="726,1797" sap2010:WorkflowViewState.IdRef="Sequence_20">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="Scope" />
       <Variable x:TypeArguments="x:String" Name="Type" />
@@ -75,6 +74,7 @@
       <Variable x:TypeArguments="x:String" Name="Password" />
       <Variable x:TypeArguments="x:String" Name="UserUsername" />
       <Variable x:TypeArguments="x:String" Name="Name" />
+      <Variable x:TypeArguments="x:String" Name="Description" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -99,7 +99,7 @@
         <InArgument x:TypeArguments="x:String">[in_ClassicFolderAssetGroupedRow("Scope").ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[Scope.ToLowerInvariant = &quot;robot&quot;]" DisplayName="If Asset per Robot Value" sap:VirtualizedContainerService.HintSize="684,1124" sap2010:WorkflowViewState.IdRef="If_14">
+    <If Condition="[Scope.ToLowerInvariant = &quot;robot&quot;]" DisplayName="If Asset per Robot Value" sap:VirtualizedContainerService.HintSize="684,1001" sap2010:WorkflowViewState.IdRef="If_14">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -107,7 +107,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Sequence sap2010:Annotation.AnnotationText="An Asset per Robot has a value associated with a Robot that has a name (RobotName) and a username (RobotUsername), and it should be mapped to a User that has a Robot whose username matches RobotUsername from the Classic Folder's Robot.&#xA;If there is a match, get the User's username to create the Asset per User in the Modern Folder." DisplayName="Map Robot to User Based on Username" sap:VirtualizedContainerService.HintSize="539,976" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence sap2010:Annotation.AnnotationText="An Asset per Robot has a value associated with a Robot that has a name (RobotName) and a username (RobotUsername), and it should be mapped to a User that has a Robot whose username matches RobotUsername from the Classic Folder's Robot.&#xA;If there is a match, get the User's username to create the Asset per User in the Modern Folder." DisplayName="Map Robot to User Based on Username" sap:VirtualizedContainerService.HintSize="539,853" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="RobotName" />
             <Variable x:TypeArguments="sd:DataRow[]" Name="UsersWithRobotsHavingSpecifiedUsername" />
@@ -149,7 +149,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
           </Assign>
-          <Switch x:TypeArguments="x:Int32" DisplayName="Switch Number of Users Found with Robot Having Specified Username" Expression="[UsersWithRobotsHavingSpecifiedUsername.Count()]" sap:VirtualizedContainerService.HintSize="497,283" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+          <Switch x:TypeArguments="x:Int32" DisplayName="Switch Number of Users Found with Robot Having Specified Username" Expression="[UsersWithRobotsHavingSpecifiedUsername.Count()]" sap:VirtualizedContainerService.HintSize="497,160" sap2010:WorkflowViewState.IdRef="Switch`1_1">
             <Switch.Default>
               <Throw sap2010:Annotation.AnnotationText="Multiple Users with associated Robots having the same username found." DisplayName="Throw (Multiple Users same Username)" Exception="[New Exception(in_Config(&quot;MultipleUsersWithSameRobotUsername&quot;))]" sap:VirtualizedContainerService.HintSize="200,79" sap2010:WorkflowViewState.IdRef="Throw_12">
                 <sap:WorkflowViewStateService.ViewState>
@@ -215,6 +215,14 @@
         <InArgument x:TypeArguments="x:String">[in_ClassicFolderAssetGroupedRow("Password").ToString]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{in_ModernFolderName, Name, Scope, UserUsername, Type, Value, Password}]" DataTable="[io_AssetDetailsToMigrate]" DisplayName="Add Data Row (Asset Data to Migrate)" sap:VirtualizedContainerService.HintSize="684,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
+    <Assign DisplayName="Assign Description" sap:VirtualizedContainerService.HintSize="684,60" sap2010:WorkflowViewState.IdRef="Assign_41">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[Description]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_ClassicFolderAssetGroupedRow("Description").ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{in_ModernFolderName, Name, Scope, UserUsername, Type, Value, Password, Description}]" DataTable="[io_AssetDetailsToMigrate]" DisplayName="Add Data Row (Asset Data to Migrate)" sap:VirtualizedContainerService.HintSize="684,22" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
   </Sequence>
 </Activity>

@@ -59,7 +59,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>827,4594</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1450,4511</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateQueueRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="58">
@@ -94,10 +94,11 @@
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
       <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Xml.Serialization</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="22">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="44">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -119,10 +120,11 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Trigger." DisplayName="Create Trigger Request" sap:VirtualizedContainerService.HintSize="778,4429" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new Trigger." DisplayName="Create Trigger Request" sap:VirtualizedContainerService.HintSize="778,4346" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -133,7 +135,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="736,4073" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="736,3990" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -553,9 +555,9 @@
           </Assign>
         </If.Then>
       </If>
-      <If Condition="[Not String.IsNullOrWhiteSpace(in_TriggerDetails(&quot;Username&quot;).ToString) AndAlso (in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202004)]" DisplayName="If Username Is Specified" sap:VirtualizedContainerService.HintSize="694,981" sap2010:WorkflowViewState.IdRef="If_33">
+      <If Condition="[in_TriggerDetails.Table.Columns.Contains(&quot;Username&quot;) AndAlso Not String.IsNullOrWhiteSpace(in_TriggerDetails(&quot;Username&quot;).ToString) AndAlso (in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202004)]" DisplayName="If Username Is Specified" sap:VirtualizedContainerService.HintSize="694,898" sap2010:WorkflowViewState.IdRef="If_33">
         <If.Then>
-          <Sequence DisplayName="Assign ExecutorRobots And MachineRobots" sap:VirtualizedContainerService.HintSize="526,833" sap2010:WorkflowViewState.IdRef="Sequence_8">
+          <Sequence DisplayName="Assign ExecutorRobots And MachineRobots" sap:VirtualizedContainerService.HintSize="526,750" sap2010:WorkflowViewState.IdRef="Sequence_8">
             <Sequence.Variables>
               <Variable x:TypeArguments="njl:JArray" Name="Robots" />
               <Variable x:TypeArguments="x:Int64" Name="RobotId" />
@@ -574,7 +576,7 @@
                 <OutArgument x:TypeArguments="njl:JArray" x:Key="out_Result">[Robots]</OutArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
-            <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="484,266" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+            <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="484,183" sap2010:WorkflowViewState.IdRef="TryCatch_1">
               <TryCatch.Try>
                 <Assign DisplayName="Assign RobotId" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_41">
                   <Assign.To>
@@ -586,10 +588,10 @@
                 </Assign>
               </TryCatch.Try>
               <TryCatch.Catches>
-                <Catch x:TypeArguments="s:InvalidOperationException" sap:VirtualizedContainerService.HintSize="400,104" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                <Catch x:TypeArguments="s:InvalidOperationException" sap:VirtualizedContainerService.HintSize="400,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                       <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>

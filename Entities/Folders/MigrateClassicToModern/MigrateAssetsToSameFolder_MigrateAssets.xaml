@@ -10,7 +10,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>732.666666666667,3278</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1450,3299</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MigrateAssetsToSameFolder_MigrateAssets_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="31">
@@ -48,7 +48,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="22">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -69,9 +69,11 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets from the specified Classic Folder to the Specified Modern Folder.&#xA;The migration of credential Assets is determined by the parameter in_MigrateCredentialAssets." DisplayName="Migrate Assets To Same Folder - Migrate Assets" sap:VirtualizedContainerService.HintSize="575.333333333333,3213.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_4">
+  <Sequence sap2010:Annotation.AnnotationText="Migrate Assets from the specified Classic Folder to the Specified Modern Folder.&#xA;The migration of credential Assets is determined by the parameter in_MigrateCredentialAssets." DisplayName="Migrate Assets To Same Folder - Migrate Assets" sap:VirtualizedContainerService.HintSize="573,3134" sap2010:WorkflowViewState.IdRef="Sequence_4">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="ClassicFolderAssetsData" />
       <Variable x:TypeArguments="sd:DataRow[]" Name="ClassicFolderAssetsDataRows" />
@@ -88,7 +90,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow (Classic Folder)" sap:VirtualizedContainerService.HintSize="533.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetAssetsData Workflow (Classic Folder)" sap:VirtualizedContainerService.HintSize="531,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[ClassicFolderAssetsData]</OutArgument>
@@ -96,7 +98,7 @@
         <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Cache Modern Folder Asset data for duplicate verification." DisplayName="Invoke GetAssetsData Workflow (Modern Folder)" sap:VirtualizedContainerService.HintSize="533.333333333333,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Cache Modern Folder Asset data for duplicate verification." DisplayName="Invoke GetAssetsData Workflow (Modern Folder)" sap:VirtualizedContainerService.HintSize="531,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Entities\Assets\GetAssetsData.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
         <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_AssetsData">[ModernFolderAssetsData]</OutArgument>
@@ -109,7 +111,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <Assign DisplayName="Assign ClassicFolderID" sap:VirtualizedContainerService.HintSize="533.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_35">
+    <Assign DisplayName="Assign ClassicFolderID" sap:VirtualizedContainerService.HintSize="531,60" sap2010:WorkflowViewState.IdRef="Assign_35">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int64">[ClassicFolderID]</OutArgument>
       </Assign.To>
@@ -117,7 +119,7 @@
         <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_FoldersData.Rows.Find({in_ClassicFolderName})("ID"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Assign ModernFolderID" sap:VirtualizedContainerService.HintSize="533.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_36">
+    <Assign DisplayName="Assign ModernFolderID" sap:VirtualizedContainerService.HintSize="531,60" sap2010:WorkflowViewState.IdRef="Assign_36">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int64">[ModernFolderID]</OutArgument>
       </Assign.To>
@@ -125,7 +127,7 @@
         <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_FoldersData.Rows.Find({in_ModernFolderName})("ID"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap2010:Annotation.AnnotationText="Transform DataTable into an array of rows for faster search using LINQ methods." DisplayName="Assign ClassicFolderAssetsDataRows" sap:VirtualizedContainerService.HintSize="533.333333333333,107.333333333333" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign sap2010:Annotation.AnnotationText="Transform DataTable into an array of rows for faster search using LINQ methods." DisplayName="Assign ClassicFolderAssetsDataRows" sap:VirtualizedContainerService.HintSize="531,102" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="sd:DataRow[]">[ClassicFolderAssetsDataRows]</OutArgument>
       </Assign.To>
@@ -138,15 +140,15 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </Assign>
-    <If Condition="[ClassicFolderAssetsDataRows.Where(Function(Row) Row(&quot;Scope&quot;).ToString.ToLowerInvariant = &quot;robot&quot;).Count() &gt; 0]" DisplayName="If Classic Folder Has Assets Per Robot" sap:VirtualizedContainerService.HintSize="533.333333333333,504.666666666667" sap2010:WorkflowViewState.IdRef="If_25">
+    <If Condition="[ClassicFolderAssetsDataRows.Where(Function(Row) Row(&quot;Scope&quot;).ToString.ToLowerInvariant = &quot;robot&quot;).Count() &gt; 0]" DisplayName="If Classic Folder Has Assets Per Robot" sap:VirtualizedContainerService.HintSize="531,496" sap2010:WorkflowViewState.IdRef="If_25">
       <If.Then>
-        <Sequence DisplayName="Get Data for Shared Use" sap:VirtualizedContainerService.HintSize="376,350.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_26">
+        <Sequence DisplayName="Get Data for Shared Use" sap:VirtualizedContainerService.HintSize="376,348" sap2010:WorkflowViewState.IdRef="Sequence_26">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke GetRobotsData Workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_17" UnSafe="False" WorkflowFileName="Entities\Robots\GetRobotsData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_RobotsData">[ClassicFolderRobotsData]</OutArgument>
@@ -156,12 +158,13 @@
               <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AllOUFoldersAccessed" />
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Users is used when searching for Users that will have values of Assets per Robot." DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Data about Users is used when searching for Users that will have values of Assets per Robot." DisplayName="Invoke GetUsersData Workflow" sap:VirtualizedContainerService.HintSize="334,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_18" UnSafe="False" WorkflowFileName="Entities\Users\GetUsersData.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
               <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_UsersData">[UsersData]</OutArgument>
               <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[{}]</InArgument>
               <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[{}]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_AssignPrimaryKey">True</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -172,7 +175,7 @@
         </Sequence>
       </If.Then>
     </If>
-    <If Condition="[Not in_MigrateCredentialAssets]" DisplayName="If Should Migrate Credential Assets" sap:VirtualizedContainerService.HintSize="533.333333333333,246.666666666667" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[Not in_MigrateCredentialAssets]" DisplayName="If Should Migrate Credential Assets" sap:VirtualizedContainerService.HintSize="531,239" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -180,7 +183,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Assign sap2010:Annotation.AnnotationText="Remove credential Assets." DisplayName="Assign ClassicFolderAssetsData" sap:VirtualizedContainerService.HintSize="262,92.6666666666667" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign sap2010:Annotation.AnnotationText="Remove credential Assets." DisplayName="Assign ClassicFolderAssetsData" sap:VirtualizedContainerService.HintSize="262,91" sap2010:WorkflowViewState.IdRef="Assign_1">
           <Assign.To>
             <OutArgument x:TypeArguments="sd:DataRow[]">[ClassicFolderAssetsDataRows]</OutArgument>
           </Assign.To>
@@ -195,13 +198,13 @@
         </Assign>
       </If.Then>
     </If>
-    <ui:ForEach x:TypeArguments="sd:DataRow[]" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider groups of rows that define an Asset using the same name and in the same Folder.&#xA;&#xA;In the case of global Assets, there should be only one row per group.&#xA;In the case of Assets per Robot or per User, there might be one or more rows, each representing a value, as well as a global value used as default value for the Asset." DisplayName="For Each Group of Rows Defining an Asset of the Same Name" sap:VirtualizedContainerService.HintSize="533.333333333333,1594.66666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ClassicFolderAssetsDataRows.GroupBy(Function(Row) New With {Key.FolderName = Row(&quot;OUFolderName&quot;).ToString, Key.AssetName = Row(&quot;AssetName&quot;).ToString}).Select(Function(PerRobotUserRows) PerRobotUserRows.ToArray()).ToArray()]">
+    <ui:ForEach x:TypeArguments="sd:DataRow[]" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Consider groups of rows that define an Asset using the same name and in the same Folder.&#xA;&#xA;In the case of global Assets, there should be only one row per group.&#xA;In the case of Assets per Robot or per User, there might be one or more rows, each representing a value, as well as a global value used as default value for the Asset." DisplayName="For Each Group of Rows Defining an Asset of the Same Name" sap:VirtualizedContainerService.HintSize="531,1547" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ClassicFolderAssetsDataRows.GroupBy(Function(Row) New With {Key.FolderName = Row(&quot;OUFolderName&quot;).ToString, Key.AssetName = Row(&quot;AssetName&quot;).ToString}).Select(Function(PerRobotUserRows) PerRobotUserRows.ToArray()).ToArray()]">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="sd:DataRow[]">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="sd:DataRow[]" Name="AssetGroupedRows" />
           </ActivityAction.Argument>
-          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets to interfer with each other." DisplayName="Try Catch (Migrate Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="496.666666666667,1360.66666666667" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+          <TryCatch sap2010:Annotation.AnnotationText="Prevent the creation of different Assets to interfer with each other." DisplayName="Try Catch (Migrate Asset to Modern Folder)" sap:VirtualizedContainerService.HintSize="495,1326" sap2010:WorkflowViewState.IdRef="TryCatch_4">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -210,7 +213,7 @@
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
             <TryCatch.Try>
-              <Sequence sap2010:Annotation.AnnotationText="It is not necessary to verify data about the Classic Folder's Asset as it comes from Orchestrator, and not from the operator." DisplayName="Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="458,1092" sap2010:WorkflowViewState.IdRef="Sequence_24">
+              <Sequence sap2010:Annotation.AnnotationText="It is not necessary to verify data about the Classic Folder's Asset as it comes from Orchestrator, and not from the operator." DisplayName="Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="457,1068" sap2010:WorkflowViewState.IdRef="Sequence_24">
                 <Sequence.Variables>
                   <Variable x:TypeArguments="x:String" Name="AssetName" />
                   <Variable x:TypeArguments="sd:DataTable" Name="AssetDetailsToMigrate" />
@@ -220,6 +223,7 @@
                   <Variable x:TypeArguments="x:String" Name="AssetGlobalPassword" />
                   <Variable x:TypeArguments="x:String" Name="AssetType" />
                   <Variable x:TypeArguments="x:Boolean" Name="HasDefaultValue" />
+                  <Variable x:TypeArguments="x:String" Name="Description" />
                 </Sequence.Variables>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -228,8 +232,8 @@
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <ui:LogMessage DisplayName="Log Message (Migrate Asset)" sap:VirtualizedContainerService.HintSize="416,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateAsset&quot;), AssetGroupedRows.First()(&quot;AssetName&quot;).ToString)]" />
-                <Assign DisplayName="Assign AssetName" sap:VirtualizedContainerService.HintSize="416,62" sap2010:WorkflowViewState.IdRef="Assign_65">
+                <ui:LogMessage DisplayName="Log Message (Migrate Asset)" sap:VirtualizedContainerService.HintSize="415,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Trace" Message="[String.Format(in_Config(&quot;MigrateAsset&quot;), AssetGroupedRows.First()(&quot;AssetName&quot;).ToString)]" />
+                <Assign DisplayName="Assign AssetName" sap:VirtualizedContainerService.HintSize="415,60" sap2010:WorkflowViewState.IdRef="Assign_65">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[AssetName]</OutArgument>
                   </Assign.To>
@@ -237,20 +241,20 @@
                     <InArgument x:TypeArguments="x:String">[AssetGroupedRows.First()("AssetName").ToString]</InArgument>
                   </Assign.Value>
                 </Assign>
-                <ui:BuildDataTable sap2010:Annotation.AnnotationText="Auxiliary DataTable to hold details of Asset to be created in Modern Folder, including the name of the Modern Folder instead of the original Classic Folder and also the username of the User instead of the name of the original Robot." DataTable="[AssetDetailsToMigrate]" DisplayName="Build Data Table (Assets Details to Migrate)" sap:VirtualizedContainerService.HintSize="416,154" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;OUFolderName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;AssetName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Scope&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;RobotUserName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Type&quot; minOccurs=&quot;0&quot;&gt;&#xA;                  &lt;xs:simpleType&gt;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xA;                    &lt;/xs:restriction&gt;&#xA;                  &lt;/xs:simpleType&gt;&#xA;                &lt;/xs:element&gt;&#xA;                &lt;xs:element name=&quot;Value&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;                &lt;xs:element name=&quot;Password&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;">
+                <ui:BuildDataTable sap2010:Annotation.AnnotationText="Auxiliary DataTable to hold details of Asset to be created in Modern Folder, including the name of the Modern Folder instead of the original Classic Folder and also the username of the User instead of the name of the original Robot." DataTable="[AssetDetailsToMigrate]" DisplayName="Build Data Table (Assets Details to Migrate)" sap:VirtualizedContainerService.HintSize="415,146" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;OUFolderName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;AssetName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Scope&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;RobotUserName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Type&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Value&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Password&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Description&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:BuildDataTable>
-                <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="In case of splitting an Asset into multiple Modern Folders, confirm what values should be migrated." DisplayName="For Each Classic Folder's Asset Row" sap:VirtualizedContainerService.HintSize="416,270.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[AssetGroupedRows]">
+                <ui:ForEach x:TypeArguments="sd:DataRow" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="In case of splitting an Asset into multiple Modern Folders, confirm what values should be migrated." DisplayName="For Each Classic Folder's Asset Row" sap:VirtualizedContainerService.HintSize="415,263" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[AssetGroupedRows]">
                   <ui:ForEach.Body>
                     <ActivityAction x:TypeArguments="sd:DataRow">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="sd:DataRow" Name="ClassicFolderAssetGroupedRow" />
                       </ActivityAction.Argument>
-                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssets_MergeClassicFolderDataWithModernFolderData Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateAssets_MergeClassicFolderDataWithModernFolderData.xaml">
+                      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MigrateAssets_MergeClassicFolderDataWithModernFolderData Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_19" UnSafe="False" WorkflowFileName="Entities\Folders\MigrateClassicToModern\MigrateAssets_MergeClassicFolderDataWithModernFolderData.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
                           <InArgument x:TypeArguments="sd:DataTable" x:Key="in_ClassicFolderRobotsData">[ClassicFolderRobotsData]</InArgument>
                           <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ClassicFolderAssetGroupedRow">[ClassicFolderAssetGroupedRow]</InArgument>
@@ -269,12 +273,11 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                 </ui:ForEach>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset_PrepareRequestData Workflow" sap:VirtualizedContainerService.HintSize="416,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAsset_PrepareRequestData.xaml">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAsset_PrepareRequestData Workflow" sap:VirtualizedContainerService.HintSize="415,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAsset_PrepareRequestData.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
-                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                     <InArgument x:TypeArguments="sd:DataRow[]" x:Key="in_AssetGroupedRows">[AssetDetailsToMigrate.AsEnumerable().ToArray()]</InArgument>
                     <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[in_FoldersData]</InArgument>
-                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsData">[ModernFolderAssetsData]</InArgument>
+                    <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
                     <InArgument x:TypeArguments="sd:DataTable" x:Key="in_RobotsData">[ClassicFolderRobotsData]</InArgument>
                     <InArgument x:TypeArguments="sd:DataTable" x:Key="in_UsersData">[UsersData]</InArgument>
                     <OutArgument x:TypeArguments="x:Int64" x:Key="out_OUFolderID">[ModernFolderID]</OutArgument>
@@ -283,11 +286,13 @@
                     <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="out_RobotUsersValues">[UsersValues]</OutArgument>
                     <OutArgument x:TypeArguments="x:String" x:Key="out_AssetGlobalValue">[AssetGlobalValue]</OutArgument>
                     <OutArgument x:TypeArguments="x:String" x:Key="out_AssetGlobalPassword">[AssetGlobalPassword]</OutArgument>
+                    <InArgument x:TypeArguments="sd:DataTable" x:Key="in_AssetsData">[ModernFolderAssetsData]</InArgument>
                     <OutArgument x:TypeArguments="x:String" x:Key="out_AssetType">[AssetType]</OutArgument>
                     <OutArgument x:TypeArguments="x:Boolean" x:Key="out_HasDefaultValue">[HasDefaultValue]</OutArgument>
+                    <OutArgument x:TypeArguments="x:String" x:Key="out_Description">[Description]</OutArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                 </ui:InvokeWorkflowFile>
-                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="416,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateAssetRequest Workflow" sap:VirtualizedContainerService.HintSize="415,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="Entities\Assets\CreateAssetRequest.xaml">
                   <ui:InvokeWorkflowFile.Arguments>
                     <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[ModernFolderID]</InArgument>
                     <InArgument x:TypeArguments="x:String" x:Key="in_AssetName">[AssetName]</InArgument>
@@ -299,12 +304,13 @@
                     <InArgument x:TypeArguments="x:String" x:Key="in_AssetPassword">[AssetGlobalPassword]</InArgument>
                     <InArgument x:TypeArguments="x:String" x:Key="in_AssetScope">[AssetScope]</InArgument>
                     <InArgument x:TypeArguments="x:Boolean" x:Key="in_HasDefaultValue">[HasDefaultValue]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_Description">[Description]</InArgument>
                   </ui:InvokeWorkflowFile.Arguments>
                 </ui:InvokeWorkflowFile>
               </Sequence>
             </TryCatch.Try>
             <TryCatch.Catches>
-              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="462.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_4">
+              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="461,21" sap2010:WorkflowViewState.IdRef="Catch`1_4">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -315,7 +321,7 @@
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Failed to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,244.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_29">
+                  <Sequence DisplayName="Failed to Create Asset in Modern Folder" sap:VirtualizedContainerService.HintSize="376,245" sap2010:WorkflowViewState.IdRef="Sequence_29">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
