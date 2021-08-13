@@ -6,10 +6,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1351.33333333333,854</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1450,994</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetDomain_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="23">
+    <scg:List x:TypeArguments="x:String" Capacity="46">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -33,10 +33,14 @@
       <x:String>System.Windows.Markup</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
       <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="20">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -57,9 +61,13 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve the first Domain from /api/DirectoryService/GetDomains.&#xA;This is used as an auxiliary workflow when a User is of type &quot;DirectoryUser&quot;, but its Domain is not defined (i.e., it is &quot;null&quot;) when querying Users endpoints, as it happens as of August 2020.&#xA;It is assumed that only a single domain is used in Automation Cloud." DisplayName="Get Domain" sap:VirtualizedContainerService.HintSize="550,660.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve the first Domain from /api/DirectoryService/GetDomains.&#xA;This is used as an auxiliary workflow when a User is of type &quot;DirectoryUser&quot;, but its Domain is not defined (i.e., it is &quot;null&quot;) when querying Users endpoints, as it happens as of August 2020.&#xA;It is assumed that only a single domain is used in Automation Cloud." DisplayName="Get Domain" sap:VirtualizedContainerService.HintSize="856,789" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="njl:JArray" Name="Domains" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -70,7 +78,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="The workflow MakeGetRequest cannot be used because this endpoint does not support pagination." DisplayName="Invoke MakeHTTPRequest Workflow (Domains)" sap:VirtualizedContainerService.HintSize="508,132" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="The workflow MakeGetRequest cannot be used because this endpoint does not support pagination." DisplayName="Invoke MakeHTTPRequest Workflow (Domains)" sap:VirtualizedContainerService.HintSize="814,129" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
         <InArgument x:TypeArguments="x:String" x:Key="in_Method">get</InArgument>
@@ -87,10 +95,10 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:InvokeWorkflowFile>
-    <ui:DeserializeJsonArray DisplayName="Deserialize JSON Array" sap:VirtualizedContainerService.HintSize="508,62" sap2010:WorkflowViewState.IdRef="DeserializeJsonArray_1" JsonArray="[Domains]" JsonString="[Result]" />
-    <If Condition="[Domains.Count = 1]" DisplayName="If Found Only One Domain" sap:VirtualizedContainerService.HintSize="508,216" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:DeserializeJsonArray DisplayName="Deserialize JSON Array" sap:VirtualizedContainerService.HintSize="814,60" sap2010:WorkflowViewState.IdRef="DeserializeJsonArray_1" JsonArray="[Domains]" JsonString="[Result]" />
+    <If Condition="[Domains.Count = 1]" DisplayName="If Found Only One Domain" sap:VirtualizedContainerService.HintSize="814,356" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <Assign DisplayName="Assign out_Domain" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign DisplayName="Assign out_Domain" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_Domain]</OutArgument>
           </Assign.To>
@@ -100,7 +108,21 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <Throw DisplayName="Throw (Could not Determine User's Domain)" Exception="[New Exception(in_Config(&quot;CouldNotDetermineUserDomain&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot;]" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_2">
+          <If.Then>
+            <Assign DisplayName="Assign out_Domain" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[out_Domain]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">autogen</InArgument>
+              </Assign.Value>
+            </Assign>
+          </If.Then>
+          <If.Else>
+            <Throw DisplayName="Throw (Could not Determine User's Domain)" Exception="[New Exception(in_Config(&quot;CouldNotDetermineUserDomain&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+          </If.Else>
+        </If>
       </If.Else>
     </If>
   </Sequence>
