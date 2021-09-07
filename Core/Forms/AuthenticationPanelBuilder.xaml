@@ -5,10 +5,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1753,4090</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>872,4842</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AuthenticationPanelBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="27">
+    <scg:List x:TypeArguments="x:String" Capacity="54">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -36,6 +36,7 @@
       <x:String>System.Reflection</x:String>
       <x:String>System.Runtime.InteropServices</x:String>
       <x:String>UiPath.Credentials.Activities</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -62,10 +63,9 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>CredentialManagement</AssemblyReference>
       <AssemblyReference>UiPath.Credentials.Activities</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Build the form to be used as the authentication panel of the tool." DisplayName="Authentication Panel Builder" sap:VirtualizedContainerService.HintSize="376,3925" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Build the form to be used as the authentication panel of the tool." DisplayName="Authentication Panel Builder" sap:VirtualizedContainerService.HintSize="653,4777" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="AuthenticationPanelHtml" />
     </Sequence.Variables>
@@ -75,8 +75,8 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadTextFile Content="[AuthenticationPanelHtml]" DisplayName="Read Text File" FileName="[in_Config(&quot;AuthenticationPanelTemplatePath&quot;)]" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
-    <Assign DisplayName="Assign Form Title" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <ui:ReadTextFile Content="[AuthenticationPanelHtml]" DisplayName="Read Text File" FileName="[in_Config(&quot;AuthenticationPanelTemplatePath&quot;)]" sap:VirtualizedContainerService.HintSize="611,132" sap2010:WorkflowViewState.IdRef="ReadTextFile_1" />
+    <Assign DisplayName="Assign Form Title" sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
       </Assign.To>
@@ -84,7 +84,7 @@
         <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormTitle_", in_Config("FormTitle"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Sequence DisplayName="Form Common Elements" sap:VirtualizedContainerService.HintSize="334,1052" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Form Common Elements" sap:VirtualizedContainerService.HintSize="611,1252" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -171,15 +171,31 @@
           <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormWorkbooksFolderPathValue_", in_Config("EntitiesWorkbooksFolderPath"))]</InArgument>
         </Assign.Value>
       </Assign>
+      <Assign DisplayName="Assign App ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_69">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormAppIDLabel_", in_Config("FormAppIDLabel"))]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Assign App Secret" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_70">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormAppSecretLabel_", in_Config("FormAppSecretLabel"))]</InArgument>
+        </Assign.Value>
+      </Assign>
     </Sequence>
-    <Sequence DisplayName="Form On-Premises Elements" sap:VirtualizedContainerService.HintSize="304,960" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence DisplayName="Form On-Premises Elements" sap:VirtualizedContainerService.HintSize="611,914" sap2010:WorkflowViewState.IdRef="Sequence_3">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Sequence DisplayName="Orchestrator Version" sap:VirtualizedContainerService.HintSize="684,894" sap2010:WorkflowViewState.IdRef="Sequence_13">
+      <Sequence DisplayName="Orchestrator Version" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="Sequence_13">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -330,7 +346,7 @@
           <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormPasswordTooltip_", in_Config("FormPasswordTooltip"))]</InArgument>
         </Assign.Value>
       </Assign>
-      <Assign DisplayName="Assign On-Premises Tenant Name Value" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_52">
+      <Assign DisplayName="Assign On-Premises Tenant Name Value" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_52">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
         </Assign.To>
@@ -339,7 +355,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Sequence DisplayName="Form Cloud Elements" sap:VirtualizedContainerService.HintSize="334,852" sap2010:WorkflowViewState.IdRef="Sequence_5">
+    <Sequence DisplayName="Form Cloud Elements" sap:VirtualizedContainerService.HintSize="611,852" sap2010:WorkflowViewState.IdRef="Sequence_5">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -411,7 +427,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Sequence DisplayName="Checkboxes" sap:VirtualizedContainerService.HintSize="611,748" sap2010:WorkflowViewState.IdRef="Sequence_10">
+    <Sequence DisplayName="Checkboxes" sap:VirtualizedContainerService.HintSize="611,848" sap2010:WorkflowViewState.IdRef="Sequence_10">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Boolean" Name="OnPremisesCredentialExists" />
         <Variable x:TypeArguments="x:Boolean" Name="CloudCredentialExists" />
@@ -420,7 +436,7 @@
       </Sequence.Variables>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
@@ -456,6 +472,14 @@
           </Assign>
         </If.Else>
       </If>
+      <Assign DisplayName="Assign Use OAuth Flow" sap:VirtualizedContainerService.HintSize="569,60" sap2010:WorkflowViewState.IdRef="Assign_68">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormUseOAuthFlow_", in_Config("FormUseOAuthFlow"))]</InArgument>
+        </Assign.Value>
+      </Assign>
       <Assign DisplayName="Assign Use Saved Credential Label" sap:VirtualizedContainerService.HintSize="569,60" sap2010:WorkflowViewState.IdRef="Assign_36">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
@@ -473,7 +497,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Sequence DisplayName="Buttons" sap:VirtualizedContainerService.HintSize="334,66" sap2010:WorkflowViewState.IdRef="Sequence_4">
+    <Sequence DisplayName="Buttons" sap:VirtualizedContainerService.HintSize="611,22" sap2010:WorkflowViewState.IdRef="Sequence_4">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -497,7 +521,7 @@
         </Assign.Value>
       </Assign>
     </Sequence>
-    <Assign DisplayName="Assign Form Account Lockout Warning" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_17">
+    <Assign DisplayName="Assign Form Account Lockout Warning" sap:VirtualizedContainerService.HintSize="611,60" sap2010:WorkflowViewState.IdRef="Assign_17">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[AuthenticationPanelHtml]</OutArgument>
       </Assign.To>
@@ -505,7 +529,7 @@
         <InArgument x:TypeArguments="x:String">[AuthenticationPanelHtml.Replace("_FormAccountLockoutWarning_", in_Config("FormAccountLockoutWarning"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Switch x:TypeArguments="x:String" DisplayName="Switch Last Used Orchestrator Type" Expression="[in_Config(&quot;OrchestratorType&quot;).ToString.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="334,51" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+    <Switch x:TypeArguments="x:String" DisplayName="Switch Last Used Orchestrator Type" Expression="[in_Config(&quot;OrchestratorType&quot;).ToString.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="611,22" sap2010:WorkflowViewState.IdRef="Switch`1_3">
       <Switch.Default>
         <Throw DisplayName="Throw (Orchestrator Type Not Supported)" Exception="[New ArgumentException(in_Config(&quot;OrchestratorTypeNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
       </Switch.Default>
@@ -564,6 +588,6 @@
         </Assign>
       </Sequence>
     </Switch>
-    <ui:WriteTextFile DisplayName="Write Text File" FileName="[in_Config(&quot;AuthenticationPanelPath&quot;)]" sap:VirtualizedContainerService.HintSize="334,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[AuthenticationPanelHtml]" />
+    <ui:WriteTextFile DisplayName="Write Text File" FileName="[in_Config(&quot;AuthenticationPanelPath&quot;)]" sap:VirtualizedContainerService.HintSize="611,132" sap2010:WorkflowViewState.IdRef="WriteTextFile_1" Text="[AuthenticationPanelHtml]" />
   </Sequence>
 </Activity>

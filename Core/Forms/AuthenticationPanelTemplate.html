@@ -23,7 +23,7 @@
 				</div>
 				
 				<div id="onPremiseOrchestratorOptions">
-					<label title="_FormOrchestratorVersionTooltip_" for="orchestratorVersion"><span>_FormOrchestratorVersionLabel_</span><select id="orchestratorVersion" class="select-field">
+					<label title="_FormOrchestratorVersionTooltip_" for="orchestratorVersion"><span>_FormOrchestratorVersionLabel_</span><select id="orchestratorVersion" class="select-field" onchange="orchestratorTypeCheck()">
 						<option id="v201804" value="201804" _Form201804Selected_>2018.4</option>	
 						<option id="v201904" value="201904" _Form201904Selected_>2019.4</option>
 						<option id="v201910" value="201910" _Form201910Selected_>2019.10</option>
@@ -31,15 +31,15 @@
 						<option id="v202010" value="202010" _Form202010Selected_>2020.10</option>
 						<option id="v202104" value="202104" _Form202104Selected_>2021.4</option>
 					</select></label>
-					<label title="_FormUsernameTooltip_" for="username"><span>_FormUsernameLabel_</span><input required="required" type="text" class="input-field" id="username" /></label>
-					<label title="_FormPasswordTooltip_" for="password"><span>_FormPasswordLabel_</span><input required="required" type="password" class="input-field" id="password" /></label>
+					<label title="_FormUsernameTooltip_" for="username"><span id="formUsernameLabel">_FormUsernameLabel_</span><input required="required" type="text" class="input-field" id="username" /></label>
+					<label title="_FormPasswordTooltip_" for="password"><span id="formPasswordLabel">_FormPasswordLabel_</span><input required="required" type="password" class="input-field" id="password" /></label>
 					<label title="_FormOrchestratorURLTooltip_" for="orchestratorURL"><span>_FormOrchestratorURLLabel_</span><input required="required" type="text" value="_FormOrchestratorURLValue_" class="input-field" id="orchestratorURL" /></label>
 					<label title="_FormTenantNameTooltip_" for="onPremisesTenantName"><span>_FormTenantNameLabel_</span><input required="required" type="text" value="_FormOnPremisesTenantNameValue_" class="input-field" id="onPremisesTenantName" /></label>
 				</div>
 				
 				<div id="cloudOrchestratorOptions">
-					<label title="_FormUserKeyTooltip_" for="userKey"><span>_FormUserKeyLabel_</span><input required="required" type="text" class="input-field" id="userKey" /></label>
-					<label title="_FormClientIDTooltip_" for="clientID"><span>_FormClientIDLabel_</span><input required="required" type="text" class="input-field" id="clientID" /></label>
+					<label title="_FormUserKeyTooltip_" for="userKey"><span id="formUserKeyLabel">_FormUserKeyLabel_</span><input required="required" type="text" class="input-field" id="userKey" /></label>
+					<label title="_FormClientIDTooltip_" for="clientID"><span id="formClientIDLabel">_FormClientIDLabel_</span><input required="required" type="text" class="input-field" id="clientID" /></label>
 					<label title="_FormAccountNameTooltip_" for="accountName"><span>_FormAccountNameLabel_</span><input required="required" type="text" value="_FormAccountNameValue_" class="input-field" id="accountName" /></label>
 					<label title="_FormTenantNameTooltip_" for="cloudTenantName"><span>_FormTenantLogicalNameLabel_</span><input required="required" type="text" value="_FormCloudTenantNameValue_" class="input-field" id="cloudTenantName" /></label>
 				</div>
@@ -48,6 +48,10 @@
 					<label title="_FormWorkbooksFolderPathTooltip_" for="workbooksFolderPath"><span>_FormWorkbooksFolderPathLabel_</span><input required="required" type="text" value="_FormWorkbooksFolderPathValue_" class="input-field" id="workbooksFolderPath" /></label>
 				</div>
 				
+				<div id="oauthOptions" class="windowsCredentialManagerOptions">
+					<label for="useOAuthFlow"><input type="checkbox" id="useOAuthFlow" name="useOAuthFlow" onclick="useOAuthFlowCheck()" checked>_FormUseOAuthFlow_</label>
+				</div>
+
 				<div class="windowsCredentialManagerOptions">
 					<label for="useSavedCredential" _FormDisplayUseSavedCredentialCheckbox_ ><input type="checkbox" onclick="useSavedCredentialCheck()" id="useSavedCredential" name="useSavedCredential" _FormCheckUseSavedCredentialCheck_/>_FormUseSavedCredentialLabel_</label>
 					<label for="saveCredential"><input type="checkbox" onclick="saveCredentialCheck()" id="saveCredential" name="saveCredential"/>_FormSaveCredentialLabel_</label>
@@ -67,6 +71,8 @@
 		/** @type {function()} */
 		var orchestratorTypeCheck;
 		/** @type {function()} */
+		var useOAuthFlowCheck;
+		/** @type {function()} */
 		var useSavedCredentialCheck;
 		/** @type {function()} */
 		var saveCredentialCheck;
@@ -81,7 +87,22 @@
 				useSavedCredentialCheck();
 				saveCredentialCheck();
 				orchestratorTypeCheck();
+				useOAuthFlowCheck();
 			};
+
+			useOAuthFlowCheck = function() {
+				if (document.getElementById('useOAuthFlow').checked) {
+					document.getElementById('formUsernameLabel').innerHTML = "_FormAppIDLabel_";
+					document.getElementById('formPasswordLabel').innerHTML = "_FormAppSecretLabel_";
+					document.getElementById('formUserKeyLabel').innerHTML = "_FormAppSecretLabel_";
+					document.getElementById('formClientIDLabel').innerHTML = "_FormAppIDLabel_";
+				} else {
+					document.getElementById('formUsernameLabel').innerHTML = "_FormUsernameLabel_";
+					document.getElementById('formPasswordLabel').innerHTML = "_FormPasswordLabel_";
+					document.getElementById('formUserKeyLabel').innerHTML = "_FormUserKeyLabel_";
+					document.getElementById('formClientIDLabel').innerHTML = "_FormClientIDLabel_";
+				}
+			}
 
 			useSavedCredentialCheck = function () {
 				if (document.getElementById('useSavedCredential').checked) {
@@ -123,9 +144,11 @@
 				if (document.getElementById('onPremises').checked) {
 					document.getElementById('onPremiseOrchestratorOptions').style.display = 'block';
 					document.getElementById('cloudOrchestratorOptions').style.display = 'none';
+					document.getElementById('oauthOptions').style.display = document.getElementById('orchestratorVersion').value >= 202104 ? 'block' : 'none';
 				} else {
 					document.getElementById('onPremiseOrchestratorOptions').style.display = 'none';
 					document.getElementById('cloudOrchestratorOptions').style.display = 'block';
+					document.getElementById('oauthOptions').style.display = 'block';
 				}
 			}
 
@@ -167,6 +190,9 @@
 							jsonObject[inputElement.id] = inputElement.value;
 						} else if (inputElement.type === 'checkbox') {
 							jsonObject[inputElement.id] = inputElement.checked;
+							if (inputElement.id === 'useOAuthFlow' && document.getElementById('useOAuthFlow').style.display === 'none') {
+								jsonObject[inputElement.id] = false;
+							}
 						}
 					}
 					
