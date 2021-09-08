@@ -30,7 +30,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1288,5099</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1345,5199</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="35">
@@ -99,6 +99,7 @@
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -106,7 +107,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="882,5034" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="882,5134" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -117,7 +118,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="840,4492" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="840,4592" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Boolean" Name="ValidEmail" />
       </Sequence.Variables>
@@ -250,7 +251,7 @@
           </Assign>
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If On-Premises Version is &gt;= 2019.10" sap:VirtualizedContainerService.HintSize="798,1675" sap2010:WorkflowViewState.IdRef="If_8">
+      <If sap2010:Annotation.AnnotationText="AR and UR settings are supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 201910]" DisplayName="If On-Premises Version is &gt;= 2019.10" sap:VirtualizedContainerService.HintSize="798,1775" sap2010:WorkflowViewState.IdRef="If_8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -259,7 +260,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="653,1496" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <Sequence DisplayName="Assign AR/UR properties" sap:VirtualizedContainerService.HintSize="653,1596" sap2010:WorkflowViewState.IdRef="Sequence_5">
             <Sequence.Variables>
               <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="ExecutionSettings" />
             </Sequence.Variables>
@@ -274,14 +275,22 @@
                 <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">[in_UserDetails]</InArgument>
               </ui:InvokeCode.Arguments>
             </ui:InvokeCode>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameAR) OrElse Not String.IsNullOrWhiteSpace(in_LicenseType)]" DisplayName="If DomainUserNameAR is specified" sap:VirtualizedContainerService.HintSize="611,408" sap2010:WorkflowViewState.IdRef="If_11">
+            <If Condition="[Convert.ToBoolean(in_UserDetails(&quot;EnableAR&quot;))]" DisplayName="If DomainUserNameAR is specified" sap:VirtualizedContainerService.HintSize="611,508" sap2010:WorkflowViewState.IdRef="If_11">
               <If.Then>
-                <Sequence sap:VirtualizedContainerService.HintSize="304,260" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                <Sequence sap:VirtualizedContainerService.HintSize="304,360" sap2010:WorkflowViewState.IdRef="Sequence_7">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign MayHaveRobotSession" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_24">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[RequestBody("MayHaveRobotSession")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[True]</InArgument>
+                    </Assign.Value>
+                  </Assign>
                   <Assign DisplayName="Assign RobotProvision" sap:VirtualizedContainerService.HintSize="262,64" sap2010:WorkflowViewState.IdRef="Assign_10">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Object">[RequestBody("RobotProvision")]</OutArgument>
@@ -317,7 +326,7 @@
                 </Assign>
               </If.Else>
             </If>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_DomainUserNameUR)]" DisplayName="If DomainUserNameUR is specified" sap:VirtualizedContainerService.HintSize="611,404" sap2010:WorkflowViewState.IdRef="If_12">
+            <If Condition="[Convert.ToBoolean(in_UserDetails(&quot;EnableUR&quot;))]" DisplayName="If DomainUserNameUR is specified" sap:VirtualizedContainerService.HintSize="611,404" sap2010:WorkflowViewState.IdRef="If_12">
               <If.Then>
                 <Sequence sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_8">
                   <sap:WorkflowViewStateService.ViewState>
@@ -349,6 +358,16 @@
                   </Assign>
                 </Sequence>
               </If.Then>
+              <If.Else>
+                <Assign DisplayName="Assign MayHaveUnattendedSession" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_25">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Object">[RequestBody("MayHaveUnattendedSession")]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Object">[False]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Else>
             </If>
             <If Condition="[in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt;&gt; 201910]" sap:VirtualizedContainerService.HintSize="611,208" sap2010:WorkflowViewState.IdRef="If_17">
               <If.Then>
