@@ -2,8 +2,8 @@
   <x:Members>
     <x:Property Name="in_OUFolderID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_Config" Type="InArgument(scg:Dictionary(x:String, ui:GenericValue))" />
-    <x:Property Name="in_AssetID" Type="InArgument(x:Int64)" />
     <x:Property Name="in_LinkOrUnlink" Type="InArgument(x:String)" />
+    <x:Property Name="in_QueueID" Type="InArgument(x:Int64)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -65,6 +65,7 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Construct and make request to link or unlink an Asset." DisplayName="Link or Unlink Asset Request" sap:VirtualizedContainerService.HintSize="695,1670" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -96,7 +97,7 @@
           <Throw DisplayName="Throw (OU/Folder ID Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
         </If.Then>
       </If>
-      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_AssetID = 0]" DisplayName="If Asset ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="484,250" sap2010:WorkflowViewState.IdRef="If_2">
+      <If sap2010:Annotation.AnnotationText="Integer arguments not specified default to 0, but that is not a valid ID in Orchestrator." Condition="[in_QueueID = 0]" DisplayName="If Queue ID Invalid Or Not Specified" sap:VirtualizedContainerService.HintSize="484,250" sap2010:WorkflowViewState.IdRef="If_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -105,7 +106,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Throw DisplayName="Throw (Asset ID Not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+          <Throw DisplayName="Throw (Queue ID Not Specified)" Exception="[New ArgumentException(in_Config(&quot;AssetIDInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
         </If.Then>
       </If>
       <If Condition="[String.IsNullOrWhiteSpace(in_LinkOrUnlink)]" DisplayName="If Link Or Unlink Not Specified" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_3">
@@ -116,19 +117,19 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Throw DisplayName="Throw (Link Or Unlink Not Specified)" Exception="[New ArgumentException(in_Config(&quot;LinkOrUnlinkNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+          <Throw DisplayName="Throw ( Link Or Unlink Not Specified)" Exception="[New ArgumentException(in_Config(&quot;LinkOrUnlinkNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
         </If.Then>
       </If>
     </Sequence>
-    <Assign DisplayName="Assign AssetIds" sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign QueueIds" sap:VirtualizedContainerService.HintSize="653,60" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:Object">[RequestBody("AssetIds")]</OutArgument>
+        <OutArgument x:TypeArguments="x:Object">[RequestBody("QueueIds")]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Object">[{in_AssetID}]</InArgument>
+        <InArgument x:TypeArguments="x:Object">[{in_QueueID}]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[in_LinkOrUnlink = &quot;Link&quot;]" DisplayName="If Link Asset To Folder" sap:VirtualizedContainerService.HintSize="653,400" sap2010:WorkflowViewState.IdRef="If_4">
+    <If Condition="[in_LinkOrUnlink = &quot;Link&quot;]" DisplayName="If Link Queue To Folder" sap:VirtualizedContainerService.HintSize="653,400" sap2010:WorkflowViewState.IdRef="If_4">
       <If.Then>
         <Sequence sap:VirtualizedContainerService.HintSize="304,252" sap2010:WorkflowViewState.IdRef="Sequence_3">
           <sap:WorkflowViewStateService.ViewState>
@@ -180,14 +181,26 @@
         </Sequence>
       </If.Else>
     </If>
-    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Link or Unlink Asset)" sap:VirtualizedContainerService.HintSize="653,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
+    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeHTTPRequest Workflow (Link or Unlink Queue)" sap:VirtualizedContainerService.HintSize="653,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common/MakeHTTPRequest.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[in_Config]</InOutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Method">post</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">[String.Format("{0}/odata/Assets/UiPath.Server.Configuration.OData.ShareToFolders", in_Config("OrchestratorURL"))]</InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_Body">[Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)]</InArgument>
-        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">[Convert.ToInt64(in_OUFolderID)]</InArgument>
-        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">204</InArgument>
+        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
+          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+        </InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Method">
+          <Literal x:TypeArguments="x:String">post</Literal>
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Endpoint">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="String.Format(&quot;{0}/odata/QueueDefinitions/UiPath.Server.Configuration.OData.ShareToFolders&quot;, in_Config(&quot;OrchestratorURL&quot;))" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_Body">
+          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Newtonsoft.Json.JsonConvert.SerializeObject(RequestBody, Newtonsoft.Json.Formatting.Indented)" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int64" x:Key="in_OUID">
+          <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="Convert.ToInt64(in_OUFolderID)" />
+        </InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="in_ExpectedStatusCode">
+          <Literal x:TypeArguments="x:Int32" Value="204" />
+        </InArgument>
         <OutArgument x:TypeArguments="x:Int32" x:Key="out_StatusCode" />
         <OutArgument x:TypeArguments="x:String" x:Key="out_Result" />
       </ui:InvokeWorkflowFile.Arguments>

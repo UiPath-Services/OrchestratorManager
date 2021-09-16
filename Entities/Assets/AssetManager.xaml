@@ -14,7 +14,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1113,1894</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>931,1894</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>AssetManager_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="35">
@@ -82,7 +82,6 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:Annotation.AnnotationText="Decide what operation should be performed on Assets." DisplayName="Asset Manager" sap:VirtualizedContainerService.HintSize="645,1829" sap2010:WorkflowViewState.IdRef="Sequence_1">
@@ -356,7 +355,7 @@
           </If.Then>
         </If>
       </Sequence>
-      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="713,2603" sap2010:WorkflowViewState.IdRef="Sequence_8">
+      <Sequence x:Key="create" DisplayName="Create" sap:VirtualizedContainerService.HintSize="713,2605" sap2010:WorkflowViewState.IdRef="Sequence_8">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
@@ -862,7 +861,7 @@
           </ui:ForEach.Body>
         </ui:ForEach>
       </Sequence>
-      <Sequence x:Key="editcredential" DisplayName="Edit Credential Asset" sap:VirtualizedContainerService.HintSize="563,1641" sap2010:WorkflowViewState.IdRef="Sequence_11">
+      <Sequence x:Key="editcredential" DisplayName="Edit Credential Asset" sap:VirtualizedContainerService.HintSize="563,1643" sap2010:WorkflowViewState.IdRef="Sequence_11">
         <Sequence.Variables>
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
@@ -1161,14 +1160,8 @@
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsDetails" />
           <Variable x:TypeArguments="sd:DataTable" Name="OUFoldersData" />
           <Variable x:TypeArguments="sd:DataTable" Name="AssetsData" />
-          <Variable x:TypeArguments="sd:DataTable" Name="RobotsData" />
-          <Variable x:TypeArguments="sd:DataTable" Name="UsersData" />
           <Variable x:TypeArguments="sd:DataRow[]" Name="UnprocessedAssetsDetails" />
-          <Variable x:TypeArguments="s:String[]" Name="ColumnNames">
-            <Variable.Default>
-              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="{}{ &quot;AssetID&quot;, &quot;OUFolderName&quot;, &quot;LinkOrUnlink&quot;, &quot;Result&quot; }" />
-            </Variable.Default>
-          </Variable>
+          <Variable x:TypeArguments="s:String[]" Default="[{ &quot;AssetID&quot;, &quot;OUFolderName&quot;, &quot;LinkOrUnlink&quot;, &quot;Result&quot; }]" Name="ColumnNames" />
           <Variable x:TypeArguments="x:Int32" Name="Index" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
@@ -1180,18 +1173,10 @@
         <ui:LogMessage DisplayName="Log Message (Link or Unlink)" sap:VirtualizedContainerService.HintSize="521,91" sap2010:WorkflowViewState.IdRef="LogMessage_21" Level="Trace" Message="[String.Format(&quot;{0}: {1} - {2}: {3}&quot;, in_Config(&quot;FormEntityLabel&quot;), in_Config(&quot;FormAssetOption&quot;), in_Config(&quot;FormOperationLabel&quot;), in_Config(&quot;LinkOrUnlinkOperationName&quot;))]" />
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke AssignColumnNames Workflow (Link or Unlink)" sap:VirtualizedContainerService.HintSize="521,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_61" UnSafe="False" WorkflowFileName="Common/AssignColumnNames.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">
-              <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-            </InArgument>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="ColumnNames" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;LinkOrUnlinkOperationName&quot;)" />
-            </InArgument>
-            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">
-              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="AssetsDetails" />
-            </OutArgument>
+            <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenWorkbook">[OpenWorkbook]</InArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">[ColumnNames]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">[in_Config("LinkOrUnlinkOperationName")]</InArgument>
+            <OutArgument x:TypeArguments="sd:DataTable" x:Key="out_DataTable">[AssetsDetails]</OutArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
         <Assign sap2010:Annotation.AnnotationText="Select only rows that do not have a value in the Result column, but have at least a value in any other column." DisplayName="Assign UnprocessedAssetDetails (Link or Unlink)" sap:VirtualizedContainerService.HintSize="521,117" sap2010:WorkflowViewState.IdRef="Assign_55">
@@ -1256,24 +1241,12 @@
               </ActivityAction.Argument>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke LinkOrUnlinkAsset workflow" sap:VirtualizedContainerService.HintSize="334,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_66" UnSafe="False" WorkflowFileName="Entities\Assets\LinkOrUnlinkAsset.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="OpenWorkbook" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                    <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="OUFoldersData" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="ColumnNames" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:Int32" x:Key="in_Index">
-                    <mva:VisualBasicValue x:TypeArguments="x:Int32" ExpressionText="AssetsDetails.Rows.IndexOf(AssetDetails)" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_AssetDetails">
-                    <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="AssetDetails" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[OpenWorkbook]</InArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataTable" x:Key="in_OUFoldersData">[OUFoldersData]</InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">[ColumnNames]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32" x:Key="in_Index">[AssetsDetails.Rows.IndexOf(AssetDetails)]</InArgument>
+                  <InArgument x:TypeArguments="sd:DataRow" x:Key="in_AssetDetails">[AssetDetails]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
