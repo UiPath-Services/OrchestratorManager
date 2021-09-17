@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ConstructODataFilter" this:ConstructODataFilter.in_FilterNames="[{}]" this:ConstructODataFilter.in_FilterIDs="[{}]" this:ConstructODataFilter.in_NameFilterField="Name" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ConstructODataFilter" this:ConstructODataFilter.in_FilterNames="[{}]" this:ConstructODataFilter.in_FilterIDs="[{}]" this:ConstructODataFilter.in_NameFilterField="Name" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_FilterNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_FilterIDs" Type="InArgument(s:Int64[])" />
@@ -10,10 +10,10 @@
       </x:Property.Attributes>
     </x:Property>
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>835,958</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>969,818</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="18">
+    <scg:List x:TypeArguments="x:String" Capacity="36">
       <x:String>System.Activities</x:String>
       <x:String>System</x:String>
       <x:String>System.Collections</x:String>
@@ -32,6 +32,7 @@
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Net</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -69,21 +70,11 @@
       <If.Then>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202010OrNewer Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202010OrNewer.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">
-              <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_FilterNames" />
-            </InArgument>
-            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">
-              <mva:VisualBasicValue x:TypeArguments="s:Int64[]" ExpressionText="in_FilterIDs" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_NameFilterField" />
-            </InArgument>
-            <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_FilterConditions">
-              <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="FilterConditions" />
-            </InOutArgument>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
+            <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
+            <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_NameFilterField">[in_NameFilterField]</InArgument>
+            <InOutArgument x:TypeArguments="scg:List(x:String)" x:Key="io_FilterConditions">[FilterConditions]</InOutArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </If.Then>
@@ -98,7 +89,7 @@
         </ui:InvokeWorkflowFile>
       </If.Else>
     </If>
-    <If Condition="[FilterConditions.Count &gt; 0]" DisplayName="If Any Conditions Were Created" sap:VirtualizedContainerService.HintSize="803,239" sap2010:WorkflowViewState.IdRef="If_4">
+    <If Condition="[FilterConditions.Count &gt; 0 AndAlso System.Net.WebUtility.UrlEncode(String.Format(&quot;$filter={0}&amp;&quot;, String.Join(&quot; or &quot;, FilterConditions))).Length &lt;= 1800]" DisplayName="If Any Conditions Were Created" sap:VirtualizedContainerService.HintSize="569,239" sap2010:WorkflowViewState.IdRef="If_4">
       <If.Then>
         <Assign DisplayName="Assign ODataFilter" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_12">
           <Assign.To>
