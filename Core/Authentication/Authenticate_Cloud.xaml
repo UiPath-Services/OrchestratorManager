@@ -1,13 +1,13 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Authenticate_Cloud" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Authenticate_Cloud" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="io_Config" Type="InOutArgument(scg:Dictionary(x:String, ui:GenericValue))" />
     <x:Property Name="out_ShouldStop" Type="OutArgument(x:Boolean)" />
     <x:Property Name="in_AuthenticationData" Type="InArgument(njl:JObject)" />
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>872,1482</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1146,1830</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="38">
+    <scg:List x:TypeArguments="x:String" Capacity="25">
       <x:String>System.Activities</x:String>
       <x:String>System</x:String>
       <x:String>Newtonsoft.Json.Linq</x:String>
@@ -36,7 +36,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="30">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
@@ -55,14 +55,15 @@
       <AssemblyReference>CredentialManagement</AssemblyReference>
       <AssemblyReference>UiPath.Credentials.Activities</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to Automation Cloud Orchestrator." DisplayName="Cloud Platform Orchestrator" sap:VirtualizedContainerService.HintSize="836,1417" sap2010:WorkflowViewState.IdRef="Sequence_15">
+  <Sequence sap2010:Annotation.AnnotationText="Prepare and make authentication request to Automation Cloud Orchestrator." DisplayName="Cloud Platform Orchestrator" sap:VirtualizedContainerService.HintSize="836,1765" sap2010:WorkflowViewState.IdRef="Sequence_15">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ClientID" />
       <Variable x:TypeArguments="x:String" Name="UserKey" />
       <Variable x:TypeArguments="x:String" Name="AccountNameSpecificCredentialTarget" />
+      <Variable x:TypeArguments="x:String" Name="AccountTenantNameSpecificCredentialTarget" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -79,9 +80,17 @@
         <InArgument x:TypeArguments="x:String" xml:space="preserve">[String.Format("{0}_{1}", io_Config("AutomationCloudCredentialName"),  in_AuthenticationData("accountName"))]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;useSavedCredential&quot;))]" DisplayName="If Saved Cloud Credential Should be Used" sap:VirtualizedContainerService.HintSize="794,815" sap2010:WorkflowViewState.IdRef="If_16">
+    <Assign DisplayName="Assign AccountTenantNameSpecificCredentialTarget" sap:VirtualizedContainerService.HintSize="794,60" sap2010:WorkflowViewState.IdRef="Assign_19">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[AccountTenantNameSpecificCredentialTarget]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String" xml:space="preserve">[String.Format("{0}_{1}_{2}", io_Config("AutomationCloudCredentialName"),  in_AuthenticationData("accountName"), in_AuthenticationData("cloudTenantName"))]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;useSavedCredential&quot;))]" DisplayName="If Saved Cloud Credential Should be Used" sap:VirtualizedContainerService.HintSize="794,1063" sap2010:WorkflowViewState.IdRef="If_16">
       <If.Then>
-        <Sequence DisplayName="Use Saved Cloud Credential" sap:VirtualizedContainerService.HintSize="549,667" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Use Saved Cloud Credential" sap:VirtualizedContainerService.HintSize="549,915" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="ss:SecureString" Name="SecureUserKey" />
             <Variable x:TypeArguments="x:Boolean" Name="CloudCredentialRetrieved" />
@@ -92,7 +101,12 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:GetSecureCredential CredentialType="Generic" DisplayName="Get Secure Credential (Cloud)" sap:VirtualizedContainerService.HintSize="507,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_3" Password="[SecureUserKey]" PersistanceType="Enterprise" Result="[CloudCredentialRetrieved]" Target="[AccountNameSpecificCredentialTarget]" Username="[ClientID]" />
+          <ui:GetSecureCredential CredentialType="Generic" DisplayName="Get Secure Credential (Cloud)" sap:VirtualizedContainerService.HintSize="507,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_3" Password="[SecureUserKey]" PersistanceType="Enterprise" Result="[CloudCredentialRetrieved]" Target="[AccountTenantNameSpecificCredentialTarget]" Username="[ClientID]" />
+          <If Condition="[Not CloudCredentialRetrieved]" DisplayName="If Account Teanant Name Specific Credential Not Retrieved, Try To Retrieve Legacy Credential" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_19">
+            <If.Then>
+              <ui:GetSecureCredential CredentialType="Generic" DisplayName="Get Secure Credential (Cloud)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_4" Password="[SecureUserKey]" PersistanceType="Enterprise" Result="[CloudCredentialRetrieved]" Target="[AccountNameSpecificCredentialTarget]" Username="[ClientID]" />
+            </If.Then>
+          </If>
           <If Condition="[Not CloudCredentialRetrieved]" DisplayName="If Account Name Specific Credential Not Retrieved, Try To Retrieve Legacy Credential" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_18">
             <If.Then>
               <ui:GetSecureCredential CredentialType="Generic" DisplayName="Get Secure Credential (Cloud)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="GetSecureCredential_2" Password="[SecureUserKey]" PersistanceType="Enterprise" Result="[CloudCredentialRetrieved]" Target="[io_Config(&quot;AutomationCloudCredentialName&quot;)]" Username="[ClientID]" />
@@ -149,27 +163,13 @@
     </If>
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MakeAuthenticationRequest_Cloud Workflow" sap:VirtualizedContainerService.HintSize="794,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_16" UnSafe="False" WorkflowFileName="Core/Authentication/MakeAuthenticationRequest_Cloud.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">
-          <mva:VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="io_Config" />
-        </InOutArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_ClientID">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ClientID" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_UserKey">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserKey" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="io_Config(&quot;TenantName&quot;)" />
-        </InArgument>
-        <InArgument x:TypeArguments="x:String" x:Key="in_AccountName">
-          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_AuthenticationData(&quot;accountName&quot;).ToString" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">
-          <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="out_ShouldStop" />
-        </OutArgument>
-        <InArgument x:TypeArguments="x:Boolean" x:Key="in_UseOAuthFlow">
-          <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="Convert.ToBoolean(in_AuthenticationData(&quot;useOAuthFlow&quot;))" />
-        </InArgument>
+        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_ClientID">[ClientID]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_UserKey">[UserKey]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_TenantName">[io_Config("TenantName")]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="in_AccountName">[in_AuthenticationData("accountName").ToString]</InArgument>
+        <OutArgument x:TypeArguments="x:Boolean" x:Key="out_ShouldStop">[out_ShouldStop]</OutArgument>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="in_UseOAuthFlow">[Convert.ToBoolean(in_AuthenticationData("useOAuthFlow"))]</InArgument>
       </ui:InvokeWorkflowFile.Arguments>
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -180,7 +180,7 @@
     </ui:InvokeWorkflowFile>
     <If Condition="[Convert.ToBoolean(in_AuthenticationData(&quot;saveCredential&quot;))]" DisplayName="If Cloud Platform Credential Should be Saved" sap:VirtualizedContainerService.HintSize="794,212" sap2010:WorkflowViewState.IdRef="If_13">
       <If.Then>
-        <ui:AddCredential sap2010:Annotation.AnnotationText="Save Cloud Platform Credential" CredentialType="Generic" DisplayName="Add Credential (Cloud Platform Orchestrator)" sap:VirtualizedContainerService.HintSize="200,64" sap2010:WorkflowViewState.IdRef="AddCredential_2" Password="[in_AuthenticationData(&quot;userKey&quot;).ToString]" PersistanceType="Enterprise" Target="[AccountNameSpecificCredentialTarget]" Username="[in_AuthenticationData(&quot;clientID&quot;).ToString]">
+        <ui:AddCredential sap2010:Annotation.AnnotationText="Save Cloud Platform Credential" CredentialType="Generic" DisplayName="Add Credential (Cloud Platform Orchestrator)" sap:VirtualizedContainerService.HintSize="200,64" sap2010:WorkflowViewState.IdRef="AddCredential_2" Password="[in_AuthenticationData(&quot;userKey&quot;).ToString]" PersistanceType="Enterprise" Target="[AccountTenantNameSpecificCredentialTarget]" Username="[in_AuthenticationData(&quot;clientID&quot;).ToString]">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
