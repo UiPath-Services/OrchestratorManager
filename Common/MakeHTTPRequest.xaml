@@ -28,7 +28,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1420,3215.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>824,3635.2</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>MakeHTTPRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="46">
@@ -59,6 +59,7 @@
       <x:String>System.Text.RegularExpressions</x:String>
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Web</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -83,6 +84,8 @@
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.Web</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -91,14 +94,14 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,3150.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Make a HTTP request using the specified endpoint, request body, method and Organization Unit ID.&#xA;If the status code of the request is not the expected one, an exception is thrown." DisplayName="MakeHTTPRequest" sap:VirtualizedContainerService.HintSize="648,3570.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Remove extra &amp; in query parameters" sap:VirtualizedContainerService.HintSize="606,62" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Remove extra &amp; in query parameters" sap:VirtualizedContainerService.HintSize="606.4,60" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[in_Endpoint]</OutArgument>
       </Assign.To>
@@ -106,16 +109,16 @@
         <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Replace(in_Endpoint, "&amp;&amp;", "&amp;")]</InArgument>
       </Assign.Value>
     </Assign>
-    <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="606,1927.33333333333" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[io_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(io_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
+    <ui:RetryScope sap2010:Annotation.AnnotationText="Retries the request in case of failure due to expired tokens or connectivity issues.&#xA;The number of retries and the interval between retries can be modified in the Config.xlsx file." DisplayName="Retry Scope" sap:VirtualizedContainerService.HintSize="606.4,2294.4" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="[io_Config(&quot;MakeHTTPRequestNumberOfRetries&quot;)]" RetryInterval="[TimeSpan.FromMilliseconds(io_Config(&quot;MakeHTTPRequestRetryInterval&quot;))]">
       <ui:RetryScope.ActivityBody>
         <ActivityAction>
-          <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="564,1704.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Action" sap:VirtualizedContainerService.HintSize="564.8,2074.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="If the OUID argument is not specified by a workflow invoking this one, the value of in_OUID is set to 0 by default.&#xA;On the other hand, using that default value would translate into making a HTTP Request with 0 as the value of the X-UIPATH-OrganizationUnitId request's header.&#xA;To avoid such a problem, do not include X-UIPATH-OrganizationUnitId if OUID is 0.&#xA;Note that IDs of OUs start from 1 (Default), so 0 would not be a valid ID." DisplayName="Switch HTTP Method (On-Premises)" Expression="[in_Method.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="522,347.333333333333" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+            <Switch x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="If the OUID argument is not specified by a workflow invoking this one, the value of in_OUID is set to 0 by default.&#xA;On the other hand, using that default value would translate into making a HTTP Request with 0 as the value of the X-UIPATH-OrganizationUnitId request's header.&#xA;To avoid such a problem, do not include X-UIPATH-OrganizationUnitId if OUID is 0.&#xA;Note that IDs of OUs start from 1 (Default), so 0 would not be a valid ID." DisplayName="Switch HTTP Method (On-Premises)" Expression="[in_Method.ToLowerInvariant]" sap:VirtualizedContainerService.HintSize="523.2,607.2" sap2010:WorkflowViewState.IdRef="Switch`1_1">
               <Switch.Default>
                 <Throw DisplayName="Throw (Method Not Supported)" Exception="[New ArgumentException(io_Config(&quot;HTTPMethodNotSupported&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
               </Switch.Default>
@@ -126,7 +129,7 @@
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If x:Key="get" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (GET)" sap:VirtualizedContainerService.HintSize="484,210.666666666667" sap2010:WorkflowViewState.IdRef="If_5">
+              <If x:Key="get" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (GET)" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_5">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -134,7 +137,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_7" Method="GET" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_7" Method="GET" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -142,8 +145,12 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -154,7 +161,7 @@
                   </ui:HttpClient>
                 </If.Then>
                 <If.Else>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_8" Method="GET" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (GET)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_8" Method="GET" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -162,9 +169,15 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_OUID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -175,7 +188,7 @@
                   </ui:HttpClient>
                 </If.Else>
               </If>
-              <If x:Key="post" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (POST)" sap:VirtualizedContainerService.HintSize="484,210.666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+              <If x:Key="post" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (POST)" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_6">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -183,7 +196,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (POST Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (POST Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_3" Method="POST" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -191,8 +204,12 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -203,7 +220,7 @@
                   </ui:HttpClient>
                 </If.Then>
                 <If.Else>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (POST)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_9" Method="POST" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (POST)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_9" Method="POST" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -211,9 +228,15 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_OUID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -224,7 +247,7 @@
                   </ui:HttpClient>
                 </If.Else>
               </If>
-              <If x:Key="patch" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (PATCH)" sap:VirtualizedContainerService.HintSize="484,210.666666666667" sap2010:WorkflowViewState.IdRef="If_7">
+              <If x:Key="patch" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (PATCH)" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_7">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -232,7 +255,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PATCH Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="PATCH" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PATCH Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_4" Method="PATCH" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -240,8 +263,12 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -252,7 +279,7 @@
                   </ui:HttpClient>
                 </If.Then>
                 <If.Else>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PATCH)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_10" Method="PATCH" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PATCH)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_10" Method="PATCH" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -260,9 +287,15 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_OUID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -273,7 +306,7 @@
                   </ui:HttpClient>
                 </If.Else>
               </If>
-              <If x:Key="put" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (PUT)" sap:VirtualizedContainerService.HintSize="484,210.666666666667" sap2010:WorkflowViewState.IdRef="If_8">
+              <If x:Key="put" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (PUT)" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_8">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -281,7 +314,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PUT Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_5" Method="PUT" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PUT Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_5" Method="PUT" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -289,8 +322,12 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -301,7 +338,7 @@
                   </ui:HttpClient>
                 </If.Then>
                 <If.Else>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PUT)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_11" Method="PUT" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (PUT)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_11" Method="PUT" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -309,9 +346,15 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_OUID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -322,7 +365,7 @@
                   </ui:HttpClient>
                 </If.Else>
               </If>
-              <If x:Key="delete" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (DELETE)" sap:VirtualizedContainerService.HintSize="484,210.666666666667" sap2010:WorkflowViewState.IdRef="If_9">
+              <If x:Key="delete" Condition="[in_OUID = 0]" DisplayName="If OU ID Is Specified (DELETE)" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_9">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -330,7 +373,7 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (DELETE Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_6" Method="DELETE" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (DELETE Without X-UIPATH-OrganizationUnitId)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_6" Method="DELETE" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -338,8 +381,12 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -350,7 +397,7 @@
                   </ui:HttpClient>
                 </If.Then>
                 <If.Else>
-                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (DELETE)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="HttpClient_12" Method="DELETE" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
+                  <ui:HttpClient ConsumerKey="{x:Null}" ConsumerSecret="{x:Null}" ContinueOnError="{x:Null}" OAuth1Token="{x:Null}" OAuth1TokenSecret="{x:Null}" OAuth2Token="{x:Null}" Password="{x:Null}" ResourcePath="{x:Null}" ResponseHeaders="{x:Null}" Username="{x:Null}" AcceptFormat="JSON" Body="[in_Body]" BodyFormat="application/json" ClientCertificate="[Nothing]" ClientCertificatePassword="[Nothing]" DisplayName="HTTP Request (DELETE)" EndPoint="[in_Endpoint]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="HttpClient_12" Method="DELETE" Result="[out_Result]" StatusCode="[out_StatusCode]" TimeoutMS="[io_Config(&quot;HTTPRequestActivityTimeout&quot;)]">
                     <ui:HttpClient.Attachments>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Attachments>
@@ -358,9 +405,15 @@
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
                     </ui:HttpClient.Cookies>
                     <ui:HttpClient.Headers>
-                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">["Bearer " + io_Config("Token")]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">[in_OUID.ToString]</InArgument>
-                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">[io_Config("TenantName")]</InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="Authorization">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="&quot;Bearer &quot; + io_Config(&quot;Token&quot;)" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-OrganizationUnitId">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_OUID.ToString" />
+                      </InArgument>
+                      <InArgument x:TypeArguments="x:String" x:Key="X-UIPATH-TenantName">
+                        <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="HttpUtility.UrlEncode(io_Config(&quot;TenantName&quot;))" />
+                      </InArgument>
                     </ui:HttpClient.Headers>
                     <ui:HttpClient.Parameters>
                       <scg:Dictionary x:TypeArguments="x:String, InArgument(x:String)" />
@@ -372,7 +425,7 @@
                 </If.Else>
               </If>
             </Switch>
-            <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[out_StatusCode = 401 AndAlso out_Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="522,633.333333333333" sap2010:WorkflowViewState.IdRef="If_2">
+            <If sap2010:Annotation.AnnotationText="By default, the bearer token expires after 30 minutes and it needs to be refreshed before making additional requests." Condition="[out_StatusCode = 401 AndAlso out_Result.Contains(&quot;not authenticated&quot;)]" DisplayName="If Token Expired" sap:VirtualizedContainerService.HintSize="523.2,668.8" sap2010:WorkflowViewState.IdRef="If_2">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -381,20 +434,20 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence DisplayName="Retrieve New Token" sap:VirtualizedContainerService.HintSize="376,437.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <Sequence DisplayName="Retrieve New Token" sap:VirtualizedContainerService.HintSize="375.2,436" sap2010:WorkflowViewState.IdRef="Sequence_3">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:LogMessage DisplayName="Log Message (Token Expired)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[io_Config(&quot;TokenExpired&quot;)]" />
-                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate.xaml">
+                  <ui:LogMessage DisplayName="Log Message (Token Expired)" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[io_Config(&quot;TokenExpired&quot;)]" />
+                  <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Authenticate Workflow" sap:VirtualizedContainerService.HintSize="333.6,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Core/Authentication/Authenticate.xaml">
                     <ui:InvokeWorkflowFile.Arguments>
                       <InOutArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="io_Config">[io_Config]</InOutArgument>
                       <OutArgument x:TypeArguments="x:Boolean" x:Key="out_AuthenticationSuccessful" />
                     </ui:InvokeWorkflowFile.Arguments>
                   </ui:InvokeWorkflowFile>
-                  <Throw sap2010:Annotation.AnnotationText="Exception thrown so that the request is retried by Retry Scope using the new token." DisplayName="Throw (Token Expired)" Exception="[New ArgumentException(io_Config(&quot;TokenExpired&quot;))]" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="Throw_4">
+                  <Throw sap2010:Annotation.AnnotationText="Exception thrown so that the request is retried by Retry Scope using the new token." DisplayName="Throw (Token Expired)" Exception="[New ArgumentException(io_Config(&quot;TokenExpired&quot;))]" sap:VirtualizedContainerService.HintSize="333.6,82.4" sap2010:WorkflowViewState.IdRef="Throw_4">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -404,7 +457,7 @@
                 </Sequence>
               </If.Then>
             </If>
-            <If sap2010:Annotation.AnnotationText="Connectivity issues that prevent successful request are represented by the value 0 of the StatusCode property." Condition="[out_StatusCode = 0]" DisplayName="If Request Failed due to Connectivity Issues" sap:VirtualizedContainerService.HintSize="522,256" sap2010:WorkflowViewState.IdRef="If_3">
+            <If sap2010:Annotation.AnnotationText="Connectivity issues that prevent successful request are represented by the value 0 of the StatusCode property." Condition="[out_StatusCode = 0]" DisplayName="If Request Failed due to Connectivity Issues" sap:VirtualizedContainerService.HintSize="523.2,292.8" sap2010:WorkflowViewState.IdRef="If_3">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -413,17 +466,17 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Throw DisplayName="Throw (Request Failed due to Connectivity Issues)" Exception="[New WebException(String.Format(io_Config(&quot;ConnectivityIssuesFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                <Throw DisplayName="Throw (Request Failed due to Connectivity Issues)" Exception="[New WebException(String.Format(io_Config(&quot;ConnectivityIssuesFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_3" />
               </If.Then>
             </If>
-            <If sap2010:Annotation.AnnotationText="Server errors are represented by values in the range of 500 to 599 of the StatusCode property." Condition="[out_StatusCode &gt;= 500 AndAlso out_StatusCode &lt; 600]" DisplayName="If Server Error" sap:VirtualizedContainerService.HintSize="522,256" sap2010:WorkflowViewState.IdRef="If_10">
+            <If sap2010:Annotation.AnnotationText="Server errors are represented by values in the range of 500 to 599 of the StatusCode property." Condition="[out_StatusCode &gt;= 500 AndAlso out_StatusCode &lt; 600]" DisplayName="If Server Error" sap:VirtualizedContainerService.HintSize="523.2,292.8" sap2010:WorkflowViewState.IdRef="If_10">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Throw DisplayName="Throw (Request Failed due to Server Error)" Exception="[New WebException(String.Format(io_Config(&quot;ServerErrorFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+                <Throw DisplayName="Throw (Request Failed due to Server Error)" Exception="[New WebException(String.Format(io_Config(&quot;ServerErrorFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_5" />
               </If.Then>
             </If>
           </Sequence>
@@ -438,7 +491,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:RetryScope>
-    <If Condition="[out_StatusCode &lt;&gt; in_ExpectedStatusCode]" DisplayName="If Unexpected Status Code" sap:VirtualizedContainerService.HintSize="606,214" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[out_StatusCode &lt;&gt; in_ExpectedStatusCode]" DisplayName="If Unexpected Status Code" sap:VirtualizedContainerService.HintSize="606.4,248.8" sap2010:WorkflowViewState.IdRef="If_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -446,10 +499,10 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        <Throw DisplayName="Throw (Process Entity Failure)" Exception="[New WebException(String.Format(io_Config(&quot;ProcessEntityFailure&quot;), out_StatusCode, out_Result))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_1" />
       </If.Then>
     </If>
-    <TryCatch sap2010:Annotation.AnnotationText="If a request is done to an inexistent endpoint, it gets redirected and the request is considered successful (status 200) , returning a HTML instead of a JSON.&#xA;To avoid such false positive requests, try to deserialize the response JSON to confirm a proper result was returned." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="606,532.666666666667" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch sap2010:Annotation.AnnotationText="If a request is done to an inexistent endpoint, it gets redirected and the request is considered successful (status 200) , returning a HTML instead of a JSON.&#xA;To avoid such false positive requests, try to deserialize the response JSON to confirm a proper result was returned." DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="606.4,556" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="njl:JToken" Name="ParsedJSON" />
       </TryCatch.Variables>
@@ -459,9 +512,9 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <If Condition="[Not String.IsNullOrWhiteSpace(out_Result)]" DisplayName="If Result Exists" sap:VirtualizedContainerService.HintSize="484,216" sap2010:WorkflowViewState.IdRef="If_11">
+        <If Condition="[Not String.IsNullOrWhiteSpace(out_Result)]" DisplayName="If Result Exists" sap:VirtualizedContainerService.HintSize="483.2,248.8" sap2010:WorkflowViewState.IdRef="If_11">
           <If.Then>
-            <Assign DisplayName="Assign ParsedJSON" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+            <Assign DisplayName="Assign ParsedJSON" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_1">
               <Assign.To>
                 <OutArgument x:TypeArguments="njl:JToken">[ParsedJSON]</OutArgument>
               </Assign.To>
@@ -473,7 +526,7 @@
         </If>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="488.666666666667,22" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="486.4,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -484,20 +537,20 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Invalid Resut" sap:VirtualizedContainerService.HintSize="376,248.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <Sequence DisplayName="Invalid Resut" sap:VirtualizedContainerService.HintSize="376,249.6" sap2010:WorkflowViewState.IdRef="Sequence_5">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message (Invalid Result)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[io_Config(&quot;InvalidResponseErrorFailure&quot;)]" />
-              <Throw DisplayName="Throw (Invalid Result)" Exception="[New Exception(io_Config(&quot;InvalidResponseErrorFailure&quot;), Exception)]" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
+              <ui:LogMessage DisplayName="Log Message (Invalid Result)" sap:VirtualizedContainerService.HintSize="334.4,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Error" Message="[io_Config(&quot;InvalidResponseErrorFailure&quot;)]" />
+              <Throw DisplayName="Throw (Invalid Result)" Exception="[New Exception(io_Config(&quot;InvalidResponseErrorFailure&quot;), Exception)]" sap:VirtualizedContainerService.HintSize="334.4,22.4" sap2010:WorkflowViewState.IdRef="Throw_6" />
             </Sequence>
           </ActivityAction>
         </Catch>
       </TryCatch.Catches>
     </TryCatch>
-    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator due to a large number of consecutive requests." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(io_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606,117.333333333333" sap2010:WorkflowViewState.IdRef="Delay_1">
+    <Delay sap2010:Annotation.AnnotationText="Optional delay between requests to lessen the burden on Orchestrator due to a large number of consecutive requests." DisplayName="Delay" Duration="[TimeSpan.FromMilliseconds(io_Config(&quot;RequestInterval&quot;))]" sap:VirtualizedContainerService.HintSize="606.4,114.4" sap2010:WorkflowViewState.IdRef="Delay_1">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
