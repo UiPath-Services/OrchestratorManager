@@ -8,11 +8,13 @@
     <x:Property Name="in_PackageLibraryIndex" Type="InArgument(x:Int32)" />
     <x:Property Name="in_PackagesLibrariesData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_Entity" Type="InArgument(x:String)" />
+    <x:Property Name="in_DuplicatePackageLibraryList" Type="InArgument(scg:List(x:String))" />
+    <x:Property Name="in_DuplicateEntitiesMessage" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1329.33333333333,1354.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>824,1321.6</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>DownloadQueueItems_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="48">
@@ -41,6 +43,9 @@
       <x:String>System.Net</x:String>
       <x:String>UiPath.Excel</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Reflection</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -64,6 +69,7 @@
       <AssemblyReference>UiPath.Excel</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -72,19 +78,19 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Download Package or Library to the specified local folder path." DisplayName="Download Package/Library" sap:VirtualizedContainerService.HintSize="556.666666666667,1290" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Download Package or Library to the specified local folder path." DisplayName="Download Package/Library" sap:VirtualizedContainerService.HintSize="556,1256.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.666666666667,1167.33333333333" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="514.4,1132.8" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Download Package/Library" sap:VirtualizedContainerService.HintSize="476,929.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Try to Download Package/Library" sap:VirtualizedContainerService.HintSize="475.2,901.6" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:String" Name="PackageLibraryFilePath" />
           </Sequence.Variables>
@@ -93,7 +99,7 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="434,475.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="433.6,443.2" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="Key" />
             </Sequence.Variables>
@@ -103,15 +109,29 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmPackageLibraryData Workflow" sap:VirtualizedContainerService.HintSize="379.333333333333,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/ConfirmPackageLibraryData.xaml">
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConfirmPackageLibraryData Workflow" sap:VirtualizedContainerService.HintSize="378.4,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/ConfirmPackageLibraryData.xaml">
               <ui:InvokeWorkflowFile.Arguments>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_Version]</InArgument>
-                <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
-                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesLibrariesData">[in_PackagesLibrariesData]</InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                  <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+                </InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Version">
+                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Version" />
+                </InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
+                </InArgument>
+                <InArgument x:TypeArguments="sd:DataTable" x:Key="in_PackagesLibrariesData">
+                  <mva:VisualBasicValue x:TypeArguments="sd:DataTable" ExpressionText="in_PackagesLibrariesData" />
+                </InArgument>
+                <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_DuplicatePackageLibraryList">
+                  <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="in_DuplicatePackageLibraryList" />
+                </InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="in_DuplicateEntitiesMessage">
+                  <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DuplicateEntitiesMessage" />
+                </InArgument>
               </ui:InvokeWorkflowFile.Arguments>
             </ui:InvokeWorkflowFile>
-            <Assign DisplayName="Assign Key" sap:VirtualizedContainerService.HintSize="379.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_7">
+            <Assign DisplayName="Assign Key" sap:VirtualizedContainerService.HintSize="378.4,60" sap2010:WorkflowViewState.IdRef="Assign_7">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[Key]</OutArgument>
               </Assign.To>
@@ -119,7 +139,7 @@
                 <InArgument x:TypeArguments="x:String">[in_PackagesLibrariesData.Rows.Find({in_Name, in_Version})("Key").ToString]</InArgument>
               </Assign.Value>
             </Assign>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_DownloadFolderPath)]" DisplayName="If Download Path Is Specified" sap:VirtualizedContainerService.HintSize="379.333333333333,52.6666666666667" sap2010:WorkflowViewState.IdRef="If_6">
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_DownloadFolderPath)]" DisplayName="If Download Path Is Specified" sap:VirtualizedContainerService.HintSize="378.4,22.4" sap2010:WorkflowViewState.IdRef="If_6">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -143,7 +163,7 @@
                 <Throw DisplayName="Throw (Download Folder Path not Specified)" Exception="[New ArgumentException(in_Config(&quot;PackageLibraryDownloadPathNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
               </If.Else>
             </If>
-            <Assign DisplayName="Assign PackageLibraryFilePath" sap:VirtualizedContainerService.HintSize="379.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_4">
+            <Assign DisplayName="Assign PackageLibraryFilePath" sap:VirtualizedContainerService.HintSize="378.4,60" sap2010:WorkflowViewState.IdRef="Assign_4">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[PackageLibraryFilePath]</OutArgument>
               </Assign.To>
@@ -152,35 +172,23 @@
               </Assign.Value>
             </Assign>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageLibraryRequest Workflow" sap:VirtualizedContainerService.HintSize="434,86.6666666666667" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/DownloadPackageLibraryRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DownloadPackageLibraryRequest Workflow" sap:VirtualizedContainerService.HintSize="433.6,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" UnSafe="False" WorkflowFileName="Entities/PackagesLibraries/DownloadPackageLibraryRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DownloadFolderPath" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Version">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Version" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Entity">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Entity" />
-              </InArgument>
-              <OutArgument x:TypeArguments="x:String" x:Key="out_PackageLibraryFilePath">
-                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="PackageLibraryFilePath" />
-              </OutArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DownloadFolderPath">[in_DownloadFolderPath]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Version">[in_Version]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Entity">[in_Entity]</InArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_PackageLibraryFilePath">[PackageLibraryFilePath]</OutArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Package/Library File Path)" ExistingWorkbook="[in_OpenWorkbook]" sap:VirtualizedContainerService.HintSize="434,195.333333333333" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
+          <ui:ExcelApplicationScope Password="{x:Null}" WorkbookPath="{x:Null}" CreateNewFile="False" DisplayName="Excel Application Scope (Output Package/Library File Path)" ExistingWorkbook="[in_OpenWorkbook]" sap:VirtualizedContainerService.HintSize="433.6,197.6" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" Visible="False">
             <ui:ExcelApplicationScope.Body>
               <ActivityAction x:TypeArguments="ui:WorkbookApplication">
                 <ActivityAction.Argument>
                   <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
                 </ActivityAction.Argument>
-                <ui:ExcelWriteCell Cell="[&quot;D&quot;+(2+in_PackageLibraryIndex).ToString]" DisplayName="Write Cell (Package/Library File Path)" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;DownloadPackageLibraryOperationName&quot;)]" Text="[PackageLibraryFilePath]" />
+                <ui:ExcelWriteCell Cell="[&quot;D&quot;+(2+in_PackageLibraryIndex).ToString]" DisplayName="Write Cell (Package/Library File Path)" sap:VirtualizedContainerService.HintSize="333.6,88" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_3" SheetName="[in_Config(&quot;DownloadPackageLibraryOperationName&quot;)]" Text="[PackageLibraryFilePath]" />
               </ActivityAction>
             </ui:ExcelApplicationScope.Body>
             <sap:WorkflowViewStateService.ViewState>
