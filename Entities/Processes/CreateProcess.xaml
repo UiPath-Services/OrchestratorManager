@@ -14,6 +14,8 @@
     <x:Property Name="in_PackagesData" Type="InArgument(sd:DataTable)" />
     <x:Property Name="in_ProcessDetails" Type="InArgument(sd:DataRow)" />
     <x:Property Name="in_ColumnNames" Type="InArgument(s:String[])" />
+    <x:Property Name="in_DuplicatePackageLibraryVersionsList" Type="InArgument(scg:List(x:String))" />
+    <x:Property Name="in_DuplicateEntitiesMessage" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateProcess.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -24,7 +26,7 @@
   <this:CreateProcess.in_EnvironmentsData>
     <InArgument x:TypeArguments="sd:DataTable" />
   </this:CreateProcess.in_EnvironmentsData>
-  <sap:VirtualizedContainerService.HintSize>1450,2961</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>824,3352</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -48,6 +50,9 @@
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Reflection</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -83,19 +88,19 @@
       <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create Process with the specified data.&#xA;IDs of successfully created Processes are added to the Processes configuration file (Processes.xlsx)." DisplayName="Create Process" sap:VirtualizedContainerService.HintSize="816,2796" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create Process with the specified data.&#xA;IDs of successfully created Processes are added to the Processes configuration file (Processes.xlsx)." DisplayName="Create Process" sap:VirtualizedContainerService.HintSize="709.6,3287.2" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="774,2662" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="668,3150.4" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create Process" sap:VirtualizedContainerService.HintSize="736,2435" sap2010:WorkflowViewState.IdRef="Sequence_18">
+        <Sequence DisplayName="Try to Create Process" sap:VirtualizedContainerService.HintSize="631.2,2919.2" sap2010:WorkflowViewState.IdRef="Sequence_18">
           <Sequence.Variables>
             <Variable x:TypeArguments="x:Int64" Name="OUFolderID" />
             <Variable x:TypeArguments="x:Int64" Name="EnvironmentID" />
@@ -107,21 +112,21 @@
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="694,1563" sap2010:WorkflowViewState.IdRef="Sequence_24">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="589.6,2039.2" sap2010:WorkflowViewState.IdRef="Sequence_24">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="652,548" sap2010:WorkflowViewState.IdRef="Sequence_28">
+            <Sequence DisplayName="Get OU/Folder ID" sap:VirtualizedContainerService.HintSize="548,600.8" sap2010:WorkflowViewState.IdRef="Sequence_28">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_18">
+              <If Condition="[String.IsNullOrWhiteSpace(in_OUFolderName)]" DisplayName="If OU/Folder Name Is Not Specified" sap:VirtualizedContainerService.HintSize="506.4,248.8" sap2010:WorkflowViewState.IdRef="If_18">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -129,10 +134,10 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_13" />
+                  <Throw DisplayName="Throw (OU/Folder Name Not Specified)" Exception="[New ArgumentException(in_Config(&quot;OUFolderNameNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_13" />
                 </If.Then>
               </If>
-              <If Condition="[in_OUFoldersData.Rows.Find({in_OUFolderName}) Is Nothing]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_19">
+              <If Condition="[in_OUFoldersData.Rows.Find({in_OUFolderName}) Is Nothing]" DisplayName="If No OU/Folder Found with Specified Name" sap:VirtualizedContainerService.HintSize="506.4,219.2" sap2010:WorkflowViewState.IdRef="If_19">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -140,10 +145,10 @@
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
                 <If.Then>
-                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_14" />
+                  <Throw DisplayName="Throw (OU/Folder Not Found)" Exception="[New Exception(in_Config(&quot;OUFolderNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_14" />
                 </If.Then>
                 <If.Else>
-                  <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                  <Assign DisplayName="Assign OU/Folder ID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_12">
                     <Assign.To>
                       <OutArgument x:TypeArguments="x:Int64">[OUFolderID]</OutArgument>
                     </Assign.To>
@@ -154,7 +159,7 @@
                 </If.Else>
               </If>
             </Sequence>
-            <If sap2010:Annotation.AnnotationText="Modern Folders do not accept Environment when creating a process." Condition="[Not String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="652,387" sap2010:WorkflowViewState.IdRef="If_12">
+            <If sap2010:Annotation.AnnotationText="Modern Folders do not accept Environment when creating a process." Condition="[Not String.IsNullOrWhiteSpace(in_EnvironmentName)]" DisplayName="If Environment Name Is Specified" sap:VirtualizedContainerService.HintSize="548,439.2" sap2010:WorkflowViewState.IdRef="If_12">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -163,7 +168,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <If Condition="[in_EnvironmentsData.Rows.Find({OUFolderID, in_EnvironmentName}) Is Nothing]" DisplayName="If No Environment Found with Specified Name in Specified OU/Folder" sap:VirtualizedContainerService.HintSize="507,208" sap2010:WorkflowViewState.IdRef="If_13">
+                <If Condition="[in_EnvironmentsData.Rows.Find({OUFolderID, in_EnvironmentName}) Is Nothing]" DisplayName="If No Environment Found with Specified Name in Specified OU/Folder" sap:VirtualizedContainerService.HintSize="506.4,219.2" sap2010:WorkflowViewState.IdRef="If_13">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -171,10 +176,10 @@
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
                   <If.Then>
-                    <Throw DisplayName="Throw (Environment Not Found)" Exception="[New Exception(in_Config(&quot;EnvironmentNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
+                    <Throw DisplayName="Throw (Environment Not Found)" Exception="[New Exception(in_Config(&quot;EnvironmentNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_8" />
                   </If.Then>
                   <If.Else>
-                    <Assign DisplayName="Assign EnvironmentID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_7">
+                    <Assign DisplayName="Assign EnvironmentID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_7">
                       <Assign.To>
                         <OutArgument x:TypeArguments="x:Int64">[EnvironmentID]</OutArgument>
                       </Assign.To>
@@ -186,12 +191,26 @@
                 </If>
               </If.Then>
             </If>
-            <If Condition="[in_PackagesData.Rows.Find({in_PackageName, in_PackageVersion}) Is Nothing]" DisplayName="If Package Exists" sap:VirtualizedContainerService.HintSize="652,208" sap2010:WorkflowViewState.IdRef="If_20">
+            <If Condition="[in_DuplicatePackageLibraryVersionsList.Contains(in_PackageName + &quot; &quot; + in_PackageVersion)]" sap:VirtualizedContainerService.HintSize="548,248.8" sap2010:WorkflowViewState.IdRef="If_22">
               <If.Then>
-                <Throw DisplayName="Throw (Package not Found)" Exception="[New ArgumentException(in_Config(&quot;PackageNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_16" />
+                <Throw DisplayName="Throw (Duplicate Package)" Exception="[New ArgumentException(in_DuplicateEntitiesMessage)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_18" />
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_32">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </If.Else>
+            </If>
+            <If Condition="[in_PackagesData.Rows.Find({in_PackageName, in_PackageVersion}) Is Nothing]" DisplayName="If Package Exists" sap:VirtualizedContainerService.HintSize="548,248.8" sap2010:WorkflowViewState.IdRef="If_20">
+              <If.Then>
+                <Throw DisplayName="Throw (Package not Found)" Exception="[New ArgumentException(in_Config(&quot;PackageNotFound&quot;))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_16" />
               </If.Then>
             </If>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_ProcessName) AndAlso io_ProcessesData.Rows.Find({OUFolderID, in_ProcessName}) IsNot Nothing]" DisplayName="If Process Name Is Already Used" sap:VirtualizedContainerService.HintSize="652,208" sap2010:WorkflowViewState.IdRef="If_21">
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_ProcessName) AndAlso io_ProcessesData.Rows.Find({OUFolderID, in_ProcessName}) IsNot Nothing]" DisplayName="If Process Name Is Already Used" sap:VirtualizedContainerService.HintSize="548,248.8" sap2010:WorkflowViewState.IdRef="If_21">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -199,11 +218,11 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Throw DisplayName="Throw (Process Already Exists)" Exception="[New ArgumentException(String.Format(in_Config(&quot;ProcessNameAlreadyUsed&quot;), in_ProcessName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_17" />
+                <Throw DisplayName="Throw (Process Already Exists)" Exception="[New ArgumentException(String.Format(in_Config(&quot;ProcessNameAlreadyUsed&quot;), in_ProcessName))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_17" />
               </If.Then>
             </If>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcessRequest Workflow" sap:VirtualizedContainerService.HintSize="694,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Processes\CreateProcessRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateProcessRequest Workflow" sap:VirtualizedContainerService.HintSize="589.6,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Entities\Processes\CreateProcessRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
               <InArgument x:TypeArguments="x:Int64" x:Key="in_OUFolderID">[OUFolderID]</InArgument>
               <InArgument x:TypeArguments="x:String" x:Key="in_PackageName">[in_PackageName]</InArgument>
@@ -217,29 +236,17 @@
               <InArgument x:TypeArguments="sd:DataRow" x:Key="in_ProcessDetails">[in_ProcessDetails]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow" sap:VirtualizedContainerService.HintSize="694,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex Workflow" sap:VirtualizedContainerService.HintSize="589.6,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_ProcessIndex" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
-                <Literal x:TypeArguments="x:String">ProcessID</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Value">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="ProcessID.ToString" />
-              </InArgument>
-              <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">[in_Config("CreateOperationName")]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">[in_ProcessIndex]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">ProcessID</InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">[in_ColumnNames]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Value">[ProcessID.ToString]</InArgument>
+              <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[in_OpenedWorkbook]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="694,486" sap2010:WorkflowViewState.IdRef="Sequence_30">
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Initialize Request Fields&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="589.6,491.2" sap2010:WorkflowViewState.IdRef="Sequence_30">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewProcessRow" />
             </Sequence.Variables>
@@ -250,7 +257,7 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Assign NewProcessRow (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_18">
+            <Assign DisplayName="Assign NewProcessRow (Initialization)" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_18">
               <Assign.To>
                 <OutArgument x:TypeArguments="sd:DataRow">[NewProcessRow]</OutArgument>
               </Assign.To>
@@ -258,7 +265,7 @@
                 <InArgument x:TypeArguments="sd:DataRow">[io_ProcessesData.NewRow()]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Cached OU/Folder ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_19">
+            <Assign DisplayName="Assign Cached OU/Folder ID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_19">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewProcessRow("OUFolderID")]</OutArgument>
               </Assign.To>
@@ -266,7 +273,7 @@
                 <InArgument x:TypeArguments="x:Object">[OUFolderID]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Cached Process Name" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_20">
+            <Assign DisplayName="Assign Cached Process Name" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_20">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewProcessRow("ProcessName")]</OutArgument>
               </Assign.To>
@@ -274,12 +281,12 @@
                 <InArgument x:TypeArguments="x:Object">[ProcessName]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewProcessRow]" DataTable="[io_ProcessesData]" DisplayName="Add Data Row (Create Process)" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewProcessRow]" DataTable="[io_ProcessesData]" DisplayName="Add Data Row (Create Process)" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
           </Sequence>
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="740,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="634.4,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -290,13 +297,13 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Create Process" sap:VirtualizedContainerService.HintSize="376,285" sap2010:WorkflowViewState.IdRef="Sequence_20">
+            <Sequence DisplayName="Failed to Create Process" sap:VirtualizedContainerService.HintSize="376,284" sap2010:WorkflowViewState.IdRef="Sequence_20">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[Exception.Message]">
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334.4,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Error" Message="[Exception.Message]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
