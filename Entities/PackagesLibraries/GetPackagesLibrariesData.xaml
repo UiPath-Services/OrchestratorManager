@@ -13,7 +13,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>824,5377.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>824,5440</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>GetFolders_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="68">
@@ -83,6 +83,7 @@
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -90,7 +91,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Packages or Libraries.&#xA;Since both Packages and Libraries have the same fields, the same workflow is used to handle both entities.&#xA;If no filters are specified, returns data about all Packages." DisplayName="Get Packages/Libraries Data" sap:VirtualizedContainerService.HintSize="729.6,5312.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Retrieve data about Packages or Libraries.&#xA;Since both Packages and Libraries have the same fields, the same workflow is used to handle both entities.&#xA;If no filters are specified, returns data about all Packages." DisplayName="Get Packages/Libraries Data" sap:VirtualizedContainerService.HintSize="729.6,5375.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="ODataFilter" />
       <Variable x:TypeArguments="njl:JObject" Name="ResultObject" />
@@ -131,7 +132,7 @@
       <Switch.Default>
         <ui:LogMessage DisplayName="Log Message (Unsupported Entity)" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[in_Config(&quot;UnsupportedEntity&quot;)]" />
       </Switch.Default>
-      <Sequence x:Key="package" sap2010:Annotation.AnnotationText="Packages are actually exposed by the Process endpoints.&#xA;Processes can be handled using the Release endpoints." DisplayName="Package Endpoint Data" sap:VirtualizedContainerService.HintSize="304,328.8" sap2010:WorkflowViewState.IdRef="Sequence_15">
+      <Sequence x:Key="package" sap2010:Annotation.AnnotationText="Packages are actually exposed by the Process endpoints.&#xA;Processes can be handled using the Release endpoints." DisplayName="Package Endpoint Data" sap:VirtualizedContainerService.HintSize="304,360.8" sap2010:WorkflowViewState.IdRef="Sequence_15">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -155,7 +156,7 @@
           </Assign.Value>
         </Assign>
       </Sequence>
-      <Sequence x:Key="library" DisplayName="Library Endpoint Data" sap:VirtualizedContainerService.HintSize="304,252.8" sap2010:WorkflowViewState.IdRef="Sequence_16">
+      <Sequence x:Key="library" DisplayName="Library Endpoint Data" sap:VirtualizedContainerService.HintSize="304,249.6" sap2010:WorkflowViewState.IdRef="Sequence_16">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -452,6 +453,7 @@
         </ActivityAction>
       </ui:ForEachRow.Body>
     </ui:ForEachRow>
+    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{&quot;d&quot;,&quot;1.0.1&quot;,&quot;d:1.0.1&quot;, Now}]" DataTable="[out_PackagesLibrariesData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="688,22.4" sap2010:WorkflowViewState.IdRef="AddDataRow_5" />
     <Assign DisplayName="Initialize Duplicate Packages/Libraries List" sap:VirtualizedContainerService.HintSize="688,60" sap2010:WorkflowViewState.IdRef="Assign_52">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:List(x:String)">[out_DuplicatePackageLibraryVersionsList]</OutArgument>
@@ -468,7 +470,7 @@
         <InArgument x:TypeArguments="sd:DataTable">[out_PackagesLibrariesData.DefaultView.ToTable(True, {"Name","Version"})]</InArgument>
       </Assign.Value>
     </Assign>
-    <If sap2010:Annotation.AnnotationText="A bug was discovered in several Orchestrator instances where the Microsoft.Exchange.WebServices library, version 2.2.0, was duplicated&#xD;&#xA;This abnormal behavior triggers an error when trying to create a primary key on DataTable out_PackagesLibraryData out_PackagesLibraryData on columns Name and Version, because the key is no longer unique&#xD;&#xA;Such occurrences will be hence removed from the list and an error message displayed to the user." Condition="[DistinctPackageLibraryVersionDT.Rows.Count &lt; out_PackagesLibrariesData.Rows.Count]" DisplayName="If Less (Distinct Package Name + Version) than (Total Package Name + Version)" sap:VirtualizedContainerService.HintSize="688,400.8" sap2010:WorkflowViewState.IdRef="If_9">
+    <If sap2010:Annotation.AnnotationText="A bug was discovered in several Orchestrator instances where the Microsoft.Exchange.WebServices library, version 2.2.0, was duplicated&#xA;This abnormal behavior triggers an error when trying to create a primary key on DataTable out_PackagesLibraryData out_PackagesLibraryData on columns Name and Version, because the key is no longer unique&#xA;Such occurrences will be hence removed from the list and an error message displayed to the user." Condition="[DistinctPackageLibraryVersionDT.Rows.Count &lt; out_PackagesLibrariesData.Rows.Count]" DisplayName="If Less (Distinct Package Name + Version) than (Total Package Name + Version)" sap:VirtualizedContainerService.HintSize="688,400.8" sap2010:WorkflowViewState.IdRef="If_9">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -477,24 +479,12 @@
       <If.Then>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke HandleDuplicatePackageLibrariesData workflow" sap:VirtualizedContainerService.HintSize="378.4,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\PackagesLibraries\HandleDuplicatePackageLibrariesData.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_PackagesLibrariesData">
-              <mva:VisualBasicReference x:TypeArguments="sd:DataTable" ExpressionText="out_PackagesLibrariesData" />
-            </InOutArgument>
-            <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="out_DuplicatePackageLibraryVersionsList">
-              <mva:VisualBasicReference x:TypeArguments="scg:List(x:String)" ExpressionText="out_DuplicatePackageLibraryVersionsList" />
-            </OutArgument>
-            <OutArgument x:TypeArguments="x:String" x:Key="out_DuplicateEntitiesMessage">
-              <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="out_DuplicateEntitiesMessage" />
-            </OutArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Entity">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Entity" />
-            </InArgument>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsGetRequest">
-              <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="CBool(in_FilterNames.Count = 0)" />
-            </InArgument>
+            <InOutArgument x:TypeArguments="sd:DataTable" x:Key="io_PackagesLibrariesData">[out_PackagesLibrariesData]</InOutArgument>
+            <OutArgument x:TypeArguments="scg:List(x:String)" x:Key="out_DuplicatePackageLibraryVersionsList">[out_DuplicatePackageLibraryVersionsList]</OutArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_DuplicateEntitiesMessage">[out_DuplicateEntitiesMessage]</OutArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Entity">[in_Entity]</InArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsGetRequest">[CBool(in_FilterNames.Count = 0)]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </If.Then>
