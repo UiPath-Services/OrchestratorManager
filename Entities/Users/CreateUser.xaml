@@ -22,6 +22,7 @@
     <x:Property Name="in_LimitConcurrentExecution" Type="InArgument(x:Boolean)" />
     <x:Property Name="in_ColumnNames" Type="InArgument(s:String[])" />
     <x:Property Name="in_UserDetails" Type="InArgument(sd:DataRow)" />
+    <x:Property Name="in_UserType" Type="InArgument(x:String)" />
   </x:Members>
   <this:CreateUser.in_OpenedWorkbook>
     <InArgument x:TypeArguments="ui:WorkbookApplication" />
@@ -29,7 +30,7 @@
   <this:CreateUser.in_UserIndex>
     <InArgument x:TypeArguments="x:Int32" />
   </this:CreateUser.in_UserIndex>
-  <sap:VirtualizedContainerService.HintSize>1267,774</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>944,3517.6</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
   <TextExpression.NamespacesForImplementation>
@@ -55,6 +56,10 @@
       <x:String>System.Activities.Statements</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Reflection</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -89,7 +94,7 @@
       <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Create user with specified data.&#xA;IDs of successfully created users are added to the users configuration file (Users.xlsx)." DisplayName="Create User" sap:VirtualizedContainerService.HintSize="514,557" sap2010:WorkflowViewState.IdRef="Sequence_14">
+  <Sequence sap2010:Annotation.AnnotationText="Create user with specified data.&#xA;IDs of successfully created users are added to the users configuration file (Users.xlsx)." DisplayName="Create User" sap:VirtualizedContainerService.HintSize="680,3452.8" sap2010:WorkflowViewState.IdRef="Sequence_14">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Default="ABCDEFGHIJKLMNOPQRSTUVWXYZ" Name="ALPHABET" />
     </Sequence.Variables>
@@ -99,7 +104,7 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="472,423" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="638.4,3316" sap2010:WorkflowViewState.IdRef="TryCatch_1">
       <TryCatch.Variables>
         <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;OperationDefaultResult&quot;)]" Name="OperationResult" />
       </TryCatch.Variables>
@@ -110,7 +115,7 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <TryCatch.Try>
-        <Sequence DisplayName="Try to Create User" sap:VirtualizedContainerService.HintSize="604,2340" sap2010:WorkflowViewState.IdRef="Sequence_21">
+        <Sequence DisplayName="Try to Create User" sap:VirtualizedContainerService.HintSize="601.6,3084.8" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <Sequence.Variables>
             <Variable x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" Default="[New List(Of Dictionary(Of String, Object))]" Name="OUsIDsDisplayNames" />
             <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="Roles" />
@@ -122,26 +127,63 @@
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="562,1468" sap2010:WorkflowViewState.IdRef="Sequence_39">
+          <Sequence DisplayName="Prepare Request Data" sap:VirtualizedContainerService.HintSize="560,2204.8" sap2010:WorkflowViewState.IdRef="Sequence_39">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If sap2010:Annotation.AnnotationText="Only create Users of type User. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[String.IsNullOrWhiteSpace(in_UserDetails(&quot;Domain&quot;).ToString) AndAlso io_UsersData.Rows.Find({&quot;User&quot;, in_UserName}) IsNot Nothing]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="520,265" sap2010:WorkflowViewState.IdRef="If_19">
+            <If Condition="[String.IsNullOrWhiteSpace(in_UserType) OrElse Not {&quot;UserOrGroup&quot;, &quot;RobotAccount&quot;}.Contains(in_UserType)]" DisplayName="If User Type Is Specified" sap:VirtualizedContainerService.HintSize="518.4,248.8" sap2010:WorkflowViewState.IdRef="If_21">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Throw DisplayName="Throw (Username Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;UsernameAlreadyUsed&quot;), in_UserName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
+                <Throw DisplayName="Throw (User Type Invalid or not Specified)" Exception="[New ArgumentException(in_Config(&quot;UserTypeInvalidOrNotSpecified&quot;))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_11" />
               </If.Then>
             </If>
-            <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="520,689" sap2010:WorkflowViewState.IdRef="If_18">
+            <If sap2010:Annotation.AnnotationText="Robot Account is a special case, treated differently than all other types of users. &#xD;&#xA;The user-friendly name available in the Users spreadsheet is replaced by the actual API denomination used across the project" Condition="[in_UserType.Equals(&quot;RobotAccount&quot;)]" DisplayName="If Type = Robot Account" sap:VirtualizedContainerService.HintSize="518.4,308.8" sap2010:WorkflowViewState.IdRef="If_22">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Assign DisplayName="Assign User Type = Directory Robot" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_46">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[in_UserType]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">DirectoryRobot</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_41">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </Sequence>
+              </If.Else>
+            </If>
+            <If sap2010:Annotation.AnnotationText="Only create Users of type User/DirectoryRobot. User of types DirectoryUser and DirectoryGroup should be imported instead of created, and User of type Robot should be created during the Robot provisioning." Condition="[String.IsNullOrWhiteSpace(in_UserDetails(&quot;Domain&quot;).ToString) AndAlso io_UsersData.Rows.Find({&quot;User&quot;, in_UserName}) IsNot Nothing]" DisplayName="If Username Is Already Used" sap:VirtualizedContainerService.HintSize="518.4,308.8" sap2010:WorkflowViewState.IdRef="If_19">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Throw DisplayName="Throw (Username Already Used)" Exception="[New ArgumentException(String.Format(in_Config(&quot;UsernameAlreadyUsed&quot;), in_UserName))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_9" />
+              </If.Then>
+            </If>
+            <If sap2010:Annotation.AnnotationText="Assingment of Modern Folders when creating users is not supported." Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;onPremises&quot; AndAlso in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &lt; 201910]" DisplayName="If On-Premises Older than 2019.10" sap:VirtualizedContainerService.HintSize="518.4,732" sap2010:WorkflowViewState.IdRef="If_18">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -150,13 +192,13 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Organization Unit" sap:VirtualizedContainerService.HintSize="340,510" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[in_OUsNames.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(OU) OU.Trim)]">
+                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Organization Unit" sap:VirtualizedContainerService.HintSize="339.2,512" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[in_OUsNames.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(OU) OU.Trim)]">
                   <ui:ForEach.Body>
                     <ActivityAction x:TypeArguments="x:String">
                       <ActivityAction.Argument>
                         <DelegateInArgument x:TypeArguments="x:String" Name="OUName" />
                       </ActivityAction.Argument>
-                      <Sequence DisplayName="Get OU ID" sap:VirtualizedContainerService.HintSize="304,376" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                      <Sequence DisplayName="Get OU ID" sap:VirtualizedContainerService.HintSize="304,377.6" sap2010:WorkflowViewState.IdRef="Sequence_38">
                         <Sequence.Variables>
                           <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="SingleOUDisplayNameID" />
                         </Sequence.Variables>
@@ -165,7 +207,7 @@
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <If Condition="[in_OUsData.Rows.Find({OUName}) Is Nothing]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="If_20">
+                        <If Condition="[in_OUsData.Rows.Find({OUName}) Is Nothing]" DisplayName="If No OU Found with Specified Name" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="If_20">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -176,7 +218,7 @@
                             <Throw DisplayName="Throw (OU Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedOUNotFound&quot;), OUName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_10" />
                           </If.Then>
                         </If>
-                        <Assign DisplayName="Assign OU ID" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_44">
+                        <Assign DisplayName="Assign OU ID" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_44">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[SingleOUDisplayNameID("Id")]</OutArgument>
                           </Assign.To>
@@ -184,7 +226,7 @@
                             <InArgument x:TypeArguments="x:Int64">[Convert.ToInt64(in_OUsData.Rows.Find({OUName})("ID"))]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <Assign DisplayName="Assign DisplayName" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_45">
+                        <Assign DisplayName="Assign DisplayName" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_45">
                           <Assign.To>
                             <OutArgument x:TypeArguments="x:Object">[SingleOUDisplayNameID("DisplayName")]</OutArgument>
                           </Assign.To>
@@ -192,7 +234,7 @@
                             <InArgument x:TypeArguments="x:Object">[OUName]</InArgument>
                           </Assign.Value>
                         </Assign>
-                        <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[OUsIDsDisplayNames]" DisplayName="Add To Collection (Single Organization Unit)" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_13" Item="[SingleOUDisplayNameID]" />
+                        <AddToCollection x:TypeArguments="scg:Dictionary(x:String, x:Object)" Collection="[OUsIDsDisplayNames]" DisplayName="Add To Collection (Single Organization Unit)" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="AddToCollection`1_13" Item="[SingleOUDisplayNameID]" />
                       </Sequence>
                     </ActivityAction>
                   </ui:ForEach.Body>
@@ -205,18 +247,18 @@
                 </ui:ForEach>
               </If.Then>
             </If>
-            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role" sap:VirtualizedContainerService.HintSize="520,342" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[in_Roles.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Role) Role.Trim)]">
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Role" sap:VirtualizedContainerService.HintSize="518.4,353.6" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[in_Roles.Split({&quot;,&quot;, &quot;, &quot;}, StringSplitOptions.RemoveEmptyEntries).Select(Function(Role) Role.Trim)]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:String" Name="RoleName" />
                   </ActivityAction.Argument>
-                  <If Condition="[in_RolesData.Rows.Find({RoleName}) Is Nothing]" DisplayName="If Role Exists" sap:VirtualizedContainerService.HintSize="484,208" sap2010:WorkflowViewState.IdRef="If_17">
+                  <If Condition="[in_RolesData.Rows.Find({RoleName}) Is Nothing]" DisplayName="If Role Exists" sap:VirtualizedContainerService.HintSize="483.2,219.2" sap2010:WorkflowViewState.IdRef="If_17">
                     <If.Then>
-                      <Throw DisplayName="Throw (Role Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRoleNotFound&quot;), RoleName))]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
+                      <Throw DisplayName="Throw (Role Not Found)" Exception="[New ArgumentException(String.Format(in_Config(&quot;NamedRoleNotFound&quot;), RoleName))]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_8" />
                     </If.Then>
                     <If.Else>
-                      <AddToCollection x:TypeArguments="x:String" Collection="[Roles]" DisplayName="Add To Collection (Role)" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[RoleName]" />
+                      <AddToCollection x:TypeArguments="x:String" Collection="[Roles]" DisplayName="Add To Collection (Role)" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="AddToCollection`1_1" Item="[RoleName]" />
                     </If.Else>
                   </If>
                 </ActivityAction>
@@ -229,50 +271,75 @@
               </sap:WorkflowViewStateService.ViewState>
             </ui:ForEach>
           </Sequence>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateUserRequest Workflow" sap:VirtualizedContainerService.HintSize="562,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Users\CreateUserRequest.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke CreateUserRequest Workflow" sap:VirtualizedContainerService.HintSize="560,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Entities\Users\CreateUserRequest.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_OUsIDsDisplayNames">[OUsIDsDisplayNames]</InArgument>
-              <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_Roles">[Roles]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_UserName">[in_UserName]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Name">[in_Name]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Password">[in_Password]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Email">[in_Email]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Surname">[in_Surname]</InArgument>
-              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">[in_Config]</InArgument>
-              <OutArgument x:TypeArguments="x:Int64" x:Key="out_UserID">[UserID]</OutArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameAR">[in_DomainUserNameAR]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameUR">[in_DomainUserNameUR]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_PasswordUR">[in_PasswordUR]</InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_MayHavePersonalWorkspace">[in_MayHavePersonalWorkspace]</InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsExternalLicensed">[in_IsExternalLicensed]</InArgument>
-              <InArgument x:TypeArguments="x:Boolean" x:Key="in_LimitConcurrentExecution">[in_LimitConcurrentExecution]</InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_LicenseType">[in_LicenseType]</InArgument>
-              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">[in_UserDetails]</InArgument>
+              <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" x:Key="in_OUsIDsDisplayNames">
+                <mva:VisualBasicValue x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))" ExpressionText="OUsIDsDisplayNames" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:List(x:String)" x:Key="in_Roles">
+                <mva:VisualBasicValue x:TypeArguments="scg:List(x:String)" ExpressionText="Roles" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UserName">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserName" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Name">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Name" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Password">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Password" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Email">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Email" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Surname">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Surname" />
+              </InArgument>
+              <InArgument x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" x:Key="in_Config">
+                <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, ui:GenericValue)" ExpressionText="in_Config" />
+              </InArgument>
+              <OutArgument x:TypeArguments="x:Int64" x:Key="out_UserID">
+                <mva:VisualBasicReference x:TypeArguments="x:Int64" ExpressionText="UserID" />
+              </OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameAR">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DomainUserNameAR" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_DomainUserNameUR">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_DomainUserNameUR" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_PasswordUR">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_PasswordUR" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_MayHavePersonalWorkspace">
+                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_MayHavePersonalWorkspace" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsExternalLicensed">
+                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_IsExternalLicensed" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="in_LimitConcurrentExecution">
+                <mva:VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="in_LimitConcurrentExecution" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_LicenseType">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_LicenseType" />
+              </InArgument>
+              <InArgument x:TypeArguments="sd:DataRow" x:Key="in_UserDetails">
+                <mva:VisualBasicValue x:TypeArguments="sd:DataRow" ExpressionText="in_UserDetails" />
+              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_UserType">
+                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_UserType" />
+              </InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex workflow" sap:VirtualizedContainerService.HintSize="562,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex workflow" sap:VirtualizedContainerService.HintSize="560,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
             <ui:InvokeWorkflowFile.Arguments>
-              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
-                <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_UserIndex" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
-                <Literal x:TypeArguments="x:String">ID</Literal>
-              </InArgument>
-              <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-                <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
-              </InArgument>
-              <InArgument x:TypeArguments="x:String" x:Key="in_Value">
-                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="UserID.ToString" />
-              </InArgument>
-              <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
-              </InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">[in_Config("CreateOperationName")]</InArgument>
+              <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">[in_UserIndex]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">ID</InArgument>
+              <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">[in_ColumnNames]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_Value">[UserID.ToString]</InArgument>
+              <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[in_OpenedWorkbook]</InArgument>
             </ui:InvokeWorkflowFile.Arguments>
           </ui:InvokeWorkflowFile>
-          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="562,486" sap2010:WorkflowViewState.IdRef="Sequence_37">
+          <Sequence sap2010:Annotation.AnnotationText="Update cached data with created entity for duplicated checks in subsequent requests.&#xA;It is sufficient to update only the fields used during the &quot;Prepare Request Data&quot; step." DisplayName="Update Cached Data" sap:VirtualizedContainerService.HintSize="560,491.2" sap2010:WorkflowViewState.IdRef="Sequence_37">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataRow" Name="NewUserRow" />
             </Sequence.Variables>
@@ -283,7 +350,7 @@
                 <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Assign NewUserRow (Initialization)" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_41">
+            <Assign DisplayName="Assign NewUserRow (Initialization)" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_41">
               <Assign.To>
                 <OutArgument x:TypeArguments="sd:DataRow">[NewUserRow]</OutArgument>
               </Assign.To>
@@ -291,7 +358,7 @@
                 <InArgument x:TypeArguments="sd:DataRow">[io_UsersData.NewRow()]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Cached Type" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_43">
+            <Assign DisplayName="Assign Cached Type" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_43">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewUserRow("Type")]</OutArgument>
               </Assign.To>
@@ -299,7 +366,7 @@
                 <InArgument x:TypeArguments="x:Object">["User"]</InArgument>
               </Assign.Value>
             </Assign>
-            <Assign DisplayName="Assign Cached Username" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_42">
+            <Assign DisplayName="Assign Cached Username" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_42">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:Object">[NewUserRow("Username")]</OutArgument>
               </Assign.To>
@@ -307,12 +374,12 @@
                 <InArgument x:TypeArguments="x:Object">[in_UserName]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewUserRow]" DataTable="[io_UsersData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="262,22" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+            <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[NewUserRow]" DataTable="[io_UsersData]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="262.4,22.4" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
           </Sequence>
         </Sequence>
       </TryCatch.Try>
       <TryCatch.Catches>
-        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="438,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="604.8,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -323,13 +390,13 @@
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Failed to Create User" sap:VirtualizedContainerService.HintSize="376,285" sap2010:WorkflowViewState.IdRef="Sequence_25">
+            <Sequence DisplayName="Failed to Create User" sap:VirtualizedContainerService.HintSize="376,285.6" sap2010:WorkflowViewState.IdRef="Sequence_25">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Error" Message="[Exception.Message]">
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334.4,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Error" Message="[Exception.Message]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -358,24 +425,12 @@
               </ActivityAction.Argument>
               <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke WriteCellByColumnNameAndIndex workflow" sap:VirtualizedContainerService.HintSize="355,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" UnSafe="False" WorkflowFileName="Common\WriteCellByColumnNameAndIndex.xaml">
                 <ui:InvokeWorkflowFile.Arguments>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;CreateOperationName&quot;)" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">
-                    <mva:VisualBasicValue x:TypeArguments="x:Int64" ExpressionText="in_UserIndex" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">
-                    <Literal x:TypeArguments="x:String">Result</Literal>
-                  </InArgument>
-                  <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">
-                    <mva:VisualBasicValue x:TypeArguments="s:String[]" ExpressionText="in_ColumnNames" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="x:String" x:Key="in_Value">
-                    <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="OperationResult" />
-                  </InArgument>
-                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">
-                    <mva:VisualBasicValue x:TypeArguments="ui:WorkbookApplication" ExpressionText="in_OpenedWorkbook" />
-                  </InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_SheetName">[in_Config("CreateOperationName")]</InArgument>
+                  <InArgument x:TypeArguments="x:Int64" x:Key="in_Index">[in_UserIndex]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ColumnName">Result</InArgument>
+                  <InArgument x:TypeArguments="s:String[]" x:Key="in_ColumnNames">[in_ColumnNames]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_Value">[OperationResult]</InArgument>
+                  <InArgument x:TypeArguments="ui:WorkbookApplication" x:Key="in_OpenedWorkbook">[in_OpenedWorkbook]</InArgument>
                 </ui:InvokeWorkflowFile.Arguments>
               </ui:InvokeWorkflowFile>
             </ActivityAction>
