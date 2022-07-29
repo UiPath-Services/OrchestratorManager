@@ -31,7 +31,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>980.8,6345.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>980.8,6660</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>CreateUserRequest_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="35">
@@ -73,7 +73,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="26">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="52">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -100,6 +100,7 @@
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
       <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
@@ -108,7 +109,7 @@
       <x:Boolean x:Key="ShouldCollapseAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="991.2,6280.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Construct and make request to create a new User." DisplayName="Create User Request" sap:VirtualizedContainerService.HintSize="991.2,6595.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New Dictionary(Of String, Object)]" Name="RequestBody" />
       <Variable x:TypeArguments="x:String" Name="Result" />
@@ -120,7 +121,7 @@
         <x:Boolean x:Key="IsPinned">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="949.6,5966.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
+    <Sequence DisplayName="Initialize Request Fields" sap:VirtualizedContainerService.HintSize="949.6,6280.8" sap2010:WorkflowViewState.IdRef="Sequence_2">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:Boolean" Name="ValidEmail" />
       </Sequence.Variables>
@@ -295,7 +296,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:InvokeCode>
-            <If Condition="[Not String.IsNullOrWhiteSpace(in_UserDetails(&quot;EnableAR&quot;).ToString) AndAlso Not in_UserType.ToLower.Equals(&quot;directoryrobot&quot;)]" DisplayName="If DomainUserNameAR is specified and Not a Robot Account" sap:VirtualizedContainerService.HintSize="831.2,520" sap2010:WorkflowViewState.IdRef="If_11">
+            <If Condition="[Not String.IsNullOrWhiteSpace(in_UserDetails(&quot;EnableAR&quot;).ToString) AndAlso Convert.ToBoolean(in_UserDetails(&quot;EnableAR&quot;)) AndAlso Not in_UserType.ToLower.Equals(&quot;directoryrobot&quot;)]" DisplayName="If DomainUserNameAR is specified and Not a Robot Account" sap:VirtualizedContainerService.HintSize="831.2,520" sap2010:WorkflowViewState.IdRef="If_11">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsPinned">True</x:Boolean>
@@ -470,7 +471,7 @@
           </Sequence>
         </If.Then>
       </If>
-      <If Condition="[in_UserType.ToLower.Equals(&quot;directoryrobot&quot;)]" DisplayName="If Type = Robot Account, Restrict Properties" sap:VirtualizedContainerService.HintSize="908,1272.8" sap2010:WorkflowViewState.IdRef="If_20">
+      <If Condition="[in_UserType.ToLower.Equals(&quot;directoryrobot&quot;)]" DisplayName="If Type = Robot Account, Restrict Properties" sap:VirtualizedContainerService.HintSize="908,1587.2" sap2010:WorkflowViewState.IdRef="If_20">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsPinned">True</x:Boolean>
@@ -478,7 +479,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
         <If.Then>
-          <Sequence DisplayName="Configure Default Values for Robot Accounts" sap:VirtualizedContainerService.HintSize="524.8,1084" sap2010:WorkflowViewState.IdRef="Sequence_12">
+          <Sequence DisplayName="Configure Default Values for Robot Accounts" sap:VirtualizedContainerService.HintSize="524.8,1398.4" sap2010:WorkflowViewState.IdRef="Sequence_12">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -563,11 +564,11 @@
                 <InArgument x:TypeArguments="x:Object">[in_UserType]</InArgument>
               </Assign.Value>
             </Assign>
-            <Sequence sap2010:Annotation.AnnotationText="Robot Accounts are to be associated with service users and have no personal info associated in Orchestrator" DisplayName="Clear Personal Info" sap:VirtualizedContainerService.HintSize="483.2,98.4" sap2010:WorkflowViewState.IdRef="Sequence_13">
+            <Sequence sap2010:Annotation.AnnotationText="Robot Accounts are to be associated with service users and have no personal info associated in Orchestrator" DisplayName="Clear Personal Info" sap:VirtualizedContainerService.HintSize="483.2,412.8" sap2010:WorkflowViewState.IdRef="Sequence_13">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">True</x:Boolean>
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
@@ -582,6 +583,14 @@
               <Assign DisplayName="Clear Email Address" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_34">
                 <Assign.To>
                   <OutArgument x:TypeArguments="x:Object">[RequestBody("EmailAddress")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">[String.Empty]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign DisplayName="Clear Password" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_40">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[RequestBody("Password")]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
                   <InArgument x:TypeArguments="x:Object">[String.Empty]</InArgument>
