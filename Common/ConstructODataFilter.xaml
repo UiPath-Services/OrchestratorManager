@@ -10,7 +10,7 @@
       </x:Property.Attributes>
     </x:Property>
   </x:Members>
-  <sap:VirtualizedContainerService.HintSize>969,818</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>832,1140</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="36">
@@ -33,6 +33,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
       <x:String>System.Net</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -52,10 +53,9 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
       <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Construct OData filters using specified names and IDs with OR operators.&#xA;&#xA;The way to construct the filter depends on the Orchestrator version:&#xA;- Orchestrator 2020.4 or older: Filter done using disjunction of multiple conditions&#xA;- Orchestrator 2020.10 or newer: Filter done using the IN operator&#xA;&#xA;The in_NameFilterField argument is used to specify the field used when filtering by name of entity.&#xA;Usually, its value is &quot;Name&quot;, but it can change, depending on the entity. &#xA;For example, Organization Units use the field DisplayName, and Folders use the field FullyQualifiedName." DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="845,753" sap2010:WorkflowViewState.IdRef="Sequence_3">
+  <Sequence sap2010:Annotation.AnnotationText="Construct OData filters using specified names and IDs with OR operators.&#xA;&#xA;The way to construct the filter depends on the Orchestrator version:&#xA;- Orchestrator 2020.4 or older: Filter done using disjunction of multiple conditions&#xA;- Orchestrator 2020.10 or newer: Filter done using the IN operator&#xA;&#xA;The in_NameFilterField argument is used to specify the field used when filtering by name of entity.&#xA;Usually, its value is &quot;Name&quot;, but it can change, depending on the entity. &#xA;For example, Organization Units use the field DisplayName, and Folders use the field FullyQualifiedName." DisplayName="Construct OData Filter" sap:VirtualizedContainerService.HintSize="842.4,1075.2" sap2010:WorkflowViewState.IdRef="Sequence_3">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:List(x:String)" Default="[New List(Of String)]" Name="FilterConditions" />
     </Sequence.Variables>
@@ -66,9 +66,30 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202010]" DisplayName="If Orchestrator Version Supports OData IN Operator" sap:VirtualizedContainerService.HintSize="803,235" sap2010:WorkflowViewState.IdRef="If_5">
+    <If Condition="[in_FilterNames.Length &gt; 0]" sap:VirtualizedContainerService.HintSize="800.8,248.8" sap2010:WorkflowViewState.IdRef="If_6">
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202010OrNewer Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202010OrNewer.xaml">
+        <Assign DisplayName="Replace Special Characters in Filter Names" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_14">
+          <Assign.To>
+            <OutArgument x:TypeArguments="s:String[]">[in_FilterNames]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="s:String[]">[in_FilterNames.Select(Function(Name) Name.Replace("&amp;","%2526").Replace("+","%252B")).ToArray()]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </Sequence>
+      </If.Else>
+    </If>
+    <If Condition="[in_Config(&quot;OrchestratorType&quot;) = &quot;cloud&quot; OrElse in_Config(&quot;OnPremisesOrchestratorVersion&quot;) &gt;= 202010]" DisplayName="If Orchestrator Version Supports OData IN Operator" sap:VirtualizedContainerService.HintSize="800.8,247.2" sap2010:WorkflowViewState.IdRef="If_5">
+      <If.Then>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202010OrNewer Workflow" sap:VirtualizedContainerService.HintSize="378.4,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202010OrNewer.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
@@ -79,7 +100,7 @@
         </ui:InvokeWorkflowFile>
       </If.Then>
       <If.Else>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202004OrOlder Workflow" sap:VirtualizedContainerService.HintSize="379,87" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202004OrOlder.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ConstructODataFilter_Orchestrator202004OrOlder Workflow" sap:VirtualizedContainerService.HintSize="378.4,88" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Common\ConstructODataFilter_Orchestrator202004OrOlder.xaml">
           <ui:InvokeWorkflowFile.Arguments>
             <InArgument x:TypeArguments="s:String[]" x:Key="in_FilterNames">[in_FilterNames]</InArgument>
             <InArgument x:TypeArguments="s:Int64[]" x:Key="in_FilterIDs">[in_FilterIDs]</InArgument>
@@ -89,9 +110,9 @@
         </ui:InvokeWorkflowFile>
       </If.Else>
     </If>
-    <If Condition="[FilterConditions.Count &gt; 0 AndAlso System.Net.WebUtility.UrlEncode(String.Format(&quot;$filter={0}&amp;&quot;, String.Join(&quot; or &quot;, FilterConditions))).Length &lt;= 1800]" DisplayName="If Any Conditions Were Created" sap:VirtualizedContainerService.HintSize="569,239" sap2010:WorkflowViewState.IdRef="If_4">
+    <If Condition="[FilterConditions.Count &gt; 0 AndAlso System.Net.WebUtility.UrlEncode(String.Format(&quot;$filter={0}&amp;&quot;, String.Join(&quot; or &quot;, FilterConditions))).Length &lt;= 1800]" DisplayName="If Any Conditions Were Created" sap:VirtualizedContainerService.HintSize="800.8,250.4" sap2010:WorkflowViewState.IdRef="If_4">
       <If.Then>
-        <Assign DisplayName="Assign ODataFilter" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+        <Assign DisplayName="Assign ODataFilter" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_12">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_ODataFilter]</OutArgument>
           </Assign.To>
@@ -101,7 +122,7 @@
         </Assign>
       </If.Then>
       <If.Else>
-        <Assign sap2010:Annotation.AnnotationText="Initialize URL query parameters." DisplayName="Assign ODataFilter (Default)" sap:VirtualizedContainerService.HintSize="262,91" sap2010:WorkflowViewState.IdRef="Assign_13">
+        <Assign sap2010:Annotation.AnnotationText="Initialize URL query parameters." DisplayName="Assign ODataFilter (Default)" sap:VirtualizedContainerService.HintSize="262.4,91.2" sap2010:WorkflowViewState.IdRef="Assign_13">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[out_ODataFilter]</OutArgument>
           </Assign.To>
